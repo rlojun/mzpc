@@ -1,0 +1,14 @@
+DELETE FROM category;
+ALTER TABLE category AUTO_INCREMENT = 1; 
+
+DELETE FROM mileage_info;
+ALTER TABLE mileage_info AUTO_INCREMENT = 1;
+
+DELETE FROM time_payment;
+ALTER TABLE time_payment AUTO_INCREMENT = 1; 
+
+DELETE FROM times;
+ALTER TABLE times AUTO_INCREMENT = 1; 
+
+DELETE FROM food;
+ALTER TABLE food AUTO_INCREMENT = 1; 
