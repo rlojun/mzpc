@@ -16,7 +16,6 @@ PC방에서 사용하는 기능을 사용하는 사이트입니다.
 - 최호준 : 프로젝트 기능 브레인스토밍, 초기 ReadMe 작성, 화면 설계, MiniProject 1 발표
 
 ### WBS
-![image](https://github.com/rlojun/final_project_bootcamp/assets/137598528/faeb256c-1f24-414b-9f29-9cdb57492a31)
 시트: https://docs.google.com/spreadsheets/d/1RvZuKHDLNujCayDX9yQ5plQV7zA68mWr1TVSUbf1otA/edit#gid=1431469973
 
 ## ⚙️기술 스택
@@ -31,18 +30,18 @@ PC방에서 사용하는 기능을 사용하는 사이트입니다.
 ## 🌱 ERD
 
 
-<img width="1025" alt="스크린샷 2023-10-18 오후 3 08 11" src="https://github.com/rlojun/final_project_bootcamp/assets/137260250/94ab20dc-bb05-4055-8bcf-0ff17c4584ae">
+![mzpc](https://github.com/rlojun/mzpc/assets/137260250/6bc23cc8-ef72-4010-92fd-612e2b3b768b)
 
 
-- user Table : 유저의 회원정보 관련 테이블
-- onlineuser Table : 온라인한 유저의 사용시간 파악을 위한 테이블
-- qna Table : Q&A 관련 테이블
+
+
+- Members Table : 유저의 회원정보 관련 테이블
+- online_member Table : 온라인한 유저의 사용시간 파악을 위한 테이블
+- chat Table : Q&A 채팅 관련 테이블
 - admin Table : 관리자 정보 테이블
-- store Table : 매장 정보 테이블
-- time Table : 시간 상품 테이블
-- timepayment Table : 유저가 구매한 시간 상품 정보를 알기 위한 테이블
-- mileage Table : 마일리지 테이블
-- usemileage Table : 마일리지 적립, 사용을 파악하기 위한 테이블
+- times Table : 시간 상품 테이블
+- time_purchase Table : 유저가 구매한 시간 상품 정보를 알기 위한 테이블
+- mileage_info Table : 마일리지 적립, 사용을 파악하기 위한 테이블
 - food Table : 음식 상품 테이블
 - cart Table : 장바구니 테이블
 - order Table : 결제 완료된 주문 테이블
@@ -50,94 +49,118 @@ PC방에서 사용하는 기능을 사용하는 사이트입니다.
 - category Table : 음식 분류를 위한 카테고리 테이블
 
 
-<img width="497" alt="스크린샷 2023-10-18 오후 3 18 59" src="https://github.com/rlojun/final_project_bootcamp/assets/137260250/e43a57b8-f0eb-49fe-bfe0-2dc58b3c27ec">
-
-
 
 ## 💡주요 기능
 
 > #### 🎢Flow Chart
 - 로그인 페이지
-<img width="1079" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/0c084f01-c9b1-4eb6-bf9c-6147f0988bed">
+<img width="817" alt="스크린샷 2023-11-08 오후 4 40 28" src="https://github.com/rlojun/mzpc/assets/137260250/f96e7f4f-426b-447d-aa95-7540c09070bf">
+
 
 - 관리자 페이지
-<img width="1078" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/ca8f6f08-4f14-4c14-b77d-3ffa50e17095">
+<img width="1181" alt="스크린샷 2023-11-08 오후 5 12 25" src="https://github.com/rlojun/mzpc/assets/137260250/eb957cc7-2aa5-4b55-9ac0-0e6169c2da01">
+
+
 
 - 사용자 페이지
-<img width="1041" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/8999ce45-0f43-4cf1-82ea-6ae41b2fc20f">
+<img width="650" alt="스크린샷 2023-11-08 오후 5 15 03" src="https://github.com/rlojun/mzpc/assets/137260250/e1f6061d-e205-40b8-8273-009518b30676">
+
 
 ---
 > #### 🖥️UI(화면 설계서)
 
 1. ##### 로그인
 - 로그인 화면
-<img width="705" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/39d80adf-21a6-49ae-a5dd-f3604fa1556e">
+<img width="724" alt="스크린샷 2023-11-08 오후 5 16 53" src="https://github.com/rlojun/mzpc/assets/137260250/d136ef22-1dce-45fd-ba3b-72fbe30125dc">
+
 
 - 아이디/비밀번호 찾기
-<img width="705" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/809938a2-2393-4e1f-9329-11994b0b0b6e">
+<img width="931" alt="스크린샷 2023-11-08 오후 5 19 10" src="https://github.com/rlojun/mzpc/assets/137260250/9fab40f4-57b2-4c4b-909e-daa62486895f">
+
 
 - 회원 가입 페이지
-<img width="705" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/f856b166-f2e1-4b8e-9d73-671a6701cf01">
+<img width="940" alt="스크린샷 2023-11-08 오후 5 20 05" src="https://github.com/rlojun/mzpc/assets/137260250/ed0faa70-934b-4151-ad7a-6df9ddd955e5">
+
 
 - 시간 충전 페이지
-<img width="555" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/e66cbbd1-3226-4434-bed1-da2cfee112da">
+<img width="932" alt="스크린샷 2023-11-08 오후 5 20 30" src="https://github.com/rlojun/mzpc/assets/137260250/12d93752-b177-41f1-97fc-6288ee622293">
+
 
 2. ##### 관리자
 
 - 음식 상품 목록
-<img width="742" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/75c06a2a-3f4a-4afc-89ce-b23db42c7c16">
+<img width="763" alt="스크린샷 2023-11-08 오후 5 21 13" src="https://github.com/rlojun/mzpc/assets/137260250/bbc0937e-7cae-4107-8acd-2ce831af0ffc">
+
 
 - 음식 상세 화면
-<img width="781" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/bcd785e4-82bc-429b-a238-e20534aa1f72">
+<img width="803" alt="스크린샷 2023-11-08 오후 5 21 44" src="https://github.com/rlojun/mzpc/assets/137260250/1a2cbefb-7254-4e89-8be3-13d8d87bdd5e">
+
 
 - 음식 수정 화면
-<img width="781" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/83ae92c5-a0a7-4a03-ae12-d0569bf7a29c">
+<img width="810" alt="스크린샷 2023-11-08 오후 5 22 03" src="https://github.com/rlojun/mzpc/assets/137260250/36f795ed-6a6a-48ce-a40b-bf290e2377e5">
+
 
 - 음식 추가 화면
-<img width="648" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/992e3a61-154e-4c79-b764-5e75b46d5ce3">
+<img width="807" alt="스크린샷 2023-11-08 오후 5 22 30" src="https://github.com/rlojun/mzpc/assets/137260250/df02ec37-dd80-4248-b66e-05b6b9f4c780">
+
 
 - 시간 상품 목록
-<img width="785" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/7d64e497-f92f-478a-a056-5d5117aea97c">
+<img width="770" alt="스크린샷 2023-11-08 오후 5 23 10" src="https://github.com/rlojun/mzpc/assets/137260250/7b54e66b-d37f-4022-9a0c-480c7092c781">
+
 
 - 시간 상품 상세보기
-<img width="827" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/1260e5d8-4e8d-4752-8cd7-d9b4ac0743b6">
+<img width="812" alt="스크린샷 2023-11-08 오후 5 23 43" src="https://github.com/rlojun/mzpc/assets/137260250/c0da9823-ee8a-4858-be34-829b74c3091c">
+
 
 - 시간 상품 수정
-<img width="694" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/ded54cc4-8ebf-43d0-87aa-994b1fd9d34a">
+<img width="827" alt="스크린샷 2023-11-08 오후 5 24 08" src="https://github.com/rlojun/mzpc/assets/137260250/618afb16-61b0-48d6-8f15-52ef16a462d6">
+
 
 - 시간 상품 등록
-<img width="693" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/379bd10d-0e0c-435b-8ca6-f9379ad85feb">
+<img width="807" alt="스크린샷 2023-11-08 오후 5 24 31" src="https://github.com/rlojun/mzpc/assets/137260250/e5645f45-a664-4514-9f03-ae5fed2a890b">
+
 
 - 주문 목록
-<img width="613" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/215bc975-6b1a-45af-816e-cd05df2c1978">
+<img width="781" alt="스크린샷 2023-11-08 오후 5 25 05" src="https://github.com/rlojun/mzpc/assets/137260250/266cf994-17bf-4c56-98dc-1a1b32bfb20f">
 
-- 사용자가 주문한 목록
-<img width="788" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/0b3ebe31-05fc-406a-94dc-f2abf42191af">
+
+
+- 사용자 목록
+<img width="824" alt="스크린샷 2023-11-08 오후 5 25 31" src="https://github.com/rlojun/mzpc/assets/137260250/f9132d9c-d342-418b-9cba-e914bd390d7b">
+
 
 - 사용자 문의 화면
-<img width="757" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/ae43b4ac-7293-4e4a-84a2-10326f1fd0ca">
+<img width="793" alt="스크린샷 2023-11-08 오후 5 26 30" src="https://github.com/rlojun/mzpc/assets/137260250/8b4c2c20-970e-4857-9453-58739d19110d">
+
 
 3. ##### 사용자
 - 먹거리 주문 화면
-<img width="799" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/96037aef-2913-497c-b929-c5e178b43c39">
+<img width="840" alt="스크린샷 2023-11-08 오후 5 26 55" src="https://github.com/rlojun/mzpc/assets/137260250/b482cef2-8429-4521-a01c-b2c8eb3511be">
+
 
 - 토핑 선택 창
-<img width="663" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/60dc0a6a-fa87-4b2f-a5fa-ac0c97fa4b67">
+<img width="824" alt="스크린샷 2023-11-08 오후 5 27 53" src="https://github.com/rlojun/mzpc/assets/137260250/305352d2-ddd7-4b24-a857-8a5168c5b70f">
+
 
 - 먹거리 주문, 결제
-<img width="672" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/02b8382f-4e22-4463-a985-4fd91dff0709">
+<img width="840" alt="스크린샷 2023-11-08 오후 5 28 12" src="https://github.com/rlojun/mzpc/assets/137260250/917df536-1ad7-4ef8-b42c-9fd02593c393">
+
 
 - 즐겨찾기 목록
-<img width="570" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/a48a8546-0bcb-4dd3-a7a6-9129a56862b2">
+<img width="836" alt="스크린샷 2023-11-08 오후 5 28 31" src="https://github.com/rlojun/mzpc/assets/137260250/2c340365-d706-4b79-a15e-8c2670c18648">
+
 
 - 시간 충전 페이지
-<img width="803" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/c42b55df-f7bc-4e1a-8139-c08ab12ba84b">
+<img width="840" alt="스크린샷 2023-11-08 오후 5 28 53" src="https://github.com/rlojun/mzpc/assets/137260250/e28ab1ec-e4c6-425a-bc26-a431d9ea00df">
+
 
 - 문의 페이지
-<img width="803" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/d947545a-324a-4d91-901d-2f8f2a89f6c0">
+<img width="833" alt="스크린샷 2023-11-08 오후 5 29 18" src="https://github.com/rlojun/mzpc/assets/137260250/5d78ac69-f4b3-47bf-a08e-41a3c1c11da4">
+
 
 - 마일리지 적립 목록
-<img width="572" alt="image" src="https://github.com/rlojun/final_project_bootcamp/assets/137135122/cd86d1bf-e9cf-4bc4-9b8d-4535459db524">
+<img width="711" alt="스크린샷 2023-11-08 오후 5 29 38" src="https://github.com/rlojun/mzpc/assets/137260250/9dae437d-0edf-445c-b21d-0812b0383921">
+
 
 
 
