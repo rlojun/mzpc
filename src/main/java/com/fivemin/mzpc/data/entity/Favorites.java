@@ -11,14 +11,15 @@ import javax.persistence.*;
 public class Favorites {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long FavoritesId;
+    @Column(name = "favorites_id")
+    private Long favoritesId;
 
     @ManyToOne
     @JoinColumn(nullable = false)
     private Members members;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "food_id",nullable = false)
     private Food food;
 
 }

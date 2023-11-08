@@ -13,8 +13,8 @@ public class MileageInfo {
     
     //마일리지 index
     @Id
-    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "mileage_id")
     private Long mileageId;
 
     //마일리지 사용
@@ -27,6 +27,6 @@ public class MileageInfo {
     private LocalDateTime pointDate;
 
     @OneToOne
-    @JoinColumn(name = "timePurchaseId", nullable = false)
+    @JoinColumn(name = "time_purchase_id", nullable = false)
     private TimePurchase timePurchase;
 }

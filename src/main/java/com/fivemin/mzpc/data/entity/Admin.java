@@ -16,7 +16,7 @@ public class Admin {
 
     //관리자 아이디
     @Id
-    @Column(length = 20)
+    @Column(name = "admin_id",length = 20)
     private String adminId;
 
     //관리자 비밀번호
