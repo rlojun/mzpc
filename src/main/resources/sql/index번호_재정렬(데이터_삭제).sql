@@ -4,8 +4,8 @@ ALTER TABLE category AUTO_INCREMENT = 1;
 DELETE FROM mileage_info;
 ALTER TABLE mileage_info AUTO_INCREMENT = 1;
 
-DELETE FROM time_payment;
-ALTER TABLE time_payment AUTO_INCREMENT = 1; 
+DELETE FROM time_purchase;
+ALTER TABLE time_purchase AUTO_INCREMENT = 1;
 
 DELETE FROM times;
 ALTER TABLE times AUTO_INCREMENT = 1; 
