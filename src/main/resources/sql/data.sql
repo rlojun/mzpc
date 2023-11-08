@@ -7,7 +7,7 @@ create database mzpc;
 
 #설정을 안 했으면
 create database mzpc default character set utf8 collate UTF8_GENERAL_CI;
-USE mzpc;
+
 #---------------------------------------------------------------------
 #table
 
@@ -26,6 +26,7 @@ DROP TABLE times;
 DROP TABLE admin;
 
 #-----------------------------------------------------------------------
+USE mzpc;
 
 CREATE TABLE admin(
                       admin_id VARCHAR(20) NOT NULL COMMENT '아이디' PRIMARY KEY,
@@ -146,7 +147,7 @@ CREATE TABLE mileage_info(
 ) COMMENT '마일리지 사용 및 적립 내역';
 
 CREATE TABLE chat(
-                     pc_nun BIGINT NOT NULL COMMENT 'PC 자리' AUTO_INCREMENT PRIMARY KEY ,
+                     pc_num BIGINT NOT NULL COMMENT 'PC 자리' AUTO_INCREMENT PRIMARY KEY ,
                      chat_type VARCHAR(5) NOT NULL COMMENT '메시지 유형',
                      member_chat VARCHAR(255) COMMENT '사용자 채팅',
                      admin_chat VARCHAR(255) COMMENT '관리자 채팅',
