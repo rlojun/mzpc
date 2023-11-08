@@ -13,6 +13,8 @@ public class Times {
 
     //시간 index
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "time_id")
     private Long timeId;
 
     //시간 상품 명
@@ -32,8 +34,7 @@ public class Times {
     private boolean save;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "admin_id",nullable = false)
     private Admin admin;
-
 
 }

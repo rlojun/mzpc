@@ -13,6 +13,7 @@ public class Cart {
     //카테고리 index
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cart_id")
     private Long cartId;
 
     //결제 방식

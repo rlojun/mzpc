@@ -13,6 +13,7 @@ public class Orders {
     //주문 index
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_id")
     private Long orderId;
 
     //조리 여부

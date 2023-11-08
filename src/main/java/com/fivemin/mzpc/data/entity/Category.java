@@ -13,7 +13,7 @@ public class Category{
     //카테고리 index
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(length = 20)
+    @Column(name = "category_id", length = 20)
     private Long categoryId;
 
     //카테고리 이름

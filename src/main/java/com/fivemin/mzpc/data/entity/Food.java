@@ -12,6 +12,7 @@ public class Food {
     //음식 Index
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "food_id")
     private Long foodId;
 
     //음식 이름

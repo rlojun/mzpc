@@ -13,7 +13,8 @@ public class TimePurchase {
     //시간 추가 목록 index
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long timePaymentId;
+    @Column(name = "time_purchase_id")
+    private Long timePurchaseId;
 
     //사용한 마일리지
     private Integer useMileage;

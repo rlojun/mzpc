@@ -18,7 +18,7 @@ public class Members {
 
     // 사용자 아이디
     @Id
-    @Column(length = 20)
+    @Column(name = "member_id",length = 20)
     private String memberId;
 
     // 사용자 비밀 번호

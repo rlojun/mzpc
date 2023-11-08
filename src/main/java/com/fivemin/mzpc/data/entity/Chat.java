@@ -14,6 +14,7 @@ public class Chat {
     //좌석 번호로 PK
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pc_num")
     private Long pcNum;
 
     //메세지 유형(Enter,Talk만 들어갈 수 있음)
