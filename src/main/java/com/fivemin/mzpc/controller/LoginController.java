@@ -103,8 +103,12 @@ public class LoginController {
         }
     }
 
-
-
+    // 로그아웃
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "redirect:/login?logout";
+    }
 
     // 회원가입 페이지로 이동
     @GetMapping("/auth")
