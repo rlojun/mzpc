@@ -18,6 +18,8 @@ PC방에서 사용하는 기능을 사용하는 사이트입니다.
 ### WBS
 시트: https://docs.google.com/spreadsheets/d/1RvZuKHDLNujCayDX9yQ5plQV7zA68mWr1TVSUbf1otA/edit#gid=1431469973
 
+Trello : https://trello.com/b/BRaisO7G/mzpc
+
 ## ⚙️기술 스택
 - Language : Java 11
 - IDE : IntelliJ
@@ -31,8 +33,6 @@ PC방에서 사용하는 기능을 사용하는 사이트입니다.
 
 
 ![mzpc](https://github.com/rlojun/mzpc/assets/137260250/6bc23cc8-ef72-4010-92fd-612e2b3b768b)
-
-
 
 
 - Members Table : 유저의 회원정보 관련 테이블
