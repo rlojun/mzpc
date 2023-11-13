@@ -12,15 +12,15 @@ public class Favorites {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "favorites_idx")
-    private Long favoritesIdx;
+    private Long idx;
 
     
     //즐겨찾기 일련번호
-    @Column(nullable = false, unique = true)
-    private String favoritesCode;
+    @Column(name = "favorites_code",nullable = false, unique = true)
+    private String code;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "member_idx", nullable = false)
     private Members members;
 
     @ManyToOne

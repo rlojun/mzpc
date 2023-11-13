@@ -14,14 +14,15 @@ public class TimePurchase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "time_purchase_idx")
-    private Long timePurchaseIdx;
+    private Long idx;
 
     //시간 추가 목록 일련번호
-    @Column(nullable = false, unique = true)
-    private String timePurchaseCode;
+    @Column(name = "time_purchase_code", nullable = false, unique = true)
+    private String code;
     
     //사용한 마일리지
-    private Integer useMileage;
+    @Column(name = "use_mileage")
+    private Integer use;
 
     @ManyToOne
     @JoinColumn(name = "member_idx",nullable = false)
