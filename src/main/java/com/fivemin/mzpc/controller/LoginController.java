@@ -56,7 +56,7 @@ public class LoginController {
 
         Admin admin = loginService.findByAdminId(adminId);
 
-        if(admin != null && admin.getAdminPw().equals(adminPw)){
+        if(admin != null && admin.getPw().equals(adminPw)){
             session.setAttribute("admin", admin);
             return "redirect:/login/admin/food/listFood";
         }else{
@@ -71,7 +71,7 @@ public class LoginController {
 
         Members members = loginService.findByMemberId(memberId);
 
-        if(members != null && members.getMemberPw().equals(memberPw)){
+        if(members != null && members.getPw().equals(memberPw)){
             session.setAttribute("members", members);
             return "redirect:/login/members/food/listFood";
         }else{
