@@ -3,6 +3,7 @@ package com.fivemin.mzpc.data.entity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.type.StringNVarcharType;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -18,9 +19,17 @@ public class Members {
 
     // 사용자 아이디
     @Id
-    @Column(name = "member_id",length = 20)
-    private String memberId;
+    @Column(name = "member_idx")
+    private String memberIdx;
 
+    //사용자 일련번호
+    @Column(nullable = false, unique = true)
+    private String memberCode;
+
+    //사용자 아이디
+    @Column(nullable = false, unique = true, length = 20)
+    private String memberId;
+    
     // 사용자 비밀 번호
     @Column(nullable = false, length = 32)
     private String memberPw;
@@ -62,6 +71,6 @@ public class Members {
     private List<TimePurchase> timepaymentList = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "admin_id", nullable = false)
+    @JoinColumn(name = "admin_idx", nullable = false)
     private Admin admin;
 }

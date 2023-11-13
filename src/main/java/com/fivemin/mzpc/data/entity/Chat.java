@@ -34,7 +34,7 @@ public class Chat {
     private LocalDateTime chatDate;
 
     @OneToOne
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member_idx", nullable = false)
     private Members members;
 
     private enum MessageType{

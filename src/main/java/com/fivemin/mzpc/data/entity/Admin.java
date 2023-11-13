@@ -3,9 +3,7 @@ package com.fivemin.mzpc.data.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
@@ -14,11 +12,19 @@ import javax.validation.constraints.Pattern;
 @Setter
 public class Admin {
 
-    //관리자 아이디
+    //관리자 index
     @Id
-    @Column(name = "admin_id",length = 20)
-    private String adminId;
+    @Column(name = "admin_idx")
+    private String adminIdx;
 
+    // 관리자 일련번호
+    @Column(nullable = false, unique = true)
+    private String adminCode;
+
+    //관리자 아이디
+    @Column(nullable = false,length = 20,unique = true)
+    private String adminId;
+    
     //관리자 비밀번호
     @Column(nullable = false, length = 32)
     private String adminPw;
@@ -43,8 +49,7 @@ public class Admin {
     @Pattern(regexp = "^[0-9]{3}-[0-9]{4}-[0-9]{4}$",message = "올바른 휴대폰 형식이어야 합니다.")
     private String phoneNumber;
 
-    //업체명
-    @Column(nullable = false, length = 20)
-    private String storeName;
-
+    @OneToOne
+    @JoinColumn(name = "store_idx", nullable = false)
+    private Store store;
 }
