@@ -13,8 +13,8 @@ public class Orders {
     //주문 index
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_id")
-    private Long orderId;
+    @Column(name = "order_idx")
+    private Long orderIdx;
 
     //조리 여부
     @Column(nullable = false)
@@ -25,6 +25,6 @@ public class Orders {
     private boolean purchaseStatus=false;
 
     @OneToOne
-    @JoinColumn(name = "cart_id", nullable = false)
+    @JoinColumn(name = "cart_idx", nullable = false)
     private Cart cart;
 }

@@ -12,8 +12,12 @@ public class Food {
     //음식 Index
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "food_id")
-    private Long foodId;
+    @Column(name = "food_idx")
+    private Long foodIdx;
+
+    //음식 일련번호
+    @Column(nullable = false, unique = true)
+    private String foodCode;
 
     //음식 이름
     @Column(length = 30)
@@ -35,11 +39,11 @@ public class Food {
     private boolean topping = false;
 
     @ManyToOne
-    @JoinColumn(name = "category_id",nullable = false)
+    @JoinColumn(name = "category_idx",nullable = false)
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name = "admin_id",nullable = false)
+    @JoinColumn(name = "admin_idx",nullable = false)
     private Admin admin;
 
 }

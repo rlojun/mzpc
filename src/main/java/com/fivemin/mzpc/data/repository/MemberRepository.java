@@ -4,7 +4,7 @@ import com.fivemin.mzpc.data.entity.Members;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface MemberRepository extends JpaRepository<Members, String> {
+public interface MemberRepository extends JpaRepository<Members, Long> {
 
     Members findByMemberId(String memberId);
 }

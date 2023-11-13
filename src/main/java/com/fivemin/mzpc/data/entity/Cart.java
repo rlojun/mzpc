@@ -10,11 +10,15 @@ import javax.persistence.*;
 @Setter
 public class Cart {
 
-    //카테고리 index
+    //장바구니 index
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cart_id")
-    private Long cartId;
+    @Column(name = "cart_idx")
+    private Long cartIdx;
+
+    // 장바구니 일련번호
+    @Column(nullable = false, unique = true)
+    private String cartCode;
 
     //결제 방식
     @Column(nullable = false, length = 15)
@@ -24,11 +28,11 @@ public class Cart {
     private boolean buyCheck;
 
     @ManyToOne
-    @JoinColumn(name = "food_id", nullable = false)
+    @JoinColumn(name = "food_idx", nullable = false)
     private Food food;
 
     @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member_idx", nullable = false)
     private Members members;
 
 }
