@@ -15,39 +15,39 @@ public class Admin {
     //관리자 index
     @Id
     @Column(name = "admin_idx")
-    private String adminIdx;
+    private String idx;
 
     // 관리자 일련번호
-    @Column(nullable = false, unique = true)
-    private String adminCode;
+    @Column(name = "admin_code",nullable = false, unique = true)
+    private String code;
 
     //관리자 아이디
-    @Column(nullable = false,length = 20,unique = true)
-    private String adminId;
+    @Column(name = "admin_id",nullable = false,length = 20,unique = true)
+    private String id;
     
     //관리자 비밀번호
-    @Column(nullable = false, length = 32)
-    private String adminPw;
+    @Column(name = "admin_pw",nullable = false, length = 32)
+    private String pw;
 
     //관리자 이름
-    @Column(nullable = false, length = 50)
-    private String adminName;
+    @Column(name = "admin_name", nullable = false, length = 50)
+    private String name;
 
     //관리자 주민등록 번호
-    @Column(nullable = false, length = 14)
+    @Column(name = "admin_ssn",nullable = false, length = 14)
     @Pattern(regexp = "^(\\d{6}-[1-4]\\d{6})$", message="올바른 주민등록번호 형식이여야 합니다.")
-    private String adminSsn;
+    private String ssn;
 
     //관리자 이메일
-    @Column(nullable = false, length = 100)
+    @Column(name = "admin_email",nullable = false, length = 100)
     //@Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$",message = "올바른 이메일 형식이여야 합니다.")
     @Email(message = "올바른 이메일 형식이여야 합니다.")
-    private String adminEmail;
+    private String email;
 
     //관리자 휴대폰 번호
-    @Column(nullable = false, length = 13)
+    @Column(name = "phone_number",nullable = false, length = 13)
     @Pattern(regexp = "^[0-9]{3}-[0-9]{4}-[0-9]{4}$",message = "올바른 휴대폰 형식이어야 합니다.")
-    private String phoneNumber;
+    private String number;
 
     @OneToOne
     @JoinColumn(name = "store_idx", nullable = false)
