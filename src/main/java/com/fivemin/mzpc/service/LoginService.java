@@ -16,11 +16,11 @@ public class LoginService {
     @Autowired
     private MemberRepository memberRepository;
 
-    public Admin findByAdminId(String adminId){
-        return adminRepository.findByAdminId(adminId);
+    public Admin findByAdminId(String id){
+        return adminRepository.findById(id);
     }
 
-    public Members findByMemberId(String memberId){
-        return memberRepository.findByMemberId(memberId);
+    public Members findByMemberId(String id){
+        return memberRepository.findById(id);
     }
 }

@@ -56,7 +56,7 @@ public class LoginController {
 
         Admin admin = loginService.findByAdminId(adminId);
 
-        if(admin != null && admin.getAdminPw().equals(adminPw)){
+        if(admin != null && admin.getPw().equals(adminPw)){
             session.setAttribute("admin", admin);
             return "redirect:/login/admin/food/listFood";
         }else{
@@ -71,7 +71,7 @@ public class LoginController {
 
         Members members = loginService.findByMemberId(memberId);
 
-        if(members != null && members.getMemberPw().equals(memberPw)){
+        if(members != null && members.getPw().equals(memberPw)){
             session.setAttribute("members", members);
             return "redirect:/login/members/food/listFood";
         }else{
@@ -114,7 +114,7 @@ public class LoginController {
     @GetMapping("/auth")
     public String authForm(){
 
-        return "user/authUser";
+        return "members/authUser";
     }
 
     //로그인 페이지로 리다이렉트
@@ -128,7 +128,7 @@ public class LoginController {
     @GetMapping("/findId")
     public String findIdForm(){
 
-        return "user/find/findId";
+        return "members/find/findId";
     }
 
     // 아이디를 찾아주는 기능
@@ -142,7 +142,7 @@ public class LoginController {
     @GetMapping("/findPw")
     public String findPwForm(){
 
-        return "user/find/findPw";
+        return "members/find/findPw";
     }
 
     //비밀번호를 찾아주는 기능
