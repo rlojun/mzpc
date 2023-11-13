@@ -15,18 +15,21 @@ public class MileageInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mileage_idx")
-    private Long mileageIdx;
+    private Long idx;
 
-    @Column(nullable = false, unique = true)
-    private String mileageCode;
+    @Column(name = "mileage_code", nullable = false, unique = true)
+    private String code;
 
     //마일리지 사용
+    @Column(name = "use_point")
     private Integer usePoint;
 
     //적립 마일리지
+    @Column(name = "save_point")
     private Integer savePoint;
 
     //적립, 사용 날짜
+    @Column(name = "point_date")
     private LocalDateTime pointDate;
 
     @OneToOne

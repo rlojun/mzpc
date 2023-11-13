@@ -14,14 +14,14 @@ public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_idx")
-    private Long orderIdx;
+    private Long idx;
 
     //조리 여부
-    @Column(nullable = false)
+    @Column(name = "cook_complete",nullable = false)
     private boolean cookComplete=false;
 
     //결제 여부
-    @Column(nullable = false)
+    @Column(name = "purchase_status",nullable = false)
     private boolean purchaseStatus=false;
 
     @OneToOne

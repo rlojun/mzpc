@@ -13,12 +13,12 @@ public class Store {
     @Id
     @Column(name = "store_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long storeIdx;
+    private Long idx;
 
-    @Column( nullable = false, unique = true)
-    private Long storeCode;
+    @Column(name = "store_code", nullable = false, unique = true)
+    private Long code;
 
-    @Column(nullable = false, length = 20)
-    private String storeName;
+    @Column(name = "store_name", nullable = false, length = 20)
+    private String name;
 
 }
