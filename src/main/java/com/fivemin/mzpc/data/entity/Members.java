@@ -8,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,12 +68,23 @@ public class Members {
     @Column(nullable = false)
     private int mileage;
 
+    public Members() {
+        // 현재 날짜 및 시간 정보 가져오기
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        // 날짜 형식 지정
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHMMddyyyyss");
+
+        // 날짜를 문자열로 변환하여 코드에 할당
+        this.code = currentDateTime.format(formatter);
+    }
+
     // timepayment와 1:M  양방향 매핑
     @OneToMany(mappedBy = "members")
     @ToString.Exclude
     private List<TimePurchase> timepaymentList = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "admin_idx", nullable = false)
-    private Admin admin;
+    @JoinColumn(name = "store_idx", nullable = false)
+    private Store store;
 }
