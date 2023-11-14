@@ -1,14 +1,15 @@
 package com.fivemin.mzpc.controller;
 
+import com.fivemin.mzpc.data.dto.AuthDTO;
 import com.fivemin.mzpc.data.entity.Admin;
 import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 
@@ -92,7 +93,7 @@ public class LoginController {
         return checks(session, Members.class, "members/food/listFood");
     }
 
-    // 리다이렉트 할 페이지를 결정
+    // 로그인시 리다이렉트 할 페이지를 결정
     private String checks(HttpSession session, Class<?> userType, String redirectPath){
         Object user = session.getAttribute(userType.getSimpleName().toLowerCase());
 
@@ -112,14 +113,23 @@ public class LoginController {
 
     // 회원가입 페이지로 이동
     @GetMapping("/auth")
-    public String authForm(){
-
+    public String authForm(@ModelAttribute("authDTO")AuthDTO authDTO){
         return "members/authUser";
     }
 
-    //로그인 페이지로 리다이렉트
+
+    // 회원 가입 로직 구현
     @PostMapping("/auth")
-    public String auth(){
+    public String auth(@Validated @ModelAttribute("authDTO") AuthDTO authDTO,
+                       RedirectAttributes redirectAttributes, BindingResult result){
+        // 유효성 검사
+        if (result.hasErrors()){
+            return "members/authUser";
+        }
+        loginService.auth(authDTO);
+
+        // 이부분 지금 안된다. 수정예정
+        redirectAttributes.addFlashAttribute("message", "회원가입이 완료되었습니다. 로그인해주세요.");
 
         return "redirect:/login";
     }
@@ -151,5 +161,4 @@ public class LoginController {
 
         return "redirect:/login";
     }
-
 }

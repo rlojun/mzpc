@@ -65,18 +65,26 @@ public class Members {
     private Duration remainingTime;
 
     // 잔여 마일리지
+    // 회원가입시 기본 디폴트 값 0 설정
     @Column(nullable = false)
-    private int mileage;
+    private int mileage=0;
 
+    // 회원 일련 번호 자동 생성 메서드
     public Members() {
         // 현재 날짜 및 시간 정보 가져오기
         LocalDateTime currentDateTime = LocalDateTime.now();
-
         // 날짜 형식 지정
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHMMddyyyyss");
-
         // 날짜를 문자열로 변환하여 코드에 할당
         this.code = currentDateTime.format(formatter);
+    }
+
+    // Duration 값 초기 설정 (마일리지)
+    @PrePersist
+    public void prePersist() {
+        if (remainingTime == null) {
+            remainingTime = Duration.ZERO;
+        }
     }
 
     // timepayment와 1:M  양방향 매핑
