@@ -15,8 +15,9 @@ public class Admin {
 
     //관리자 index
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "admin_idx")
-    private String idx;
+    private Long idx;
 
     // 관리자 일련번호
     @Column(name = "admin_code",nullable = false, unique = true)

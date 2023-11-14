@@ -16,10 +16,11 @@ import java.util.List;
 @Setter
 public class Members {
 
-    // 사용자 아이디
+    // 사용자 인덱스 번호
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_idx")
-    private String idx;
+    private Long idx;
 
     //사용자 일련번호
     @Column(name = "member_code",nullable = false, unique = true)
