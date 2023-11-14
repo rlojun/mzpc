@@ -22,7 +22,7 @@ public class Orders {
 
     //결제 여부
     @Column(name = "purchase_status",nullable = false)
-    private boolean purchaseStatus=false;
+    private boolean purchaseStatus;
 
     @OneToOne
     @JoinColumn(name = "cart_idx", nullable = false)
