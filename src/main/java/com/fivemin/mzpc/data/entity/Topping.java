@@ -3,7 +3,6 @@ package com.fivemin.mzpc.data.entity;
 import com.fivemin.mzpc.data.entity.base.BaseTimeEntity;
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.persistence.*;
 
 @Entity
