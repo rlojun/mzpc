@@ -24,7 +24,7 @@ public class LoginController {
     private LoginService loginService;
 
     //로그인 페이지 이동
-    @GetMapping
+    @GetMapping(value = "")
     public String loginForm() {
         return "login";
     }
