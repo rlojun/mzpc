@@ -53,4 +53,9 @@ public class LoginService {
 
         memberRepository.save(members);
     }
+
+    // 아이디 찾기
+    public Members findId(String name, String ssn){
+        return memberRepository.findByNameAndSsn(name, ssn);
+    }
 }

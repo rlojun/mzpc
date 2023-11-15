@@ -6,6 +6,7 @@ import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -143,9 +144,15 @@ public class LoginController {
 
     // 아이디를 찾아주는 기능
     @PostMapping("/findId")
-    public String findId(){
+    public String findId(@RequestParam String name, @RequestParam String ssn, Model model){
+        Members members = loginService.findId(name, ssn);
 
-        return "redirect:/login";
+        if (members != null) {
+            model.addAttribute("result", "Members ID: " + members.getId());
+        } else {
+            model.addAttribute("result", "User not found");
+        }
+        return "members/find/findId";
     }
 
     //비밀번호 찾기 페이지로 이동
