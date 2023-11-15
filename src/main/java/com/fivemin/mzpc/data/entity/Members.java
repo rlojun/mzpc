@@ -8,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +18,11 @@ import java.util.List;
 @Setter
 public class Members {
 
-    // 사용자 아이디
+    // 사용자 인덱스 번호
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_idx")
-    private String idx;
+    private Long idx;
 
     //사용자 일련번호
     @Column(name = "member_code",nullable = false, unique = true)
@@ -58,12 +61,24 @@ public class Members {
     private String address;
 
     // 잔여 시간
+    // 회원 가입시 기본 디폴트 값 0 설정
     @Column(nullable = false)
-    private Duration remainingTime;
+    private Duration remainingTime = Duration.ZERO;
 
     // 잔여 마일리지
+    // 회원가입시 기본 디폴트 값 0 설정
     @Column(nullable = false)
-    private int mileage;
+    private int mileage=0;
+
+    // 회원 일련 번호 자동 생성 메서드
+    public Members() {
+        // 현재 날짜 및 시간 정보 가져오기
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        // 날짜 형식 지정
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'M'HHMMyyyymmddss");
+        // 날짜를 문자열로 변환하여 코드에 할당
+        this.code = currentDateTime.format(formatter);
+    }
 
     // timepayment와 1:M  양방향 매핑
     @OneToMany(mappedBy = "members")
@@ -71,6 +86,6 @@ public class Members {
     private List<TimePurchase> timepaymentList = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "admin_idx", nullable = false)
-    private Admin admin;
+    @JoinColumn(name = "store_idx", nullable = false)
+    private Store store;
 }

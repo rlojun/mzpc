@@ -24,12 +24,15 @@ DROP TABLE online_member;
 DROP TABLE members;
 DROP TABLE times;
 DROP TABLE admin;
+DROP TABLE store;
 
 #-----------------------------------------------------------------------
 USE mzpc;
 
 CREATE TABLE admin(
-                      admin_id VARCHAR(20) NOT NULL COMMENT '아이디' PRIMARY KEY,
+                      admin_idx BIGINT NOT NULL COMMENT 'index' auto_increment PRIMARY KEY,
+                      admin_code BIGINT NOT NULL COMMENT '일련번호',
+                      admin_id VARCHAR(20) NOT NULL COMMENT '아이디',
                       admin_pw VARCHAR(32) NOT NULL COMMENT '비밀번호',
                       admin_name VARCHAR(50) NOT NULL COMMENT '이름',
                       admin_ssn VARCHAR(14) NOT NULL COMMENT '주민등록번호',
