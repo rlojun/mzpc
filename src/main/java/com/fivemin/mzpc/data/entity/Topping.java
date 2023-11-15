@@ -31,7 +31,7 @@ public class Topping extends BaseTimeEntity {
     private Integer price;
 
     @ManyToOne
-    @JoinColumn(name = "food_idx")
+    @JoinColumn(name = "food_idx", nullable = false)
     private Food food;
 
 }
