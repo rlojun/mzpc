@@ -10,6 +10,7 @@ import javax.validation.constraints.Pattern;
 @Entity
 @Getter
 @Setter
+@Table
 public class Admin {
 
     //관리자 index
