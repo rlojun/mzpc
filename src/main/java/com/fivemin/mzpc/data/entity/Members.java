@@ -61,8 +61,9 @@ public class Members {
     private String address;
 
     // 잔여 시간
+    // 회원 가입시 기본 디폴트 값 0 설정
     @Column(nullable = false)
-    private Duration remainingTime;
+    private Duration remainingTime = Duration.ZERO;
 
     // 잔여 마일리지
     // 회원가입시 기본 디폴트 값 0 설정
@@ -77,14 +78,6 @@ public class Members {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'M'HHMMyyyymmddss");
         // 날짜를 문자열로 변환하여 코드에 할당
         this.code = currentDateTime.format(formatter);
-    }
-
-    // Duration 값 초기 설정 (마일리지)
-    @PrePersist
-    public void prePersist() {
-        if (remainingTime == null) {
-            remainingTime = Duration.ZERO;
-        }
     }
 
     // timepayment와 1:M  양방향 매핑
