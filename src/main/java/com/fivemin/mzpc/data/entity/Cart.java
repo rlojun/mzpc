@@ -29,11 +29,7 @@ public class Cart {
     private boolean buyCheck;
 
     @ManyToOne
-    @JoinColumn(name = "food_idx", nullable = false)
-    private Food food;
-
-    @ManyToOne
-    @JoinColumn(name = "member_idx", nullable = false)
-    private Members members;
+    @JoinColumn(name = "topping_idx", nullable = false)
+    private Topping topping;
 
 }

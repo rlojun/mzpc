@@ -21,15 +21,15 @@ public class MileageInfo {
     private String code;
 
     //마일리지 사용
-    @Column(name = "use_point")
+    @Column(name = "use_mileage")
     private Integer usePoint;
 
     //적립 마일리지
-    @Column(name = "save_point")
+    @Column(name = "save_mileage")
     private Integer savePoint;
 
     //적립, 사용 날짜
-    @Column(name = "point_date")
+    @Column(name = "mileage_date")
     private LocalDateTime pointDate;
 
     @OneToOne
