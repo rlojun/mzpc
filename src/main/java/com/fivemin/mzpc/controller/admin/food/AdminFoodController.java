@@ -1,5 +1,6 @@
 package com.fivemin.mzpc.controller.admin.food;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 음식 상품 추가
  */
 @Controller
-@RequestMapping("/{adminId}/food") //관리자 pk
+@Slf4j
+@RequestMapping("/{adminCode}/food") //관리자 pk
 public class AdminFoodController {
 
     // 카테고리별 음상 상품 리스트

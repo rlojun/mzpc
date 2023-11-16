@@ -30,6 +30,7 @@ public class LoginService {
         return memberRepository.findById(id);
     }
 
+    // 회원가입
     public void auth(AuthDTO authDTO){
         Members members = new Members();
         members.setId(authDTO.getId());

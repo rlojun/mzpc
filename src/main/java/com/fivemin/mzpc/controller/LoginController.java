@@ -3,6 +3,7 @@ package com.fivemin.mzpc.controller;
 import com.fivemin.mzpc.data.dto.AuthDTO;
 import com.fivemin.mzpc.data.entity.Admin;
 import com.fivemin.mzpc.data.entity.Members;
+import com.fivemin.mzpc.data.entity.Store;
 import com.fivemin.mzpc.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /*
 회원가입 Controller
@@ -58,13 +61,16 @@ public class LoginController {
 
         Admin admin = loginService.findByAdminId(adminId);
 
+        String adminCode = admin.getCode();
+
         if(admin != null && admin.getPw().equals(adminPw)){
-            session.setAttribute("admin", admin);
-            return "redirect:/login/admin/food/listFood";
-        }else{
+            session.setAttribute("id", admin.getId());
+            session.setAttribute("pw", admin.getPw());
+
+            return String.format("redirect:/%s/food/listFood",adminCode);
+        }else {
             return "redirect:/login?error";
         }
-        // return "redirect:/food/{adminId}";
     }
 
     // 사용자 로그인
@@ -73,37 +79,41 @@ public class LoginController {
 
         Members members = loginService.findByMemberId(memberId);
 
+        String storeName = members.getStore().getName();
+
         if(members != null && members.getPw().equals(memberPw)){
-            session.setAttribute("members", members);
-            return "redirect:/login/members/food/listFood";
+            session.setAttribute("id", members.getId());
+            session.setAttribute("pw", members.getPw());
+
+            String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
+            return String.format("redirect:/%s/food/listFood",encodedStoreName);
         }else{
             return "redirect:/login?error";
         }
-        // return "redirect:/food/{memberId}";
     }
 
-    // admin 확인 후 페이지 이동
-    @GetMapping("/admin/food/listFood")
-    public String adminFoodMenu(HttpSession session){
-        return checks(session, Admin.class, "admin/food/listFood");
-    }
-
-    // member 확인 후 페이지 이동
-    @GetMapping("/members/food/listFood")
-    public String memberFoodMenu(HttpSession session){
-        return checks(session, Members.class, "members/food/listFood");
-    }
-
-    // 로그인시 리다이렉트 할 페이지를 결정
-    private String checks(HttpSession session, Class<?> userType, String redirectPath){
-        Object user = session.getAttribute(userType.getSimpleName().toLowerCase());
-
-        if (userType.isInstance(user)){
-            return redirectPath;
-        }else {
-            return "redirect:/login?error";
-        }
-    }
+//    // admin 확인 후 페이지 이동
+//    @GetMapping("/admin/food/listFood")
+//    public String adminFoodMenu(HttpSession session){
+//        return checks(session, Admin.class, "admin/food/listFood");
+//    }
+//
+//    // Members 확인 후 페이지 이동
+//    @GetMapping("/members/food/listFood")
+//    public String memberFoodMenu(HttpSession session){
+//        return checks(session, Members.class, "members/food/listFood");
+//    }
+//
+//    // 로그인시 리다이렉트 할 페이지를 결정 세션에 Admin인지 Members 인지 판별
+//    private String checks(HttpSession session, Class<?> userType, String redirectPath){
+//        Object user = session.getAttribute(userType.getSimpleName().toLowerCase());
+//
+//        if (userType.isInstance(user)){
+//            return redirectPath;
+//        }else {
+//            return "redirect:/login?error";
+//        }
+//    }
 
     // 로그아웃
     @GetMapping("/logout")
