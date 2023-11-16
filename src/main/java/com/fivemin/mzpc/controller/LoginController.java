@@ -3,8 +3,8 @@ package com.fivemin.mzpc.controller;
 import com.fivemin.mzpc.data.dto.AuthDTO;
 import com.fivemin.mzpc.data.entity.Admin;
 import com.fivemin.mzpc.data.entity.Members;
-import com.fivemin.mzpc.data.entity.Store;
 import com.fivemin.mzpc.service.LoginService;
+import com.fivemin.mzpc.service.email.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +27,9 @@ public class LoginController {
 
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private EmailService emailService;
 
     //로그인 페이지 이동
     @GetMapping(value = "")
@@ -177,5 +180,13 @@ public class LoginController {
     public String findPw(){
 
         return "redirect:/login";
+    }
+
+    // 이메일 인증
+    @GetMapping("/emailConfirm")
+    public String emailConfirm(@RequestParam String email) throws Exception {
+
+        String confirm = emailService.sendSimpleMessage(email);
+        return confirm;
     }
 }
