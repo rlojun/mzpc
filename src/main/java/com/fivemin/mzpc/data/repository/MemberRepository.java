@@ -10,4 +10,5 @@ public interface MemberRepository extends JpaRepository<Members, Long> {
     Members findById(String id);
     // 아이디 찾기 시 사용
     Members findByNameAndSsn(String name, String ssn);
+    Members findByNameAndSsnAndEmail(String name, String ssn, String email);
 }

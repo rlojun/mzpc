@@ -59,4 +59,9 @@ public class LoginService {
     public Members findId(String name, String ssn){
         return memberRepository.findByNameAndSsn(name, ssn);
     }
+
+    // 비밀번호 찾기
+    public Members findPw(String name, String ssn, String email){
+        return memberRepository.findByNameAndSsnAndEmail(name, ssn, email);
+    }
 }

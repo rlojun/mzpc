@@ -5,6 +5,7 @@ import com.fivemin.mzpc.data.entity.Admin;
 import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.service.LoginService;
 import com.fivemin.mzpc.service.email.EmailService;
+import com.fivemin.mzpc.service.email.VerificationCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -161,9 +165,9 @@ public class LoginController {
         Members members = loginService.findId(name, ssn);
 
         if (members != null) {
-            model.addAttribute("result", "Members ID: " + members.getId());
+            model.addAttribute("result", "사용자 ID: " + members.getId());
         } else {
-            model.addAttribute("result", "User not found");
+            model.addAttribute("result", "정보와 일치하는 유저가 없습니다.");
         }
         return "members/find/findId";
     }
@@ -177,13 +181,51 @@ public class LoginController {
 
     //비밀번호를 찾아주는 기능
     @PostMapping("/findPw")
-    public String findPw(){
+    public String findPw(@RequestParam String name, @RequestParam String ssn,
+                         @RequestParam String email, Model model, HttpServletResponse response) throws Exception {
+        Members members = loginService.findPw(name, ssn, email);
 
-        return "redirect:/login";
+        if (members != null){
+            // 확인코드
+            String verificationCode = emailService.sendSimpleMessage(email);
+
+            // 생성된 인증 코드를 쿠키에 추가
+            Cookie verificationCodeCookie = new Cookie("verificationCode", verificationCode);
+            response.addCookie(verificationCodeCookie);
+
+            model.addAttribute("result", "이메일이 전송되었습니다.");
+        } else{
+            model.addAttribute("result", "정보와 일치하는 유저가 없습니다.");
+        }
+
+        return "members/find/findPw";
+    }
+
+
+    // 인증번호 확인
+    @PostMapping("/verifyCode")
+    public String verifyCode(@RequestParam String userInput, HttpServletRequest request, Model model) {
+        boolean isCodeValid = VerificationCodeUtil.isVerificationCodeValid(request, userInput);
+
+        if (isCodeValid) {
+            // 입력값과 쿠키에 담긴 verificationCode가 일치하는 경우
+            model.addAttribute("result2", "인증 성공!");
+        } else {
+            // 일치하지 않는 경우
+            model.addAttribute("result2", "인증 실패. 다시 시도하세요.");
+        }
+
+        return "members/find/findPw";
+    }
+
+    //이메일 인증 테스트 폼
+    @GetMapping("/emailTestForm")
+    public String emailTestForm() {
+        return "members/find/emailTest";
     }
 
     // 이메일 인증
-    @GetMapping("/emailConfirm")
+    @PostMapping("/emailConfirm")
     public String emailConfirm(@RequestParam String email) throws Exception {
 
         String confirm = emailService.sendSimpleMessage(email);
