@@ -1,9 +1,19 @@
 package com.fivemin.mzpc.controller.admin.food;
 
+import com.fivemin.mzpc.data.dto.AdminDto;
+import com.fivemin.mzpc.data.entity.Category;
+import com.fivemin.mzpc.data.entity.Food;
+import com.fivemin.mzpc.service.admin.CategoryService;
+import com.fivemin.mzpc.service.admin.FoodService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 /*
 - 기능
@@ -19,13 +29,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @Slf4j
-@RequestMapping("/{adminCode}/food") //관리자 pk
+@RequestMapping("/admin/{adminCode}/food") //관리자 pk
 public class AdminFoodController {
 
-    @GetMapping(value = "/listFood")
-    public String test(){
-        return "admin/food/listFood";
+    private CategoryService categoryService;
+
+    @Autowired
+    public AdminFoodController(CategoryService categoryService){
+        this.categoryService = categoryService;
     }
+
+    @GetMapping
+    public String listCategory(@PathVariable String adminCode, Model model){
+        List<Category> listCategory = categoryService.getListCategory(adminCode);
+
+        log.info("listCategory : {}",listCategory);
+
+        model.addAttribute("listCategory",listCategory);
+        model.addAttribute("adminCode",adminCode);
+        return "/admin/food/listFood";
+    }
+
     // 카테고리별 음상 상품 리스트
     @GetMapping("/{categoryId}")
     public String listFoodCategory() {

@@ -1,6 +1,6 @@
 #STORE
 INSERT INTO store(store_idx,store_code,store_name) VALUES (1,152,'호준PC');
-----------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------
 
 
 #ADMIN
@@ -60,14 +60,14 @@ INSERT INTO category VALUES
 
 #---------------------------------------------------------------------------------------
 #FOOD
-INSERT INTO food(food_idx, food_code, food_name, food_price, admin_id, category_idx) VALUES
-(NULL,822, '진라면',NULL , 1200, NULL , 100, 0, 'hojun',1);
+INSERT INTO food(food_idx, food_code, food_name, food_price, category_idx) VALUES
+(NULL,822, '진라면', 1200, 1);
 
-INSERT INTO food (food_idx, food_code, food_name, food_price, admin_id, category_idx)VALUES
-(NULL,821, '짜파게티',NULL , 1300, NULL , 120, 0, 'hojun',1);
+INSERT INTO food(food_idx, food_code, food_name, food_price, category_idx) VALUES
+(NULL,821, '짜파게티',1300, 1);
 
-INSERT INTO food(food_idx, food_code, food_name, food_price, admin_id, category_idx)VALUES
-(NULL,823, '홈런볼', 900, 'hojun',2);
+INSERT INTO food(food_idx, food_code, food_name, food_price, category_idx)VALUES
+(NULL,823, '홈런볼', 900,2);
 
 
 

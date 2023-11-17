@@ -16,7 +16,7 @@ public class Store {
     private Long idx;
 
     @Column(name = "store_code", nullable = false, unique = true)
-    private Long code;
+    private String code;
 
     @Column(name = "store_name", nullable = false, length = 20)
     private String name;

@@ -1,5 +1,6 @@
 package com.fivemin.mzpc.service;
 
+import com.fivemin.mzpc.data.dto.AdminDto;
 import com.fivemin.mzpc.data.dto.AuthDTO;
 import com.fivemin.mzpc.data.entity.Admin;
 import com.fivemin.mzpc.data.entity.Members;
@@ -7,10 +8,12 @@ import com.fivemin.mzpc.data.entity.Store;
 import com.fivemin.mzpc.data.repository.AdminRepository;
 import com.fivemin.mzpc.data.repository.MemberRepository;
 import com.fivemin.mzpc.data.repository.StoreRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class LoginService {
 
     @Autowired
@@ -22,8 +25,8 @@ public class LoginService {
     @Autowired
     private StoreRepository storeRepository;
 
-    public Admin findByAdminId(String id){
-        return adminRepository.findById(id);
+    public Admin findByAdminId(String adminId){
+        return adminRepository.findById(adminId);
     }
 
     public Members findByMemberId(String id){
@@ -53,4 +56,5 @@ public class LoginService {
 
         memberRepository.save(members);
     }
+
 }

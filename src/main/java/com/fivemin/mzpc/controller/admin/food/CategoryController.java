@@ -1,8 +1,19 @@
 package com.fivemin.mzpc.controller.admin.food;
 
 
+import com.fivemin.mzpc.data.entity.Category;
+import com.fivemin.mzpc.data.repository.CategoryRepository;
+import com.fivemin.mzpc.service.admin.CategoryService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /*
 -기능
@@ -12,18 +23,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
     음식 카테고리 추가 및 삭제, 수정 기능
  */
 @Controller
-@RequestMapping("/{adminId}/category") //관리자 pk
+@Slf4j
+@RequestMapping("/{adminCode}") //관리자 pk
 public class CategoryController {
 
-    /*
+    @Autowired
+    private CategoryService categoryService;
 
     // 음식 카태고리가 뭐뭐 있는지 나타내고, 추가 수정 삭제에 따라 리스트가 바뀜
-    listFoodCategory
+    @GetMapping(value = "/listcategory")
+    public String listFoodCategory(@PathVariable String adminCode, Model model) {
 
+        List<Category> listCategory = categoryService.getListCategory(adminCode);
+        log.info("listCategory : {} ", listCategory);
 
-    addFoodCategory
-    (food category 추가 하는 메서드
-    * 카테고리 갯수 max10 설정)
+        model.addAttribute("listCateogry", listCategory);
+        model.addAttribute("adminCode", adminCode);
+
+        return "/admin/category/listCategory";
+    }
+
+    @GetMapping(value = "/addCategoryForm")
+    public String addFoodCategoryForm(@PathVariable String adminCode, Model model) {
+
+        log.info("addFoodCategoryForm");
+        model.addAttribute("adminCode", adminCode);
+        return "/admin/category/addCategoryForm";
+    }
+}
+
+/*
+
 
 
 
@@ -38,4 +68,3 @@ public class CategoryController {
     (food category 삭제 하는 메서드)
 
     */
-}

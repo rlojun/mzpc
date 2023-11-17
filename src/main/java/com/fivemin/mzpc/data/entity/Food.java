@@ -42,10 +42,6 @@ public class Food extends BaseTimeEntity {
 
     @ManyToOne
     @JoinColumn(name = "category_idx",nullable = false)
-    private Category category;
-
-    @ManyToOne
-    @JoinColumn(name = "admin_idx",nullable = false)
-    private Admin admin;
+    public Category category;
 
 }

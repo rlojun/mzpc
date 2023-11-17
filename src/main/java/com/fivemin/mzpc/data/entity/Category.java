@@ -21,6 +21,7 @@ public class Category{
     private String code;
     
     //카테고리 이름
+    // 유니크 속성 추가하기
     @Column(name = "category_name",nullable = false, length = 30)
     private String name;
 
