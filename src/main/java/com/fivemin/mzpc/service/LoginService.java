@@ -10,6 +10,8 @@ import com.fivemin.mzpc.data.repository.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class LoginService {
 
@@ -28,6 +30,10 @@ public class LoginService {
 
     public Members findByMemberId(String id){
         return memberRepository.findById(id);
+    }
+
+    public Optional<Members> findBySsn(String ssn){
+        return memberRepository.findBySsn(ssn);
     }
 
     // 회원가입
@@ -63,5 +69,23 @@ public class LoginService {
     // 비밀번호 찾기
     public Members findPw(String name, String ssn, String email){
         return memberRepository.findByNameAndSsnAndEmail(name, ssn, email);
+    }
+
+    // 비밀번호 변경
+    public void updatePw(String ssn, String pw){
+        Optional <Members> optionalChangeMember = memberRepository.findBySsn(ssn);
+
+        if(optionalChangeMember.isPresent()) {
+            Members changeMember = optionalChangeMember.get();
+            changeMember.setPw(pw);
+            try {
+                memberRepository.save(changeMember);
+                System.out.println("Password updated successfully for SSN: " + ssn);
+            } catch (Exception e) {
+                // 예외 발생 시 로그 추가
+                System.err.println("Error updating password for SSN: " + ssn);
+                e.printStackTrace();
+            }
+        }
     }
 }

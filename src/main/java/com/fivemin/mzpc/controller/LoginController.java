@@ -6,6 +6,7 @@ import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.service.LoginService;
 import com.fivemin.mzpc.service.email.EmailService;
 import com.fivemin.mzpc.service.email.VerificationCodeUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,12 +21,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 /*
 회원가입 Controller
 do -> auth(회원가입), member -> user
  */
 @Controller
+@Slf4j
 @RequestMapping("/login")
 public class LoginController {
 
@@ -34,6 +37,8 @@ public class LoginController {
 
     @Autowired
     private EmailService emailService;
+
+    private HttpSession session;
 
     //로그인 페이지 이동
     @GetMapping(value = "")
@@ -50,12 +55,12 @@ public class LoginController {
     @PostMapping
     public String login(@RequestParam("id") String id, @RequestParam("pw") String pw,
                         @RequestParam(value = "isAdmin", required = false, defaultValue = "false") boolean isAdmin,
-                        HttpSession session) {
+                        Model model) {
 
         String loginType = isAdmin ? "admin" : "members";
 
         if("admin".equals(loginType)){
-            return adminLogin(id, pw, session);
+            return adminLogin(id, pw, model);
         } else if("members".equals(loginType)){
             return memberLogin(id, pw, session);
         }
@@ -64,15 +69,16 @@ public class LoginController {
 
     // 관리자 로그인
     public String adminLogin(@RequestParam("adminId") String adminId
-            , @RequestParam("adminPw") String adminPw, HttpSession session){
+            , @RequestParam("adminPw") String adminPw, Model model){
 
         Admin admin = loginService.findByAdminId(adminId);
-
-        String adminCode = admin.getCode();
 
         if(admin != null && admin.getPw().equals(adminPw)){
             session.setAttribute("id", admin.getId());
             session.setAttribute("pw", admin.getPw());
+
+            String adminCode = admin.getCode();
+            model.addAttribute("code",adminCode);
 
             return String.format("redirect:/%s/food/listFood",adminCode);
         }else {
@@ -86,41 +92,17 @@ public class LoginController {
 
         Members members = loginService.findByMemberId(memberId);
 
-        String storeName = members.getStore().getName();
-
         if(members != null && members.getPw().equals(memberPw)){
             session.setAttribute("id", members.getId());
             session.setAttribute("pw", members.getPw());
 
+            String storeName = members.getStore().getName();
             String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
             return String.format("redirect:/%s/food/listFood",encodedStoreName);
         }else{
             return "redirect:/login?error";
         }
     }
-
-//    // admin 확인 후 페이지 이동
-//    @GetMapping("/admin/food/listFood")
-//    public String adminFoodMenu(HttpSession session){
-//        return checks(session, Admin.class, "admin/food/listFood");
-//    }
-//
-//    // Members 확인 후 페이지 이동
-//    @GetMapping("/members/food/listFood")
-//    public String memberFoodMenu(HttpSession session){
-//        return checks(session, Members.class, "members/food/listFood");
-//    }
-//
-//    // 로그인시 리다이렉트 할 페이지를 결정 세션에 Admin인지 Members 인지 판별
-//    private String checks(HttpSession session, Class<?> userType, String redirectPath){
-//        Object user = session.getAttribute(userType.getSimpleName().toLowerCase());
-//
-//        if (userType.isInstance(user)){
-//            return redirectPath;
-//        }else {
-//            return "redirect:/login?error";
-//        }
-//    }
 
     // 로그아웃
     @GetMapping("/logout")
@@ -145,10 +127,6 @@ public class LoginController {
             return "members/authUser";
         }
         loginService.auth(authDTO);
-
-        // 이부분 지금 안된다. 수정예정
-        redirectAttributes.addFlashAttribute("message", "회원가입이 완료되었습니다. 로그인해주세요.");
-
         return "redirect:/login";
     }
 
@@ -193,6 +171,9 @@ public class LoginController {
             Cookie verificationCodeCookie = new Cookie("verificationCode", verificationCode);
             response.addCookie(verificationCodeCookie);
 
+            // 찾은 사용자의 SSN을 저장
+            VerificationCodeUtil.setSsn(ssn);
+
             model.addAttribute("result", "이메일이 전송되었습니다.");
         } else{
             model.addAttribute("result", "정보와 일치하는 유저가 없습니다.");
@@ -202,20 +183,45 @@ public class LoginController {
     }
 
 
-    // 인증번호 확인
+    // 인증번호 확정
     @PostMapping("/verifyCode")
-    public String verifyCode(@RequestParam String userInput, HttpServletRequest request, Model model) {
-        boolean isCodeValid = VerificationCodeUtil.isVerificationCodeValid(request, userInput);
+    public String verifyCode(@RequestParam String memberInput, HttpServletRequest request, Model model) {
+        boolean isCodeValid = VerificationCodeUtil.isVerificationCodeValid(request, memberInput);
 
         if (isCodeValid) {
             // 입력값과 쿠키에 담긴 verificationCode가 일치하는 경우
             model.addAttribute("result2", "인증 성공!");
+            System.out.println("인증 성공");
+            return "redirect:/login/resetPw";
         } else {
             // 일치하지 않는 경우
             model.addAttribute("result2", "인증 실패. 다시 시도하세요.");
         }
 
         return "members/find/findPw";
+    }
+
+    // 비밀번호 재설정 페이지 이동
+    @GetMapping("/resetPw")
+    public String resetPwForm(Model model){
+        // VerificationCodeUtil을 통해 저장된 아이디를 가져온다
+        String ssn = VerificationCodeUtil.getSsn();
+        // id를 사용하여 데이터베이스에서 사용자 정보를 조회한다.
+        Optional<Members> membersOptional = loginService.findBySsn(ssn);
+        System.out.println("페이지 이동");
+        // 조회된 사용자 정보를 모델에 추가하여 뷰로 전달한다.
+        membersOptional.ifPresent(members -> model.addAttribute("members", members));
+        return "members/find/resetPw";
+    }
+
+    // 비밀번호 재설정 로직
+    @PostMapping("/resetPw")
+    public String resetPw(@RequestParam String pw){
+        String ssn = VerificationCodeUtil.getSsn();
+        VerificationCodeUtil.setSsn(null);
+        loginService.updatePw(ssn, pw);
+        System.out.println("재설정 로직" + pw + ssn);
+        return "redirect:/login";
     }
 
     //이메일 인증 테스트 폼
