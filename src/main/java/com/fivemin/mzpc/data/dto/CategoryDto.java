@@ -1,17 +1,14 @@
 package com.fivemin.mzpc.data.dto;
 
-import lombok.*;
+import com.fivemin.mzpc.data.entity.Admin;
+import lombok.Data;
 
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class CategoryDto {
+@Data
+public class CategoryDTO {
+
     private Long idx;
     private String code;
     private String name;
-    private AdminDto adminDto;
+    private Admin admin;
 
 }
