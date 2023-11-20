@@ -6,12 +6,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @Slf4j
+@RequestMapping("/")
 public class IndexController {
 
-    @RequestMapping("/")
+    @RequestMapping("")
     public String index() {
         log.info("index() ==>");
         return "index";
+
     }
 
 }

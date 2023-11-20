@@ -14,7 +14,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -103,6 +102,7 @@ public class LoginController {
 
             String storeName = members.getStore().getName();
             String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
+            session.setAttribute("storeName", encodedStoreName);
             model.addAttribute("storeName", encodedStoreName);
             // url 리펙토링 필요!
             return String.format("redirect:/members/%s/food/listFood",encodedStoreName);
