@@ -4,7 +4,7 @@ import com.fivemin.mzpc.data.entity.Cart;
 import lombok.Data;
 
 @Data
-public class OrdersDTO {
+public class OrdersDto {
 
     private Long idx;
     private boolean cookComplete;

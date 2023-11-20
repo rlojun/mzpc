@@ -1,8 +1,20 @@
 package com.fivemin.mzpc.data.dto;
 
-public class FoodDto {
-    private String foodIdx;
-    private String foodCode;
+import com.fivemin.mzpc.data.entity.Admin;
+import com.fivemin.mzpc.data.entity.Category;
+import lombok.Data;
 
+@Data
+public class FoodDto {
+
+    private Long idx;
+    private String code;
+    private String name;
+    private String picture;
+    private Integer price;
+    private String description;
+    private Integer stock;
+    private Category category;
+    private Admin admin;
 
 }
