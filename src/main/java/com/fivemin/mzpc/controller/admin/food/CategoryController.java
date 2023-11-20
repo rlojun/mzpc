@@ -1,8 +1,7 @@
 package com.fivemin.mzpc.controller.admin.food;
 
 
-import com.fivemin.mzpc.data.entity.Category;
-import com.fivemin.mzpc.data.repository.CategoryRepository;
+import com.fivemin.mzpc.data.dto.CategoryDto;
 import com.fivemin.mzpc.service.admin.CategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -34,7 +32,7 @@ public class CategoryController {
     @GetMapping(value = "/listcategory")
     public String listFoodCategory(@PathVariable String adminCode, Model model) {
 
-        List<Category> listCategory = categoryService.getListCategory(adminCode);
+        List<CategoryDto> listCategory = categoryService.getListCategory(adminCode);
         log.info("listCategory : {} ", listCategory);
 
         model.addAttribute("listCateogry", listCategory);

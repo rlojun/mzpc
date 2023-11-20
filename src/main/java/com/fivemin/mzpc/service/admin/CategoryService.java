@@ -10,12 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.ArrayList;
+
 import java.util.List;
-import java.util.Locale;
 
 @Service
 @Slf4j
@@ -29,11 +26,26 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
         this.adminRepository = adminRepository;
     }
-    public List<Category> getListCategory(String adminCode) {
-
+    public List<CategoryDto> getListCategory(String adminCode) {
         Admin admin = adminRepository.findByCode(adminCode);
+        List<Category> category = categoryRepository.findByAdminIdx(admin.getIdx());
+        List<CategoryDto> categoryList = new ArrayList<>();
+        AdminDto adminDto = AdminDto.builder()
+                            .code(adminCode)
+                            .build();
 
-        return categoryRepository.findByAdminIdx(admin.getIdx());
+        for(Category categorys: category ){
+            CategoryDto categoryDto = CategoryDto.builder()
+                            .idx(categorys.getIdx())
+                    .code(categorys.getCode())
+                    .name(categorys.getName())
+                    .adminDto(adminDto)
+            .       build();
+            categoryList.add(categoryDto);
+        }
+
+        log.info("cateogryList : {}", categoryList);
+        return categoryList;
     }
 
 //    public Category getCategoryIdx(String name) {
