@@ -11,7 +11,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/mzpc
     username: root
-    password: 1234
+    password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -27,3 +27,21 @@ spring:
     suffix: .html
     cache: false
     mode: HTML
+
+# email
+
+mail:
+  smtp:
+    auth: true
+    starttls:
+      required: true
+      enable: true
+    socketFactory:
+      class: javax.net.ssl.SSLSocketFactory
+      fallback: false
+      port: 465
+    port: 465
+
+AdminMail:
+  id: kts3445@gmail.com
+  password: cyejgurdyssgsgsv
