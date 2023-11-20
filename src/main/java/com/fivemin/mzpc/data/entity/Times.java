@@ -38,7 +38,7 @@ public class Times extends BaseTimeEntity {
     private boolean save;
 
     @ManyToOne
-    @JoinColumn(name = "admin_idx",nullable = false)
-    private Admin admin;
+    @JoinColumn(name = "store_idx",nullable = false)
+    private Store store;
 
 }

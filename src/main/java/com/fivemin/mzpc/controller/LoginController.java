@@ -3,21 +3,28 @@ package com.fivemin.mzpc.controller;
 import com.fivemin.mzpc.data.dto.AuthDTO;
 import com.fivemin.mzpc.data.entity.Admin;
 import com.fivemin.mzpc.data.entity.Members;
+import com.fivemin.mzpc.data.entity.Store;
 import com.fivemin.mzpc.service.LoginService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /*
 회원가입 Controller
 do -> auth(회원가입), member -> user
  */
 @Controller
+@Slf4j
 @RequestMapping("/login")
 public class LoginController {
 
@@ -39,46 +46,65 @@ public class LoginController {
     @PostMapping
     public String login(@RequestParam("id") String id, @RequestParam("pw") String pw,
                         @RequestParam(value = "isAdmin", required = false, defaultValue = "false") boolean isAdmin,
-                        HttpSession session) {
+                        HttpServletRequest request,
+                        Model model) {
 
         String loginType = isAdmin ? "admin" : "members";
 
         if("admin".equals(loginType)){
-            return adminLogin(id, pw, session);
+            return adminLogin(id, pw, request, model);
         } else if("members".equals(loginType)){
-            return memberLogin(id, pw, session);
+            return memberLogin(id, pw);
         }
         return "redirect:/login?error";
     }
 
     // 관리자 로그인
-    public String adminLogin(@RequestParam("adminId") String adminId
-            , @RequestParam("adminPw") String adminPw, HttpSession session){
+    public String adminLogin(@RequestParam("id") String adminId,
+                             @RequestParam("pw") String adminPw,
+                             HttpServletRequest request,
+                             Model model){
 
+        HttpSession session = request.getSession();
         Admin admin = loginService.findByAdminId(adminId);
-
         if(admin != null && admin.getPw().equals(adminPw)){
-            session.setAttribute("admin", admin);
-            return "redirect:/login/admin/food/listFood";
+            session.setAttribute("id", admin.getId());
+            session.setAttribute("pw", admin.getPw());
+
+            String adminCode = admin.getCode();
+
+            model.addAttribute("adminCode",adminCode);
+
+            // url 리펙토링
+            return String.format("redirect:/admin/%s/food",adminCode);
         }else{
             return "redirect:/login?error";
         }
-        // return "redirect:/food/{adminId}";
+
     }
 
     // 사용자 로그인
     public String memberLogin(@RequestParam("memberId") String memberId
-            , @RequestParam("memberPw") String memberPw, HttpSession session){
+            , @RequestParam("memberPw") String memberPw){
 
         Members members = loginService.findByMemberId(memberId);
 
+        String storeName = members.getStore().getName();
+
         if(members != null && members.getPw().equals(memberPw)){
-            session.setAttribute("members", members);
-            return "redirect:/login/members/food/listFood";
+//            session.setAttribute("id", members.getId());
+//            session.setAttribute("pw", members.getPw());
+
+            String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
+            log.info("encodedStoreName : {}", encodedStoreName);
+
+            //url 리펙토링
+            return String.format("redirect:/%s/food/listFood",encodedStoreName);
+
         }else{
             return "redirect:/login?error";
         }
-        // return "redirect:/food/{memberId}";
+
     }
 
     // admin 확인 후 페이지 이동
