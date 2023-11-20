@@ -32,8 +32,8 @@ build/
 ### VS Code ###
 .vscode/
 
-*.ssh
+**.ssh
 
 application.yml
 
-*/.DS_Store
+**/.DS_Store
