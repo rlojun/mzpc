@@ -19,8 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @Slf4j
-@RequestMapping("/{adminCode}/food") //관리자 pk
+@RequestMapping(value="/admin/{adminCode}/food") //관리자 pk
 public class AdminFoodController {
+
+    @GetMapping(value = "/listFood")
+    private String adminFood(){
+        log.info("test() ==> {}", "test");
+        return "admin/food/listFood";
+    }
 
     // 카테고리별 음상 상품 리스트
     @GetMapping("/{categoryId}")

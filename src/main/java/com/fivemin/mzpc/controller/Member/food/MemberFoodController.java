@@ -1,7 +1,9 @@
 package com.fivemin.mzpc.controller.Member.food;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /*
 -기능
@@ -12,7 +14,15 @@ import org.springframework.web.bind.annotation.GetMapping;
     음식 별 토핑 목록 기능, 토핑 선택
  */
 @Controller
+@Slf4j
+@RequestMapping(value="/members/{storeName}/food")
 public class MemberFoodController {
+
+    @GetMapping(value = "/listFood")
+    private String memberFood(){
+        log.info("test() ==> {}", "test");
+        return "members/food/listFood";
+    }
 
     @GetMapping("/favorites")
     public String foodListFavorites() {
