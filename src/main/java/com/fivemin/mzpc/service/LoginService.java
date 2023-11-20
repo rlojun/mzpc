@@ -80,10 +80,8 @@ public class LoginService {
             changeMember.setPw(pw);
             try {
                 memberRepository.save(changeMember);
-                System.out.println("Password updated successfully for SSN: " + ssn);
             } catch (Exception e) {
                 // 예외 발생 시 로그 추가
-                System.err.println("Error updating password for SSN: " + ssn);
                 e.printStackTrace();
             }
         }

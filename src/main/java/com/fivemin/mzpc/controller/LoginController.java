@@ -38,8 +38,6 @@ public class LoginController {
     @Autowired
     private EmailService emailService;
 
-    private HttpSession session;
-
     //로그인 페이지 이동
     @GetMapping(value = "")
     public String loginForm() {
@@ -55,22 +53,26 @@ public class LoginController {
     @PostMapping
     public String login(@RequestParam("id") String id, @RequestParam("pw") String pw,
                         @RequestParam(value = "isAdmin", required = false, defaultValue = "false") boolean isAdmin,
+                        HttpServletRequest request,
                         Model model) {
 
         String loginType = isAdmin ? "admin" : "members";
 
         if("admin".equals(loginType)){
-            return adminLogin(id, pw, model);
+            return adminLogin(id, pw, request, model);
         } else if("members".equals(loginType)){
-            return memberLogin(id, pw, session);
+            return memberLogin(id, pw, request, model);
         }
         return "redirect:/login?error";
     }
 
     // 관리자 로그인
-    public String adminLogin(@RequestParam("adminId") String adminId
-            , @RequestParam("adminPw") String adminPw, Model model){
+    public String adminLogin(@RequestParam("adminId") String adminId,
+                             @RequestParam("adminPw") String adminPw,
+                             HttpServletRequest request,
+                             Model model){
 
+        HttpSession session = request.getSession();
         Admin admin = loginService.findByAdminId(adminId);
 
         if(admin != null && admin.getPw().equals(adminPw)){
@@ -78,18 +80,21 @@ public class LoginController {
             session.setAttribute("pw", admin.getPw());
 
             String adminCode = admin.getCode();
-            model.addAttribute("code",adminCode);
-
-            return String.format("redirect:/%s/food/listFood",adminCode);
+            model.addAttribute("adminCode",adminCode);
+            // url 리펙토링 필요
+            return String.format("redirect:/admin/%s/food/listFood",adminCode);
         }else {
             return "redirect:/login?error";
         }
     }
 
     // 사용자 로그인
-    public String memberLogin(@RequestParam("memberId") String memberId
-            , @RequestParam("memberPw") String memberPw, HttpSession session){
+    public String memberLogin(@RequestParam("memberId") String memberId,
+                              @RequestParam("memberPw") String memberPw,
+                              HttpServletRequest request,
+                              Model model){
 
+        HttpSession session = request.getSession();
         Members members = loginService.findByMemberId(memberId);
 
         if(members != null && members.getPw().equals(memberPw)){
@@ -98,7 +103,9 @@ public class LoginController {
 
             String storeName = members.getStore().getName();
             String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
-            return String.format("redirect:/%s/food/listFood",encodedStoreName);
+            model.addAttribute("storeName", encodedStoreName);
+            // url 리펙토링 필요!
+            return String.format("redirect:/members/%s/food/listFood",encodedStoreName);
         }else{
             return "redirect:/login?error";
         }
@@ -191,7 +198,6 @@ public class LoginController {
         if (isCodeValid) {
             // 입력값과 쿠키에 담긴 verificationCode가 일치하는 경우
             model.addAttribute("result2", "인증 성공!");
-            System.out.println("인증 성공");
             return "redirect:/login/resetPw";
         } else {
             // 일치하지 않는 경우
@@ -208,7 +214,6 @@ public class LoginController {
         String ssn = VerificationCodeUtil.getSsn();
         // id를 사용하여 데이터베이스에서 사용자 정보를 조회한다.
         Optional<Members> membersOptional = loginService.findBySsn(ssn);
-        System.out.println("페이지 이동");
         // 조회된 사용자 정보를 모델에 추가하여 뷰로 전달한다.
         membersOptional.ifPresent(members -> model.addAttribute("members", members));
         return "members/find/resetPw";
@@ -220,21 +225,6 @@ public class LoginController {
         String ssn = VerificationCodeUtil.getSsn();
         VerificationCodeUtil.setSsn(null);
         loginService.updatePw(ssn, pw);
-        System.out.println("재설정 로직" + pw + ssn);
         return "redirect:/login";
-    }
-
-    //이메일 인증 테스트 폼
-    @GetMapping("/emailTestForm")
-    public String emailTestForm() {
-        return "members/find/emailTest";
-    }
-
-    // 이메일 인증
-    @PostMapping("/emailConfirm")
-    public String emailConfirm(@RequestParam String email) throws Exception {
-
-        String confirm = emailService.sendSimpleMessage(email);
-        return confirm;
     }
 }
