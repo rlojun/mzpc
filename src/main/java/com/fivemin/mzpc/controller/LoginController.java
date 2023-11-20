@@ -1,6 +1,6 @@
 package com.fivemin.mzpc.controller;
 
-import com.fivemin.mzpc.data.dto.AuthDTO;
+import com.fivemin.mzpc.data.dto.AuthDto;
 import com.fivemin.mzpc.data.entity.Admin;
 import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.service.LoginService;
@@ -81,7 +81,7 @@ public class LoginController {
             String adminCode = admin.getCode();
             model.addAttribute("adminCode",adminCode);
             // url 리펙토링 필요
-            return String.format("redirect:/admin/%s/food/listFood",adminCode);
+            return String.format("redirect:/admin/%s/food",adminCode);
         }else {
             return "redirect:/login?error";
         }
@@ -105,7 +105,7 @@ public class LoginController {
             session.setAttribute("storeName", encodedStoreName);
             model.addAttribute("storeName", encodedStoreName);
             // url 리펙토링 필요!
-            return String.format("redirect:/members/%s/food/listFood",encodedStoreName);
+            return String.format("redirect:/members/%s/food",encodedStoreName);
         }else{
             return "redirect:/login?error";
         }
@@ -120,14 +120,14 @@ public class LoginController {
 
     // 회원가입 페이지로 이동
     @GetMapping("/auth")
-    public String authForm(@ModelAttribute("authDTO")AuthDTO authDTO){
+    public String authForm(@ModelAttribute("authDTO") AuthDto authDTO){
         return "members/authUser";
     }
 
 
     // 회원 가입 로직 구현
     @PostMapping("/auth")
-    public String auth(@Validated @ModelAttribute("authDTO") AuthDTO authDTO,
+    public String auth(@Validated @ModelAttribute("authDTO") AuthDto authDTO,
                        RedirectAttributes redirectAttributes, BindingResult result){
         // 유효성 검사
         if (result.hasErrors()){

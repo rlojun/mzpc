@@ -13,5 +13,4 @@ public class CategoryDto {
     private String code;
     private String name;
     private AdminDto adminDto;
-
 }

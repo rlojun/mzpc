@@ -3,7 +3,7 @@ package com.fivemin.mzpc.data.dto;
 import lombok.Data;
 
 @Data
-public class CartDTO {
+public class CartDto {
 
     private Long idx;
     private String code;

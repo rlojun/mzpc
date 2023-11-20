@@ -1,6 +1,6 @@
 package com.fivemin.mzpc.service;
 
-import com.fivemin.mzpc.data.dto.AuthDTO;
+import com.fivemin.mzpc.data.dto.AuthDto;
 import com.fivemin.mzpc.data.entity.Admin;
 import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.data.entity.Store;
@@ -37,7 +37,7 @@ public class LoginService {
     }
 
     // 회원가입
-    public void auth(AuthDTO authDTO){
+    public void auth(AuthDto authDTO){
         Members members = new Members();
         members.setId(authDTO.getId());
         members.setPw(authDTO.getPw());
