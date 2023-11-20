@@ -5,7 +5,7 @@ import com.fivemin.mzpc.data.entity.Category;
 import lombok.Data;
 
 @Data
-public class FoodDTO {
+public class FoodDto {
 
     private Long idx;
     private String code;

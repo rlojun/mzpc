@@ -1,15 +1,11 @@
 package com.fivemin.mzpc.data.dto;
 
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
-public class AuthDTO {
+public class AuthDto {
 
     // 사용자 아이디
     private String id;

@@ -27,3 +27,21 @@ spring:
     suffix: .html
     cache: false
     mode: HTML
+
+# email
+
+mail:
+  smtp:
+    auth: true
+    starttls:
+      required: true
+      enable: true
+    socketFactory:
+      class: javax.net.ssl.SSLSocketFactory
+      fallback: false
+      port: 465
+    port: 465
+
+AdminMail:
+  id: kts3445@gmail.com
+  password: cyejgurdyssgsgsv
