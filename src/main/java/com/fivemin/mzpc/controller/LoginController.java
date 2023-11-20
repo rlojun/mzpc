@@ -81,7 +81,7 @@ public class LoginController {
             String adminCode = admin.getCode();
             model.addAttribute("adminCode",adminCode);
             // url 리펙토링 필요
-            return String.format("redirect:/admin/%s/food/listFood",adminCode);
+            return String.format("redirect:/admin/%s/food",adminCode);
         }else {
             return "redirect:/login?error";
         }
