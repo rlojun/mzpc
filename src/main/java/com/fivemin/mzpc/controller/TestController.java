@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Slf4j
 public class TestController {
 
-    @GetMapping(value = "/food")
-    private String food(){
-        log.info("test() ==> {}", "test");
-        return "members/food/listFood";
-    }
+//    @GetMapping(value = "/food")
+//    private String food(){
+//        log.info("test() ==> {}", "test");
+//        return "members/food/listFood";
+//    }
 
     @GetMapping(value = "/time")
     private String time(){

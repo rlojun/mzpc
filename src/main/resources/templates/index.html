@@ -41,7 +41,7 @@
     <header class="header_section">
         <div class="container">
             <nav class="navbar navbar-expand-lg custom_nav-container ">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="/">
             <span>
               MZPC
             </span>
@@ -56,14 +56,14 @@
                         <li class="nav-item active">
                             <a class="nav-link" href="">Home <span class="sr-only">(current)</span></a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/food">먹거리 주문하기</a>
+                        <li class="nav-item" id="foodTab">
+                            <a class="nav-link" href="/members/food/listFood">먹거리 주문하기</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/time">시간 충전하기</a>
+                            <a class="nav-link" href="/members/time/listTime">시간 충전하기</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/qna">문의하기</a>
+                            <a class="nav-link" href="/members/qna">문의하기</a>
                         </li>
                     </ul>
                     <div class="user_option">
@@ -230,8 +230,8 @@
                                 먹거리 주문하기
                             </h5>
                             <br/>
-                            <a href="food.html">
-                                바로 결제 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
+                            <a href="members/food/listFood">
+                                바로 주문 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
                     <g>
                       <g>
                         <path d="M345.6,338.862c-29.184,0-53.248,23.552-53.248,53.248c0,29.184,23.552,53.248,53.248,53.248
@@ -297,8 +297,8 @@
                                 시간 충전하기
                             </h5>
                             <br/>
-                            <a href="time.html">
-                                바로 결제 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
+                            <a href="members/time/listTime">
+                                바로 주문 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
                     <g>
                       <g>
                         <path d="M345.6,338.862c-29.184,0-53.248,23.552-53.248,53.248c0,29.184,23.552,53.248,53.248,53.248
@@ -455,6 +455,28 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
 </script>
 <!-- End Google Map -->
+<script>
+    $(document).ready(function () {
+        $('#foodTab').click(function() {
+            event.preventDefault();
+            $.ajax({
+                url: '/members/{storeName}/food/listFood',
+                method: 'GET',
+                success: function (response) {
+                    if (response.error) {
+                        alert(response.error);
+                    } else {
+                        // window.location.href = '/members/' + encodeURIComponent(storedStoreName) + '/food/listFood';
+                        $('body').html(response);
+                    }
+                },
+                error: function () {
+                    alert('로그인 부터 부탁드립니다.');
+                }
+            });
+        });
+    });
+</script>
 
 </body>
 
