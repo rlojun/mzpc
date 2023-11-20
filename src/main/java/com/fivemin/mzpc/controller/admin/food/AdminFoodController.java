@@ -1,8 +1,18 @@
 package com.fivemin.mzpc.controller.admin.food;
 
+import com.fivemin.mzpc.data.dto.CategoryDto;
+import com.fivemin.mzpc.service.admin.CategoryService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /*
 - 기능
@@ -17,8 +27,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 음식 상품 추가
  */
 @Controller
-@RequestMapping("/{adminId}/food") //관리자 pk
+@Slf4j
+@RequestMapping("/admin/{adminCode}/food") //관리자 pk
 public class AdminFoodController {
+
+    private CategoryService categoryService;
+
+    @Autowired
+    public AdminFoodController(CategoryService categoryService){
+        this.categoryService = categoryService;
+    }
+
+    @GetMapping
+    public String listCategory(@PathVariable String adminCode, Model model){
+        List<CategoryDto> listCategory = categoryService.getListCategory(adminCode);
+
+        log.info("listCategory : {}", listCategory);
+        model.addAttribute("listCategory",listCategory);
+        model.addAttribute("adminCode",adminCode);
+        return "/admin/food/listFood";
+    }
+
+    private String makeCode(){
+        LocalDateTime currentDateTime=LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'M'HHMMyyyymmddss");
+
+        return currentDateTime.format(formatter);
+    }
+
 
     // 카테고리별 음상 상품 리스트
     @GetMapping("/{categoryId}")
