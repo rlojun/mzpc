@@ -1,7 +1,7 @@
 package com.fivemin.mzpc.controller.admin.food;
 
 import com.fivemin.mzpc.data.dto.CategoryDto;
-import com.fivemin.mzpc.service.admin.CategoryService;
+import com.fivemin.mzpc.service.admin.AdminCategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,16 +31,16 @@ import java.util.List;
 @RequestMapping("/admin/{adminCode}/food") //관리자 pk
 public class AdminFoodController {
 
-    private CategoryService categoryService;
+    private AdminCategoryService adminCategoryService;
 
     @Autowired
-    public AdminFoodController(CategoryService categoryService){
-        this.categoryService = categoryService;
+    public AdminFoodController(AdminCategoryService adminCategoryService){
+        this.adminCategoryService = adminCategoryService;
     }
 
     @GetMapping
     public String listCategory(@PathVariable String adminCode, Model model){
-        List<CategoryDto> listCategory = categoryService.getListCategory(adminCode);
+        List<CategoryDto> listCategory = adminCategoryService.getListCategory(adminCode);
 
         log.info("listCategory : {}", listCategory);
         model.addAttribute("listCategory",listCategory);

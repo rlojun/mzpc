@@ -1,9 +1,8 @@
 package com.fivemin.mzpc.controller.admin.food;
 
-import com.fivemin.mzpc.data.entity.Category;
 import com.fivemin.mzpc.data.entity.Food;
-import com.fivemin.mzpc.service.admin.CategoryService;
-import com.fivemin.mzpc.service.admin.FoodService;
+import com.fivemin.mzpc.service.admin.AdminCategoryService;
+import com.fivemin.mzpc.service.admin.AdminFoodService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,21 +16,21 @@ import java.util.List;
 @RequestMapping(value = "/category")
 public class FoodRestController {
 
-    private FoodService foodService;
+    private AdminFoodService adminFoodService;
 
-    private CategoryService categoryService;
+    private AdminCategoryService adminCategoryService;
 
     @Autowired
-    public FoodRestController(FoodService foodService, CategoryService categoryService){
-        this.foodService = foodService;
-        this.categoryService = categoryService;
+    public FoodRestController(AdminFoodService adminFoodService, AdminCategoryService adminCategoryService){
+        this.adminFoodService = adminFoodService;
+        this.adminCategoryService = adminCategoryService;
     }
 
     @GetMapping(value = "/food")
     private ResponseEntity<List<Food>> getListFood(@RequestParam("categoryName") String name,
                                                Model model){
 
-        List<Food> listFood = foodService.getListFoodByName(name);
+        List<Food> listFood = adminFoodService.getListFoodByName(name);
 
         return ResponseEntity.ok(listFood);
     }
@@ -43,7 +42,7 @@ public class FoodRestController {
         log.info("categoryName : {}",categoryName);
         log.info("adminCode : {}",adminCode);
 
-        categoryService.addCategory(categoryName,adminCode);
+        adminCategoryService.addCategory(categoryName,adminCode);
 
         return ResponseEntity.ok("success"+ categoryName);
     }

@@ -12,18 +12,15 @@ public class FoodService {
 
     private final FoodRepository foodRepository;
     private final OrdersRepository ordersRepository;
-    private final ToppingRepository toppingRepository;
     private final CartRepository cartRepository;
 
     @Autowired
     public FoodService(
             FoodRepository foodRepository,
             OrdersRepository ordersRepository,
-            ToppingRepository toppingRepository,
             CartRepository cartRepository) {
         this.foodRepository = foodRepository;
         this.ordersRepository = ordersRepository;
-        this.toppingRepository = toppingRepository;
         this.cartRepository = cartRepository;
     }
 
