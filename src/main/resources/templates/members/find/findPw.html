@@ -2,9 +2,43 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>비밀번호 찾기</title>
 </head>
 <body>
 
+<h1>비밀번호 찾기</h1>
+
+<form action="/login/findPw" method="post">
+    <label for="name">이름:</label>
+    <input type="text" id="name" name="name" required>
+    <br>
+    <label for="ssn">주민번호:</label>
+    <input type="text" id="ssn" name="ssn" required>
+    <br>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+    <br>
+    <input type="submit" value="인증요청">
+</form>
+
+<!-- 결과창 -->
+<div>
+    <h3>Result:</h3>
+    <p th:text="${result}"></p>
+</div>
+
+<form action="/login/verifyCode" method="post">
+    <label for="memberInput">인증 코드 입력:</label>
+    <input type="text" id="memberInput" name="memberInput" required>
+    <button type="submit">비밀번호 재설정</button>
+
+</form>
+
+<div>
+    <h3>Result:</h3>
+    <p th:text="${result2}"></p>
+</div>
 </body>
 </html>

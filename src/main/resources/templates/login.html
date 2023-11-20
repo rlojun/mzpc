@@ -28,6 +28,17 @@
     <link href="/bootstrap/css/style.css" rel="stylesheet" />
     <!-- responsive style -->
     <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
+    <style>
+        .order_online {
+            display: inline-block;
+            padding: 7px 14px;
+            background-color: #6f9bcb;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
 
 </head>
 <!--
@@ -167,16 +178,15 @@
             <input type="checkbox" id="isAdmin" name="isAdmin">
             <label for="isAdmin">관리자 로그인</label>
         </div>
+        <br/>
         <div>
             <button type="submit" class="btn btn-primary">로그인</button>
+            <a href="/login/auth" class="order_online">회원가입</a>
+            <a href="/login/findId" class="order_online">ID 찾기</a>
+            <a href="/login/findPw" class="order_online">PW 찾기</a>
         </div>
     </div>
 </form>
-<!-- 회원가입 버튼 -->
-<form action="/login/auth" method="get">
-    <button type="submit" class="btn btn-secondary">회원가입</button>
-</form>
-
 <br />
 
 <!-- 로그인 실패 시 에러 메시지 표시 -->
