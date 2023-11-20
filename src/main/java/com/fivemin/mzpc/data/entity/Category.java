@@ -26,7 +26,7 @@ public class Category{
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "admin_idx",nullable = false)
-    private Admin admin;
+    @JoinColumn(name = "store_idx",nullable = false)
+    private Store store;
 
 }
