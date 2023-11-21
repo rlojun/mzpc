@@ -3,6 +3,7 @@ package com.fivemin.mzpc.controller;
 import com.fivemin.mzpc.data.dto.AuthDto;
 import com.fivemin.mzpc.data.entity.Admin;
 import com.fivemin.mzpc.data.entity.Members;
+import com.fivemin.mzpc.data.entity.Store;
 import com.fivemin.mzpc.service.LoginService;
 import com.fivemin.mzpc.service.email.EmailService;
 import com.fivemin.mzpc.service.email.VerificationCodeUtil;
@@ -78,10 +79,10 @@ public class LoginController {
             session.setAttribute("id", admin.getId());
             session.setAttribute("pw", admin.getPw());
 
-            String adminCode = admin.getCode();
-            model.addAttribute("adminCode",adminCode);
+            String storeCode = admin.getStore().getCode();
+            model.addAttribute("storeCode",storeCode);
             // url 리펙토링 필요
-            return String.format("redirect:/admin/%s/food",adminCode);
+            return String.format("redirect:/admin/%s/food",storeCode);
         }else {
             return "redirect:/login?error";
         }
