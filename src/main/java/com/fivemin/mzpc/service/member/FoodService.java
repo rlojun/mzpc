@@ -1,4 +1,4 @@
-package com.fivemin.mzpc.service;
+package com.fivemin.mzpc.service.member;
 
 import com.fivemin.mzpc.data.entity.Food;
 import com.fivemin.mzpc.data.repository.*;

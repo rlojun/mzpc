@@ -4,6 +4,8 @@ import com.fivemin.mzpc.data.entity.Category;
 import com.fivemin.mzpc.data.entity.Food;
 // import com.fivemin.mzpc.service.CategoryService;
 // import com.fivemin.mzpc.service.FoodService;
+import com.fivemin.mzpc.service.member.CategoryService;
+import com.fivemin.mzpc.service.member.FoodService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,36 +36,35 @@ import java.util.Map;
 @RequestMapping("/members/{storeName}/food")
 public class  MemberFoodController {
 
-    @GetMapping
-    public String memberListFood(){
-        return "/members/food/listFood";
+    private final FoodService foodService;
+    private final CategoryService categoryService;
+    public MemberFoodController(FoodService foodService, CategoryService categoryService) {
+        this.foodService = foodService;
+        this.categoryService = categoryService;
     }
 
-//    private final FoodService foodService;
-//    private final CategoryService categoryService;
-//    public MemberFoodController(FoodService foodService, CategoryService categoryService) {
-//        this.foodService = foodService;
-//        this.categoryService = categoryService;
-//
-//    }
-//
-//    @GetMapping("/listFood")
-//    // public String listFoodIndex(Model model, @PathVariable (required = false) String storeName, HttpSession httpSession) {
-//    public ModelAndView listFoodIndex(Model model, @PathVariable (required = false) String storeName, HttpSession httpSession) {
-//        List<Category> foodCategories = categoryService.getAllCategories();
-//        model.addAttribute("foodCategories", foodCategories);
-//
-//        String storedStoreName = (String) httpSession.getAttribute("storeName");
-//        log.info("storedStoreName => " + storedStoreName);
-//        if ( storedStoreName == null) {
-//            Map<String, String> response = new HashMap<>();
-//            response.put("error", "로그인 부탁드립니다.");
-//            return new ModelAndView("error", response, HttpStatus.UNAUTHORIZED);
-//        } else {
-//            return new ModelAndView("members/food/listFood");
-//      }
-//    }
-//
+    @GetMapping("/listFood")
+    // public String listFoodIndex(Model model, @PathVariable (required = false) String storeName, HttpSession httpSession) {
+    public ModelAndView listFoodMember(Model model, @PathVariable (required = false) String storeName, HttpSession httpSession) {
+        String validStoreName = (String) httpSession.getAttribute("storeName");
+        Long validStoreId = (Long) httpSession.getAttribute("storeId");
+        log.info("validStoreName {} " , validStoreName);
+        log.info("validStoreId {} " , validStoreId);
+
+        if ( validStoreId == null) {
+            Map<String, String> response = new HashMap<>();
+            response.put("error", "로그인 부탁드립니다.");
+            return new ModelAndView("error", response, HttpStatus.UNAUTHORIZED);
+        } else {
+
+            List<Category> foodCategories = categoryService.getAllCategories();
+            model.addAttribute("foodCategories", foodCategories);
+
+            return new ModelAndView("members/food/listFood");
+
+      }
+    }
+
 //
 //    @GetMapping("/{category}")
 //    public String listFoodCategory(@PathVariable (required = false) String storeName, @PathVariable String category, Model model) {

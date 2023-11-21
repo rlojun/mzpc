@@ -102,11 +102,16 @@ public class LoginController {
             session.setAttribute("pw", members.getPw());
 
             String storeName = members.getStore().getName();
+            // 명원식
+            Long storeId = members.getStore().getIdx();
+            session.setAttribute("storeId", storeId);
             String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
             session.setAttribute("storeName", encodedStoreName);
             model.addAttribute("storeName", encodedStoreName);
             // url 리펙토링 필요!
-            return String.format("redirect:/members/%s/food",encodedStoreName);
+            // return String.format("redirect:/members/%s/food",encodedStoreName);
+            // 명원식
+            return String.format("redirect:/members/%s",encodedStoreName);
         }else{
             return "redirect:/login?error";
         }
