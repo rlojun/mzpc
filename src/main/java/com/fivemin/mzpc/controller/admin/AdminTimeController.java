@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 시간 상품 삭제
  */
 @Controller
-@RequestMapping("/{adminId}/time")
+@RequestMapping("admin/{adminCode}/time")
 public class AdminTimeController {
 
     // 시간 상품 목록
