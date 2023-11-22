@@ -57,7 +57,9 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class=""> </span>
                 </button>
-
+                <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                    <p th:text="${errorMessage}"></p>
+                </div>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav  mx-auto ">
                         <li class="nav-item active" id="homeTab">
@@ -65,7 +67,9 @@
                             <a th:unless="${storeName != null}" class="nav-link" th:href="@{/}">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item" id="foodTab">
-                            <a class="nav-link" href="/members/${storeName}/food/listFood">먹거리 주문하기</a>
+<!--                            <a class="nav-link" href="/members/${storeName}/food/listFood">먹거리 주문하기</a>-->
+<!--                            <a class="nav-link" th:onclick="redirectToFoodPage('${storeName}')" th:href="@{/members/{storeName}/food/listFood(storeName=${storeName})}">먹거리 주문하기</a>-->
+                            <a class="nav-link" th:onclick="redirectToFoodPage('${storeName}')">먹거리 주문하기</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/members/time/listTime">시간 충전하기</a>
@@ -476,29 +480,43 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
 </script>
 <!-- End Google Map -->
-<script>
-    $(document).ready(function () {
-        $('#foodTab').click(function (event) {
-            event.preventDefault();
-            const storeName = document.getElementById('homeTab').getAttribute('storeName');
+<!--<script>-->
+<!--    $(document).ready(function () {-->
+<!--        $('#foodTab').click(function (event) {-->
+<!--            event.preventDefault();-->
+<!--            const storeName = document.getElementById('homeTab').getAttribute('storeName');-->
 
-            $.ajax({
-                url: '/members/' + encodeURIComponent(storeName) + '/food/listFood',
-                method: 'GET',
-                success: function (response) {
-                    if (response.error) {
-                        alert(response.error);
-                    } else {
-                        window.location.href = '/members/' + encodeURIComponent(storeName) + '/food/listFood';
-                        // $('body').html(response);
-                    }
-                },
-                error: function () {
-                    alert('로그인 부탁드립니다.');
-                }
-            });
-        });
-    });
+<!--            $.ajax({-->
+<!--                url: '/members/' + encodeURIComponent(storeName) + '/food/listFood',-->
+<!--                method: 'GET',-->
+<!--                success: function (response) {-->
+<!--                    if (response.error) {-->
+<!--                        alert(response.error);-->
+<!--                    } else {-->
+<!--                        window.location.href = '/members/' + encodeURIComponent(storeName) + '/food/listFood';-->
+<!--                        // $('body').html(response);-->
+<!--                    }-->
+<!--                },-->
+<!--                error: function () {-->
+<!--                    alert('로그인 부탁드립니다.');-->
+<!--                }-->
+<!--            });-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+
+<script th:inline="javascript">
+    function redirectToFoodPage(storeName) {
+        if (storeName == null || storeName === '') {
+            alert('로그인 부탁드립니다');
+            console.log('Redirecting to root');
+            window.location.href='';
+        } else {
+            const encodedStoreName = encodeURIComponent(storeName);
+            console.log('Redirecting to /members/' + encodedStoreName + '/food/listFood');
+            window.location.href = '/members/' + encodedStoreName + '/food/listFood';
+        }
+    }
 </script>
 
 </body>

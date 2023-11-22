@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -44,17 +45,19 @@ public class  MemberFoodController {
     }
 
     @GetMapping("/listFood")
-    // public String listFoodIndex(Model model, @PathVariable (required = false) String storeName, HttpSession httpSession) {
     public ModelAndView listFoodMember(Model model, @PathVariable (required = false) String storeName, HttpSession httpSession) {
         String validStoreName = (String) httpSession.getAttribute("storeName");
         Long validStoreId = (Long) httpSession.getAttribute("storeId");
+
+        model.addAttribute("storeId", validStoreId);
+        model.addAttribute("storeName", validStoreName);
+
         log.info("validStoreName {} " , validStoreName);
         log.info("validStoreId {} " , validStoreId);
 
-        if ( validStoreId == null) {
-            Map<String, String> response = new HashMap<>();
-            response.put("error", "로그인 부탁드립니다.");
-            return new ModelAndView("error", response, HttpStatus.UNAUTHORIZED);
+        if (validStoreId == null) {
+            model.addAttribute("errorMessage", "로그인 부탁드립니다.");
+            return new ModelAndView(new RedirectView("/"));
         } else {
 
             List<Category> foodCategories = categoryService.getAllCategories();
@@ -65,16 +68,16 @@ public class  MemberFoodController {
       }
     }
 
-//
-//    @GetMapping("/{category}")
-//    public String listFoodCategory(@PathVariable (required = false) String storeName, @PathVariable String category, Model model) {
-//        List<Food> foodList = foodService.getFoodByCategory(category);
-//        List<Category> foodCategories = categoryService.getAllCategories();
-//        model.addAttribute("foodList", foodList);
-//        model.addAttribute("foodCategories", foodCategories);
-//
-//        return "members/food/listFood";
-//    }
+
+    @GetMapping("/{category}")
+    public String listFoodCategory(@PathVariable (required = false) String storeName, @PathVariable String category, Model model) {
+        List<Food> foodList = foodService.getFoodByCategory(category);
+        List<Category> foodCategories = categoryService.getAllCategories();
+        model.addAttribute("foodList", foodList);
+        model.addAttribute("foodCategories", foodCategories);
+
+        return "members/food/listFood";
+    }
 //
 //    // @GetMapping("/favorites")
 //    // public String listFoodFavorites() {
