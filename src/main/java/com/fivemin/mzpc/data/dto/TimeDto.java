@@ -18,5 +18,5 @@ public class TimeDto {
     private Integer price;
     private Duration addTime;
     private boolean save;
-    private TimeDto timeDto;
+    // private TimeDto timeDto;
 }
