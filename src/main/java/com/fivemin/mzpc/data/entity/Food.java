@@ -41,7 +41,7 @@ public class Food extends BaseTimeEntity {
     private Integer stock;
 
     @Column(name = "topping")
-    private boolean topping=false;
+    private Boolean topping=false;
 
     @ManyToOne
     @JoinColumn(name = "category_idx",nullable = false)
