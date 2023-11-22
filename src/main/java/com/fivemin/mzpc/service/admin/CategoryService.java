@@ -69,8 +69,8 @@ public class CategoryService {
         return currentDateTime.format(formatter);
     }
 
-    public CategoryDto modifyCategoryForm(String storeCode, Long categoryIdx) {
-        Category category = categoryRepository.findByIdx(categoryIdx);
+    public CategoryDto modifyCategoryForm(String categoryCode) {
+        Category category = categoryRepository.findByCode(categoryCode);
 
         CategoryDto categoryDto = CategoryDto.builder()
                 .idx(category.getIdx())
