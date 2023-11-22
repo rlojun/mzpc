@@ -7,10 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -64,16 +61,18 @@ public class AdminTimeController {
     // 해당 시간 상품 수정폼 으로 이동
     @GetMapping("/modifyTime/{timeCode}")
     public String modifyTimeForm(@PathVariable String timeCode, Model model){
-        Times times = timeService.DetailTime(timeCode);
+        Times times = timeService.detailTime(timeCode);
         model.addAttribute("times", times);
         return "admin/time/modifyTime";
     }
 
     // 시간 상품 수정 기능
-    @PostMapping("/modifyTime")
-    public String modifyTime(){
-
-        return "redirect:/{adminId}/time/detailTime";
+    @PostMapping("/modifyTime/{timeCode}")
+    public String modifyTime(@PathVariable String storeCode, @PathVariable String timeCode,
+                             @ModelAttribute TimeDto timeDto, Model model){
+        timeService.updateTime(timeCode, timeDto);
+        model.addAttribute("storeCode",storeCode);
+        return String.format("redirect:/admin/%s/time/listTime",storeCode);
     }
 
     // 시간 상품 삭제 기능

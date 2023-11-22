@@ -75,7 +75,7 @@ public class Members {
         // 현재 날짜 및 시간 정보 가져오기
         LocalDateTime currentDateTime = LocalDateTime.now();
         // 날짜 형식 지정
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'M'HHMMyyyymmddss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'H'HHMMyyyymmddss");
         // 날짜를 문자열로 변환하여 코드에 할당
         this.code = currentDateTime.format(formatter);
     }

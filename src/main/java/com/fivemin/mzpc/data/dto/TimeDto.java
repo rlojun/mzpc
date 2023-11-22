@@ -1,6 +1,5 @@
 package com.fivemin.mzpc.data.dto;
 
-import com.fivemin.mzpc.data.entity.Times;
 import lombok.*;
 
 import java.time.Duration;
@@ -19,4 +18,14 @@ public class TimeDto {
     private Duration addTime;
     private boolean save;
     // private TimeDto timeDto;
+
+    // Duration >> Long
+    public Long getAddTimeAsLong() {
+        return addTime.getSeconds();
+    }
+
+    // Long >> Duration
+    public void setAddTimeAsLong(Long seconds) {
+        this.addTime = Duration.ofSeconds(seconds);
+    }
 }

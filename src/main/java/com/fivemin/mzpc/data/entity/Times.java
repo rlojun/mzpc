@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -44,6 +46,12 @@ public class Times extends BaseTimeEntity {
     // Duration으로 변환하는 메서드
     public Duration getAddTimeAsDuration() {
         return Duration.ofSeconds(addTime);
+    }
+
+    public Times (){
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'M'HHMMyyyymmddss");
+        this.code = currentDateTime.format(formatter);
     }
 
 //    // Duration 덧셈 메서드 (아직 사용 x, 추후 사용 예정)
