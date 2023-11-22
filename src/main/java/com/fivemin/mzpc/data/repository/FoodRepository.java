@@ -9,10 +9,11 @@ import java.util.List;
 
 public interface FoodRepository extends JpaRepository<Food, Long> {
 
-    List<Food> findByCategoryName(String category);
+    @Query("SELECT food FROM Food food WHERE food.category.idx=?1")
+    List<Food> findByCategoryIdx(Long idx);
 
 
-    @Query("SELECT food FROM Food food WHERE food.category.idx = ?1")
-    List<Food> findByCategoryIdx(Long categoryIdx);
+    @Query("SELECT food FROM Food food WHERE food.category.name = ?1")
+    List<Food> findByCategoryIdx(String categoryName);
 
 }
