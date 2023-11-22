@@ -11,10 +11,8 @@ import java.util.List;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category,Long> {
 
-//    @Query("SELECT category FROM Category category where category.admin.idx = :adminIdx")
-//    List<Category> findByAdminIdx(Long adminIdx);
-//
-//    Category findByName(String name);
+    @Query("SELECT category.idx  FROM Category category WHERE category.name=?1")
+    Long findByName(String name);
 
     @Query("SELECT category FROM Category category WHERE category.store.idx = ?1 ")
     List<Category> findByStoreIdx(Long storeIdx);
