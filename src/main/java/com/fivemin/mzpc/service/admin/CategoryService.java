@@ -1,18 +1,18 @@
 package com.fivemin.mzpc.service.admin;
 
-import com.fivemin.mzpc.data.dto.AdminDto;
 import com.fivemin.mzpc.data.dto.CategoryDto;
 import com.fivemin.mzpc.data.dto.StoreDto;
-import com.fivemin.mzpc.data.entity.Admin;
 import com.fivemin.mzpc.data.entity.Category;
 import com.fivemin.mzpc.data.entity.Store;
-import com.fivemin.mzpc.data.repository.AdminRepository;
 import com.fivemin.mzpc.data.repository.CategoryRepository;
 import com.fivemin.mzpc.data.repository.StoreRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,36 +38,34 @@ public class CategoryService {
                         .code(store.getCode())
                         .build();
 
-
-        for(Category categorys: category) {
+        for(Category categories: category) {
             CategoryDto categoryDto = CategoryDto.builder()
-                            .idx(categorys.getIdx())
-                    .code(categorys.getCode())
-                    .name(categorys.getName())
-                    .storeDto(storeDto)
+                            .idx(categories.getIdx())
+                    .code(categories.getCode())
+                    .name(categories.getName())
                     .build();
             categoryList.add(categoryDto);
         }
 
-        log.info("cateogryList : {}", categoryList);
         return categoryList;
     }
-//
-////    public Category getCategoryIdx(String name) {
-////
-////        return categoryRepository.findByName(name);
-////    }
-//
-////    @Transactional
-//    public void addCategory(String categoryName, String adminCode) {
-//
-//
-//
-//    }
-//
-////    private String makeCode(){
-////        LocalDateTime currentTime = LocalDateTime.now();
-////        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHMMyyyymmddss");
-////        return null;
-////    }
+
+    @Transactional
+    public void addCategory(CategoryDto categoryDto, String storeCode) {
+       Store store = storeRepository.findByCode(storeCode);
+
+       Category category = Category.builder()
+               .code(makeCode())
+               .name(categoryDto.getName())
+               .store(store)
+               .build();
+
+       categoryRepository.save(category);
+    }
+
+    private String makeCode(){
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'C'HHMMyyyymmddss");
+        return currentDateTime.format(formatter);
+    }
 }

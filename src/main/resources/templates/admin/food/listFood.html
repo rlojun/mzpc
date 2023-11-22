@@ -81,7 +81,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav  mx-auto ">
                         <li class="nav-item active">
-                            <a class="nav-link" href="/admin/food">음식 상품 <span class="sr-only">(current)</span> </a>
+                            <a class="nav-link" href="/admin/{storeCode}/food(storeCode=${storeCode}})">음식 상품 <span class="sr-only">(current)</span> </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/admin/time">시간 상품 </a>
@@ -126,7 +126,7 @@
             </li>
         </ul>
 
-        <button type="button" th:onclick="|location.href='@{/{adminCode}/listcategory(adminCode=${adminCode})}'|">카테고리 관리</button>
+        <button type="button" th:onclick="|location.href='@{/{storeCode}/listcategory(storeCode=${storeCode})}'|">카테고리 관리</button>
         <button></button>
 
     </div>
