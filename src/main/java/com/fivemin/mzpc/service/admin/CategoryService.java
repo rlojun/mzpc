@@ -68,4 +68,24 @@ public class CategoryService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'C'HHMMyyyymmddss");
         return currentDateTime.format(formatter);
     }
+
+    public CategoryDto modifyCategoryForm(String storeCode, Long categoryIdx) {
+        Category category = categoryRepository.findByIdx(categoryIdx);
+
+        CategoryDto categoryDto = CategoryDto.builder()
+                .idx(category.getIdx())
+                .code(category.getCode())
+                .name(category.getName())
+                .build();
+
+        return categoryDto;
+    }
+
+    @Transactional
+    public void modifyCategory(CategoryDto categoryDto) {
+        categoryRepository.updateCategoryNameByIdx(categoryDto.getIdx(),categoryDto.getName());
+        log.info("name : {}", categoryDto.getName());
+        log.info("idx : {} ", categoryDto.getIdx());
+
+    }
 }

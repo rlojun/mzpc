@@ -30,13 +30,13 @@ public class CategoryController {
     private CategoryService categoryService;
 
     // 음식 카태고리가 뭐뭐 있는지 나타내고, 추가 수정 삭제에 따라 리스트가 바뀜
-    @GetMapping(value = "/listcategory")
+    @GetMapping(value = "/listCategory")
     public String listFoodCategory(@PathVariable String storeCode, Model model) {
 
         List<CategoryDto> listCategory = categoryService.getListCategory(storeCode);
         log.info("listCategory : {} ", listCategory);
 
-        model.addAttribute("listCateogry", listCategory);
+        model.addAttribute("listCategory", listCategory);
         model.addAttribute("storeCode", storeCode);
 
         return "/admin/category/listCategory";

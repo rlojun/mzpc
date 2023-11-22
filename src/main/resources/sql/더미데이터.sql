@@ -22,10 +22,10 @@ INSERT INTO members(member_idx,member_code,member_id,member_pw,member_name,membe
 #-------------------------------------------------------------------------------------------
 #Times
 
-INSERT INTO times(time_idx,time_code,time_name,add_time,time_price,save,admin_idx)VALUES
+INSERT INTO times(time_idx,time_code,time_name,add_time,time_price,save,store_idx)VALUES
 (1,413,'1시간',3600000,1200,FALSE,1);
 
-INSERT INTO times(time_idx, time_code,time_name,add_time,time_price,save,admin_idx)VALUES
+INSERT INTO times(time_idx, time_code,time_name,add_time,time_price,save,store_idx)VALUES
 (2,414,'5시간',3600000*5,5500,TRUE,1);
 
 #--------------------------------------------------------------------------------------------------
@@ -37,8 +37,8 @@ INSERT INTO time_purchase(time_purchase_idx,time_purchase_code,member_idx,time_i
 #-----------------------------------------------------------------------------------
 #MILEAGE_INFO 
 
-INSERT INTO mileage_info(mileage_idx, mileage_code, save_point, point_date, time_purchase_idx) VALUES
-(1,612, 20, NOW(), 1);
+INSERT INTO mileage_info(mileage_idx, mileage_code, mielage_date, use_mileage, time_purchase_idx) VALUES
+(1,612, NOW(), 1);
 
 
 INSERT INTO mileage_info(mileage_idx, mileage_code, save_point, point_date, time_purchase_idx) VALUES
@@ -60,14 +60,14 @@ INSERT INTO category VALUES
 
 #---------------------------------------------------------------------------------------
 #FOOD
-INSERT INTO food(food_idx, food_code, food_name, food_price, category_idx) VALUES
-(NULL,822, '진라면', 1200, 1);
+INSERT INTO food(food_idx, food_code, food_name, food_price,topping, category_idx) VALUES
+(NULL,822, '진라면', 1200, false ,1);
 
-INSERT INTO food(food_idx, food_code, food_name, food_price, category_idx) VALUES
-(NULL,821, '짜파게티',1300, 1);
+INSERT INTO food(food_idx, food_code, food_name, food_price,topping ,category_idx) VALUES
+(NULL,821, '짜파게티',1300, false ,1);
 
-INSERT INTO food(food_idx, food_code, food_name, food_price, category_idx)VALUES
-(NULL,823, '홈런볼', 900,2);
+INSERT INTO food(food_idx, food_code, food_name, food_price,topping, category_idx)VALUES
+(NULL,823, '홈런볼', 900,false, 2);
 
 
 

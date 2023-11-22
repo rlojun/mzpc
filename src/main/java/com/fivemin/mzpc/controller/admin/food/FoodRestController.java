@@ -46,4 +46,14 @@ public class FoodRestController {
 
         return ResponseEntity.ok("카테고리가 추가 되었습니다.");
     }
+    
+    @PutMapping(value = "/modifyCategory")
+    private ResponseEntity<String> modifyCategory(@RequestBody CategoryDto categoryDto) {
+
+        categoryService.modifyCategory(categoryDto);
+
+        log.info("categoryDto : {}",categoryDto);
+
+        return ResponseEntity.ok("이름이 변경되었습니다.");
+    }
 }
