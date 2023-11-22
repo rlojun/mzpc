@@ -88,4 +88,9 @@ public class CategoryService {
         log.info("idx : {} ", categoryDto.getIdx());
 
     }
+
+    public void deleteCategory(Long categoryIdx) {
+        categoryRepository.deleteById(categoryIdx);
+    }
+
 }
