@@ -27,7 +27,7 @@ public class Times extends BaseTimeEntity {
 
     //추가 시간
     @Column(name = "add_time",nullable = false)
-    private Duration addTime;
+    private Long addTime;
 
     //가격
     @Column(name = "time_price", nullable = false)
@@ -40,5 +40,20 @@ public class Times extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "store_idx",nullable = false)
     private Store store;
+
+    // Duration으로 변환하는 메서드
+    public Duration getAddTimeAsDuration() {
+        return Duration.ofSeconds(addTime);
+    }
+
+//    // Duration 덧셈 메서드 (아직 사용 x, 추후 사용 예정)
+//    public void addToAddTime(Duration additionalDuration) {
+//        this.addTime += additionalDuration.getSeconds();
+//    }
+//
+//    // Duration 뺄셈 메서드 (아직 사용 x, 추후 사용 예정)
+//    public void subtractFromAddTime(Duration subtractedDuration) {
+//        this.addTime -= subtractedDuration.getSeconds();
+//    }
 
 }
