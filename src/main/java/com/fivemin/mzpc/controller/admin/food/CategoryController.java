@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class CategoryController {
         log.info("listCategory : {} ", listCategory);
 
         model.addAttribute("listCateogry", listCategory);
-        model.addAttribute("adminCode", storeCode);
+        model.addAttribute("storeCode", storeCode);
 
         return "/admin/category/listCategory";
     }
@@ -47,6 +48,19 @@ public class CategoryController {
         return "/admin/category/addCategoryForm";
     }
 
+    @GetMapping(value = "/modifyCategoryForm")
+    public String modifyCategoryForm(@PathVariable String storeCode, @RequestParam Long categoryIdx, Model model) {
+
+        CategoryDto categoryDto = categoryService.modifyCategoryForm(storeCode,categoryIdx);
+
+        log.info("categoryDto : {} ", categoryDto);
+        log.info("storeCode : {}", storeCode);
+        log.info("categoryIdx : {}", categoryIdx);
+
+        model.addAttribute("categoryDto", categoryDto);
+
+        return "/admin/category/modifyCategoryForm";
+    }
 }
 
 /*
