@@ -1,49 +1,49 @@
-//package com.fivemin.mzpc.controller.admin.food;
-//
-//import com.fivemin.mzpc.data.entity.Food;
-//import com.fivemin.mzpc.service.admin.AdminCategoryService;
-//import com.fivemin.mzpc.service.admin.AdminFoodService;
-//import lombok.extern.slf4j.Slf4j;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.ui.Model;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.util.List;
-//
-//@RestController
-//@Slf4j
-//@RequestMapping(value = "/category")
-//public class FoodRestController {
-//
-//    private AdminFoodService adminFoodService;
-//
-//    private AdminCategoryService adminCategoryService;
-//
-//    @Autowired
-//    public FoodRestController(AdminFoodService adminFoodService, AdminCategoryService adminCategoryService){
-//        this.adminFoodService = adminFoodService;
-//        this.adminCategoryService = adminCategoryService;
-//    }
-//
-//    @GetMapping(value = "/food")
-//    private ResponseEntity<List<Food>> getListFood(@RequestParam("categoryName") String name,
-//                                               Model model){
-//
-//        List<Food> listFood = adminFoodService.getListFoodByName(name);
-//
-//        return ResponseEntity.ok(listFood);
-//    }
-//
-//    @PostMapping(value = "/addCategory")
-//    private ResponseEntity<String> addCategory(@RequestParam String categoryName,
-//                                               @RequestParam String adminCode) {
-//
-//        log.info("categoryName : {}",categoryName);
-//        log.info("adminCode : {}",adminCode);
-//
-//        adminCategoryService.addCategory(categoryName,adminCode);
-//
-//        return ResponseEntity.ok("success"+ categoryName);
-//    }
-//}
+package com.fivemin.mzpc.controller.admin.food;
+
+import com.fivemin.mzpc.data.dto.CategoryDto;
+import com.fivemin.mzpc.data.dto.FoodDto;
+import com.fivemin.mzpc.service.admin.CategoryService;
+import com.fivemin.mzpc.service.admin.FoodService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@Slf4j
+@RequestMapping(value = "/category")
+public class FoodRestController {
+
+    private FoodService foodService;
+
+    private CategoryService categoryService;
+
+    @Autowired
+    public FoodRestController(FoodService foodService, CategoryService categoryService){
+        this.foodService = foodService;
+        this.categoryService = categoryService;
+    }
+
+    @GetMapping(value = "/food")
+    private ResponseEntity< List<FoodDto>> getListFood(@RequestParam String categoryName){
+
+        log.info("getListFood() ==> ");
+
+        List<FoodDto> listFood = foodService.getListFoodByName(categoryName);
+
+        return ResponseEntity.ok(listFood);
+    }
+
+    @PostMapping(value = "/addCategory")
+    private ResponseEntity<String> addCategory(@RequestBody CategoryDto categoryDto,@RequestParam String storeCode) {
+
+        log.info("categoryName : {}",categoryDto);
+        log.info("storeCode:{}",storeCode);
+
+        categoryService.addCategory(categoryDto,storeCode);
+
+        return ResponseEntity.ok("카테고리가 추가 되었습니다.");
+    }
+}
