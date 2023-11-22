@@ -1,13 +1,15 @@
 package com.fivemin.mzpc.data.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Category{
 
     //카테고리 index
@@ -21,8 +23,7 @@ public class Category{
     private String code;
 
     //카테고리 이름
-    // 유니크 속성 추가하기
-    @Column(name = "category_name",nullable = false, length = 30)
+    @Column(name = "category_name",nullable = false, length = 100, unique = true)
     private String name;
 
     @ManyToOne

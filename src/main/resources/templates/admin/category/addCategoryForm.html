@@ -7,26 +7,31 @@
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script>
         function submitCategory() {
-            var categoryName = $('#addCategory').serialize();
-            var encodedCategoryName = encodeURIComponent(categoryName);
-            var adminCode = [[${adminCode}]];
-            $.ajax({
-                type : "post",
-                url : "http://localhost:9010/category/addCategory?adminCode="+ adminCode,
-                dataType: "text",
-                data: {"categoryName" : encodedCategoryName},
+            var categoryName = $('input[name="categoryName"]').val();
+            var storeCode = [[${storeCode}]];
+            var categoryDto = {
+                "idx": null,
+                "code": null,
+                "name": categoryName
+            };
 
-                success: function(data, textStatus) {
-                    alert("성공" + data);
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:9010/category/addCategory?storeCode=" + storeCode,
+                contentType: "application/json; charset=utf-8",
+                async : false,
+                data: JSON.stringify(categoryDto),
+                success: function(data) {
+                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food";
+                    alert(data);
+
                 },
-                error: function(xhr, textStatus, errorThrown) {
-                    alert("에러가 발생했습니다.");
-                },
-                complete: function(xhr, textStatus) {
-                    alert("작업을 완료 했습니다.");
+                error: function() {
+                    alert("이미 존재하는 카테고리입니다.")
                 }
             });
         }
+
     </script>
 
 </head>

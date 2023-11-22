@@ -12,5 +12,5 @@ public class CategoryDto {
     private Long idx;
     private String code;
     private String name;
-    private StoreDto storeDto;
+
 }

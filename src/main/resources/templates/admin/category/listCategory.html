@@ -10,12 +10,16 @@
         <tr>
             <th></th>
             <th>카테고리명</th>
+            <th>수정</th>
+            <th>삭제</th>
         </tr>
         <tr th:each="category, index : *{listCateogry}">
             <td th:text="${index.index + 1}">인덱스</td>
             <td th:text="${category.getName()}">카테고리명</td>
+            <td th:href=""></td>
+            <td></td>
         </tr>
     </table>
-    <button type="button" th:onclick="|location.href='@{/{adminCode}/addCategoryForm(adminCode=${adminCode})}'|">카테고리 추가</button>
+    <button type="button" th:onclick="|location.href='@{/{storeCode}/addCategoryForm(storeCode=${storeCode})}'|">카테고리 추가</button>
 </body>
 </html>
