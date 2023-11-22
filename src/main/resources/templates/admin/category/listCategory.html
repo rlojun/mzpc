@@ -13,7 +13,7 @@
             <th>수정</th>
             <th>삭제</th>
         </tr>
-        <tr th:each="category, index : *{listCateogry}">
+        <tr th:each="category, index : *{listCategory}">
             <td th:text="${index.index + 1}">인덱스</td>
             <td th:text="${category.getName()}">카테고리명</td>
             <td><button th:onclick="|location.href='@{/{storeCode}/modifyCategoryForm(storeCode=${storeCode}, categoryIdx=${category.idx})}'|">수정</button></td>
