@@ -2,19 +2,22 @@ package com.fivemin.mzpc.data.dto;
 
 import com.fivemin.mzpc.data.entity.Admin;
 import com.fivemin.mzpc.data.entity.Category;
-import lombok.Data;
+import lombok.*;
 
 @Data
+@Getter
+@Setter
+@AllArgsConstructor
+@Builder
 public class FoodDto {
 
-    private Long idx;
-    private String code;
-    private String name;
-    private String picture;
-    private Integer price;
-    private String description;
-    private Integer stock;
+    private final Long idx;
+    private final String code;
+    private final String name;
+    private final String picture;
+    private final Integer price;
+    private final String description;
+    private final Integer stock;
+    private final boolean topping;
     private Category category;
-    private Admin admin;
-
 }
