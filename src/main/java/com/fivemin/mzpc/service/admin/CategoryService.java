@@ -1,7 +1,6 @@
 package com.fivemin.mzpc.service.admin;
 
 import com.fivemin.mzpc.data.dto.CategoryDto;
-import com.fivemin.mzpc.data.dto.StoreDto;
 import com.fivemin.mzpc.data.entity.Category;
 import com.fivemin.mzpc.data.entity.Store;
 import com.fivemin.mzpc.data.repository.CategoryRepository;
@@ -34,10 +33,6 @@ public class CategoryService {
         List<Category> category = categoryRepository.findByStoreIdx(store.getIdx());
         List<CategoryDto> categoryList = new ArrayList<>();
 
-        StoreDto storeDto = StoreDto.builder()
-                        .code(store.getCode())
-                        .build();
-
         for(Category categories: category) {
             CategoryDto categoryDto = CategoryDto.builder()
                             .idx(categories.getIdx())
@@ -69,8 +64,8 @@ public class CategoryService {
         return currentDateTime.format(formatter);
     }
 
-    public CategoryDto modifyCategoryForm(String storeCode, Long categoryIdx) {
-        Category category = categoryRepository.findByIdx(categoryIdx);
+    public CategoryDto modifyCategoryForm(String categoryCode) {
+        Category category = categoryRepository.findByCode(categoryCode);
 
         CategoryDto categoryDto = CategoryDto.builder()
                 .idx(category.getIdx())
@@ -88,4 +83,9 @@ public class CategoryService {
         log.info("idx : {} ", categoryDto.getIdx());
 
     }
+
+    public void deleteCategory(Long categoryIdx) {
+        categoryRepository.deleteById(categoryIdx);
+    }
+
 }

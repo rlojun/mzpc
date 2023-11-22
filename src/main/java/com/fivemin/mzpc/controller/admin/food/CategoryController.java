@@ -49,18 +49,17 @@ public class CategoryController {
     }
 
     @GetMapping(value = "/modifyCategoryForm")
-    public String modifyCategoryForm(@PathVariable String storeCode, @RequestParam Long categoryIdx, Model model) {
+    public String modifyCategoryForm(@PathVariable String storeCode, @RequestParam String categoryCode, Model model) {
 
-        CategoryDto categoryDto = categoryService.modifyCategoryForm(storeCode,categoryIdx);
-
+        CategoryDto categoryDto = categoryService.modifyCategoryForm(categoryCode);
         log.info("categoryDto : {} ", categoryDto);
-        log.info("storeCode : {}", storeCode);
-        log.info("categoryIdx : {}", categoryIdx);
+        log.info("categoryIdx : {}", categoryCode);
 
         model.addAttribute("categoryDto", categoryDto);
-
+        model.addAttribute("storeCode",storeCode);
         return "/admin/category/modifyCategoryForm";
     }
+
 }
 
 /*

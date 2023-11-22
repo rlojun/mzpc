@@ -14,14 +14,14 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping(value = "/category")
-public class FoodRestController {
+public class CategoryRestController {
 
-    private FoodService foodService;
+    private final FoodService foodService;
 
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     @Autowired
-    public FoodRestController(FoodService foodService, CategoryService categoryService){
+    public CategoryRestController(FoodService foodService, CategoryService categoryService){
         this.foodService = foodService;
         this.categoryService = categoryService;
     }
@@ -55,5 +55,13 @@ public class FoodRestController {
         log.info("categoryDto : {}",categoryDto);
 
         return ResponseEntity.ok("이름이 변경되었습니다.");
+    }
+
+    @DeleteMapping(value = "deleteCategory")
+    private ResponseEntity<String> deleteCategory(@RequestBody Long categoryIdx) {
+
+        categoryService.deleteCategory(categoryIdx);
+
+        return ResponseEntity.ok("삭제되었습니다.");
     }
 }
