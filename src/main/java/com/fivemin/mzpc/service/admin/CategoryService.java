@@ -34,10 +34,6 @@ public class CategoryService {
         List<Category> category = categoryRepository.findByStoreIdx(store.getIdx());
         List<CategoryDto> categoryList = new ArrayList<>();
 
-        StoreDto storeDto = StoreDto.builder()
-                        .code(store.getCode())
-                        .build();
-
         for(Category categories: category) {
             CategoryDto categoryDto = CategoryDto.builder()
                             .idx(categories.getIdx())
