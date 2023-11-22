@@ -33,9 +33,9 @@ import java.util.List;
 @RequestMapping("/admin/{storeCode}/food") //관리자 pk
 public class AdminFoodController {
 
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
-    private AdminService adminService;
+    private final AdminService adminService;
 
     @Autowired
     public AdminFoodController(CategoryService categoryService, AdminService adminService){
