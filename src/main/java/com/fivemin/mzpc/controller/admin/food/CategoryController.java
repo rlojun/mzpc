@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Controller
 @Slf4j
-@RequestMapping("/{storeCode}") //관리자 pk
+@RequestMapping("/admin/{storeCode}") //관리자 pk
 public class CategoryController {
 
     @Autowired

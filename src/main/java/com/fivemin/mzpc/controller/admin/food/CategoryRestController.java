@@ -29,11 +29,9 @@ public class CategoryRestController {
     @GetMapping(value = "/food")
     private ResponseEntity< List<FoodDto>> getListFood(@RequestParam String categoryName){
 
-        log.info("getListFood() ==> ");
+        List<FoodDto> foods = foodService.getListFoodByName(categoryName);
 
-        List<FoodDto> listFood = foodService.getListFoodByName(categoryName);
-
-        return ResponseEntity.ok(listFood);
+        return ResponseEntity.ok(foods);
     }
 
     @PostMapping(value = "/addCategory")
