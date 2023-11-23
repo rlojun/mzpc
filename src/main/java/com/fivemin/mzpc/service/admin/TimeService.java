@@ -43,16 +43,6 @@ public class TimeService {
         return timeDtoList;
     }
 
-    private TimeDto convertToDto(Times times) {
-        return TimeDto.builder()
-                .code(times.getCode())
-                .name(times.getName())
-                .price(times.getPrice())
-                .addTime(times.getAddTimeAsDuration())
-                .save(times.isSave())
-                .build();
-    }
-
     // 상품 디테일 (상품 수정 폼)
     public Times detailTime(String timeCode){
         return timesRepository.findByCode(timeCode);
@@ -63,11 +53,22 @@ public class TimeService {
         Times updateTime = timesRepository.findByCode(timeCode);
 
         updateTime.setName(timeDto.getName());
-        updateTime.setAddTime(timeDto.getAddTimeAsLong());
+        updateTime.setAddTime(timeDto.getAddTime());
         updateTime.setPrice(timeDto.getPrice());
         updateTime.setSave(timeDto.isSave());
 
         Times updatedTime = timesRepository.save(updateTime);
+        log.info("updateTime : ===>>", updateTime);
         return convertToDto(updatedTime);
+    }
+
+    private TimeDto convertToDto(Times times) {
+        return TimeDto.builder()
+                .code(times.getCode())
+                .name(times.getName())
+                .price(times.getPrice())
+                .addTime(times.getAddTime())
+                .save(times.isSave())
+                .build();
     }
 }
