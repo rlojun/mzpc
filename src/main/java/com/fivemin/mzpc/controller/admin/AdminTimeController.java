@@ -46,7 +46,6 @@ public class AdminTimeController {
     public String addTimeForm(@PathVariable String storeCode,
                               Model model) {
         model.addAttribute("storeCode", storeCode);
-        model.addAttribute("timeDto", new TimeDto());
         return "admin/time/addTime";
     }
 
@@ -85,6 +84,7 @@ public class AdminTimeController {
     public String deleteTime(@PathVariable String timeCode,
                              @PathVariable String storeCode,
                              Model model) {
+        log.info("timeCode : {}" , timeCode);
         model.addAttribute("storeCode", storeCode);
         timeService.deleteTime(timeCode);
         return String.format("redirect:/admin/%s/time/listTime", storeCode);
