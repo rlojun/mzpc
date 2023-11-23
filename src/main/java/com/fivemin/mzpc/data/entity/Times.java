@@ -3,9 +3,12 @@ package com.fivemin.mzpc.data.entity;
 import com.fivemin.mzpc.data.entity.base.BaseTimeEntity;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -27,7 +30,8 @@ public class Times extends BaseTimeEntity {
 
     //추가 시간
     @Column(name = "add_time",nullable = false)
-    private Long addTime;
+    @DateTimeFormat(pattern = "HH:mm:ss")
+    private LocalTime addTime;
 
     //가격
     @Column(name = "time_price", nullable = false)
@@ -41,10 +45,24 @@ public class Times extends BaseTimeEntity {
     @JoinColumn(name = "store_idx",nullable = false)
     private Store store;
 
-    // Duration으로 변환하는 메서드
-    public Duration getAddTimeAsDuration() {
-        return Duration.ofSeconds(addTime);
+//    // Duration으로 변환하는 메서드
+//    public Duration getAddTimeAsDuration() {
+//        return Duration.ofSeconds(addTime);
+//    }
+
+    public Times (){
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'M'HHMMyyyymmddss");
+        this.code = currentDateTime.format(formatter);
     }
+
+    public void setAddTime(LocalTime addTime) {
+        this.addTime = addTime;
+    }
+//
+//    public void getAddTime(LocalTime addTime){
+//        this.addTime = addTime;
+//    }
 
 //    // Duration 덧셈 메서드 (아직 사용 x, 추후 사용 예정)
 //    public void addToAddTime(Duration additionalDuration) {

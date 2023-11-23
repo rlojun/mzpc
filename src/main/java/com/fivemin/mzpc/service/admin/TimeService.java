@@ -27,6 +27,7 @@ public class TimeService {
         this.storeRepository = storeRepository;
     }
 
+    // 상품 리스트
     public List<TimeDto> listTime(String storeCode) {
         Store store = storeRepository.findByCode(storeCode);
         List<Times> timesList = timesRepository.findByStore(store);
@@ -42,17 +43,32 @@ public class TimeService {
         return timeDtoList;
     }
 
+    // 상품 디테일 (상품 수정 폼)
+    public Times detailTime(String timeCode){
+        return timesRepository.findByCode(timeCode);
+    }
+
+    // 상품 수정
+    public TimeDto updateTime(String timeCode, TimeDto timeDto){
+        Times updateTime = timesRepository.findByCode(timeCode);
+
+        updateTime.setName(timeDto.getName());
+        updateTime.setAddTime(timeDto.getAddTime());
+        updateTime.setPrice(timeDto.getPrice());
+        updateTime.setSave(timeDto.isSave());
+
+        Times updatedTime = timesRepository.save(updateTime);
+        log.info("updateTime : ===>>", updateTime);
+        return convertToDto(updatedTime);
+    }
+
     private TimeDto convertToDto(Times times) {
         return TimeDto.builder()
                 .code(times.getCode())
                 .name(times.getName())
                 .price(times.getPrice())
-                .addTime(times.getAddTimeAsDuration())
+                .addTime(times.getAddTime())
                 .save(times.isSave())
                 .build();
-    }
-
-    public Times DetailTime(String timeCode){
-        return timesRepository.findByCode(timeCode);
     }
 }
