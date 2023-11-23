@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>음식 추가</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+        function submitFoodInfo() {
+            var selectElement = document.getElementById('categoryName');
+            var categoryCode = selectElement.value;
+            var storeCode = [[${storeCode}]];
+            var foodDto = {
+                "idx" : null,
+                "code" : null,
+                "name" : $('input[name="foodName"]').val(),
+                "picture" : $('input[name="foodPicture"]').val(),
+                "price" : $('input[name="foodPrice"]').val(),
+                "description" : $('input[name="description"]').val(),
+                "stock" : $('input[name="stock"]').val(),
+                "topping" : null
+            };
+
+            $.ajax({
+                /* 기본설정 */
+                type: "POST",
+                async: false,
+                url: "http://localhost:9010/food/addFood?categoryCode=" + categoryCode,
+                contentType : "application/json",
+                data: JSON.stringify(foodDto),
+                success: function(data) {
+                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food";
+                    alert(data)
+                },
+                error: function() {
+                    alert("에러가 발생했습니다.")
+                }
+            });
+        }
+    </script>
+
+</head>
+<!--나중에 이미지 파일 업로드 해야 함-->
+<body>
+    <form id="addFood">
+        <label for="foodName">음식명</label> : <input type="text" id="foodName" name="foodName" required>
+        <br>
+        <label for="foodPrice">가격</label>  : <input type="text" id="foodPrice" name="foodPrice" required>
+        <br>
+        <label for="categoryName">카테고리</label>  :
+            <select id="categoryName" name="selectCategory">
+                <option th:each=" category : ${categories}" th:value="${category.getCode()}" th:text="${category.getName()}"></option>
+            </select>
+        <br>
+        <label for="foodPicture">이미지</label>  : <input type="text" id="foodPicture" name="foodPricture">
+        <br>
+        <label for="description">설명</label> : <br>
+        <textarea id="description" name="description" rows="4" cols="50" placeholder="설명을 입력하세요."></textarea>
+        <br>
+        <label for="stock">재고</label> : <input type="text" id="stock" name="stock" required>
+        <br>
+        <button th:onclick="submitFoodInfo()">음식 추가</button>
+        <input type="reset">
+    </form>
+</body>
+</html>
