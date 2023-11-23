@@ -45,11 +45,6 @@ public class Times extends BaseTimeEntity {
     @JoinColumn(name = "store_idx",nullable = false)
     private Store store;
 
-//    // Duration으로 변환하는 메서드
-//    public Duration getAddTimeAsDuration() {
-//        return Duration.ofSeconds(addTime);
-//    }
-
     public Times (){
         LocalDateTime currentDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'M'HHMMyyyymmddss");
@@ -59,19 +54,4 @@ public class Times extends BaseTimeEntity {
     public void setAddTime(LocalTime addTime) {
         this.addTime = addTime;
     }
-//
-//    public void getAddTime(LocalTime addTime){
-//        this.addTime = addTime;
-//    }
-
-//    // Duration 덧셈 메서드 (아직 사용 x, 추후 사용 예정)
-//    public void addToAddTime(Duration additionalDuration) {
-//        this.addTime += additionalDuration.getSeconds();
-//    }
-//
-//    // Duration 뺄셈 메서드 (아직 사용 x, 추후 사용 예정)
-//    public void subtractFromAddTime(Duration subtractedDuration) {
-//        this.addTime -= subtractedDuration.getSeconds();
-//    }
-
 }
