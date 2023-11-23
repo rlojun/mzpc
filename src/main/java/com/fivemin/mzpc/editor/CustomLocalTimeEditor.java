@@ -1,4 +1,4 @@
-package com.fivemin.mzpc.config;
+package com.fivemin.mzpc.editor;
 
 import org.apache.commons.lang3.StringUtils;
 

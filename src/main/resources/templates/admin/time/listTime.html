@@ -90,14 +90,13 @@
                 <div class="why-box">
                     <h3>상품 추가하기</h3>
                     <div class="text-center">
-                        <a href="#" class="more-btn">상품 추가 <i class="bx bx-chevron-right"></i></a>
+                        <a th:href="@{/admin/{storeCode}/time/addTime(storeCode=${storeCode})}" class="more-btn">상품 추가 <i class="bx bx-chevron-right"></i></a>
                     </div>
                 </div>
             </div><!-- End Why Box -->
 
             <div class="col-lg-8 d-flex align-items-center">
                 <div class="row gy-4">
-
                     <div class="col-xl-4" style="width: 300px;" data-aos="fade-up" data-aos-delay="200" th:each="timeDto : ${listTime}">
                         <div class="icon-box d-flex flex-column justify-content-center align-items-center" style="height: 200px;">
                             <i class="bi bi-gem"></i>
@@ -106,7 +105,7 @@
                             <p th:text="'저장유무 : ' + ${timeDto.save}"></p>
                             <div>
                                 <a th:href="@{/admin/{storeCode}/time/modifyTime/{timeCode}(storeCode=${storeCode}, timeCode=${timeDto.code})}">수정</a>
-                                <a href="">삭제</a>
+                                <a th:href="@{/admin/{storeCode}/time/deleteTime/{timeCode}(storeCode=${storeCode}, timeCode=${timeDto.code})}">삭제</a>
                             </div>
                         </div>
                     </div><!-- End Icon Box -->
