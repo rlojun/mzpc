@@ -1,6 +1,6 @@
 package com.fivemin.mzpc.controller.admin;
 
-import com.fivemin.mzpc.config.CustomLocalTimeEditor;
+import com.fivemin.mzpc.editor.CustomLocalTimeEditor;
 import com.fivemin.mzpc.data.dto.TimeDto;
 import com.fivemin.mzpc.data.entity.Times;
 import com.fivemin.mzpc.service.admin.TimeService;
@@ -43,24 +43,21 @@ public class AdminTimeController {
 
     // 시간 상품 등록 폼 이동
     @GetMapping("/addTime")
-    public String addTimeForm() {
-
+    public String addTimeForm(@PathVariable String storeCode,
+                              Model model) {
+        model.addAttribute("storeCode", storeCode);
         return "admin/time/addTime";
     }
 
     // 시간 상품 등록 기능
     @PostMapping("/addTime")
-    public String addTime() {
-
-        return "redirect:/{adminId}/time/listTime";
+    public String addTime(@PathVariable String storeCode,
+                          @ModelAttribute TimeDto timeDto,
+                          Model model) {
+        timeService.createTime(timeDto, storeCode);
+        model.addAttribute("storeCode", storeCode);
+        return String.format("redirect:/admin/%s/time/listTime", storeCode);
     }
-
-//    // 시간 상품 상세보기
-//    @GetMapping("/detailTime/{timeId}")
-//    public String detailTime(){
-//
-//        return "admin/time/detailTime";
-//    }
 
     // 해당 시간 상품 수정폼 으로 이동
     @GetMapping("/modifyTime/{timeCode}")
@@ -77,18 +74,20 @@ public class AdminTimeController {
     @PostMapping("/modifyTime/{timeCode}")
     public String modifyTime(@PathVariable String storeCode, @PathVariable String timeCode,
                              @ModelAttribute TimeDto timeDto, Model model) {
-        log.info("modifyTime");
         timeService.updateTime(timeCode, timeDto);
         model.addAttribute("storeCode", storeCode);
-        log.info("storeCode==========>>", storeCode);
         return String.format("redirect:/admin/%s/time/listTime", storeCode);
     }
 
     // 시간 상품 삭제 기능
-    @GetMapping("/deleteTime")
-    public String deleteTime() {
-
-        return "redirect:/{adminId}/time/listTime";
+    @GetMapping("/deleteTime/{timeCode}")
+    public String deleteTime(@PathVariable String timeCode,
+                             @PathVariable String storeCode,
+                             Model model) {
+        log.info("timeCode : {}" , timeCode);
+        model.addAttribute("storeCode", storeCode);
+        timeService.deleteTime(timeCode);
+        return String.format("redirect:/admin/%s/time/listTime", storeCode);
     }
 
     @InitBinder
