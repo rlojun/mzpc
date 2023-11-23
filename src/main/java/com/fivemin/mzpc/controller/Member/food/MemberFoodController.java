@@ -1,27 +1,19 @@
 package com.fivemin.mzpc.controller.Member.food;
 
-import com.fivemin.mzpc.data.entity.Category;
-import com.fivemin.mzpc.data.entity.Food;
-// import com.fivemin.mzpc.service.CategoryService;
-// import com.fivemin.mzpc.service.FoodService;
+import com.fivemin.mzpc.data.dto.MenuDto;
 import com.fivemin.mzpc.service.member.CategoryService;
 import com.fivemin.mzpc.service.member.FoodService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /*
@@ -47,37 +39,48 @@ public class  MemberFoodController {
     @GetMapping("/listFood")
     public ModelAndView listFoodMember(Model model, @PathVariable (required = false) String storeName, HttpSession httpSession) {
         String validStoreName = (String) httpSession.getAttribute("storeName");
-        Long validStoreId = (Long) httpSession.getAttribute("storeId");
-
-        model.addAttribute("storeId", validStoreId);
+        // String validStoreCode = (String) httpSession.getAttribute("storeCode");
         model.addAttribute("storeName", validStoreName);
+        // model.addAttribute("storeCode", validStoreCode);
+        log.info("MemberFoodController: validStoreName = {} ", validStoreName);
+        // log.info("MemberFoodController: validStoreCode = {} ", validStoreCode);
 
-        log.info("validStoreName {} " , validStoreName);
-        log.info("validStoreId {} " , validStoreId);
+        if (validStoreName != null) {
+            log.info("MemberFoodController: Attempt to get All Categories");
+//            List<CategoryDto> foodCategories = categoryService.getListCategory(storeName);
+//            model.addAttribute("foodCategories", foodCategories);
+//            log.info("Controller: Categories: {}", foodCategories);
+//            List<FoodDto> foodList = foodService.getListFood(storeName);
+//            model.addAttribute("foodList", foodList);
+//            log.info("Controller: FoodList: {}", foodList);
+//            model.addAttribute("foodList", foodList);
 
-        if (validStoreId == null) {
-            model.addAttribute("errorMessage", "로그인 부탁드립니다.");
-            return new ModelAndView(new RedirectView("/"));
-        } else {
+            List<MenuDto> menuDtoList = foodService.getListMenu(storeName);
+            model.addAttribute("menuDtoList", menuDtoList);
+            log.info("Controller: Menu {}", menuDtoList);
 
-            List<Category> foodCategories = categoryService.getAllCategories();
-            model.addAttribute("foodCategories", foodCategories);
+            // test
+            List<String> menuDtoCategories = menuDtoList.stream()
+                    .map(MenuDto::getCategoryName)
+                    .distinct()
+                    .collect(Collectors.toList());
 
-            return new ModelAndView("members/food/listFood");
+            model.addAttribute("menuDtoCategories", menuDtoCategories);
+        }
 
-      }
+        return new ModelAndView("members/food/listFood");
     }
 
 
-    @GetMapping("/{category}")
-    public String listFoodCategory(@PathVariable (required = false) String storeName, @PathVariable String category, Model model) {
-        List<Food> foodList = foodService.getFoodByCategory(category);
-        List<Category> foodCategories = categoryService.getAllCategories();
-        model.addAttribute("foodList", foodList);
-        model.addAttribute("foodCategories", foodCategories);
-
-        return "members/food/listFood";
-    }
+//    @GetMapping("/{category}")
+//    public String listFoodCategory(@PathVariable (required = false) String storeName, @PathVariable String category, Model model) {
+//        List<Food> foodList = foodService.getFoodByCategory(category);
+//        List<Category> foodCategories = categoryService.getAllCategories();
+//        model.addAttribute("foodList", foodList);
+//        model.addAttribute("foodCategories", foodCategories);
+//
+//        return "members/food/listFood";
+//    }
 //
 //    // @GetMapping("/favorites")
 //    // public String listFoodFavorites() {

@@ -36,7 +36,7 @@ public class CategoryController {
         List<CategoryDto> listCategory = categoryService.getListCategory(storeCode);
         log.info("listCategory : {} ", listCategory);
 
-        model.addAttribute("listCateogry", listCategory);
+        model.addAttribute("listCategroy", listCategory);
         model.addAttribute("storeCode", storeCode);
 
         return "/admin/category/listCategory";
@@ -48,19 +48,19 @@ public class CategoryController {
         return "/admin/category/addCategoryForm";
     }
 
-    @GetMapping(value = "/modifyCategoryForm")
-    public String modifyCategoryForm(@PathVariable String storeCode, @RequestParam Long categoryIdx, Model model) {
-
-        CategoryDto categoryDto = categoryService.modifyCategoryForm(storeCode,categoryIdx);
-
-        log.info("categoryDto : {} ", categoryDto);
-        log.info("storeCode : {}", storeCode);
-        log.info("categoryIdx : {}", categoryIdx);
-
-        model.addAttribute("categoryDto", categoryDto);
-
-        return "/admin/category/modifyCategoryForm";
-    }
+//    @GetMapping(value = "/modifyCategoryForm")
+//    public String modifyCategoryForm(@PathVariable String storeCode, @RequestParam Long categoryIdx, Model model) {
+//
+//        CategoryDto categoryDto = categoryService.modifyCategoryForm(storeCode,categoryIdx);
+//
+//        log.info("categoryDto : {} ", categoryDto);
+//        log.info("storeCode : {}", storeCode);
+//        log.info("categoryIdx : {}", categoryIdx);
+//
+//        model.addAttribute("categoryDto", categoryDto);
+//
+//        return "/admin/category/modifyCategoryForm";
+//    }
 }
 
 /*

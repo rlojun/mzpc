@@ -1,14 +1,9 @@
 package com.fivemin.mzpc.service.admin;
 
-import com.fivemin.mzpc.data.dto.CategoryDto;
 import com.fivemin.mzpc.data.dto.FoodDto;
-import com.fivemin.mzpc.data.entity.Admin;
-import com.fivemin.mzpc.data.entity.Category;
 import com.fivemin.mzpc.data.entity.Food;
-import com.fivemin.mzpc.data.repository.AdminRepository;
 import com.fivemin.mzpc.data.repository.CategoryRepository;
 import com.fivemin.mzpc.data.repository.FoodRepository;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,9 +25,9 @@ public class FoodService {
         Long categoryIdx = categoryRepository.findByName(categoryName);
         log.info("categoryIdx :{} ",categoryIdx);
         List<Food> foodList = foodRepository.findByCategoryIdx(categoryIdx);
-       List<FoodDto> foodDtoList = new ArrayList<>();
+        List<FoodDto> foodDtoList = new ArrayList<>();
 
-       log.info("foodList : {} ",foodList);
+        log.info("foodList : {} ",foodList);
 
         for(Food foods : foodList) {
             FoodDto foodDto = FoodDto.builder()

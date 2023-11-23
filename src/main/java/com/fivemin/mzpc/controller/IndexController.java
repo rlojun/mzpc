@@ -18,19 +18,19 @@ public class IndexController {
 
     @GetMapping("/")
     public String index() {
-        log.info("index() ==>");
+        log.info("indexController: index() ==>");
         return "index";
     }
 
     @GetMapping("/members/{storeName}")
     public String memberIndex(@PathVariable(required = false) String storeName) {
-        log.info("memberIndex() ==>");
+        log.info("IndexController: memberIndex() ==>");
 
         HttpSession httpSession = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getSession();
 
         if (storeName != null) {
             String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
-            log.info("Encoded storeName: {} ", encodedStoreName);
+            log.info("IndexController: Encoded storeName: {} ", encodedStoreName);
 
             if (!encodedStoreName.equals(httpSession.getAttribute("currentUrl"))) {
                 httpSession.setAttribute("currentUrl", encodedStoreName);

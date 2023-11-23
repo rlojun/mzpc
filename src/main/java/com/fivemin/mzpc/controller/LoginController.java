@@ -3,7 +3,6 @@ package com.fivemin.mzpc.controller;
 import com.fivemin.mzpc.data.dto.AuthDto;
 import com.fivemin.mzpc.data.entity.Admin;
 import com.fivemin.mzpc.data.entity.Members;
-import com.fivemin.mzpc.data.entity.Store;
 import com.fivemin.mzpc.service.LoginService;
 import com.fivemin.mzpc.service.email.EmailService;
 import com.fivemin.mzpc.service.email.VerificationCodeUtil;
@@ -15,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -102,9 +102,11 @@ public class LoginController {
             session.setAttribute("pw", members.getPw());
 
             String storeName = members.getStore().getName();
-            Long storeId = members.getStore().getIdx();
-            session.setAttribute("storeId", storeId);
+            String storeCode = members.getStore().getCode();
+
             String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
+
+            session.setAttribute("storeCode", storeCode);
             session.setAttribute("storeName", encodedStoreName);
             model.addAttribute("storeName", encodedStoreName);
             // url 리펙토링 필요!
