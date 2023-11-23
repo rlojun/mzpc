@@ -32,7 +32,7 @@
 
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script>
-        function clickFood(element) {
+        function clickCategory(element) {
             var categoryName = element.querySelector('span').innerText;
             $.ajax({
                 /* 기본설정 */
@@ -68,12 +68,11 @@
         <div class="container">
             <nav class="navbar navbar-expand-lg custom_nav-container ">
                 <a class="navbar-brand" href="test/index">
-            <span>
-                {store name}
-                Welcome {admin123458}
-            </span>
+                    <span th:text="${storeName}"></span>
                 </a>
-
+                <div class="adminName">
+                    관리자 : <span th:text="${adminName}"></span>
+                </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class=""> </span>
                 </button>
@@ -81,10 +80,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav  mx-auto ">
                         <li class="nav-item active">
-                            <a class="nav-link" href="/admin/{storeCode}/food(storeCode=${storeCode}})">음식 상품 <span class="sr-only">(current)</span> </a>
+                            <a class="nav-link" th:href="@{/admin/{storeCode}/food(storeCode=${storeCode})}">음식 상품 <span class="sr-only">(current)</span> </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/admin/time">시간 상품 </a>
+                            <a class="nav-link" th:href="@{/admin/{storeCode}/time/listTime(storeCode=${storeCode})}">시간 상품</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/admin/order">주문 목록</a>
@@ -116,7 +115,7 @@
         </div>
         <ul class="filters_menu">
             <li class="active" data-filter="*">All</li>
-            <li th:each="categorys : ${listCategory}" onclick="clickFood(this)">
+            <li th:each="categorys : ${listCategory}" onclick="clickCategory(this)">
                 <span th:text="${categorys.getName()}" ></span>
             </li>
         </ul>
@@ -126,8 +125,8 @@
             </li>
         </ul>
 
-        <button type="button" th:onclick="|location.href='@{/{storeCode}/listcategory(storeCode=${storeCode})}'|">카테고리 관리</button>
-        <button></button>
+        <button th:onclick="|location.href='@{/{storeCode}/listCategory(storeCode=${storeCode})}'|">카테고리 관리</button>
+        <button th:onclick="|location.href='@{/admin/{storeCode}/addFoodForm(storeCode=${storeCode})}'|">음식 추가</button>
 
     </div>
 </section>

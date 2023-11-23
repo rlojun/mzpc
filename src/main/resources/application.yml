@@ -28,6 +28,11 @@ spring:
     cache: false
     mode: HTML
 
+logging:
+  level:
+    com:
+      fivemin: DEBUG
+
 # email
 
 mail:

@@ -7,12 +7,12 @@ import java.util.List;
 
 public interface FoodRepository extends JpaRepository<Food, Long> {
 
-    @Query("SELECT food FROM Food food WHERE food.category.idx = ?1")
-    List<Food> findByCategoryIdx(Long categoryIdx);
+    @Query("SELECT food FROM Food food WHERE food.category.idx=?1")
+    List<Food> findByCategoryIdx(Long idx);
+
 
     @Query("SELECT food FROM Food food WHERE food.category.name = ?1")
     List<Food> findByCategoryName(String categoryName);
-//    List<Food> findByCategoryName(List<String> categoryName);
 
 
     @Query("SELECT food FROM Food food WHERE food.category.store.name = ?1 ")

@@ -1,7 +1,11 @@
 package com.fivemin.mzpc.controller.admin.food;
 
+import com.fivemin.mzpc.data.dto.AdminDto;
 import com.fivemin.mzpc.data.dto.CategoryDto;
+import com.fivemin.mzpc.data.dto.StoreDto;
+import com.fivemin.mzpc.service.admin.AdminService;
 import com.fivemin.mzpc.service.admin.CategoryService;
+import com.fivemin.mzpc.service.admin.FoodService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,41 +31,44 @@ import java.util.List;
  */
 @Controller
 @Slf4j
-@RequestMapping("/admin/{storeCode}/food") //관리자 pk
+@RequestMapping("/admin/{storeCode}") //관리자 pk
 public class AdminFoodController {
 
-//    @GetMapping
-//    public String AdminListFood(){
-//        return "/admin/food/listFood";
-//    }
+    private final CategoryService categoryService;
 
+    private final AdminService adminService;
 
-    private CategoryService categoryService;
+    private final FoodService foodService;
 
     @Autowired
-    public AdminFoodController(CategoryService categoryService){
+    public AdminFoodController(CategoryService categoryService, AdminService adminService, FoodService foodService){
         this.categoryService = categoryService;
+        this.adminService = adminService;
+        this.foodService = foodService;
     }
 
-    @GetMapping
+    @GetMapping(value = "/food")
     public String listCategory(@PathVariable String storeCode, Model model){
         List<CategoryDto> listCategory = categoryService.getListCategory(storeCode);
-
-        log.info("listCategory : {}", listCategory);
+        StoreDto storeDto = categoryService.getStore(storeCode);
+        AdminDto adminDto =adminService.getAdminName(storeDto.getIdx());
 
         model.addAttribute("listCategory",listCategory);
+        model.addAttribute("storeName",storeDto.getName());
+        model.addAttribute("adminName",adminDto.getName());
+
         return "/admin/food/listFood";
     }
-//
-//    private String makeCode(){
-//        LocalDateTime currentDateTime=LocalDateTime.now();
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'M'HHMMyyyymmddss");
-//
-//        return currentDateTime.format(formatter);
-//    }
-//
-//
-//    // 카테고리별 음상 상품 리스트
+
+    @GetMapping(value = "/addFoodForm")
+    public String addFoodForm(@PathVariable String storeCode, Model model){
+        List<CategoryDto> categoryDtos = categoryService.getListCategory(storeCode);
+        model.addAttribute("storeCode", storeCode);
+        model.addAttribute("categories",categoryDtos);
+        return "/admin/food/addFoodForm";
+    }
+
+    //    // 카테고리별 음상 상품 리스트
 //    @GetMapping("/{categoryId}")
 //    public String listFoodCategory() {
 //        return "";

@@ -159,32 +159,31 @@
         </div>
 
         <ul class="filters_menu">
-<!--            <li class="active" data-category="all">All</li>-->
-<!--            <li th:each="category : ${menuDtoCategories}" th:text="${category}"-->
-<!--                data-category="${category}"></li>-->
             <li class="active" data-filter="*">All</li>
-            <li th:each="category : ${menuDtoCategories}" th:text="${category}" th:data-filter="''.''+${category}"></li>
+            <li th:each="categoryName : ${menuDtoCategories}" th:text="${categoryName}"
+                th:data-filter="'.' + ${categoryName}"></li>
         </ul>
 
         <div class="filters-content">
             <div class="row grid">
-                <div th:each="categoryNames: ${menuDtoCategories}" class="col-sm-6 col-lg-4 all ${category}">
-<!--                    <div th:each="categoryNames: ${menuDtoCategories}" class="col-sm-6 col-lg-4 all ${category}" data-category="${categoryNames}">-->
+                <div th:each="categoryName: ${menuDtoCategories}" class="col-sm-6 col-lg-4 all"
+                     th:classappend="${categoryName}">
                     <div class="box">
-                        <div th:each="menu : ${menuDtoList}" th:if="${menu.categoryName == categoryNames}">
+                        <div th:each="menu : ${menuDtoList}" th:if="${menu.categoryName == categoryName}">
                             <div class="img-box">
-                                <div class="options top-left">
-                                    <a href="">
-                                        <i class="material-icons">grade</i>
-                                    </a>
-                                </div>
-<!--                                <img th:src="${menu.picture}" alt="">-->
+                                <img th:src="${menu.picture}" alt="">
                             </div>
                             <div class="detail-box">
                                 <h5 th:text="${menu.name}"/>
                                 <p th:text="${menu.description}"/>
                                 <div class="options">
-                                    <h6 th:text="${menu.price}"/>
+                                    <h6 th:text="${menu.price + '원'}"/>
+                                    <a href="">
+                                        <i class="material-icons">add</i>
+                                    </a>
+                                    <a href="">
+                                        <i class="material-icons">grade</i>
+                                    </a>
                                     <a href="">
                                         <i class="material-icons">add_shopping_cart</i>
                                     </a>

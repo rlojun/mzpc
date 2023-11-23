@@ -9,12 +9,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AdminRepository extends JpaRepository<Admin, Long> {
     Admin findById(String id);
-//    Admin findByIdAndPw(String adminId, String adminPw);
 
-    Admin findByCode(String adminCode);
-
-//    @Query("SELECT admin.idx FROM Admin admin WHERE admin.code = ?1")
-//    Long findByCode(String code);
-
+    @Query("SELECT admin FROM Admin admin WHERE admin.store.idx = ?1 ")
+    Admin findByStoreIdx(Long storeIdx);
 
 }

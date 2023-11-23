@@ -1,6 +1,7 @@
 package com.fivemin.mzpc.service.admin;
 
 import com.fivemin.mzpc.data.dto.FoodDto;
+import com.fivemin.mzpc.data.entity.Category;
 import com.fivemin.mzpc.data.entity.Food;
 import com.fivemin.mzpc.data.repository.CategoryRepository;
 import com.fivemin.mzpc.data.repository.FoodRepository;
@@ -8,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,19 +18,22 @@ import java.util.List;
 @Slf4j
 public class FoodService {
 
-    @Autowired
-    private FoodRepository foodRepository;
+    private final FoodRepository foodRepository;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    public FoodService(FoodRepository foodRepository, CategoryRepository categoryRepository) {
+        this.foodRepository = foodRepository;
+        this.categoryRepository = categoryRepository;
+    }
 
     public List<FoodDto> getListFoodByName(String categoryName) {
         Long categoryIdx = categoryRepository.findByName(categoryName);
         log.info("categoryIdx :{} ",categoryIdx);
         List<Food> foodList = foodRepository.findByCategoryIdx(categoryIdx);
-        List<FoodDto> foodDtoList = new ArrayList<>();
+       List<FoodDto> foodDtoList = new ArrayList<>();
 
-        log.info("foodList : {} ",foodList);
+       log.info("foodList : {} ",foodList);
 
         for(Food foods : foodList) {
             FoodDto foodDto = FoodDto.builder()
@@ -46,4 +52,27 @@ public class FoodService {
         return foodDtoList;
     }
 
+    public void addFood(FoodDto foodDto, String categoryCode) {
+        Category category = categoryRepository.findByCode(categoryCode);
+
+        Food food = Food.builder()
+                .idx(foodDto.getIdx())
+                .code(makeCode())
+                .name(foodDto.getName())
+                .picture(foodDto.getPicture())
+                .price(foodDto.getPrice())
+                .description(foodDto.getDescription())
+                .stock(foodDto.getStock())
+                .topping(foodDto.isTopping())
+                .category(category)
+                .build();
+
+        foodRepository.save(food);
+    }
+
+    private String makeCode(){
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'F'HHMMyyyymmddss");
+        return currentDateTime.format(formatter);
+    }
 }

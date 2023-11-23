@@ -30,13 +30,13 @@ public class CategoryController {
     private CategoryService categoryService;
 
     // 음식 카태고리가 뭐뭐 있는지 나타내고, 추가 수정 삭제에 따라 리스트가 바뀜
-    @GetMapping(value = "/listcategory")
+    @GetMapping(value = "/listCategory")
     public String listFoodCategory(@PathVariable String storeCode, Model model) {
 
         List<CategoryDto> listCategory = categoryService.getListCategory(storeCode);
         log.info("listCategory : {} ", listCategory);
 
-        model.addAttribute("listCategroy", listCategory);
+        model.addAttribute("listCategory", listCategory);
         model.addAttribute("storeCode", storeCode);
 
         return "/admin/category/listCategory";
@@ -46,6 +46,18 @@ public class CategoryController {
     public String addFoodCategoryForm(@PathVariable String storeCode, Model model) {
         model.addAttribute("storeCode", storeCode);
         return "/admin/category/addCategoryForm";
+    }
+
+    @GetMapping(value = "/modifyCategoryForm")
+    public String modifyCategoryForm(@PathVariable String storeCode, @RequestParam String categoryCode, Model model) {
+
+        CategoryDto categoryDto = categoryService.modifyCategoryForm(categoryCode);
+        log.info("categoryDto : {} ", categoryDto);
+        log.info("categoryIdx : {}", categoryCode);
+
+        model.addAttribute("categoryDto", categoryDto);
+        model.addAttribute("storeCode",storeCode);
+        return "/admin/category/modifyCategoryForm";
     }
 
 //    @GetMapping(value = "/modifyCategoryForm")

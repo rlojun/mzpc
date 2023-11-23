@@ -39,21 +39,11 @@ public class  MemberFoodController {
     @GetMapping("/listFood")
     public ModelAndView listFoodMember(Model model, @PathVariable (required = false) String storeName, HttpSession httpSession) {
         String validStoreName = (String) httpSession.getAttribute("storeName");
-        // String validStoreCode = (String) httpSession.getAttribute("storeCode");
         model.addAttribute("storeName", validStoreName);
-        // model.addAttribute("storeCode", validStoreCode);
         log.info("MemberFoodController: validStoreName = {} ", validStoreName);
-        // log.info("MemberFoodController: validStoreCode = {} ", validStoreCode);
 
         if (validStoreName != null) {
             log.info("MemberFoodController: Attempt to get All Categories");
-//            List<CategoryDto> foodCategories = categoryService.getListCategory(storeName);
-//            model.addAttribute("foodCategories", foodCategories);
-//            log.info("Controller: Categories: {}", foodCategories);
-//            List<FoodDto> foodList = foodService.getListFood(storeName);
-//            model.addAttribute("foodList", foodList);
-//            log.info("Controller: FoodList: {}", foodList);
-//            model.addAttribute("foodList", foodList);
 
             List<MenuDto> menuDtoList = foodService.getListMenu(storeName);
             model.addAttribute("menuDtoList", menuDtoList);

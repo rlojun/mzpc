@@ -1,5 +1,8 @@
 #STORE
 INSERT INTO store(store_idx,store_code,store_name) VALUES (1,152,'호준PC');
+INSERT INTO store(store_idx,store_code,store_name) VALUES (2,153,'태섭PC');
+INSERT INTO store(store_idx,store_code,store_name) VALUES (3,154,'원식PC');
+INSERT INTO store(store_idx,store_code,store_name) VALUES (4,155,'승준PC');
 #----------------------------------------------------------------------------------------
 
 
@@ -22,11 +25,23 @@ INSERT INTO members(member_idx,member_code,member_id,member_pw,member_name,membe
 #-------------------------------------------------------------------------------------------
 #Times
 
-INSERT INTO times(time_idx,time_code,time_name,add_time,time_price,save,admin_idx)VALUES
-(1,413,'1시간',3600000,1200,FALSE,1);
+INSERT INTO times(time_idx,time_code,time_name,add_time,time_price,save,store_idx)VALUES
+(NULL,413,'1시간','1:00:00',1200,FALSE,1);
 
-INSERT INTO times(time_idx, time_code,time_name,add_time,time_price,save,admin_idx)VALUES
-(2,414,'5시간',3600000*5,5500,TRUE,1);
+INSERT INTO times(time_idx, time_code,time_name,add_time,time_price,save,store_idx)VALUES
+    (NULL,414,'5시간','05:00:00',5500,TRUE,1);
+
+INSERT INTO times(time_idx, time_code,time_name,add_time,time_price,save,store_idx)VALUES
+    (NULL,415,'10시간','10:00:00',10000,TRUE,1);
+
+INSERT INTO times(time_idx, time_code,time_name,add_time,time_price,save,store_idx)VALUES
+    (NULL,416,'20시간','20:00:00',18000,TRUE,1);
+
+INSERT INTO times(time_idx, time_code,time_name,add_time,time_price,save,store_idx)VALUES
+    (NULL,417,'30시간','30:00:00',28000,TRUE,2);
+
+INSERT INTO times(time_idx, time_code,time_name,add_time,time_price,save,store_idx)VALUES
+    (NULL,418,'40시간','40:00:00',38000,TRUE,1);
 
 #--------------------------------------------------------------------------------------------------
 #TIME_PURCHASE
@@ -37,8 +52,8 @@ INSERT INTO time_purchase(time_purchase_idx,time_purchase_code,member_idx,time_i
 #-----------------------------------------------------------------------------------
 #MILEAGE_INFO 
 
-INSERT INTO mileage_info(mileage_idx, mileage_code, save_point, point_date, time_purchase_idx) VALUES
-(1,612, 20, NOW(), 1);
+INSERT INTO mileage_info(mileage_idx, mileage_code, mielage_date, use_mileage, time_purchase_idx) VALUES
+(1,612, NOW(), 1);
 
 
 INSERT INTO mileage_info(mileage_idx, mileage_code, save_point, point_date, time_purchase_idx) VALUES
@@ -60,14 +75,14 @@ INSERT INTO category VALUES
 
 #---------------------------------------------------------------------------------------
 #FOOD
-INSERT INTO food(food_idx, food_code, food_name, food_price, category_idx) VALUES
-(NULL,822, '진라면', 1200, 1);
+INSERT INTO food(food_idx, food_code, food_name, food_price,topping, category_idx) VALUES
+(NULL,822, '진라면', 1200, false ,1);
 
-INSERT INTO food(food_idx, food_code, food_name, food_price, category_idx) VALUES
-(NULL,821, '짜파게티',1300, 1);
+INSERT INTO food(food_idx, food_code, food_name, food_price,topping ,category_idx) VALUES
+(NULL,821, '짜파게티',1300, false ,1);
 
-INSERT INTO food(food_idx, food_code, food_name, food_price, category_idx)VALUES
-(NULL,823, '홈런볼', 900,2);
+INSERT INTO food(food_idx, food_code, food_name, food_price,topping, category_idx)VALUES
+(NULL,823, '홈런볼', 900,false, 2);
 
 
 

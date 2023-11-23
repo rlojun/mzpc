@@ -1,49 +1,30 @@
 package com.fivemin.mzpc.controller.admin.food;
 
-import com.fivemin.mzpc.data.dto.CategoryDto;
+import com.fivemin.mzpc.data.dto.AdminDto;
 import com.fivemin.mzpc.data.dto.FoodDto;
-import com.fivemin.mzpc.service.admin.CategoryService;
 import com.fivemin.mzpc.service.admin.FoodService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
+@RequestMapping(value = "/food")
 @Slf4j
-@RequestMapping(value = "/category")
 public class FoodRestController {
 
-    private FoodService foodService;
-
-    private CategoryService categoryService;
+    private final FoodService foodService;
 
     @Autowired
-    public FoodRestController(FoodService foodService, CategoryService categoryService){
+    public FoodRestController(FoodService foodService) {
         this.foodService = foodService;
-        this.categoryService = categoryService;
     }
+    @PostMapping(value = "/addFood")
+    public ResponseEntity<String> addFood(@RequestBody FoodDto foodDto, @RequestParam String categoryCode) {
+        foodService.addFood(foodDto,categoryCode);
+        log.info("foodDto : {}", foodDto);
+        log.info("categoryCode : {}", categoryCode);
 
-    @GetMapping(value = "/food")
-    private ResponseEntity< List<FoodDto>> getListFood(@RequestParam String categoryName){
-
-        log.info("getListFood() ==> ");
-
-        List<FoodDto> listFood = foodService.getListFoodByName(categoryName);
-
-        return ResponseEntity.ok(listFood);
-    }
-
-    @PostMapping(value = "/addCategory")
-    private ResponseEntity<String> addCategory(@RequestBody CategoryDto categoryDto,@RequestParam String storeCode) {
-
-        log.info("categoryName : {}",categoryDto);
-        log.info("storeCode:{}",storeCode);
-
-        categoryService.addCategory(categoryDto,storeCode);
-
-        return ResponseEntity.ok("카테고리가 추가 되었습니다.");
+        return ResponseEntity.ok("음식이 추가 되었습니다.");
     }
 }

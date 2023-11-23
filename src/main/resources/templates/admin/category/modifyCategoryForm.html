@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>카테고리 수정하기</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+        function updateCategory() {
+            var categoryName =  $('input[name="categoryName"]').val();
+            var storeCode = [[${storeCode}]];
+            var categoryDto = {
+                "idx" : $('input[name="categoryIdx"]').val(),
+                "code" : $('input[name="categoryCode"]').val(),
+                "name" : categoryName
+            };
+
+            $.ajax({
+                type: "PUT",
+                url : "http://localhost:9010/category/modifyCategory",
+                contentType: "application/json; charset=utf-8",
+                async : false,
+                data : JSON.stringify(categoryDto),
+                success: function (data) {
+                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food";
+                    alert(data)
+                },
+                error : function () {
+                    alert("오류가 났습니다.")
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+  <form id="modifyCategory">
+    카테고리 명 : <span th:text="${categoryDto.getName()}"></span>
+    <hr>
+    수정할 카테고리 명  : <input type="text" name="categoryName">
+    <input type="hidden" th:value="${categoryDto.getIdx()}" name="categoryIdx">
+    <input type="hidden" th:value="${categoryDto.getCode()}" name="categoryCode">
+    <button onclick="updateCategory()">카테고리 수정</button>
+  </form>
+</body>
+</html>

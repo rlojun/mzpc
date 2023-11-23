@@ -34,20 +34,28 @@ public class CategoryService {
         List<Category> category = categoryRepository.findByStoreIdx(store.getIdx());
         List<CategoryDto> categoryList = new ArrayList<>();
 
-        StoreDto storeDto = StoreDto.builder()
-                        .code(store.getCode())
-                        .build();
-
         for(Category categories: category) {
             CategoryDto categoryDto = CategoryDto.builder()
                             .idx(categories.getIdx())
-                    .code(categories.getCode())
-                    .name(categories.getName())
-                    .build();
+                            .code(categories.getCode())
+                            .name(categories.getName())
+                            .build();
             categoryList.add(categoryDto);
         }
 
         return categoryList;
+    }
+
+    public StoreDto getStore(String storeCode) {
+        Store store = storeRepository.findByCode(storeCode);
+
+        StoreDto storeDto = StoreDto.builder()
+                .idx(store.getIdx())
+                .code(store.getCode())
+                .name(store.getName())
+                .build();
+
+        return storeDto;
     }
 
     @Transactional
@@ -68,4 +76,30 @@ public class CategoryService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'C'HHMMyyyymmddss");
         return currentDateTime.format(formatter);
     }
+
+    public CategoryDto modifyCategoryForm(String categoryCode) {
+        Category category = categoryRepository.findByCode(categoryCode);
+
+        CategoryDto categoryDto = CategoryDto.builder()
+                .idx(category.getIdx())
+                .code(category.getCode())
+                .name(category.getName())
+                .build();
+
+        return categoryDto;
+    }
+
+    @Transactional
+    public void modifyCategory(CategoryDto categoryDto) {
+        categoryRepository.updateCategoryNameByIdx(categoryDto.getIdx(),categoryDto.getName());
+        log.info("name : {}", categoryDto.getName());
+        log.info("idx : {} ", categoryDto.getIdx());
+
+    }
+
+    public void deleteCategory(Long categoryIdx) {
+        categoryRepository.deleteById(categoryIdx);
+    }
+
+
 }
