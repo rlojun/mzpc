@@ -53,7 +53,7 @@ public class CategoryController {
 
         CategoryDto categoryDto = categoryService.modifyCategoryForm(categoryCode);
         log.info("categoryDto : {} ", categoryDto);
-        log.info("categoryIdx : {}", categoryCode);
+        log.info("categoryCode : {}", categoryCode);
 
         model.addAttribute("categoryDto", categoryDto);
         model.addAttribute("storeCode",storeCode);
