@@ -38,13 +38,10 @@ public class AdminFoodController {
 
     private final AdminService adminService;
 
-    private final FoodService foodService;
-
     @Autowired
-    public AdminFoodController(CategoryService categoryService, AdminService adminService, FoodService foodService){
+    public AdminFoodController(CategoryService categoryService, AdminService adminService){
         this.categoryService = categoryService;
         this.adminService = adminService;
-        this.foodService = foodService;
     }
 
     @GetMapping(value = "/food")
@@ -68,6 +65,14 @@ public class AdminFoodController {
         return "/admin/food/addFoodForm";
     }
 
+    @GetMapping(value = "/addToppingForm")
+    public String addTopping(@PathVariable String storeCode, Model model) {
+        List<CategoryDto> categoryDtos = categoryService.getListCategory(storeCode);
+        model.addAttribute("storeCode", storeCode);
+        model.addAttribute("categories",categoryDtos);
+
+        return "/admin/food/addToppingForm";
+    }
     //    // 카테고리별 음상 상품 리스트
 //    @GetMapping("/{categoryId}")
 //    public String listFoodCategory() {

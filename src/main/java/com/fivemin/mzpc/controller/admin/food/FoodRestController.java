@@ -1,6 +1,5 @@
 package com.fivemin.mzpc.controller.admin.food;
 
-import com.fivemin.mzpc.data.dto.AdminDto;
 import com.fivemin.mzpc.data.dto.FoodDto;
 import com.fivemin.mzpc.service.admin.FoodService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +24,10 @@ public class FoodRestController {
         log.info("foodDto : {}", foodDto);
         log.info("categoryCode : {}", categoryCode);
 
-        return ResponseEntity.ok("음식이 추가 되었습니다.");
+        if (!foodDto.isTopping()) {
+            return ResponseEntity.ok("음식이 추가 되었습니다.");
+        } else {
+            return ResponseEntity.ok("토핑이 추가 되었습니다.");
+        }
     }
 }

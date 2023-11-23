@@ -46,8 +46,32 @@
 
                 /* 서버 -> 클라이언트로 전송한 데이터 처리 */
                 success: function(data) { // 서버에서 넘어온 데이터를 data에 저장
-                    $('#listFood').text(data);
-                    // $('#listFood').append(data); // 태그의 id가 message인 태그를 찾아, data를 추가
+                    // $('#foodList').html(data);
+                    var foodData = JSON.parse(data);
+
+                    var foodListContainer = $('#foodList');
+                    foodListContainer.empty();
+
+                    // ul 요소 생성
+                    var foodList = $('<ul></ul>');
+
+                    // 받아온 데이터를 조건에 맞춰 리스트로 변환하여 출력
+                    foodData.forEach(function(foodItem) {
+                        if (foodItem.topping === false) {
+                            var listItem = $('<li></li>');
+
+                            var foodName = $('<span></span>').text(foodItem.name);
+                            var foodPrice = $('<span></span>').text(foodItem.price+'원');
+
+                            // li에 음식 이름과 가격 추가
+                            listItem.append(foodName).append(' - ').append(foodPrice);
+
+                            // ul에 li 추가
+                            foodList.append(listItem);
+                        }
+                    });
+                    foodListContainer.append(foodList);
+
                 },
                 error: function() {
                     alert("에러가 발생했습니다.");
@@ -119,15 +143,16 @@
                 <span th:text="${categorys.getName()}" ></span>
             </li>
         </ul>
-        <ul>
-            <li>
-                <span id="listFood"></span>
-            </li>
-        </ul>
 
-        <button th:onclick="|location.href='@{/{storeCode}/listCategory(storeCode=${storeCode})}'|">카테고리 관리</button>
+        <span id="foodList">
+
+        </span>
+
+        <hr>
+
+        <button th:onclick="|location.href='@{/admin/{storeCode}/listCategory(storeCode=${storeCode})}'|">카테고리 관리</button>
         <button th:onclick="|location.href='@{/admin/{storeCode}/addFoodForm(storeCode=${storeCode})}'|">음식 추가</button>
-
+        <button th:onclick="|location.href='@{/admin/{storeCode}/addToppingForm(storeCode=${storeCode})}'|">토핑 추가</button>
     </div>
 </section>
 
