@@ -1,6 +1,7 @@
 package com.fivemin.mzpc.service.admin;
 
 import com.fivemin.mzpc.data.dto.CategoryDto;
+import com.fivemin.mzpc.data.dto.StoreDto;
 import com.fivemin.mzpc.data.entity.Category;
 import com.fivemin.mzpc.data.entity.Store;
 import com.fivemin.mzpc.data.repository.CategoryRepository;
@@ -36,13 +37,25 @@ public class CategoryService {
         for(Category categories: category) {
             CategoryDto categoryDto = CategoryDto.builder()
                             .idx(categories.getIdx())
-                    .code(categories.getCode())
-                    .name(categories.getName())
-                    .build();
+                            .code(categories.getCode())
+                            .name(categories.getName())
+                            .build();
             categoryList.add(categoryDto);
         }
 
         return categoryList;
+    }
+
+    public StoreDto getStore(String storeCode) {
+        Store store = storeRepository.findByCode(storeCode);
+
+        StoreDto storeDto = StoreDto.builder()
+                .idx(store.getIdx())
+                .code(store.getCode())
+                .name(store.getName())
+                .build();
+
+        return storeDto;
     }
 
     @Transactional
@@ -87,5 +100,6 @@ public class CategoryService {
     public void deleteCategory(Long categoryIdx) {
         categoryRepository.deleteById(categoryIdx);
     }
+
 
 }
