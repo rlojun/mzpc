@@ -19,4 +19,5 @@ public class FoodDto {
     private final String description;
     private final Integer stock;
     private final boolean topping;
+    private final CategoryDto categoryDto;
 }

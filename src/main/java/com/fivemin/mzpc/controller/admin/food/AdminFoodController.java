@@ -2,9 +2,11 @@ package com.fivemin.mzpc.controller.admin.food;
 
 import com.fivemin.mzpc.data.dto.AdminDto;
 import com.fivemin.mzpc.data.dto.CategoryDto;
+import com.fivemin.mzpc.data.dto.FoodDto;
 import com.fivemin.mzpc.data.dto.StoreDto;
 import com.fivemin.mzpc.service.admin.AdminService;
 import com.fivemin.mzpc.service.admin.CategoryService;
+import com.fivemin.mzpc.service.admin.FoodService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,10 +39,13 @@ public class AdminFoodController {
 
     private final AdminService adminService;
 
+    private final FoodService foodService;
+
     @Autowired
-    public AdminFoodController(CategoryService categoryService, AdminService adminService){
+    public AdminFoodController(CategoryService categoryService, AdminService adminService, FoodService foodService){
         this.categoryService = categoryService;
         this.adminService = adminService;
+        this.foodService = foodService;
     }
 
     @GetMapping(value = "/food")
@@ -48,10 +53,12 @@ public class AdminFoodController {
         List<CategoryDto> listCategory = categoryService.getListCategory(storeCode);
         StoreDto storeDto = categoryService.getStore(storeCode);
         AdminDto adminDto =adminService.getAdminName(storeDto.getIdx());
+        List<FoodDto> foodDtos= foodService.getFoodList(storeCode);
 
         model.addAttribute("listCategory",listCategory);
         model.addAttribute("storeName",storeDto.getName());
         model.addAttribute("adminName",adminDto.getName());
+        model.addAttribute("foods",foodDtos);
 
         return "/admin/food/listFood";
     }
