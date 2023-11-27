@@ -1,5 +1,6 @@
 package com.fivemin.mzpc.service.admin;
 
+import com.fivemin.mzpc.data.dto.CategoryDto;
 import com.fivemin.mzpc.data.dto.FoodDto;
 import com.fivemin.mzpc.data.entity.Category;
 import com.fivemin.mzpc.data.entity.Food;
@@ -16,16 +17,47 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class FoodService {
+public class AdminFoodService {
 
     private final FoodRepository foodRepository;
     private final CategoryRepository categoryRepository;
 
     @Autowired
-    public FoodService(FoodRepository foodRepository, CategoryRepository categoryRepository) {
+    public AdminFoodService(FoodRepository foodRepository, CategoryRepository categoryRepository) {
         this.foodRepository = foodRepository;
         this.categoryRepository = categoryRepository;
     }
+
+    public List<FoodDto> getFoodList(String storeCode) {
+        List<Food> foods = foodRepository.findByStorerCode(storeCode);
+        List<FoodDto> foodDtos = new ArrayList<>();
+
+        log.info("foods:{}",foods);
+        for ( Food food : foods) {
+            CategoryDto categoryDto = CategoryDto.builder()
+                    .idx(food.category.getIdx())
+                    .code(food.category.getCode())
+                    .name(food.category.getName())
+                    .build();
+
+            FoodDto foodDto = FoodDto.builder()
+                    .idx(food.getIdx())
+                    .code(food.getCode())
+                    .name(food.getName())
+                    .price(food.getPrice())
+                    .picture(food.getPicture())
+                    .description(food.getDescription())
+                    .stock(food.getStock())
+                    .topping(food.getTopping())
+                    .categoryDto(categoryDto)
+                    .build();
+            foodDtos.add(foodDto);
+        }
+
+        log.info("foodDtos : {}", foodDtos);
+        return foodDtos;
+    }
+
 
     public List<FoodDto> getListFoodByName(String categoryName) {
         Long categoryIdx = categoryRepository.findByName(categoryName);

@@ -1,24 +1,23 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>음식 추가</title>
+    <title>토핑 추가하기</title>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script>
-        function submitFoodInfo() {
+        function submitToppingInfo() {
             var selectElement = document.getElementById('categoryName');
             var categoryCode = selectElement.value;
             var storeCode = [[${storeCode}]];
             var foodDto = {
                 "idx" : null,
                 "code" : null,
-                "name" : $('input[name="foodName"]').val(),
-                "picture" : $('input[name="foodPicture"]').val(),
-                "price" : $('input[name="foodPrice"]').val(),
-                "description" : $('input[name="description"]').val(),
+                "name" : $('input[name="toppingName"]').val(),
+                "picture" : $('input[name="toppingPicture"]').val(),
+                "price" : $('input[name="toppingPrice"]').val(),
+                "description" : null,
                 "stock" : $('input[name="stock"]').val(),
-                "topping" : null
+                "topping" : true
             };
 
             $.ajax({
@@ -38,29 +37,25 @@
             });
         }
     </script>
-
 </head>
-<!--나중에 이미지 파일 업로드 해야 함-->
 <body>
-    <form id="addFood">
-        <label for="foodName">음식</label> : <input type="text" id="foodName" name="foodName" required>
+    <form id="addTopping">
+        <label for="toppingName">토핑</label> : <input type="text" id="toppingName" name="toppingName" required>
         <br>
-        <label for="foodPrice">가격</label>  : <input type="text" id="foodPrice" name="foodPrice" required>원
+        <label for="toppingPrice">가격</label> : <input type="text" id="toppingPrice" name="toppingPrice" required>원
         <br>
         <label for="categoryName">카테고리</label>  :
-            <select id="categoryName" name="selectCategory">
-                <option th:each=" category : ${categories}" th:value="${category.getCode()}" th:text="${category.getName()}"></option>
-            </select>
+        <select id="categoryName" name="selectCategory">
+            <option th:each=" category : ${categories}" th:value="${category.getCode()}" th:text="${category.getName()}"></option>
+        </select>
         <br>
-        <label for="foodPicture">이미지</label>  : <input type="text" id="foodPicture" name="foodPricture">
-        <br>
-        <label for="description">설명</label> : <br>
-        <textarea id="description" name="description" rows="4" cols="50" placeholder="설명을 입력하세요."></textarea>
+        <label for="toppingPicture">이미지</label>  : <input type="text" id="toppingPicture" name="toppingPicture">
         <br>
         <label for="stock">재고</label> : <input type="text" id="stock" name="stock" required>
         <br>
-        <button th:onclick="submitFoodInfo()">음식 추가</button>
+        <button th:onclick="submitToppingInfo()">음식 추가</button>
         <input type="reset">
+
     </form>
 </body>
 </html>

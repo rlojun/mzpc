@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class AdminService {
+public class AdminAdminService {
     private final AdminRepository adminRepository;
     @Autowired
-    public AdminService(AdminRepository adminRepository){
+    public AdminAdminService(AdminRepository adminRepository){
         this.adminRepository = adminRepository;
     }
 

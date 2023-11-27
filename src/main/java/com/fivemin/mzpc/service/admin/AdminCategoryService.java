@@ -18,13 +18,13 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class CategoryService {
+public class AdminCategoryService {
 
     private final CategoryRepository categoryRepository;
 //
     private final StoreRepository storeRepository;
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository, StoreRepository storeRepository){
+    public AdminCategoryService(CategoryRepository categoryRepository, StoreRepository storeRepository){
         this.categoryRepository = categoryRepository;
         this.storeRepository = storeRepository;
     }

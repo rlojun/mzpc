@@ -16,14 +16,14 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class TimeService {
+public class AdminTimeService {
 
 
     private final TimesRepository timesRepository;
     private final StoreRepository storeRepository;
 
     @Autowired
-    public TimeService(TimesRepository timesRepository, StoreRepository storeRepository){
+    public AdminTimeService(TimesRepository timesRepository, StoreRepository storeRepository){
         this.timesRepository = timesRepository;
         this.storeRepository = storeRepository;
     }
