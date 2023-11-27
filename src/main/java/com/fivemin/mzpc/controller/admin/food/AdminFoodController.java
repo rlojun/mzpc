@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -72,12 +73,21 @@ public class AdminFoodController {
     }
 
     @GetMapping(value = "/addToppingForm")
-    public String addTopping(@PathVariable String storeCode, Model model) {
+    public String addToppingForm(@PathVariable String storeCode, Model model) {
         List<CategoryDto> categoryDtos = adminCategoryService.getListCategory(storeCode);
         model.addAttribute("storeCode", storeCode);
         model.addAttribute("categories",categoryDtos);
 
         return "/admin/food/addToppingForm";
+    }
+
+    @GetMapping(value = "detailFood")
+    public String detailFood(@PathVariable String storeCode, @RequestParam String categoryCode, @RequestParam String foodCode, Model model){
+        FoodDto foodDto = adminFoodService.getFoodList(categoryCode,foodCode);
+        model.addAttribute("food",foodDto);
+        model.addAttribute("storeCode",storeCode);
+
+        return "/admin/food/detailFood";
     }
     //    // 카테고리별 음상 상품 리스트
 //    @GetMapping("/{categoryId}")

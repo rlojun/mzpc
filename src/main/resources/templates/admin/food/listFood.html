@@ -28,6 +28,16 @@
     <link href="/bootstrap/css/style.css" rel="stylesheet" />
     <!-- responsive style -->
     <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
+
+    <script>
+        function clickFood(element) {
+            var categoryCode = element.getAttribute("data-category-code");
+            var foodCode = element.getAttribute("data-food-code");
+            var storeCode = [[${storeCode}]];
+
+            window.location.href ="http://localhost:9010/admin/"+storeCode+"/detailFood?categoryCode="+categoryCode+"&foodCode="+foodCode;
+        }
+    </script>
 </head>
 
 <body class="sub_page">
@@ -94,13 +104,15 @@
         </ul>
         <div class="filters-content">
             <div class="row grid">
-                <div  th:each="food : ${foods}" class="col-sm-6 col-lg-4 all" th:classappend="${food.getCategoryDto().getCode()}">
+                <div th:each="food : ${foods}" class="col-sm-6 col-lg-4 all" th:classappend="${food.getCategoryDto().getCode()}">
                     <div class="box">
                         <div>
-                            <div class="img-box">
-                                <img src="images/f1.png" alt="">
+                            <div class="img-box" th:attr="data-category-code=${food.getCategoryDto().getCode()},data-food-code=${food.getCode()}"
+                                 onclick="clickFood(this)">
+                                 <img src="images/f1.png" alt="">
                             </div>
-                            <div class="detail-box">
+                            <div class="detail-box" th:attr="data-category-code=${food.getCategoryDto().getCode()},data-food-code=${food.getCode()}"
+                                 onclick="clickFood(this)">
                                 <h5 th:text="${food.getName()}"></h5>
                                 <p th:text="${food.getDescription()}"></p>
                                 <h6 th:text="${food.getPrice()}+원"></h6>
