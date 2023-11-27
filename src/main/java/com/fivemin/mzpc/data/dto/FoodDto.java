@@ -1,7 +1,5 @@
 package com.fivemin.mzpc.data.dto;
 
-import com.fivemin.mzpc.data.entity.Admin;
-import com.fivemin.mzpc.data.entity.Category;
 import lombok.*;
 
 @Data
