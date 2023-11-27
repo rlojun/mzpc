@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -60,9 +61,9 @@ public class AdminFoodService {
 
 
     public List<FoodDto> getListFoodByName(String categoryName) {
-        Long categoryIdx = categoryRepository.findByName(categoryName);
-        log.info("categoryIdx :{} ",categoryIdx);
-        List<Food> foodList = foodRepository.findByCategoryIdx(categoryIdx);
+        Category category = categoryRepository.findByName(categoryName);
+        log.info("categoryIdx :{} ",category.getIdx());
+        List<Food> foodList = foodRepository.findByCategoryIdx(category.getIdx());
        List<FoodDto> foodDtoList = new ArrayList<>();
 
        log.info("foodList : {} ",foodList);
@@ -106,5 +107,52 @@ public class AdminFoodService {
         LocalDateTime currentDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'F'HHMMyyyymmddss");
         return currentDateTime.format(formatter);
+    }
+
+    public FoodDto getFoodList(String categoryCode, String foodCode) {
+        Food food = foodRepository.findByCode(categoryCode,foodCode);
+
+        CategoryDto categoryDto = CategoryDto.builder()
+                .idx(food.getCategory().getIdx())
+                .code(food.getCategory().getCode())
+                .name(food.getCategory().getName())
+                .build();
+
+        FoodDto foodDto = FoodDto.builder()
+                .idx(food.getIdx())
+                .code(food.getCode())
+                .name(food.getName())
+                .picture(food.getPicture())
+                .price(food.getPrice())
+                .description(food.getDescription())
+                .stock(food.getStock())
+                .topping(food.getTopping())
+                .createdAt(food.getCreatedAt())
+                .updateAt(food.getUpdatedAt())
+                .categoryDto(categoryDto)
+                .build();
+        return foodDto;
+    }
+
+    @Transactional
+    public void modifyFood(FoodDto foodDto,String categoryName) {
+        Category category = categoryRepository.findByName(categoryName);
+        Food food = foodRepository.findById(foodDto.getIdx()).orElse(null);
+
+        if(food != null){
+            Food updateFood = Food.builder()
+                    .idx(foodDto.getIdx())
+                    .code(foodDto.getCode())
+                    .name(foodDto.getName())
+                    .picture(foodDto.getPicture())
+                    .price(foodDto.getPrice())
+                    .description(foodDto.getDescription())
+                    .stock(foodDto.getStock())
+                    .topping(foodDto.isTopping())
+                    .category(category)
+                    .build();
+
+            foodRepository.save(updateFood);
+        }
     }
 }

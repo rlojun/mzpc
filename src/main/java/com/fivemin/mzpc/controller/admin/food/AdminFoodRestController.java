@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/food")
 @Slf4j
-public class AdminRestController {
+public class AdminFoodRestController {
 
     private final AdminFoodService adminFoodService;
 
     @Autowired
-    public AdminRestController(AdminFoodService adminFoodService) {
+    public AdminFoodRestController(AdminFoodService adminFoodService) {
         this.adminFoodService = adminFoodService;
     }
     @PostMapping(value = "/addFood")
@@ -29,5 +29,13 @@ public class AdminRestController {
         } else {
             return ResponseEntity.ok("토핑이 추가 되었습니다.");
         }
+    }
+
+    @PostMapping(value = "/modifyFood")
+    public ResponseEntity<String> modifyFood(@RequestBody FoodDto foodDto,@RequestParam String categoryName) {
+        adminFoodService.modifyFood(foodDto,categoryName);
+        log.info("foodDto : {}", foodDto);
+        log.info("categoryName : {}",categoryName);
+        return ResponseEntity.ok("업데이트 되었습니다.");
     }
 }

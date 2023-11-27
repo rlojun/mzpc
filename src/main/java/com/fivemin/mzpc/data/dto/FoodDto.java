@@ -2,6 +2,8 @@ package com.fivemin.mzpc.data.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Data
 @Getter
 @Setter
@@ -17,5 +19,7 @@ public class FoodDto {
     private final String description;
     private final Integer stock;
     private final boolean topping;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updateAt;
     private final CategoryDto categoryDto;
 }

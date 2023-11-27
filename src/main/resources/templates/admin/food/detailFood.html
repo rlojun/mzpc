@@ -1,10 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>음식 상세보기</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+        function enableEditing() {
+            document.getElementById('name').removeAttribute('disabled');
+            document.getElementById('picture').removeAttribute('disabled');
+            document.getElementById('price').removeAttribute('disabled');
+            document.getElementById('description').removeAttribute('disabled');
+            document.getElementById('stock').removeAttribute('disabled');
+
+            var modifyButton = document.getElementById('modifyButton');
+            modifyButton.value = '수정';
+            modifyButton.setAttribute('onclick', 'saveChanges()');
+        }
+
+        function saveChanges() {
+            var storeCode = [[${storeCode}]];
+            var categoryName = document.getElementById('category').value;
+            var foodDto = {
+                "idx" : document.getElementById('idx').value,
+                "code" : document.getElementById('code').value,
+                "name" : document.getElementById('name').value,
+                "picture" : document.getElementById('picture').value,
+                "price" : document.getElementById('price').value,
+                "description" : document.getElementById('description').value,
+                "stock" : document.getElementById('stock').value,
+                "createdAt" : null,
+                "updatedAt" : null
+            };
+            $.ajax({
+                type: "POST",
+                async: false,
+                url: "http://localhost:9010/food/modifyFood?categoryName="+categoryName,
+                contentType : "application/json",
+                data: JSON.stringify(foodDto),
+                success: function(data) {
+                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food";
+                    alert(data)
+                },
+                error: function() {
+                    alert("오류가 발생했습니다.")
+                }
+            });
+        }
+    </script>
 </head>
 <body>
+    <form th:object="${food}">
+        <label for="name">음식</label> : <input type="text" id="name" th:value="*{getName()}" disabled>
+        <br>
+        <label for="price">가격</label> : <input type="text" id="price" th:value="*{getPrice()}" disabled>
+        <br>
+        <label for="category">카테고리</label> : <input type="text" id="category" th:value="*{getCategoryDto().getName()}" readonly>
+        <br>
+        <label for="picture">사진</label> : <input type="text" id="picture" th:value="*{getPicture()}" disabled>
+        <br>
+        <label for="description">설명</label>
+        <br>
+        <textarea id="description" rows="4" cols="50" th:text="*{getDescription()}" disabled></textarea>
+        <br>
+        <label for="stock">재고</label> : <input type="text" id="stock" th:value="*{getStock()}" disabled>
+        <br>
+        <label for="createdAt">생성 시간</label> : <input type="text" id="createdAt" th:value="*{getCreatedAt()}" readonly>
+        <br>
+        <label for="updatedAt">수정 시간</label> : <input type="text" id="updatedAt" th:value="*{getUpdateAt()}" readonly>
+        <br>
+        <input type="button" id="modifyButton" onclick="enableEditing()" th:value="수정하기">
+        <input type="hidden" id="idx" th:value="*{getIdx()}">
+        <input type="hidden" id="code" th:value="*{getCode()}">
+        <input type="hidden" id="categoryDto" th:value="*{getCategoryDto()}">
 
+    </form>
 </body>
 </html>
