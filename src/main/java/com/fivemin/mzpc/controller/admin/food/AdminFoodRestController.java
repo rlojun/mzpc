@@ -38,4 +38,10 @@ public class AdminFoodRestController {
         log.info("categoryName : {}",categoryName);
         return ResponseEntity.ok("업데이트 되었습니다.");
     }
+
+    @DeleteMapping(value = "/deleteFood")
+    private ResponseEntity<String> deleteFood(@RequestBody Long foodIdx) {
+        adminFoodService.deleteFood(foodIdx);
+        return ResponseEntity.ok("삭제되었습니다.");
+    }
 }

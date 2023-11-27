@@ -155,4 +155,9 @@ public class AdminFoodService {
             foodRepository.save(updateFood);
         }
     }
+
+    @Transactional
+    public void deleteFood(Long foodIdx) {
+        foodRepository.deleteById(foodIdx);
+    }
 }
