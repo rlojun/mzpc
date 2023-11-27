@@ -2,8 +2,8 @@ package com.fivemin.mzpc.controller.admin.food;
 
 import com.fivemin.mzpc.data.dto.CategoryDto;
 import com.fivemin.mzpc.data.dto.FoodDto;
-import com.fivemin.mzpc.service.admin.CategoryService;
-import com.fivemin.mzpc.service.admin.FoodService;
+import com.fivemin.mzpc.service.admin.AdminCategoryService;
+import com.fivemin.mzpc.service.admin.AdminFoodService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,22 +14,22 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping(value = "/category")
-public class CategoryRestController {
+public class AdminCategoryRestController {
 
-    private final FoodService foodService;
+    private final AdminFoodService adminFoodService;
 
-    private final CategoryService categoryService;
+    private final AdminCategoryService adminCategoryService;
 
     @Autowired
-    public CategoryRestController(FoodService foodService, CategoryService categoryService){
-        this.foodService = foodService;
-        this.categoryService = categoryService;
+    public AdminCategoryRestController(AdminFoodService adminFoodService, AdminCategoryService adminCategoryService){
+        this.adminFoodService = adminFoodService;
+        this.adminCategoryService = adminCategoryService;
     }
 
     @GetMapping(value = "/food")
     private ResponseEntity< List<FoodDto>> getListFood(@RequestParam String categoryName){
 
-        List<FoodDto> foods = foodService.getListFoodByName(categoryName);
+        List<FoodDto> foods = adminFoodService.getListFoodByName(categoryName);
 
         return ResponseEntity.ok(foods);
     }
@@ -40,7 +40,7 @@ public class CategoryRestController {
         log.info("categoryName : {}",categoryDto);
         log.info("storeCode:{}",storeCode);
 
-        categoryService.addCategory(categoryDto,storeCode);
+        adminCategoryService.addCategory(categoryDto,storeCode);
 
         return ResponseEntity.ok("카테고리가 추가 되었습니다.");
     }
@@ -48,7 +48,7 @@ public class CategoryRestController {
     @PutMapping(value = "/modifyCategory")
     private ResponseEntity<String> modifyCategory(@RequestBody CategoryDto categoryDto) {
 
-        categoryService.modifyCategory(categoryDto);
+        adminCategoryService.modifyCategory(categoryDto);
 
         log.info("categoryDto : {}",categoryDto);
 
@@ -58,7 +58,7 @@ public class CategoryRestController {
     @DeleteMapping(value = "deleteCategory")
     private ResponseEntity<String> deleteCategory(@RequestBody Long categoryIdx) {
 
-        categoryService.deleteCategory(categoryIdx);
+        adminCategoryService.deleteCategory(categoryIdx);
 
         return ResponseEntity.ok("삭제되었습니다.");
     }

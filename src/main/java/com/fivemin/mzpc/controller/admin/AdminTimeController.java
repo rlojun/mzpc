@@ -3,7 +3,7 @@ package com.fivemin.mzpc.controller.admin;
 import com.fivemin.mzpc.editor.CustomLocalTimeEditor;
 import com.fivemin.mzpc.data.dto.TimeDto;
 import com.fivemin.mzpc.data.entity.Times;
-import com.fivemin.mzpc.service.admin.TimeService;
+import com.fivemin.mzpc.service.admin.AdminTimeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,13 +29,13 @@ import java.util.List;
 public class AdminTimeController {
 
     @Autowired
-    private TimeService timeService;
+    private AdminTimeService adminTimeService;
 
     // 시간 상품 목록
     @GetMapping("/listTime")
     public String listTime(@PathVariable String storeCode, Model model) {
         log.info("storeCode : {}", storeCode);
-        List<TimeDto> listTimes = timeService.listTime(storeCode);
+        List<TimeDto> listTimes = adminTimeService.listTime(storeCode);
         log.info("listTime : {} : ==>  ", listTimes);
         model.addAttribute("listTime", listTimes);
         return "/admin/time/listTime";
@@ -54,7 +54,7 @@ public class AdminTimeController {
     public String addTime(@PathVariable String storeCode,
                           @ModelAttribute TimeDto timeDto,
                           Model model) {
-        timeService.createTime(timeDto, storeCode);
+        adminTimeService.createTime(timeDto, storeCode);
         model.addAttribute("storeCode", storeCode);
         return String.format("redirect:/admin/%s/time/listTime", storeCode);
     }
@@ -64,7 +64,7 @@ public class AdminTimeController {
     public String modifyTimeForm(@PathVariable String timeCode,
                                  @PathVariable String storeCode,
                                  Model model) {
-        Times times = timeService.detailTime(timeCode);
+        Times times = adminTimeService.detailTime(timeCode);
         model.addAttribute("times", storeCode);
         model.addAttribute("times", times);
         return "admin/time/modifyTime";
@@ -74,7 +74,7 @@ public class AdminTimeController {
     @PostMapping("/modifyTime/{timeCode}")
     public String modifyTime(@PathVariable String storeCode, @PathVariable String timeCode,
                              @ModelAttribute TimeDto timeDto, Model model) {
-        timeService.updateTime(timeCode, timeDto);
+        adminTimeService.updateTime(timeCode, timeDto);
         model.addAttribute("storeCode", storeCode);
         return String.format("redirect:/admin/%s/time/listTime", storeCode);
     }
@@ -86,7 +86,7 @@ public class AdminTimeController {
                              Model model) {
         log.info("timeCode : {}" , timeCode);
         model.addAttribute("storeCode", storeCode);
-        timeService.deleteTime(timeCode);
+        adminTimeService.deleteTime(timeCode);
         return String.format("redirect:/admin/%s/time/listTime", storeCode);
     }
 

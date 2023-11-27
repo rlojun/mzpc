@@ -1,7 +1,7 @@
 package com.fivemin.mzpc.controller.admin.food;
 
 import com.fivemin.mzpc.data.dto.FoodDto;
-import com.fivemin.mzpc.service.admin.FoodService;
+import com.fivemin.mzpc.service.admin.AdminFoodService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/food")
 @Slf4j
-public class FoodRestController {
+public class AdminRestController {
 
-    private final FoodService foodService;
+    private final AdminFoodService adminFoodService;
 
     @Autowired
-    public FoodRestController(FoodService foodService) {
-        this.foodService = foodService;
+    public AdminRestController(AdminFoodService adminFoodService) {
+        this.adminFoodService = adminFoodService;
     }
     @PostMapping(value = "/addFood")
     public ResponseEntity<String> addFood(@RequestBody FoodDto foodDto, @RequestParam String categoryCode) {
-        foodService.addFood(foodDto,categoryCode);
+        adminFoodService.addFood(foodDto,categoryCode);
         log.info("foodDto : {}", foodDto);
         log.info("categoryCode : {}", categoryCode);
 

@@ -17,13 +17,13 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class FoodService {
+public class AdminFoodService {
 
     private final FoodRepository foodRepository;
     private final CategoryRepository categoryRepository;
 
     @Autowired
-    public FoodService(FoodRepository foodRepository, CategoryRepository categoryRepository) {
+    public AdminFoodService(FoodRepository foodRepository, CategoryRepository categoryRepository) {
         this.foodRepository = foodRepository;
         this.categoryRepository = categoryRepository;
     }

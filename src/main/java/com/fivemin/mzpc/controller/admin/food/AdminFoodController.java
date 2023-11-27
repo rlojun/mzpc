@@ -4,9 +4,9 @@ import com.fivemin.mzpc.data.dto.AdminDto;
 import com.fivemin.mzpc.data.dto.CategoryDto;
 import com.fivemin.mzpc.data.dto.FoodDto;
 import com.fivemin.mzpc.data.dto.StoreDto;
-import com.fivemin.mzpc.service.admin.AdminService;
-import com.fivemin.mzpc.service.admin.CategoryService;
-import com.fivemin.mzpc.service.admin.FoodService;
+import com.fivemin.mzpc.service.admin.AdminAdminService;
+import com.fivemin.mzpc.service.admin.AdminCategoryService;
+import com.fivemin.mzpc.service.admin.AdminFoodService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,25 +35,25 @@ import java.util.List;
 @RequestMapping("/admin/{storeCode}") //관리자 pk
 public class AdminFoodController {
 
-    private final CategoryService categoryService;
+    private final AdminCategoryService adminCategoryService;
 
-    private final AdminService adminService;
+    private final AdminAdminService adminAdminService;
 
-    private final FoodService foodService;
+    private final AdminFoodService adminFoodService;
 
     @Autowired
-    public AdminFoodController(CategoryService categoryService, AdminService adminService, FoodService foodService){
-        this.categoryService = categoryService;
-        this.adminService = adminService;
-        this.foodService = foodService;
+    public AdminFoodController(AdminCategoryService adminCategoryService, AdminAdminService adminAdminService, AdminFoodService adminFoodService){
+        this.adminCategoryService = adminCategoryService;
+        this.adminAdminService = adminAdminService;
+        this.adminFoodService = adminFoodService;
     }
 
     @GetMapping(value = "/food")
     public String listCategory(@PathVariable String storeCode, Model model){
-        List<CategoryDto> listCategory = categoryService.getListCategory(storeCode);
-        StoreDto storeDto = categoryService.getStore(storeCode);
-        AdminDto adminDto =adminService.getAdminName(storeDto.getIdx());
-        List<FoodDto> foodDtos= foodService.getFoodList(storeCode);
+        List<CategoryDto> listCategory = adminCategoryService.getListCategory(storeCode);
+        StoreDto storeDto = adminCategoryService.getStore(storeCode);
+        AdminDto adminDto = adminAdminService.getAdminName(storeDto.getIdx());
+        List<FoodDto> foodDtos= adminFoodService.getFoodList(storeCode);
 
         model.addAttribute("listCategory",listCategory);
         model.addAttribute("storeName",storeDto.getName());
@@ -65,7 +65,7 @@ public class AdminFoodController {
 
     @GetMapping(value = "/addFoodForm")
     public String addFoodForm(@PathVariable String storeCode, Model model){
-        List<CategoryDto> categoryDtos = categoryService.getListCategory(storeCode);
+        List<CategoryDto> categoryDtos = adminCategoryService.getListCategory(storeCode);
         model.addAttribute("storeCode", storeCode);
         model.addAttribute("categories",categoryDtos);
         return "/admin/food/addFoodForm";
@@ -73,7 +73,7 @@ public class AdminFoodController {
 
     @GetMapping(value = "/addToppingForm")
     public String addTopping(@PathVariable String storeCode, Model model) {
-        List<CategoryDto> categoryDtos = categoryService.getListCategory(storeCode);
+        List<CategoryDto> categoryDtos = adminCategoryService.getListCategory(storeCode);
         model.addAttribute("storeCode", storeCode);
         model.addAttribute("categories",categoryDtos);
 
