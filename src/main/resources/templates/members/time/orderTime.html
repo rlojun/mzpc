@@ -165,7 +165,7 @@
 
         <!-- 사용자가 입력한 마일리지 -->
         <label for="usedMileage">사용할 마일리지:</label>
-        <input type="number" id="usedMileage" name="usedMileage" min="0" max="${memberMileage}" oninput="updatePaymentAmount()" />
+        <input type="number" id="usedMileage" name="usedMileage" value="0" min="0" max="${memberMileage}" oninput="updatePaymentAmount()" />
 
         <!-- 사용할 마일리지를 반영한 결제 금액 -->
         <p id="paymentAmount"></p>

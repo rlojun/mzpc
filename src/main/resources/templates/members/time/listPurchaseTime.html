@@ -149,12 +149,12 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="timePurchase : ${timePurchases}">
-        <td th:text="${timePurchase.times.addTime}"></td>
-        <td th:text="${timePurchase.times.price}"></td>
-        <td th:text="${timePurchase.use}"></td>
-        <td th:text="${timePurchase.times.price * 0.02}"></td>
-        <td th:text="${timePurchase.createdAt}"></td>
+    <tr th:each="mileageInfo : ${mileageInfos}">
+        <td th:text="${mileageInfo.times.addTime}"></td>
+        <td th:text="${mileageInfo.times.price}"></td>
+        <td th:text="${mileageInfo.use}"></td>
+        <td th:text="${mileageInfo.save}"></td>
+        <td th:text="${mileageInfo.createdAt}"></td>
     </tr>
     </tbody>
 </table>

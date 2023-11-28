@@ -16,10 +16,10 @@ INSERT INTO members(member_idx,member_code,member_id,member_pw,member_name,membe
 (1, 312,'cjun','w123','최준','880421-1256232','010-2452-3321','cjun@naver.com','경기도 고양시 덕양구 강촌로 191',0,0,1);
 
 INSERT INTO members(member_idx,member_code,member_id,member_pw,member_name,member_ssn,phone_number,member_email, remaining_time, mileage, store_idx) VALUES
-(2, 313,'base','vvs1234','강희준','960203-1423462','010-8291-4312','base1234@gmail.com',3600000+1200000,20,1);
+(2, 313,'base','vvs1234','강희준','960203-1423462','010-8291-4312','base1234@gmail.com','02:00:00',20,1);
 
 INSERT INTO members(member_idx,member_code,member_id,member_pw,member_name,member_ssn,phone_number,member_email, remaining_time, mileage, store_idx) VALUES
-(3, 314,'sudo','s1234','이수두','960203-2642321','010-4561-2212','sudo@gmail.com',3600000+100000,0,1);
+(3, 314,'sudo','s1234','이수두','960203-2642321','010-4561-2212','sudo@gmail.com','03:00:00',40,1);
 
 
 #-------------------------------------------------------------------------------------------
@@ -36,28 +36,6 @@ INSERT INTO times(time_idx, time_code,time_name,add_time,time_price,save,store_i
 
 INSERT INTO times(time_idx, time_code,time_name,add_time,time_price,save,store_idx)VALUES
     (NULL,416,'20시간','20:00:00',18000,TRUE,1);
-
-INSERT INTO times(time_idx, time_code,time_name,add_time,time_price,save,store_idx)VALUES
-    (NULL,417,'30시간','30:00:00',28000,TRUE,2);
-
-INSERT INTO times(time_idx, time_code,time_name,add_time,time_price,save,store_idx)VALUES
-    (NULL,418,'40시간','40:00:00',38000,TRUE,1);
-
-#--------------------------------------------------------------------------------------------------
-#TIME_PURCHASE
-
-INSERT INTO time_purchase(time_purchase_idx,time_purchase_code,member_idx,time_idx) VALUES
-(1,587,3,2);
-
-#-----------------------------------------------------------------------------------
-#MILEAGE_INFO 
-
-INSERT INTO mileage_info(mileage_idx, mileage_code, mielage_date, use_mileage, time_purchase_idx) VALUES
-(1,612, NOW(), 1);
-
-
-INSERT INTO mileage_info(mileage_idx, mileage_code, save_point, point_date, time_purchase_idx) VALUES
-(2,613, 20, NOW(), 1);
 
 #---------------------------------------------------------------------------------------
 #CATEGORY
