@@ -60,7 +60,7 @@
                             <a class="nav-link" href="food">먹거리 주문하기</a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link" href="time">시간 충전하기 <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" th:href="@{/members/{storeName}/time(storeName=${storeName})}">시간 충전하기</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="qna">문의하기 </a>
@@ -124,9 +124,11 @@
                   </g>
                 </svg>
                         </a>
-                        <a href="login" class="order_online">
-                            로그인
-                        </a>
+                        <div class="user_option">
+                            <a href="/login/logout" class="order_online">
+                                로그아웃
+                            </a>
+                        </div>
                     </div>
                 </div>
             </nav>
@@ -140,67 +142,20 @@
 <section class="about_section layout_padding">
     <div class="container" data-aos="fade-up">
         <div class="row gy-4">
-            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
-                <div class="why-box">
-                    <h3>결제</h3>
-                    <p>
-                    </p>
-                    <div class="text-center">
-                        <a href="#" class="more-btn">카카오 페이로 결제하기 <i class="bx bx-chevron-right"></i></a>
-                    </div>
-                </div>
-            </div><!-- End Why Box -->
-
             <div class="col-lg-8 d-flex align-items-center">
                 <div class="row gy-4">
-
-                    <div class="col-xl-4" data-aos="fade-up" data-aos-delay="200">
-                        <div class="icon-box d-flex flex-column justify-content-center align-items-center">
+                    <div class="col-xl-4" style="width: 300px;" data-aos="fade-up" data-aos-delay="200" th:each="timeDto : ${memberListTime}">
+                        <div class="icon-box d-flex flex-column justify-content-center align-items-center" style="height: 200px;">
                             <i class="bi bi-gem"></i>
-                            <h4>시간 상품 이름 1</h4>
-                            <p>시간 상품 정보 1</p>
+                            <h4 th:text="${timeDto.name}"></h4>
+                            <p th:text="${timeDto.price + '원'}"></p>
+                            <p th:text="'저장유무 : ' + ${timeDto.save}"></p>
+                            <div>
+                                <a th:href="@{/members/{storeName}/purchaseTime/{timeCode}(storeName=${storeName}, timeCode=${timeDto.code})}">선택</a>
+                            </div>
                         </div>
                     </div><!-- End Icon Box -->
-
-                    <div class="col-xl-4" data-aos="fade-up" data-aos-delay="300">
-                        <div class="icon-box d-flex flex-column justify-content-center align-items-center">
-                            <i class="bi bi-gem"></i>
-                            <h4>시간 상품 이름 2</h4>
-                            <p>시간 상품 정보 2</p>
-                        </div>
-                    </div><!-- End Icon Box -->
-
-                    <div class="col-xl-4" data-aos="fade-up" data-aos-delay="400">
-                        <div class="icon-box d-flex flex-column justify-content-center align-items-center">
-                            <i class="bi bi-gem"></i>
-                            <h4>시간 상품 이름 3</h4>
-                            <p>시간 상품 정보 3</p>
-                        </div>
-                    </div><!-- End Icon Box -->
-
-                    <div class="col-xl-4" data-aos="fade-up" data-aos-delay="400">
-                        <div class="icon-box d-flex flex-column justify-content-center align-items-center">
-                            <i class="bi bi-gem"></i>
-                            <h4>시간 상품 이름 4</h4>
-                            <p>시간 상품 정보 4</p>
-                        </div>
-                    </div><!-- End Icon Box -->
-
-                    <div class="col-xl-4" data-aos="fade-up" data-aos-delay="400">
-                        <div class="icon-box d-flex flex-column justify-content-center align-items-center">
-                            <i class="bi bi-gem"></i>
-                            <h4>시간 상품 이름 5</h4>
-                            <p>시간 상품 정보 5</p>
-                        </div>
-                    </div><!-- End Icon Box -->
-
-                    <div class="col-xl-4" data-aos="fade-up" data-aos-delay="400">
-                        <div class="icon-box d-flex flex-column justify-content-center align-items-center">
-                            <i class="bi bi-gem"></i>
-                            <h4>시간 상품 이름 6</h4>
-                            <p>시간 상품 정보 6</p>
-                        </div>
-                    </div><!-- End Icon Box -->
+                    <a th:href="@{/members/{storeName}/listPurchaseTime(storeName=${storeName})}"> 상품 구매 내역</a>
                 </div>
             </div>
         </div>
