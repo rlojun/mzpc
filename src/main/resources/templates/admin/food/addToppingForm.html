@@ -28,7 +28,7 @@
                 contentType : "application/json",
                 data: JSON.stringify(foodDto),
                 success: function(data) {
-                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food";
+                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food"+"?topping="+foodDto.topping;
                     alert(data)
                 },
                 error: function() {

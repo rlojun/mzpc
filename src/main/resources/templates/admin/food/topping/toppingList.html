@@ -63,7 +63,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav  mx-auto ">
                         <li class="nav-item active">
-                            <a class="nav-link" th:href="@{/admin/{storeCode}/food(storeCode=${storeCode})}">음식 상품 <span class="sr-only">(current)</span> </a>
+                            <a class="nav-link" th:href="@{/admin/{storeCode}/food(storeCode=${storeCode},topping=false)}">음식 상품 <span class="sr-only">(current)</span> </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/admin/{storeCode}/time/listTime(storeCode=${storeCode})}">시간 상품</a>
@@ -93,7 +93,7 @@
     <div class="container">
         <div class="heading_container heading_center">
             <h2>
-                Menu
+                Topping Menu
             </h2>
         </div>
         <ul class="filters_menu">
@@ -109,7 +109,7 @@
                         <div>
                             <div class="img-box" th:attr="data-category-code=${food.getCategoryDto().getCode()},data-food-code=${food.getCode()}"
                                  onclick="clickFood(this)">
-                                 <img src="images/f1.png" alt="">
+                                <img src="images/f1.png" alt="">
                             </div>
                             <div class="detail-box" th:attr="data-category-code=${food.getCategoryDto().getCode()},data-food-code=${food.getCode()}"
                                  onclick="clickFood(this)">
@@ -122,11 +122,8 @@
                 </div>
             </div>
         </div>
-
         <hr>
-        <button th:onclick="|location.href='@{/admin/{storeCode}/listCategory(storeCode=${storeCode})}'|">카테고리 관리</button>
-        <button th:onclick="|location.href='@{/admin/{storeCode}/addFoodForm(storeCode=${storeCode})}'|">음식 추가</button>
-        <button th:onclick="|location.href='@{/admin/{storeCode}/food(storeCode=${storeCode}, topping = true)}'|">토핑 목록</button>
+        <button th:onclick="|location.href='@{/admin/{storeCode}/addToppingForm(storeCode=${storeCode})}'|">토핑 추가</button>
     </div>
 </section>
 
