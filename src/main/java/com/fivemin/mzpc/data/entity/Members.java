@@ -85,7 +85,7 @@ public class Members {
     // timepayment와 1:M  양방향 매핑
     @OneToMany(mappedBy = "members")
     @ToString.Exclude
-    private List<TimePurchase> timepaymentList = new ArrayList<>();
+    private List<MileageInfo> mileageInfoList = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "store_idx", nullable = false)

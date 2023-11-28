@@ -3,11 +3,11 @@ package com.fivemin.mzpc.service.members;
 import com.fivemin.mzpc.data.dto.TimeDto;
 import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.data.entity.Store;
-import com.fivemin.mzpc.data.entity.TimePurchase;
+import com.fivemin.mzpc.data.entity.MileageInfo;
 import com.fivemin.mzpc.data.entity.Times;
 import com.fivemin.mzpc.data.repository.MemberRepository;
 import com.fivemin.mzpc.data.repository.StoreRepository;
-import com.fivemin.mzpc.data.repository.TimePurchaseRepository;
+import com.fivemin.mzpc.data.repository.MileageInfoRepository;
 import com.fivemin.mzpc.data.repository.TimesRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,17 +25,17 @@ public class MemberTimeService {
     private final TimesRepository timesRepository;
     private final StoreRepository storeRepository;
     private final MemberRepository memberRepository;
-    private final TimePurchaseRepository timePurchaseRepository;
+    private final MileageInfoRepository mileageInfoRepository;
 
     @Autowired
     public MemberTimeService(TimesRepository timesRepository,
                              StoreRepository storeRepository,
                              MemberRepository memberRepository,
-                             TimePurchaseRepository timePurchaseRepository){
+                             MileageInfoRepository mileageInfoRepository){
         this.timesRepository = timesRepository;
         this.storeRepository = storeRepository;
         this.memberRepository = memberRepository;
-        this.timePurchaseRepository = timePurchaseRepository;
+        this.mileageInfoRepository = mileageInfoRepository;
     }
 
     // 상품 리스트
@@ -84,17 +84,18 @@ public class MemberTimeService {
         Times times = timesRepository.findByCode(timeCode);
 
         // 구매 기록 저장
-        TimePurchase timePurchase = new TimePurchase();
-        timePurchase.setMembers(member);
-        timePurchase.setUse(usedMileage);
-        timePurchase.setTimes(times);
-        timePurchaseRepository.save(timePurchase);
+        MileageInfo mileageInfo = new MileageInfo();
+        mileageInfo.setMembers(member);
+        mileageInfo.setUse(usedMileage);
+        mileageInfo.setSave(earnedMileage);
+        mileageInfo.setTimes(times);
+        mileageInfoRepository.save(mileageInfo);
     }
 
     // 시간구매, 마일리지 사용 내역
-    public List<TimePurchase> listTimePurchase(String memberId){
+    public List<MileageInfo> listMileageInfo(String memberId){
         Members members = memberRepository.findById(memberId);
-        return timePurchaseRepository.findByMembers(members);
+        return mileageInfoRepository.findByMembers(members);
     }
 
     private TimeDto convertToDto(Times times) {

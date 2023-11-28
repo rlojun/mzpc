@@ -11,7 +11,7 @@ package com.fivemin.mzpc.controller.Member;
 
 import com.fivemin.mzpc.data.dto.TimeDto;
 import com.fivemin.mzpc.data.entity.Members;
-import com.fivemin.mzpc.data.entity.TimePurchase;
+import com.fivemin.mzpc.data.entity.MileageInfo;
 import com.fivemin.mzpc.data.entity.Times;
 import com.fivemin.mzpc.service.LoginService;
 import com.fivemin.mzpc.service.members.MemberTimeService;
@@ -93,33 +93,15 @@ public class MemberTimeController {
             return String.format("redirect:/members/%s/time",encodedStoreName);
         }
 
+        // 시간 구매 내역 및 마일리지 내역
         @GetMapping("/listPurchaseTime")
         public String listPurchaseTime(HttpServletRequest request, Model model,
                                        @PathVariable String storeName){
             HttpSession session = request.getSession();
             String memberId = (String) session.getAttribute("id");
-            List<TimePurchase> timePurchases = memberTimeService.listTimePurchase(memberId);
-            model.addAttribute("timePurchases", timePurchases);
+            List<MileageInfo> mileageInfos = memberTimeService.listMileageInfo(memberId);
+            model.addAttribute("mileageInfos", mileageInfos);
             model.addAttribute("storeName", storeName);
             return "members/time/listPurchaseTime";
         }
-
-    // 마일리지 적립 (add)
-    public void addMileage(@PathVariable String memberId) {
-
-        // return "redirect:/{memberId}/mileage/listMileage";
-    }
-
-    // 마일리지 사용(use)
-    public void useMileage(@PathVariable String memberId) {
-
-        // return "redirect:/{memberId}/mileage/listMileage";
-    }
-
-    // 마일리지 사용 및 적립 리스트
-    @GetMapping("/listMileage")
-    public String listMileage() {
-
-        return "listPurchaseTime";
-    }
 }
