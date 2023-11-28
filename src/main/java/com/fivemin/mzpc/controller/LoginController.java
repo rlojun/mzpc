@@ -78,9 +78,9 @@ public class LoginController {
             session.setAttribute("pw", admin.getPw());
 
             String storeCode = admin.getStore().getCode();
-            
+
             // url 리펙토링 필요
-            return String.format("redirect:/admin/%s/food",storeCode);
+            return String.format("redirect:/admin/%s/food?topping=%s",storeCode, false);
         }else {
             return "redirect:/login?error";
         }

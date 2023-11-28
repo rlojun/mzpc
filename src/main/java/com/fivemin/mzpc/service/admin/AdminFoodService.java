@@ -29,11 +29,10 @@ public class AdminFoodService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<FoodDto> getFoodList(String storeCode) {
-        List<Food> foods = foodRepository.findByStorerCode(storeCode);
+    public List<FoodDto> getFoodList(String storeCode,boolean topping) {
+        List<Food> foods = foodRepository.findByStorerCode(storeCode,topping);
         List<FoodDto> foodDtos = new ArrayList<>();
 
-        log.info("foods:{}",foods);
         for ( Food food : foods) {
             CategoryDto categoryDto = CategoryDto.builder()
                     .idx(food.category.getIdx())
@@ -55,7 +54,6 @@ public class AdminFoodService {
             foodDtos.add(foodDto);
         }
 
-        log.info("foodDtos : {}", foodDtos);
         return foodDtos;
     }
 

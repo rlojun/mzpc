@@ -50,18 +50,25 @@ public class AdminFoodController {
     }
 
     @GetMapping(value = "/food")
-    public String listCategory(@PathVariable String storeCode, Model model){
+    public String listCategory(@PathVariable String storeCode,@RequestParam boolean topping, Model model){
         List<CategoryDto> listCategory = adminCategoryService.getListCategory(storeCode);
         StoreDto storeDto = adminCategoryService.getStore(storeCode);
         AdminDto adminDto = adminAdminService.getAdminName(storeDto.getIdx());
-        List<FoodDto> foodDtos= adminFoodService.getFoodList(storeCode);
+        List<FoodDto> foodDtos= adminFoodService.getFoodList(storeCode,topping);
 
         model.addAttribute("listCategory",listCategory);
         model.addAttribute("storeName",storeDto.getName());
         model.addAttribute("adminName",adminDto.getName());
         model.addAttribute("foods",foodDtos);
 
-        return "/admin/food/listFood";
+        String resultView = "";
+        if (topping == false) {
+            resultView = "/admin/food/listFood";
+        } else if (topping == true) {
+            resultView = "/admin/food/topping/toppingList";
+
+        }
+        return resultView;
     }
 
     @GetMapping(value = "/addFoodForm")
@@ -81,7 +88,7 @@ public class AdminFoodController {
         return "/admin/food/addToppingForm";
     }
 
-    @GetMapping(value = "detailFood")
+    @GetMapping(value = "/detailFood")
     public String detailFood(@PathVariable String storeCode, @RequestParam String categoryCode, @RequestParam String foodCode, Model model){
         FoodDto foodDto = adminFoodService.getFoodList(categoryCode,foodCode);
         model.addAttribute("food",foodDto);
@@ -89,6 +96,8 @@ public class AdminFoodController {
 
         return "/admin/food/detailFood";
     }
+
+
     //    // 카테고리별 음상 상품 리스트
 //    @GetMapping("/{categoryId}")
 //    public String listFoodCategory() {
