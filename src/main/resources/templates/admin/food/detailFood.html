@@ -38,7 +38,7 @@
                 contentType : "application/json",
                 data: JSON.stringify(foodDto),
                 success: function(data) {
-                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food";
+                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping=true";
                     alert(data)
                 },
                 error: function() {
@@ -50,6 +50,7 @@
         function deleteFood() {
             var storeCode = [[${storeCode}]];
             var foodIdx = document.getElementById('idx').value;
+            var topping = true;
             $.ajax({
                 type: "DELETE",
                 async: false,
@@ -57,7 +58,7 @@
                 contentType : "application/json",
                 data: JSON.stringify(foodIdx),
                 success: function(data) {
-                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food";
+                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping="+topping;
                     alert(data)
                 },
                 error: function() {
