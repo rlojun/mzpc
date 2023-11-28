@@ -9,36 +9,100 @@ package com.fivemin.mzpc.controller.Member;
     상품 구매시 유저의 남은시간 추가, 마일리지 추가
  */
 
+import com.fivemin.mzpc.data.dto.TimeDto;
+import com.fivemin.mzpc.data.entity.Members;
+import com.fivemin.mzpc.data.entity.TimePurchase;
+import com.fivemin.mzpc.data.entity.Times;
+import com.fivemin.mzpc.service.LoginService;
+import com.fivemin.mzpc.service.members.MemberTimeService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalTime;
+import java.util.List;
+
 @Controller
-@RequestMapping("/time")
+@Slf4j
+@RequestMapping("/members/{storeName}")
 public class MemberTimeController {
 
-        // 시간 상품 목록
-        @GetMapping("/listTime")
-        public String listTime() {
+    @Autowired
+    MemberTimeService memberTimeService;
 
-            return "admin/time/listTime";
+    @Autowired
+    LoginService loginService;
+
+        // 시간 상품 목록
+        @GetMapping("/time")
+        public String listTime(@PathVariable String storeName, Model model) {
+            log.info("storeName : {} : ==>", storeName);
+            List<TimeDto> memberListTime = memberTimeService.listTime(storeName);
+            log.info("memberListTime : {} : ==>", memberListTime);
+            model.addAttribute("memberListTime", memberListTime);
+            return "members/time/listTime";
         }
 
-//        // 시간 상품 선택 및 결제 페이지      rest 컨트롤러 이용
-//        @GetMapping("/purchase/{timeId}")
-//        public String purchaseTime(@PathVariable Long timeId, @RequestParam String memberId) {
-//
-//            return "/time/purchase";
-//        }
+        // 시간 구매 페이지
+        @GetMapping("/purchaseTime/{timeCode}")
+        public String purchaseTime(@PathVariable String storeName,
+                                 @PathVariable String timeCode,
+                                 @RequestParam(value = "usedMileage", required = false, defaultValue = "0") int usedMileage,
+                                 Model model,
+                                 HttpServletRequest request){
+            HttpSession session = request.getSession();
+            // 로그인한 사용자 확인
+            String memberId = (String) session.getAttribute("id");
+            log.info("memberId: {} ", memberId);
 
-        // 시간 상품 결제 처리
-        @PostMapping("/pay/{timeId}")
-        public String purchaseTime() {
+            // 로그인한 사용자의 마일리지
+            Members loginUser = loginService.findByMemberId(memberId);
+            int memberMileage = loginUser.getMileage();
 
-//            addMileage(memberId);
-//            useMileage(memberId);
-            // 해당 로직 처리시 마일리지 사용, 적립이 이루어 진다.
-            return "redirect:/time/listTime";
-    }
+            Times times = memberTimeService.detailTime(timeCode);
+
+            model.addAttribute("times", times);
+            model.addAttribute("storeName", storeName);
+            model.addAttribute("timeCode", timeCode);
+            model.addAttribute("memberMileage", memberMileage);
+            model.addAttribute("usedMileage", usedMileage);
+            return "members/time/orderTime";
+        }
+
+        // 시간 구매 기능
+        @PostMapping("/purchaseTime/{timeCode}")
+        public String purchaseTime(@PathVariable String storeName,
+                                   @PathVariable String timeCode,
+                                   Model model,
+                                   @RequestParam String memberId,
+                                   @RequestParam int usedMileage,
+                                   @RequestParam int timePrice,
+                                   @RequestParam @DateTimeFormat(pattern = "HH:mm:ss") LocalTime additionalTime) {
+            memberTimeService.purchaseTime(memberId, usedMileage, timePrice, additionalTime, timeCode);
+            log.info("purchaseTime================");
+            model.addAttribute("timeCode", timeCode);
+            String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
+            model.addAttribute("storeName", encodedStoreName);
+            return String.format("redirect:/members/%s/time",encodedStoreName);
+        }
+
+        @GetMapping("/listPurchaseTime")
+        public String listPurchaseTime(HttpServletRequest request, Model model,
+                                       @PathVariable String storeName){
+            HttpSession session = request.getSession();
+            String memberId = (String) session.getAttribute("id");
+            List<TimePurchase> timePurchases = memberTimeService.listTimePurchase(memberId);
+            model.addAttribute("timePurchases", timePurchases);
+            model.addAttribute("storeName", storeName);
+            return "members/time/listPurchaseTime";
+        }
 
     // 마일리지 적립 (add)
     public void addMileage(@PathVariable String memberId) {
@@ -56,6 +120,6 @@ public class MemberTimeController {
     @GetMapping("/listMileage")
     public String listMileage() {
 
-        return "/members/time/listMileage";
+        return "listPurchaseTime";
     }
 }

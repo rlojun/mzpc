@@ -29,24 +29,6 @@
     <!-- responsive style -->
     <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
 
-    <script th:inline="javascript">
-        function updatePaymentAmount() {
-            var timesPrice = [[${times.price}]];
-            var usedMileage = document.getElementById('usedMileage').value;
-            var remainingMileage = [[${memberMileage}]];
-
-            // 사용자가 입력한 마일리지가 남은 마일리지를 초과하지 않도록 확인
-            if (usedMileage > remainingMileage) {
-                usedMileage = remainingMileage;
-                document.getElementById('usedMileage').value = remainingMileage;
-            }
-
-            // 결제 금액 계산
-            var paymentAmount = timesPrice - usedMileage;
-            document.getElementById('paymentAmount').innerText = '결제 금액: ' + paymentAmount + '원';
-        }
-    </script>
-
 </head>
 
 <body class="sub_page">
@@ -154,25 +136,132 @@
     </header>
     <!-- end header section -->
 </div>
-    <form th:action="@{/members/{storeName}/purchaseTime/{timeCode} (storeName=${storeName}, timeCode=${timeCode})}" method="post">
-        <input type="hidden" id="memberId" name="memberId" th:value="${session.id}" />
+<h2>구매 목록</h2>
 
-        <p th:text="${'상품명 : ' + times.name}" ></p>
-        <p th:text="${'추가 시간 : ' + times.addTime}" ></p>
-        <p th:text="${'가격 : ' + times.price + '원'}"></p>
-        <p th:text="${'저장 유무 : ' + times.save}"></p>
-        <p th:text="${'남은 마일리지 : ' + memberMileage + '원'}"></p>
+<table border="1">
+    <thead>
+    <tr>
+        <th>시간</th>
+        <th>가격</th>
+        <th>사용한 마일리지</th>
+        <th>적립한 마일리지</th>
+        <th>구매 시간</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="timePurchase : ${timePurchases}">
+        <td th:text="${timePurchase.times.addTime}"></td>
+        <td th:text="${timePurchase.times.price}"></td>
+        <td th:text="${timePurchase.use}"></td>
+        <td th:text="${timePurchase.times.price * 0.02}"></td>
+        <td th:text="${timePurchase.createdAt}"></td>
+    </tr>
+    </tbody>
+</table>
 
-        <!-- 사용자가 입력한 마일리지 -->
-        <label for="usedMileage">사용할 마일리지:</label>
-        <input type="number" id="usedMileage" name="usedMileage" min="0" max="${memberMileage}" oninput="updatePaymentAmount()" />
+<!-- footer section -->
+<footer class="footer_section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 footer-col">
+                <div class="footer_contact">
+                    <h4>
+                        Contact Us
+                    </h4>
+                    <div class="contact_link_box">
+                        <a href="">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <span>
+                  Location
+                </span>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-phone" aria-hidden="true"></i>
+                            <span>
+                  Call +01 1234567890
+                </span>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                            <span>
+                  demo@gmail.com
+                </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 footer-col">
+                <div class="footer_detail">
+                    <a href="" class="footer-logo">
+                        Mzpc
+                    </a>
+                    <p>
+                        Necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with
+                    </p>
+                    <div class="footer_social">
+                        <a href="">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-linkedin" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-instagram" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-pinterest" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 footer-col">
+                <h4>
+                    Opening Hours
+                </h4>
+                <p>
+                    Everyday
+                </p>
+                <p>
+                    10.00 Am -10.00 Pm
+                </p>
+            </div>
+        </div>
+        <div class="footer-info">
+            <p>
+                &copy; <span id="displayYear"></span> All Rights Reserved By
+                <a href="https://html.design/">Free Html Templates</a><br><br>
+                &copy; Distributed By
+                <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
+            </p>
+        </div>
+    </div>
+</footer>
+<!-- footer section -->
 
-        <!-- 사용할 마일리지를 반영한 결제 금액 -->
-        <p id="paymentAmount"></p>
+<!-- jQery -->
+<script src="/bootstrap/js/jquery-3.4.1.min.js"></script>
+<!-- popper js -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+</script>
+<!-- bootstrap js -->
+<script src="/bootstrap/js/bootstrap.js"></script>
+<!-- owl slider -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+</script>
+<!-- isotope js -->
+<script src="https://unpkg.com/isotope-layout@3.0.4/dist/isotope.pkgd.min.js"></script>
+<!-- nice select -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+<!-- custom js -->
+<script src="/bootstrap/js/custom.js"></script>
+<!-- Google Map -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
+</script>
+<!-- End Google Map -->
 
-        <input type="hidden" id="timePrice" name="timePrice" th:value="${times.price}" />
-        <input type="hidden" id="additionalTime" name="additionalTime" th:value="${times.addTime.format(T(java.time.format.DateTimeFormatter).ofPattern('HH:mm:ss'))}" />
-        <button type="submit">결제하기</button>
-    </form>
 </body>
+
 </html>
