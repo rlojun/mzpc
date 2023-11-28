@@ -1,14 +1,17 @@
 package com.fivemin.mzpc.data.entity;
 
+import com.fivemin.mzpc.data.entity.base.BaseTimeEntity;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
 @Setter
-public class TimePurchase {
+public class TimePurchase extends BaseTimeEntity {
 
     //시간 추가 목록 index
     @Id
@@ -23,6 +26,12 @@ public class TimePurchase {
     //사용한 마일리지
     @Column(name = "use_mileage")
     private Integer use;
+
+    public TimePurchase (){
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'L'HHMMyyyymmddss");
+        this.code = currentDateTime.format(formatter);
+    }
 
     @ManyToOne
     @JoinColumn(name = "member_idx",nullable = false)
