@@ -322,17 +322,12 @@
             $.ajax({
                 type: 'POST',
                 url: '/members/' + encodeURIComponent(storeName) + '/food/addToCart',
-                contentType: 'application/json',
                 // data: JSON.stringify([{
-                //     foodName: foodName,
-                //     foodCode: foodCode,
-                //     price: price
-                // }]),
-                data: JSON.stringify({
+                data: {
                     foodName: foodName,
                     foodCode: foodCode,
                     price: price
-                }),
+                },
                 success: function (response) {
                     updateCartUI(response);
                 },

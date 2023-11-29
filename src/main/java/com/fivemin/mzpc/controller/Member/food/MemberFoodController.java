@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.http.HttpHeaders;
 
 import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
@@ -90,57 +89,57 @@ public class MemberFoodController {
 
         return new ModelAndView("members/food/detailFood");
     }
-    @PostMapping(value = "/addToCart", consumes = "application/json")
-    public String addToCart(@RequestBody CartFoodDto cartItems,
-                            @PathVariable(required = false) String storeName,
-                            @RequestHeader HttpHeaders headers,
-                            HttpSession httpSession) {
-        String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
-
-        System.out.println("Headers: " + headers);
-        List<CartFoodDto> existingCartItems = (List<CartFoodDto>) httpSession.getAttribute("cartItems");
-
-        if (existingCartItems == null) {
-            existingCartItems = new ArrayList<>();
-        }
-
-        existingCartItems.add(cartItems);
-        log.info("cartItems {}", cartItems);
-
-        httpSession.setAttribute("cartItems", existingCartItems);
-
-        return "redirect:/members/" + encodedStoreName + "/food/listFood";
-
-
-    }
-
-
-//    @PostMapping("/addToCart")
-//    public String addToCart(@ModelAttribute FoodDto foodDetails,
+//    @PostMapping(value = "/addToCart", consumes = "application/json")
+//    public String addToCart(@RequestBody CartFoodDto cartItems,
 //                            @PathVariable(required = false) String storeName,
-//                            @RequestBody List<CartFoodDto> cartItems,
+//                            @RequestHeader HttpHeaders headers,
 //                            HttpSession httpSession) {
-////        String validStoreName = (String) httpSession.getAttribute("storeName");
-////        String encodedStoreName = URLEncoder.encode(validStoreName, StandardCharsets.UTF_8);
 //        String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
 //
-//        // List<CartFoodDto> cartItems = (List<CartFoodDto>) httpSession.getAttribute("cartItems");
-//        httpSession.getAttribute("cartItems");
+//        System.out.println("Headers: " + headers);
+//        List<CartFoodDto> existingCartItems = (List<CartFoodDto>) httpSession.getAttribute("cartItems");
 //
-//        if (cartItems == null) {
-//            cartItems = new ArrayList<>();
+//        if (existingCartItems == null) {
+//            existingCartItems = new ArrayList<>();
 //        }
-//        log.info("MFController - Cart: foodDetails {}", foodDetails);
-//        cartItems = cartService.addToCart(cartItems, foodDetails.getName(), foodDetails.getCode(), foodDetails.getPrice());
 //
-//        log.info("food name, code, price: {}, {}, {}", foodDetails.getName(), foodDetails.getCode(), foodDetails.getPrice());
-//        httpSession.setAttribute("cartItems", cartItems);
-//        log.info("MFController - cart: cartItems {} :", cartItems);
+//        existingCartItems.add(cartItems);
+//        log.info("cartItems {}", cartItems);
+//
+//        httpSession.setAttribute("cartItems", existingCartItems);
 //
 //        return "redirect:/members/" + encodedStoreName + "/food/listFood";
 //
 //
 //    }
+
+
+    @PostMapping("/addToCart")
+    public String addToCart(@ModelAttribute FoodDto foodDetails,
+                            @PathVariable(required = false) String storeName,
+//                            @RequestBody List<CartFoodDto> cartItems,
+                            HttpSession httpSession) {
+//        String validStoreName = (String) httpSession.getAttribute("storeName");
+//        String encodedStoreName = URLEncoder.encode(validStoreName, StandardCharsets.UTF_8);
+        String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
+
+         List<CartFoodDto> cartItems = (List<CartFoodDto>) httpSession.getAttribute("cartItems");
+//        httpSession.getAttribute("cartItems");
+
+        if (cartItems == null) {
+            cartItems = new ArrayList<>();
+        }
+        log.info("MFController - Cart: foodDetails {}", foodDetails);
+        cartItems = cartService.addToCart(cartItems, foodDetails.getName(), foodDetails.getCode(), foodDetails.getPrice());
+
+        log.info("food name, code, price: {}, {}, {}", foodDetails.getName(), foodDetails.getCode(), foodDetails.getPrice());
+        httpSession.setAttribute("cartItems", cartItems);
+        log.info("MFController - cart: cartItems {} :", cartItems);
+
+        return "redirect:/members/" + encodedStoreName + "/food/listFood";
+
+
+    }
 
 
 //    @GetMapping("/{category}")

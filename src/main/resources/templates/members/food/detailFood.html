@@ -8,7 +8,7 @@
 <body>
 <form th:object="${foodDetails}" method="post"
       th:action="@{/members/{storeName}/food/addToCart(storeName=${foodDetails.storeName})}"
-      class="add-to-cart" th:attr="enctype=${'application/json'}">
+      class="add-to-cart">
     <div>
         <h5 th:text="${foodDetails.name}"></h5>
         <img th:src="${foodDetails.picture}" alt="Food Image">
@@ -43,17 +43,12 @@
             $.ajax({
                 type: 'POST',
                 url: '/members/' + encodeURIComponent(storeName) + '/food/addToCart',
-                contentType: 'application/json',
                 // data: JSON.stringify([{
-                //     foodName: foodName,
-                //     foodCode: foodCode,
-                //     price: price
-                // }]),
-                data: JSON.stringify({
+                data: {
                     foodName: foodName,
                     foodCode: foodCode,
                     price: price
-                }),
+                },
                 error: function (error) {
                     console.error('Error adding item to the cart', error);
                 }
