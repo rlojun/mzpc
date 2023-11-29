@@ -1,8 +1,8 @@
 package com.fivemin.mzpc.service.member;
 
 import com.fivemin.mzpc.data.dto.CartFoodDto;
+import com.fivemin.mzpc.data.entity.Cart;
 import com.fivemin.mzpc.data.repository.CartRepository;
-import com.fivemin.mzpc.data.repository.FoodRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,14 +13,11 @@ import java.util.List;
 @Slf4j
 public class CartService {
 
-    private final FoodRepository foodRepository;
     private final CartRepository cartRepository;
 
     @Autowired
     public CartService(
-            FoodRepository foodRepository,
             CartRepository cartRepository) {
-        this.foodRepository = foodRepository;
         this.cartRepository = cartRepository;
     }
 
@@ -32,8 +29,20 @@ public class CartService {
         cartItems.add(cartItem);
         log.info("CartService - addToCart: cartItems {} :", cartItems);
 
-        return cartItems;
+        saveCartInfo(cartItem);
 
+        return cartItems;
     }
 
-}
+    private void saveCartInfo(CartFoodDto cartItem) {
+        Cart cartEntity = new Cart();
+        cartEntity.setFood(cartItem.getFood());
+
+        cartRepository.save(cartEntity);
+    }
+
+    public List<CartFoodDto> getCartByMemberCode (String memberCode) {
+        return cartRepository.getCartByMemberCode(memberCode);
+    }
+
+    }

@@ -6,9 +6,8 @@
     <title>Food Details</title>
 </head>
 <body>
-<form th:object="${foodDetails}" method="post"
-      th:action="@{/members/{storeName}/food/addToCart(storeName=${foodDetails.storeName})}"
-      class="add-to-cart">
+<form class="add-to-cart" th:object="${foodDetails}" method="post"
+      th:action="@{/members/{storeName}/cart/addToCart(storeName=${foodDetails.storeName})}">
     <div>
         <h5 th:text="${foodDetails.name}"></h5>
         <img th:src="${foodDetails.picture}" alt="Food Image">
@@ -21,10 +20,7 @@
     </div>
     <button type="submit"
             class="add-to-cart-btn"
-            th:data-food-name="${foodDetails.name}"
-            th:data-food-code="${foodDetails.code}"
-            th:data-price="${foodDetails.price}"
-            th:data-store-name="${foodDetails.storeName}">
+        th:attr="data-food-name=${foodDetails.name}, data-food-code=${foodDetails.code}, data-price=${foodDetails.price}, data-store-name=${foodDetails.storeName}">
         카트에 담기
     </button>
 
@@ -38,15 +34,12 @@
             const price = $(this).data('price');
             const storeName = $(this).data('store-name');
 
-            console.log("foodDetails: " + foodCode, foodName, price, storeName)
-
             $.ajax({
                 type: 'POST',
                 url: '/members/' + encodeURIComponent(storeName) + '/food/addToCart',
-                // data: JSON.stringify([{
                 data: {
-                    foodName: foodName,
-                    foodCode: foodCode,
+                    name: foodName,
+                    code: foodCode,
                     price: price
                 },
                 error: function (error) {

@@ -203,7 +203,7 @@
 <section class="cart_section">
     <h2>Shopping Cart</h2>
     <ul id="cartItems">
-        <!--        <li th:text="${foodName}"></li>-->
+        <li th:each="cartItem : ${cartItems}" th:text="${cartItem.foodName}"></li>
     </ul>
 </section>
 <!-- end cart section -->
@@ -314,6 +314,7 @@
 <script>
     $(document).ready(function () {
         $('.add-to-cart-btn').on('click', function () {
+
             const foodName = $(this).data('food-name');
             const foodCode = $(this).data('food-code');
             const price = $(this).data('price');
@@ -322,7 +323,6 @@
             $.ajax({
                 type: 'POST',
                 url: '/members/' + encodeURIComponent(storeName) + '/food/addToCart',
-                // data: JSON.stringify([{
                 data: {
                     foodName: foodName,
                     foodCode: foodCode,
