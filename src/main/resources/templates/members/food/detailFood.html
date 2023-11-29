@@ -1,10 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Food Details</title>
 </head>
 <body>
+<form th:object="${foodDetails}" method="post"
+      th:action="@{/members/{storeName}/food/addToCart(storeName=${foodDetails.storeName})}"
+      class="add-to-cart" th:attr="enctype=${'application/json'}">
+    <div>
+        <h5 th:text="${foodDetails.name}"></h5>
+        <img th:src="${foodDetails.picture}" alt="Food Image">
+        <h5 th:text="${foodDetails.description}"></h5>
+        <input type="hidden" th:field="*{name}" th:value="${foodDetails.name}" />
+        <input type="hidden" th:field="*{code}" th:value="${foodDetails.code}" />
+        <input type="hidden" th:field="*{price}" th:value="${foodDetails.price}" />
+        <input type="hidden" th:field="*{storeName}" th:value="${foodDetails.storeName}" />
+        <input type="hidden" th:field="*{topping}" th:value="false"/>
+    </div>
+    <button type="submit"
+            class="add-to-cart-btn"
+            th:data-food-name="${foodDetails.name}"
+            th:data-food-code="${foodDetails.code}"
+            th:data-price="${foodDetails.price}"
+            th:data-store-name="${foodDetails.storeName}">
+        카트에 담기
+    </button>
 
+</form>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.add-to-cart-btn').on('click', function () {
+            const foodName = $(this).data('food-name');
+            const foodCode = $(this).data('food-code');
+            const price = $(this).data('price');
+            const storeName = $(this).data('store-name');
+
+            console.log("foodDetails: " + foodCode, foodName, price, storeName)
+
+            $.ajax({
+                type: 'POST',
+                url: '/members/' + encodeURIComponent(storeName) + '/food/addToCart',
+                contentType: 'application/json',
+                // data: JSON.stringify([{
+                //     foodName: foodName,
+                //     foodCode: foodCode,
+                //     price: price
+                // }]),
+                data: JSON.stringify({
+                    foodName: foodName,
+                    foodCode: foodCode,
+                    price: price
+                }),
+                error: function (error) {
+                    console.error('Error adding item to the cart', error);
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

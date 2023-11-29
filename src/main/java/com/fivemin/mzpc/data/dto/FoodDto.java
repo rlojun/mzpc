@@ -1,7 +1,5 @@
 package com.fivemin.mzpc.data.dto;
 
-import com.fivemin.mzpc.data.entity.Admin;
-import com.fivemin.mzpc.data.entity.Category;
 import lombok.*;
 
 @Data
@@ -18,5 +16,7 @@ public class FoodDto {
     private final Integer price;
     private final String description;
     private final Integer stock;
-    private final boolean topping;
+    private final boolean topping = false;
+    private String storeName;
+
 }

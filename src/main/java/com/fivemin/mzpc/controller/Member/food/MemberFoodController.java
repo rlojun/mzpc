@@ -1,17 +1,22 @@
 package com.fivemin.mzpc.controller.Member.food;
 
+import com.fivemin.mzpc.data.dto.CartFoodDto;
+import com.fivemin.mzpc.data.dto.FoodDto;
 import com.fivemin.mzpc.data.dto.MenuDto;
+import com.fivemin.mzpc.service.member.CartService;
 import com.fivemin.mzpc.service.member.CategoryService;
 import com.fivemin.mzpc.service.member.FoodService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.http.HttpHeaders;
 
 import javax.servlet.http.HttpSession;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,27 +32,27 @@ import java.util.stream.Collectors;
 @Controller
 @Slf4j
 @RequestMapping("/members/{storeName}/food")
-public class  MemberFoodController {
+public class MemberFoodController {
 
     private final FoodService foodService;
     private final CategoryService categoryService;
-    public MemberFoodController(FoodService foodService, CategoryService categoryService) {
+    private final CartService cartService;
+
+    public MemberFoodController(FoodService foodService, CategoryService categoryService, CartService cartService) {
         this.foodService = foodService;
         this.categoryService = categoryService;
+        this.cartService = cartService;
     }
 
     @GetMapping("/listFood")
-    public ModelAndView listFoodMember(Model model, @PathVariable (required = false) String storeName, HttpSession httpSession) {
+    public ModelAndView listFoodMember(Model model, @PathVariable(required = false) String storeName, HttpSession httpSession) {
         String validStoreName = (String) httpSession.getAttribute("storeName");
-        model.addAttribute("storeName", validStoreName);
-        log.info("MemberFoodController: validStoreName = {} ", validStoreName);
+        model.addAttribute("validStoreName", validStoreName);
 
         if (validStoreName != null) {
-            log.info("MemberFoodController: Attempt to get All Categories");
-
             List<MenuDto> menuDtoList = foodService.getListMenu(storeName);
             model.addAttribute("menuDtoList", menuDtoList);
-            log.info("Controller: Menu {}", menuDtoList);
+            // log.info("MFController - list: Menu {}", menuDtoList);
 
             // test
             List<String> menuDtoCategories = menuDtoList.stream()
@@ -60,6 +65,82 @@ public class  MemberFoodController {
 
         return new ModelAndView("members/food/listFood");
     }
+
+    @GetMapping("/detail/{foodName}")
+    public ModelAndView detailFoodMember(Model model,
+                                         @PathVariable(required = false) String storeName,
+                                         @PathVariable String foodName,
+                                         @RequestParam String foodCode,
+                                         HttpSession httpSession) {
+        String validStoreName = (String) httpSession.getAttribute("storeName");
+        model.addAttribute("foodName", foodName);
+        model.addAttribute("foodCode", foodCode);
+
+        log.info("MFController - detail: foodName: {}", foodName);
+        log.info("MFController - detail: foodCode: {}", foodCode);
+
+        if (validStoreName != null) {
+            String encodedStoreName = URLEncoder.encode(validStoreName, StandardCharsets.UTF_8);
+            model.addAttribute("encodedStoreName", encodedStoreName);
+
+            FoodDto foodDetails = foodService.getFoodDetails(foodCode);
+            model.addAttribute("foodDetails", foodDetails);
+            log.info("MFController - detail: FoodDetails {}", foodDetails);
+        }
+
+        return new ModelAndView("members/food/detailFood");
+    }
+    @PostMapping(value = "/addToCart", consumes = "application/json")
+    public String addToCart(@RequestBody CartFoodDto cartItems,
+                            @PathVariable(required = false) String storeName,
+                            @RequestHeader HttpHeaders headers,
+                            HttpSession httpSession) {
+        String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
+
+        System.out.println("Headers: " + headers);
+        List<CartFoodDto> existingCartItems = (List<CartFoodDto>) httpSession.getAttribute("cartItems");
+
+        if (existingCartItems == null) {
+            existingCartItems = new ArrayList<>();
+        }
+
+        existingCartItems.add(cartItems);
+        log.info("cartItems {}", cartItems);
+
+        httpSession.setAttribute("cartItems", existingCartItems);
+
+        return "redirect:/members/" + encodedStoreName + "/food/listFood";
+
+
+    }
+
+
+//    @PostMapping("/addToCart")
+//    public String addToCart(@ModelAttribute FoodDto foodDetails,
+//                            @PathVariable(required = false) String storeName,
+//                            @RequestBody List<CartFoodDto> cartItems,
+//                            HttpSession httpSession) {
+////        String validStoreName = (String) httpSession.getAttribute("storeName");
+////        String encodedStoreName = URLEncoder.encode(validStoreName, StandardCharsets.UTF_8);
+//        String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
+//
+//        // List<CartFoodDto> cartItems = (List<CartFoodDto>) httpSession.getAttribute("cartItems");
+//        httpSession.getAttribute("cartItems");
+//
+//        if (cartItems == null) {
+//            cartItems = new ArrayList<>();
+//        }
+//        log.info("MFController - Cart: foodDetails {}", foodDetails);
+//        cartItems = cartService.addToCart(cartItems, foodDetails.getName(), foodDetails.getCode(), foodDetails.getPrice());
+//
+//        log.info("food name, code, price: {}, {}, {}", foodDetails.getName(), foodDetails.getCode(), foodDetails.getPrice());
+//        httpSession.setAttribute("cartItems", cartItems);
+//        log.info("MFController - cart: cartItems {} :", cartItems);
+//
+//        return "redirect:/members/" + encodedStoreName + "/food/listFood";
+//
+//
+//    }
 
 
 //    @GetMapping("/{category}")

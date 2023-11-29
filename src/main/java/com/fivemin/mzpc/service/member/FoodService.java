@@ -1,5 +1,6 @@
 package com.fivemin.mzpc.service.member;
 
+import com.fivemin.mzpc.data.dto.FoodDto;
 import com.fivemin.mzpc.data.dto.MenuDto;
 import com.fivemin.mzpc.data.entity.Food;
 import com.fivemin.mzpc.data.repository.*;
@@ -58,4 +59,20 @@ public class FoodService {
         return menuDtoList;
     }
 
+    public FoodDto getFoodDetails(String foodCode) {
+        Food food = foodRepository.getByFoodCode(foodCode);
+
+        if (food != null) {
+            return FoodDto.builder()
+                    .idx(food.getIdx())
+                    .code(food.getCode())
+                    .name(food.getName())
+                    .price(food.getPrice())
+                    .picture(food.getPicture())
+                    .description(food.getDescription())
+                    .storeName(food.getCategory().getStore().getName())
+                    .build();
+        }
+        return null;
+    }
 }

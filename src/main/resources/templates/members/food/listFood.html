@@ -178,7 +178,7 @@
                                 <p th:text="${menu.description}"/>
                                 <div class="options">
                                     <h6 th:text="${menu.price + '원'}"/>
-                                    <a href="">
+                                    <a th:href="@{/members/{storeName}/food/detail/{foodName}(storeName=${(storeName)}, foodName=${menu.name}, foodCode=${menu.code})}">
                                         <i class="material-icons">add</i>
                                     </a>
                                     <a href="">
@@ -198,6 +198,15 @@
 </section>
 
 <!-- end food section -->
+
+<!-- start cart section -->
+<section class="cart_section">
+    <h2>Shopping Cart</h2>
+    <ul id="cartItems">
+        <!--        <li th:text="${foodName}"></li>-->
+    </ul>
+</section>
+<!-- end cart section -->
 
 <!-- footer section -->
 <footer class="footer_section">
@@ -300,6 +309,52 @@
 <!-- custom js -->
 <script src="/bootstrap/js/custom.js"></script>
 <!-- End Google Map -->
+<!-- Add to Cart Function-->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.add-to-cart-btn').on('click', function () {
+            const foodName = $(this).data('food-name');
+            const foodCode = $(this).data('food-code');
+            const price = $(this).data('price');
+            const storeName = $(this).data('store-name');
+
+            $.ajax({
+                type: 'POST',
+                url: '/members/' + encodeURIComponent(storeName) + '/food/addToCart',
+                contentType: 'application/json',
+                // data: JSON.stringify([{
+                //     foodName: foodName,
+                //     foodCode: foodCode,
+                //     price: price
+                // }]),
+                data: JSON.stringify({
+                    foodName: foodName,
+                    foodCode: foodCode,
+                    price: price
+                }),
+                success: function (response) {
+                    updateCartUI(response);
+                },
+                error: function (error) {
+                    console.error('Error adding item to the cart', error);
+                }
+            });
+        });
+
+        function updateCartUI(cartItems) {
+            $('#cartItems').empty();
+            $.each(cartItems, function (index, item) {
+                console.log('Processing cartItem:', item);
+                if (item.foodName !== undefined && item.price !== undefined) {
+                    $('#cartItems').append('<li>' + item.foodName + ' - ' + item.price + '</li>');
+                } else {
+                    console.error('Invalid cart item:', item);
+                }
+            });
+        }
+    });
+</script>
 
 </body>
 
