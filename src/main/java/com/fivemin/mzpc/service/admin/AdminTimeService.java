@@ -9,20 +9,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class TimeService {
+public class AdminTimeService {
 
 
     private final TimesRepository timesRepository;
     private final StoreRepository storeRepository;
 
     @Autowired
-    public TimeService(TimesRepository timesRepository, StoreRepository storeRepository){
+    public AdminTimeService(TimesRepository timesRepository, StoreRepository storeRepository){
         this.timesRepository = timesRepository;
         this.storeRepository = storeRepository;
     }
@@ -43,6 +44,21 @@ public class TimeService {
         return timeDtoList;
     }
 
+    // 상품 신규 생성
+    public TimeDto createTime(TimeDto timeDto, String storeCode){
+        Times newTime = new Times();
+
+        Store store = storeRepository.findByCode(storeCode);
+        newTime.setStore(store);
+        newTime.setName(timeDto.getName());
+        newTime.setAddTime(timeDto.getAddTime());
+        newTime.setPrice(timeDto.getPrice());
+        newTime.setSave(timeDto.isSave());
+
+        Times saveTime = timesRepository.save(newTime);
+        return convertToDto(saveTime);
+    }
+
     // 상품 디테일 (상품 수정 폼)
     public Times detailTime(String timeCode){
         return timesRepository.findByCode(timeCode);
@@ -58,7 +74,6 @@ public class TimeService {
         updateTime.setSave(timeDto.isSave());
 
         Times updatedTime = timesRepository.save(updateTime);
-        log.info("updateTime : ===>>", updateTime);
         return convertToDto(updatedTime);
     }
 
@@ -70,5 +85,10 @@ public class TimeService {
                 .addTime(times.getAddTime())
                 .save(times.isSave())
                 .build();
+    }
+
+    @Transactional
+    public void deleteTime(String timeCode){
+        timesRepository.deleteByCode(timeCode);
     }
 }

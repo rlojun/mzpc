@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
+<html lang="">
 <head>
     <!-- Basic -->
     <meta charset="utf-8" />
@@ -13,7 +12,7 @@
     <meta name="author" content="" />
     <link rel="shortcut icon" href="/bootstrap/images/favicon.png" type="">
 
-    <title> MZPC - Admin </title>
+    <title> Mzpc </title>
 
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css" />
@@ -30,23 +29,21 @@
     <!-- responsive style -->
     <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
 
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 
 <body class="sub_page">
 
 <div class="hero_area">
     <div class="bg-box">
-        <img src="/bootstrap/images/admin-bg.png" alt="">
+        <img src="/bootstrap/images/hero-bg.jpg" alt="">
     </div>
     <!-- header section strats -->
     <header class="header_section">
         <div class="container">
             <nav class="navbar navbar-expand-lg custom_nav-container ">
-                <a class="navbar-brand" href="test/index">
+                <a class="navbar-brand" href="/">
             <span>
-                {store name}
-                Welcome {admin123458}
+              MZPC
             </span>
                 </a>
 
@@ -56,23 +53,82 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav  mx-auto ">
+                        <li class="nav-item ">
+                            <a class="nav-link" href="/">Home </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="food">먹거리 주문하기</a>
+                        </li>
                         <li class="nav-item active">
-                            <a class="nav-link" th:href="@{/admin/{storeCode}/food(storeCode=${storeCode})}">음식 상품 <span class="sr-only">(current)</span> </a>
+                            <a class="nav-link" th:href="@{/members/{storeName}/time(storeName=${storeName})}">시간 충전하기</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/admin/{storeCode}/time/listTime(storeCode=${storeCode})}">시간 상품</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/admin/order">주문 목록</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/admin/member">사용자 목록</a>
+                            <a class="nav-link" href="qna">문의하기 </a>
                         </li>
                     </ul>
                     <div class="user_option">
-                        <a href="/login/logout" class="order_online">
-                            로그아웃
+                        <a href="" class="user_link">
+                            <i class="fa fa-user" aria-hidden="true"></i>
                         </a>
+                        <a class="cart_link" href="#">
+                            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
+                  <g>
+                    <g>
+                      <path d="M345.6,338.862c-29.184,0-53.248,23.552-53.248,53.248c0,29.184,23.552,53.248,53.248,53.248
+                   c29.184,0,53.248-23.552,53.248-53.248C398.336,362.926,374.784,338.862,345.6,338.862z" />
+                    </g>
+                  </g>
+                                <g>
+                    <g>
+                      <path d="M439.296,84.91c-1.024,0-2.56-0.512-4.096-0.512H112.64l-5.12-34.304C104.448,27.566,84.992,10.67,61.952,10.67H20.48
+                   C9.216,10.67,0,19.886,0,31.15c0,11.264,9.216,20.48,20.48,20.48h41.472c2.56,0,4.608,2.048,5.12,4.608l31.744,216.064
+                   c4.096,27.136,27.648,47.616,55.296,47.616h212.992c26.624,0,49.664-18.944,55.296-45.056l33.28-166.4
+                   C457.728,97.71,450.56,86.958,439.296,84.91z" />
+                    </g>
+                  </g>
+                                <g>
+                    <g>
+                      <path d="M215.04,389.55c-1.024-28.16-24.576-50.688-52.736-50.688c-29.696,1.536-52.224,26.112-51.2,55.296
+                   c1.024,28.16,24.064,50.688,52.224,50.688h1.024C193.536,443.31,216.576,418.734,215.04,389.55z" />
+                    </g>
+                  </g>
+                                <g>
+                  </g>
+                                <g>
+                  </g>
+                                <g>
+                  </g>
+                                <g>
+                  </g>
+                                <g>
+                  </g>
+                                <g>
+                  </g>
+                                <g>
+                  </g>
+                                <g>
+                  </g>
+                                <g>
+                  </g>
+                                <g>
+                  </g>
+                                <g>
+                  </g>
+                                <g>
+                  </g>
+                                <g>
+                  </g>
+                                <g>
+                  </g>
+                                <g>
+                  </g>
+                </svg>
+                        </a>
+                        <div class="user_option">
+                            <a href="/login/logout" class="order_online">
+                                로그아웃
+                            </a>
+                        </div>
                     </div>
                 </div>
             </nav>
@@ -80,42 +136,28 @@
     </header>
     <!-- end header section -->
 </div>
+<h2>구매 목록</h2>
 
-<!-- about section -->
-
-<section class="about_section layout_padding">
-    <div class="container" data-aos="fade-up">
-        <div class="row gy-4">
-            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
-                <div class="why-box">
-                    <h3>상품 추가하기</h3>
-                    <div class="text-center">
-                        <a th:href="@{/admin/{storeCode}/time/addTime(storeCode=${storeCode})}" class="more-btn">상품 추가 <i class="bx bx-chevron-right"></i></a>
-                    </div>
-                </div>
-            </div><!-- End Why Box -->
-
-            <div class="col-lg-8 d-flex align-items-center">
-                <div class="row gy-4">
-                    <div class="col-xl-4" style="width: 300px;" data-aos="fade-up" data-aos-delay="200" th:each="timeDto : ${listTime}">
-                        <div class="icon-box d-flex flex-column justify-content-center align-items-center" style="height: 200px;">
-                            <i class="bi bi-gem"></i>
-                            <h4 th:text="${timeDto.name}"></h4>
-                            <p th:text="${timeDto.price + '원'}"></p>
-                            <p th:text="'저장유무 : ' + ${timeDto.save}"></p>
-                            <div>
-                                <a th:href="@{/admin/{storeCode}/time/modifyTime/{timeCode}(storeCode=${storeCode}, timeCode=${timeDto.code})}">수정</a>
-                                <a th:href="@{/admin/{storeCode}/time/deleteTime/{timeCode}(storeCode=${storeCode}, timeCode=${timeDto.code})}">삭제</a>
-                            </div>
-                        </div>
-                    </div><!-- End Icon Box -->
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- end about section -->
+<table border="1">
+    <thead>
+    <tr>
+        <th>시간</th>
+        <th>가격</th>
+        <th>사용한 마일리지</th>
+        <th>적립한 마일리지</th>
+        <th>구매 시간</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="mileageInfo : ${mileageInfos}">
+        <td th:text="${mileageInfo.times.addTime}"></td>
+        <td th:text="${mileageInfo.times.price}"></td>
+        <td th:text="${mileageInfo.use}"></td>
+        <td th:text="${mileageInfo.save}"></td>
+        <td th:text="${mileageInfo.createdAt}"></td>
+    </tr>
+    </tbody>
+</table>
 
 <!-- footer section -->
 <footer class="footer_section">
@@ -221,4 +263,5 @@
 <!-- End Google Map -->
 
 </body>
+
 </html>

@@ -24,13 +24,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
     <!-- font awesome style -->
     <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet" />
-
     <!-- Custom styles for this template -->
     <link href="/bootstrap/css/style.css" rel="stylesheet" />
     <!-- responsive style -->
     <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
 
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+        function clickFood(element) {
+            var categoryCode = element.getAttribute("data-category-code");
+            var foodCode = element.getAttribute("data-food-code");
+            var storeCode = [[${storeCode}]];
+
+            window.location.href ="http://localhost:9010/admin/"+storeCode+"/detailFood?categoryCode="+categoryCode+"&foodCode="+foodCode;
+        }
+    </script>
 </head>
 
 <body class="sub_page">
@@ -44,12 +51,11 @@
         <div class="container">
             <nav class="navbar navbar-expand-lg custom_nav-container ">
                 <a class="navbar-brand" href="test/index">
-            <span>
-                {store name}
-                Welcome {admin123458}
-            </span>
+                    <span th:text="${storeName}"></span>
                 </a>
-
+                <div class="adminName">
+                    관리자 : <span th:text="${adminName}"></span>
+                </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class=""> </span>
                 </button>
@@ -57,7 +63,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav  mx-auto ">
                         <li class="nav-item active">
-                            <a class="nav-link" th:href="@{/admin/{storeCode}/food(storeCode=${storeCode})}">음식 상품 <span class="sr-only">(current)</span> </a>
+                            <a class="nav-link" th:href="@{/admin/{storeCode}/food(storeCode=${storeCode},topping=false)}">음식 상품 <span class="sr-only">(current)</span> </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/admin/{storeCode}/time/listTime(storeCode=${storeCode})}">시간 상품</a>
@@ -81,44 +87,50 @@
     <!-- end header section -->
 </div>
 
-<!-- about section -->
+<!-- food section -->
 
-<section class="about_section layout_padding">
-    <div class="container" data-aos="fade-up">
-        <div class="row gy-4">
-            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
-                <div class="why-box">
-                    <h3>상품 추가하기</h3>
-                    <div class="text-center">
-                        <a th:href="@{/admin/{storeCode}/time/addTime(storeCode=${storeCode})}" class="more-btn">상품 추가 <i class="bx bx-chevron-right"></i></a>
-                    </div>
-                </div>
-            </div><!-- End Why Box -->
-
-            <div class="col-lg-8 d-flex align-items-center">
-                <div class="row gy-4">
-                    <div class="col-xl-4" style="width: 300px;" data-aos="fade-up" data-aos-delay="200" th:each="timeDto : ${listTime}">
-                        <div class="icon-box d-flex flex-column justify-content-center align-items-center" style="height: 200px;">
-                            <i class="bi bi-gem"></i>
-                            <h4 th:text="${timeDto.name}"></h4>
-                            <p th:text="${timeDto.price + '원'}"></p>
-                            <p th:text="'저장유무 : ' + ${timeDto.save}"></p>
-                            <div>
-                                <a th:href="@{/admin/{storeCode}/time/modifyTime/{timeCode}(storeCode=${storeCode}, timeCode=${timeDto.code})}">수정</a>
-                                <a th:href="@{/admin/{storeCode}/time/deleteTime/{timeCode}(storeCode=${storeCode}, timeCode=${timeDto.code})}">삭제</a>
+<section class="food_section layout_padding">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2>
+                Topping Menu
+            </h2>
+        </div>
+        <ul class="filters_menu">
+            <li class="active" data-filter="*">All</li>
+            <li th:each="categorys : ${listCategory}" th:data-filter="'.'+ ${categorys.getCode()} ">
+                <span th:text="${categorys.getName()}" ></span>
+            </li>
+        </ul>
+        <div class="filters-content">
+            <div class="row grid">
+                <div th:each="food : ${foods}" class="col-sm-6 col-lg-4 all" th:classappend="${food.getCategoryDto().getCode()}">
+                    <div class="box">
+                        <div>
+                            <div class="img-box" th:attr="data-category-code=${food.getCategoryDto().getCode()},data-food-code=${food.getCode()}"
+                                 onclick="clickFood(this)">
+                                <img src="images/f1.png" alt="">
+                            </div>
+                            <div class="detail-box" th:attr="data-category-code=${food.getCategoryDto().getCode()},data-food-code=${food.getCode()}"
+                                 onclick="clickFood(this)">
+                                <h5 th:text="${food.getName()}"></h5>
+                                <p th:text="${food.getDescription()}"></p>
+                                <h6 th:text="${food.getPrice()}+원"></h6>
                             </div>
                         </div>
-                    </div><!-- End Icon Box -->
+                    </div>
                 </div>
             </div>
         </div>
+        <hr>
+        <button th:onclick="|location.href='@{/admin/{storeCode}/addToppingForm(storeCode=${storeCode})}'|">토핑 추가</button>
     </div>
 </section>
 
-<!-- end about section -->
+<!-- end food section -->
 
 <!-- footer section -->
-<footer class="footer_section">
+<footer class="footer_section_admin">
     <div class="container">
         <div class="row">
             <div class="col-md-4 footer-col">
@@ -151,7 +163,7 @@
             <div class="col-md-4 footer-col">
                 <div class="footer_detail">
                     <a href="" class="footer-logo">
-                        Mzpc
+                        MZPC
                     </a>
                     <p>
                         Necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with
@@ -191,7 +203,7 @@
             <p>
                 &copy; <span id="displayYear"></span> All Rights Reserved By
                 <a href="https://html.design/">Free Html Templates</a><br><br>
-                &copy; Distributed By
+                &copy; <span id="displayYear"></span> Distributed By
                 <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
             </p>
         </div>
@@ -221,4 +233,5 @@
 <!-- End Google Map -->
 
 </body>
+
 </html>

@@ -1,10 +1,13 @@
 package com.fivemin.mzpc.controller.Member.food;
 
-import com.fivemin.mzpc.data.dto.CartFoodDto;
+import com.fivemin.mzpc.data.dto.CartDto;
 import com.fivemin.mzpc.data.dto.FoodDto;
+import com.fivemin.mzpc.data.entity.Food;
 import com.fivemin.mzpc.service.member.CartService;
+import com.fivemin.mzpc.service.member.FoodService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,13 +25,17 @@ import java.util.List;
  */
 @Data
 @Slf4j
+@Controller
 @RequestMapping("/members/{storeName}/cart")
 public class CartController {
 
     private final CartService cartService;
+    private final FoodService foodService;
 
-    public CartController(CartService cartService) {
+
+    public CartController(CartService cartService, FoodService foodService) {
         this.cartService = cartService;
+        this.foodService = foodService;
     }
     @PostMapping("/addToCart")
     public String addToCart(@ModelAttribute FoodDto foodDetails,
@@ -36,26 +43,33 @@ public class CartController {
                             HttpSession httpSession) {
         String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
 
-        List<CartFoodDto> cartItems = (List<CartFoodDto>) httpSession.getAttribute("cartItems");
+        List<CartDto> cartItems = (List<CartDto>) httpSession.getAttribute("cartItems");
 
         if (cartItems == null) {
             cartItems = new ArrayList<>();
         }
-        log.info("MFController - Cart: foodDetails {}", foodDetails);
+        log.info("CartController: foodDetails {}", foodDetails);
 
-        cartItems = cartService.addToCart(cartItems, foodDetails.getName(), foodDetails.getCode(), foodDetails.getPrice());
+        Food food = foodService.convertDtoToEntity(foodDetails);
+
+
+        cartItems = cartService.addToCart(cartItems, food);
         httpSession.setAttribute("cartItems", cartItems);
-        log.info("MFController - cart: cartItems {} :", cartItems);
+        log.info("CartController: cartItems {} :", cartItems);
 
         return "redirect:/members/" + encodedStoreName + "/food/listFood";
     }
     @GetMapping("/showCart")
     public String showCart(@PathVariable String storeName, Model model, HttpSession httpSession) {
 
-        String memberCode = (String) httpSession.getAttribute("memberCode");
-        List<CartFoodDto> cartItems = cartService.getCartByMemberCode(memberCode);
+//        String memberCode = (String) httpSession.getAttribute("memberCode");
+//        List<CartDto> cartItems = cartService.getCartByMemberCode(memberCode);
+
+        Long memberIdx = (Long) httpSession.getAttribute("memberIdx");
+        List<CartDto> cartItems = cartService.getCartByMemberIdx(memberIdx);
+
         model.addAttribute("cartItems", cartItems);
-        return "cart";  // Assuming "cart" is the Thymeleaf template for the cart page
+        return "cart";
     }
 
     /*

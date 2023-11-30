@@ -1,7 +1,6 @@
 package com.fivemin.mzpc.controller.Member.food;
 
 import com.fivemin.mzpc.data.dto.FoodDto;
-import com.fivemin.mzpc.data.dto.MenuDto;
 import com.fivemin.mzpc.service.member.FoodService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -44,17 +43,16 @@ public class MemberFoodController {
         model.addAttribute("validStoreName", validStoreName);
 
         if (validStoreName != null) {
-            List<MenuDto> menuDtoList = foodService.getListMenu(storeName);
-            model.addAttribute("menuDtoList", menuDtoList);
-            // log.info("MFController - list: Menu {}", menuDtoList);
+            List<FoodDto> foodDtoList = foodService.getListFood(storeName);
+            model.addAttribute("foodDtoList", foodDtoList);
 
-            // test
-            List<String> menuDtoCategories = menuDtoList.stream()
-                    .map(MenuDto::getCategoryName)
+            // Unique Category 만들기 위해
+            List<String> foodDtoCategories = foodDtoList.stream()
+                    .map(FoodDto::getCategoryName)
                     .distinct()
                     .collect(Collectors.toList());
 
-            model.addAttribute("menuDtoCategories", menuDtoCategories);
+            model.addAttribute("foodDtoCategories", foodDtoCategories);
         }
 
         return new ModelAndView("members/food/listFood");

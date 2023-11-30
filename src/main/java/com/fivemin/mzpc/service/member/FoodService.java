@@ -1,7 +1,6 @@
 package com.fivemin.mzpc.service.member;
 
 import com.fivemin.mzpc.data.dto.FoodDto;
-import com.fivemin.mzpc.data.dto.MenuDto;
 import com.fivemin.mzpc.data.entity.Food;
 import com.fivemin.mzpc.data.repository.*;
 import lombok.extern.slf4j.Slf4j;
@@ -16,33 +15,23 @@ import java.util.List;
 public class FoodService {
 
     private final FoodRepository foodRepository;
-    private final OrdersRepository ordersRepository;
-    private final CartRepository cartRepository;
-    private final StoreRepository storeRepository;
-    private final CategoryRepository categoryRepository;
 
     @Autowired
     public FoodService(
-            FoodRepository foodRepository,
-            OrdersRepository ordersRepository,
-            CartRepository cartRepository, StoreRepository storeRepository, CategoryRepository categoryRepository) {
+            FoodRepository foodRepository) {
         this.foodRepository = foodRepository;
-        this.ordersRepository = ordersRepository;
-        this.cartRepository = cartRepository;
-        this.storeRepository = storeRepository;
-        this.categoryRepository = categoryRepository;
     }
 
-    public List<MenuDto> getListMenu(String storeName) {
+    public List<FoodDto> getListFood(String storeName) {
 
         List<Food> foodList = foodRepository.findByStoreName(storeName);
         log.info("storeName: {} ", storeName);
         log.info("Size of foodList: {}", foodList.size());
 
-        List<MenuDto> menuDtoList = new ArrayList<>();
+        List<FoodDto> foodDtoList = new ArrayList<>();
 
         for (Food food : foodList) {
-            MenuDto menuDto = MenuDto.builder()
+            FoodDto foodDto = FoodDto.builder()
                     .idx(food.getIdx())
                     .code(food.getCode())
                     .name(food.getName())
@@ -53,10 +42,10 @@ public class FoodService {
                     .categoryCode(food.getCategory().getCode())
                     .categoryName(food.getCategory().getName())
                     .build();
-            menuDtoList.add(menuDto);
+            foodDtoList.add(foodDto);
         }
 
-        return menuDtoList;
+        return foodDtoList;
     }
 
     public FoodDto getFoodDetails(String foodCode) {
@@ -74,5 +63,12 @@ public class FoodService {
                     .build();
         }
         return null;
+    }
+
+    public Food convertDtoToEntity(FoodDto foodDto) {
+        Food food = new Food();
+        food.setName(foodDto.getName());
+        food.setPrice(foodDto.getPrice());
+        return food;
     }
 }

@@ -24,35 +24,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
     <!-- font awesome style -->
     <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet" />
-
     <!-- Custom styles for this template -->
     <link href="/bootstrap/css/style.css" rel="stylesheet" />
     <!-- responsive style -->
     <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
 
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script>
-        function clickCategory(element) {
-            var categoryName = element.querySelector('span').innerText;
-            $.ajax({
-                /* 기본설정 */
-                type: "get", // 전송 방식 : get
-                async: false, // 동기식으로 설정 : 서버의 응답을 기다렸다가 다음 로직을 실행
-                url: "http://localhost:9010/category/food", // 전송 경로
+        function clickFood(element) {
+            var categoryCode = element.getAttribute("data-category-code");
+            var foodCode = element.getAttribute("data-food-code");
+            var storeCode = [[${storeCode}]];
 
-                /* 클라이언트 -> 서버로 데이터 전송 */
-                dataType: "text", // 전송 데이터 타입
-                data: {categoryName:categoryName}, // 서버로 전송할 데이터
-
-                /* 서버 -> 클라이언트로 전송한 데이터 처리 */
-                success: function(data) { // 서버에서 넘어온 데이터를 data에 저장
-                    $('#listFood').text(data);
-                    // $('#listFood').append(data); // 태그의 id가 message인 태그를 찾아, data를 추가
-                },
-                error: function() {
-                    alert("에러가 발생했습니다.");
-                }
-            });
+            window.location.href ="http://localhost:9010/admin/"+storeCode+"/detailFood?categoryCode="+categoryCode+"&foodCode="+foodCode;
         }
     </script>
 </head>
@@ -115,19 +98,35 @@
         </div>
         <ul class="filters_menu">
             <li class="active" data-filter="*">All</li>
-            <li th:each="categorys : ${listCategory}" onclick="clickCategory(this)">
+            <li th:each="categorys : ${listCategory}" th:data-filter="'.'+ ${categorys.getCode()} ">
                 <span th:text="${categorys.getName()}" ></span>
             </li>
         </ul>
-        <ul>
-            <li>
-                <span id="listFood"></span>
-            </li>
-        </ul>
+        <div class="filters-content">
+            <div class="row grid">
+                <div th:each="food : ${foods}" class="col-sm-6 col-lg-4 all" th:classappend="${food.getCategoryDto().getCode()}">
+                    <div class="box">
+                        <div>
+                            <div class="img-box" th:attr="data-category-code=${food.getCategoryDto().getCode()},data-food-code=${food.getCode()}"
+                                 onclick="clickFood(this)">
+                                 <img src="images/f1.png" alt="">
+                            </div>
+                            <div class="detail-box" th:attr="data-category-code=${food.getCategoryDto().getCode()},data-food-code=${food.getCode()}"
+                                 onclick="clickFood(this)">
+                                <h5 th:text="${food.getName()}"></h5>
+                                <p th:text="${food.getDescription()}"></p>
+                                <h6 th:text="${food.getPrice()}+원"></h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <button th:onclick="|location.href='@{/{storeCode}/listCategory(storeCode=${storeCode})}'|">카테고리 관리</button>
+        <hr>
+        <button th:onclick="|location.href='@{/admin/{storeCode}/listCategory(storeCode=${storeCode})}'|">카테고리 관리</button>
         <button th:onclick="|location.href='@{/admin/{storeCode}/addFoodForm(storeCode=${storeCode})}'|">음식 추가</button>
-
+        <button th:onclick="|location.href='@{/admin/{storeCode}/food(storeCode=${storeCode}, topping = true)}'|">토핑 목록</button>
     </div>
 </section>
 

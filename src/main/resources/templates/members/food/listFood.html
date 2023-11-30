@@ -160,25 +160,25 @@
 
         <ul class="filters_menu">
             <li class="active" data-filter="*">All</li>
-            <li th:each="categoryName : ${menuDtoCategories}" th:text="${categoryName}"
+            <li th:each="categoryName : ${foodDtoCategories}" th:text="${categoryName}"
                 th:data-filter="'.' + ${categoryName}"></li>
         </ul>
 
         <div class="filters-content">
             <div class="row grid">
-                <div th:each="categoryName: ${menuDtoCategories}" class="col-sm-6 col-lg-4 all"
+                <div th:each="categoryName: ${foodDtoCategories}" class="col-sm-6 col-lg-4 all"
                      th:classappend="${categoryName}">
                     <div class="box">
-                        <div th:each="menu : ${menuDtoList}" th:if="${menu.categoryName == categoryName}">
+                        <div th:each="food : ${foodDtoList}" th:if="${food.categoryName == categoryName}">
                             <div class="img-box">
-                                <img th:src="${menu.picture}" alt="">
+                                <img th:src="${food.picture}" alt="">
                             </div>
                             <div class="detail-box">
-                                <h5 th:text="${menu.name}"/>
-                                <p th:text="${menu.description}"/>
+                                <h5 th:text="${food.name}"/>
+                                <p th:text="${food.description}"/>
                                 <div class="options">
-                                    <h6 th:text="${menu.price + '원'}"/>
-                                    <a th:href="@{/members/{storeName}/food/detail/{foodName}(storeName=${(storeName)}, foodName=${menu.name}, foodCode=${menu.code})}">
+                                    <h6 th:text="${food.price + '원'}"/>
+                                    <a th:href="@{/members/{storeName}/food/detail/{foodName}(storeName=${(storeName)}, foodName=${food.name}, foodCode=${food.code})}">
                                         <i class="material-icons">add</i>
                                     </a>
                                     <a href="">
@@ -203,7 +203,7 @@
 <section class="cart_section">
     <h2>Shopping Cart</h2>
     <ul id="cartItems">
-        <li th:each="cartItem : ${cartItems}" th:text="${cartItem.foodName}"></li>
+<!--        <li th:each="cartItem : ${cartItems}" th:text="${cartItem.food.name}"></li>-->
     </ul>
 </section>
 <!-- end cart section -->
@@ -322,7 +322,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '/members/' + encodeURIComponent(storeName) + '/food/addToCart',
+                url: '/members/' + encodeURIComponent(storeName) + '/cart/addToCart',
                 data: {
                     foodName: foodName,
                     foodCode: foodCode,
@@ -341,8 +341,8 @@
             $('#cartItems').empty();
             $.each(cartItems, function (index, item) {
                 console.log('Processing cartItem:', item);
-                if (item.foodName !== undefined && item.price !== undefined) {
-                    $('#cartItems').append('<li>' + item.foodName + ' - ' + item.price + '</li>');
+                if (item.food !== undefined && item.food.name !== undefined && item.food.price !== undefined) {
+                    $('#cartItems').append('<li>' + item.food.name + ' - ' + item.food.price + '</li>');
                 } else {
                     console.error('Invalid cart item:', item);
                 }

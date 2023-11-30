@@ -36,10 +36,10 @@
         <tr th:each="category, index : *{listCategory}">
             <td th:text="${index.index + 1}">인덱스</td>
             <td th:text="${category.getName()}">카테고리명</td>
-            <td><button th:onclick="|location.href='@{/{storeCode}/modifyCategoryForm(storeCode=${storeCode}, categoryCode=${category.code})}'|">수정</button></td>
+            <td><button th:onclick="|location.href='@{/admin/{storeCode}/modifyCategoryForm(storeCode=${storeCode}, categoryCode=${category.code})}'|">수정</button></td>
             <td><button th:attr="onclick='deleteCategory(\'' + ${category.idx} + '\')'">삭제</button></td>
         </tr>
     </table>
-    <button type="button" th:onclick="|location.href='@{/{storeCode}/addCategoryForm(storeCode=${storeCode})}'|">카테고리 추가</button>
+    <button type="button" th:onclick="|location.href='@{/admin/{storeCode}/addCategoryForm(storeCode=${storeCode})}'|">카테고리 추가</button>
 </body>
 </html>

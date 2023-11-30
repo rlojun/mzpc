@@ -2,7 +2,7 @@ package com.fivemin.mzpc.controller.admin.food;
 
 
 import com.fivemin.mzpc.data.dto.CategoryDto;
-import com.fivemin.mzpc.service.admin.CategoryService;
+import com.fivemin.mzpc.service.admin.AdminCategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,17 +23,17 @@ import java.util.List;
  */
 @Controller
 @Slf4j
-@RequestMapping("/{storeCode}") //관리자 pk
-public class CategoryController {
+@RequestMapping("/admin/{storeCode}") //관리자 pk
+public class AdminCategoryController {
 
     @Autowired
-    private CategoryService categoryService;
+    private AdminCategoryService adminCategoryService;
 
     // 음식 카태고리가 뭐뭐 있는지 나타내고, 추가 수정 삭제에 따라 리스트가 바뀜
     @GetMapping(value = "/listCategory")
     public String listFoodCategory(@PathVariable String storeCode, Model model) {
 
-        List<CategoryDto> listCategory = categoryService.getListCategory(storeCode);
+        List<CategoryDto> listCategory = adminCategoryService.getListCategory(storeCode);
         log.info("listCategory : {} ", listCategory);
 
         model.addAttribute("listCategory", listCategory);
@@ -51,9 +51,9 @@ public class CategoryController {
     @GetMapping(value = "/modifyCategoryForm")
     public String modifyCategoryForm(@PathVariable String storeCode, @RequestParam String categoryCode, Model model) {
 
-        CategoryDto categoryDto = categoryService.modifyCategoryForm(categoryCode);
+        CategoryDto categoryDto = adminCategoryService.modifyCategoryForm(categoryCode);
         log.info("categoryDto : {} ", categoryDto);
-        log.info("categoryIdx : {}", categoryCode);
+        log.info("categoryCode : {}", categoryCode);
 
         model.addAttribute("categoryDto", categoryDto);
         model.addAttribute("storeCode",storeCode);

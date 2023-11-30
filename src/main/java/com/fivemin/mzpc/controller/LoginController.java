@@ -59,7 +59,7 @@ public class LoginController {
         String loginType = isAdmin ? "admin" : "members";
 
         if("admin".equals(loginType)){
-            return adminLogin(id, pw, request, model);
+            return adminLogin(id, pw, request);
         } else if("members".equals(loginType)){
             return memberLogin(id, pw, request, model);
         }
@@ -69,8 +69,7 @@ public class LoginController {
     // 관리자 로그인
     public String adminLogin(@RequestParam("adminId") String adminId,
                              @RequestParam("adminPw") String adminPw,
-                             HttpServletRequest request,
-                             Model model){
+                             HttpServletRequest request){
 
         HttpSession session = request.getSession();
         Admin admin = loginService.findByAdminId(adminId);
@@ -80,9 +79,9 @@ public class LoginController {
             session.setAttribute("pw", admin.getPw());
 
             String storeCode = admin.getStore().getCode();
-            model.addAttribute("storeCode",storeCode);
+
             // url 리펙토링 필요
-            return String.format("redirect:/admin/%s/food",storeCode);
+            return String.format("redirect:/admin/%s/food?topping=%s",storeCode, false);
         }else {
             return "redirect:/login?error";
         }

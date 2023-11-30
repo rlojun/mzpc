@@ -7,7 +7,6 @@ import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -62,8 +61,9 @@ public class Members {
 
     // 잔여 시간
     // 회원 가입시 기본 디폴트 값 0 설정
-    @Column(nullable = false)
-    private Duration remainingTime = Duration.ZERO;
+//    @Column(nullable = false)
+//    @DateTimeFormat(pattern = "HH:mm:ss")
+//    private LocalTime remainingTime = LocalTime.of(0, 0, 0);
 
     // 잔여 마일리지
     // 회원가입시 기본 디폴트 값 0 설정
@@ -83,7 +83,7 @@ public class Members {
     // timepayment와 1:M  양방향 매핑
     @OneToMany(mappedBy = "members")
     @ToString.Exclude
-    private List<TimePurchase> timepaymentList = new ArrayList<>();
+    private List<MileageInfo> mileageInfoList = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "store_idx", nullable = false)
