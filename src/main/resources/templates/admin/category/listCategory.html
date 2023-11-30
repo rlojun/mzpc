@@ -15,7 +15,7 @@
                 async : false,
                 data: JSON.stringify(categoryIdx),
                 success: function (data) {
-                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food";
+                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping="+false;
                     alert(data)
                 },
                 error: function () {

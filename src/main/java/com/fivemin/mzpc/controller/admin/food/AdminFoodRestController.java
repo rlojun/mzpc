@@ -27,7 +27,6 @@ public class AdminFoodRestController {
                                           @RequestParam ("foodDto") String foodDtoJson,
                                           @RequestParam String categoryCode) {
         ObjectMapper objectMapper = new ObjectMapper();
-        String resultMessage = null;
         try {
             FoodDto foodDto = objectMapper.readValue(foodDtoJson, FoodDto.class);
             log.info("categoryCode : {}", categoryCode);
@@ -43,10 +42,21 @@ public class AdminFoodRestController {
     }
 
     @PostMapping(value = "/modifyFood")
-    public ResponseEntity<String> modifyFood(@RequestBody FoodDto foodDto,@RequestParam String categoryName) {
-        adminFoodService.modifyFood(foodDto,categoryName);
-        log.info("foodDto : {}", foodDto);
-        log.info("categoryName : {}",categoryName);
+    public ResponseEntity<String> modifyFood(@RequestPart MultipartFile foodPicture,
+                                             @RequestParam ("foodDto") String foodDtoJson,
+                                             @RequestParam String categoryName) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            FoodDto foodDto = objectMapper.readValue(foodDtoJson, FoodDto.class);
+            log.info("foodPicture : {}", foodPicture.getOriginalFilename());
+            log.info("foodDtoJson : {}",foodDto);
+            log.info("categoryName : {}",categoryName);
+
+        adminFoodService.modifyFood(foodDto,categoryName,foodPicture);
+
+        } catch (IOException e) {
+            System.out.println("modifyFood() Err --> "+ e.getMessage());
+        }
         return ResponseEntity.ok("업데이트 되었습니다.");
     }
 

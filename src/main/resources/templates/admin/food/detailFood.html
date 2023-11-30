@@ -14,31 +14,41 @@
 
             var modifyButton = document.getElementById('modifyButton');
             modifyButton.value = '수정';
-            modifyButton.setAttribute('onclick', 'saveChanges()');
+            modifyButton.setAttribute('onclick', 'saveChanges(event)');
+
+            var foodPicture = document.getElementById('picture');
+            foodPicture.type = 'file';
+
+            var reset = document.getElementById('reset');
+            reset.type='reset';
         }
 
-        function saveChanges() {
+        function saveChanges(event) {
+            event.preventDefault();
             var storeCode = [[${storeCode}]];
             var categoryName = document.getElementById('category').value;
             var foodDto = {
                 "idx" : document.getElementById('idx').value,
                 "code" : document.getElementById('code').value,
                 "name" : document.getElementById('name').value,
-                "picture" : document.getElementById('picture').value,
                 "price" : document.getElementById('price').value,
                 "description" : document.getElementById('description').value,
-                "stock" : document.getElementById('stock').value,
-                "createdAt" : null,
-                "updatedAt" : null
+                "stock" : document.getElementById('stock').value
             };
+
+            var formData = new FormData();
+
+            formData.append('foodPicture', $('#picture')[0].files[0]);
+            formData.append('foodDto',JSON.stringify(foodDto));
             $.ajax({
                 type: "POST",
                 async: false,
                 url: "http://localhost:9010/food/modifyFood?categoryName="+categoryName,
-                contentType : "application/json",
-                data: JSON.stringify(foodDto),
+                processData: false,
+                contentType: false,
+                data: formData,
                 success: function(data) {
-                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping=true";
+                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping="+false;
                     alert(data)
                 },
                 error: function() {
@@ -47,10 +57,10 @@
             });
         }
 
-        function deleteFood() {
+        function deleteFood(event) {
+            event.preventDefault();
             var storeCode = [[${storeCode}]];
             var foodIdx = document.getElementById('idx').value;
-            var topping = true;
             $.ajax({
                 type: "DELETE",
                 async: false,
@@ -58,7 +68,7 @@
                 contentType : "application/json",
                 data: JSON.stringify(foodIdx),
                 success: function(data) {
-                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping="+topping;
+                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping="+false;
                     alert(data)
                 },
                 error: function() {
@@ -93,7 +103,7 @@
         <input type="hidden" id="categoryDto" th:value="*{getCategoryDto()}">
         <input type="button" id="modifyButton" onclick="enableEditing()" th:value="수정하기">
         <input type="button" onclick="deleteFood()" th:value="삭제">
-        <input type="reset">
+        <input type="hidden" id="reset">
     </form>
 </body>
 </html>

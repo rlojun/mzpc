@@ -110,25 +110,7 @@ public class AdminFoodService {
 
         foodRepository.save(food);
     }
-    private void fileUpload(MultipartFile foodPicture) {
-        String fileName = StringUtils.cleanPath(foodPicture.getOriginalFilename());
 
-        String relativePath  = "src/main/resources/static/images/";
-
-        try{
-            Path uploadPath = Paths.get(relativePath);
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
-            try(InputStream inputStream = foodPicture.getInputStream()){
-                Path filePath = uploadPath.resolve(fileName);
-                Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-            }
-        } catch (Exception e) {
-            System.out.println("fileUpload() Err --> " + e.getMessage());
-        }
-
-    }
 
     private String makeCode(){
         LocalDateTime currentDateTime = LocalDateTime.now();
@@ -158,11 +140,12 @@ public class AdminFoodService {
                 .updateAt(food.getUpdatedAt())
                 .categoryDto(categoryDto)
                 .build();
+
         return foodDto;
     }
 
     @Transactional
-    public void modifyFood(FoodDto foodDto,String categoryName) {
+    public void modifyFood(FoodDto foodDto,String categoryName,MultipartFile foodPicture) {
         Category category = categoryRepository.findByName(categoryName);
         Food food = foodRepository.findById(foodDto.getIdx()).orElse(null);
 
@@ -171,13 +154,15 @@ public class AdminFoodService {
                     .idx(foodDto.getIdx())
                     .code(foodDto.getCode())
                     .name(foodDto.getName())
-                    .picture(foodDto.getPicture())
+                    .picture(foodPicture.getOriginalFilename())
                     .price(foodDto.getPrice())
                     .description(foodDto.getDescription())
                     .stock(foodDto.getStock())
                     .topping(foodDto.isTopping())
                     .category(category)
                     .build();
+
+            fileUpload(foodPicture);
 
             foodRepository.save(updateFood);
         }
@@ -186,5 +171,25 @@ public class AdminFoodService {
     @Transactional
     public void deleteFood(Long foodIdx) {
         foodRepository.deleteById(foodIdx);
+    }
+
+    private void fileUpload(MultipartFile foodPicture) {
+        String fileName = StringUtils.cleanPath(foodPicture.getOriginalFilename());
+
+        String relativePath  = "src/main/resources/static/images/";
+
+        try{
+            Path uploadPath = Paths.get(relativePath);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+            try(InputStream inputStream = foodPicture.getInputStream()){
+                Path filePath = uploadPath.resolve(fileName);
+                Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (Exception e) {
+            System.out.println("fileUpload() Err --> " + e.getMessage());
+        }
+
     }
 }

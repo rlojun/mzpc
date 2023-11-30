@@ -6,7 +6,8 @@
 
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script>
-        function submitCategory() {
+        function submitCategory(event) {
+            event.preventDefault();
             var categoryName = $('input[name="categoryName"]').val();
             var storeCode = [[${storeCode}]];
             var categoryDto = {
@@ -22,7 +23,7 @@
                 async : false,
                 data: JSON.stringify(categoryDto),
                 success: function(data) {
-                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food";
+                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping="+false;
                     alert(data);
 
                 },
@@ -39,7 +40,7 @@
 <!--    <form th:action="@{/{adminCode}/addCategory(adminCode=${adminCode})}", method="get">-->
      <form id="addCategory">
         카테고리 명 : <input type="text" name="categoryName">
-        <button onclick="submitCategory()">카테고리 추가</button>
+        <button onclick="submitCategory(event)">카테고리 추가</button>
     </form>
 </body>
 </html>
