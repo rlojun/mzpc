@@ -1,11 +1,15 @@
 package com.fivemin.mzpc.controller.admin.food;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fivemin.mzpc.data.dto.FoodDto;
 import com.fivemin.mzpc.service.admin.AdminFoodService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping(value = "/food")
@@ -19,16 +23,23 @@ public class AdminFoodRestController {
         this.adminFoodService = adminFoodService;
     }
     @PostMapping(value = "/addFood")
-    public ResponseEntity<String> addFood(@RequestBody FoodDto foodDto, @RequestParam String categoryCode) {
-        adminFoodService.addFood(foodDto,categoryCode);
-        log.info("foodDto : {}", foodDto);
-        log.info("categoryCode : {}", categoryCode);
+    public ResponseEntity<String> addFood(@RequestPart MultipartFile foodPicture,
+                                          @RequestParam ("foodDto") String foodDtoJson,
+                                          @RequestParam String categoryCode) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String resultMessage = null;
+        try {
+            FoodDto foodDto = objectMapper.readValue(foodDtoJson, FoodDto.class);
+            log.info("categoryCode : {}", categoryCode);
+            log.info("foodDto : {}", foodDto);
+            log.info("foodPicture : {}", foodPicture.getOriginalFilename());
+            adminFoodService.addFood(foodDto,foodPicture,categoryCode);
 
-        if (!foodDto.isTopping()) {
-            return ResponseEntity.ok("음식이 추가 되었습니다.");
-        } else {
-            return ResponseEntity.ok("토핑이 추가 되었습니다.");
+        } catch (IOException e) {
+            System.out.println("addFood() Err --> "+ e.getMessage());
         }
+        return ResponseEntity.ok("음식이 추가되었습니다.");
+
     }
 
     @PostMapping(value = "/modifyFood")

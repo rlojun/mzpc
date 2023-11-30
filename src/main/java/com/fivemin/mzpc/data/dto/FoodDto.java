@@ -8,18 +8,19 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class FoodDto {
 
-    private final Long idx;
-    private final String code;
-    private final String name;
-    private final String picture;
-    private final Integer price;
-    private final String description;
-    private final Integer stock;
-    private final boolean topping;
-    private final LocalDateTime createdAt;
-    private final LocalDateTime updateAt;
-    private final CategoryDto categoryDto;
+    private Long idx;
+    private String code;
+    private String name;
+    private String picture;
+    private Integer price;
+    private String description;
+    private Integer stock;
+    private boolean topping;
+    private LocalDateTime createdAt;
+    private LocalDateTime updateAt;
+    private CategoryDto categoryDto;
 }

@@ -9,8 +9,15 @@ import com.fivemin.mzpc.data.repository.FoodRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -83,14 +90,15 @@ public class AdminFoodService {
         return foodDtoList;
     }
 
-    public void addFood(FoodDto foodDto, String categoryCode) {
+    @Transactional
+    public void addFood(FoodDto foodDto, MultipartFile foodPicture,String categoryCode) {
         Category category = categoryRepository.findByCode(categoryCode);
 
         Food food = Food.builder()
                 .idx(foodDto.getIdx())
                 .code(makeCode())
                 .name(foodDto.getName())
-                .picture(foodDto.getPicture())
+                .picture(foodPicture.getOriginalFilename())
                 .price(foodDto.getPrice())
                 .description(foodDto.getDescription())
                 .stock(foodDto.getStock())
@@ -98,7 +106,28 @@ public class AdminFoodService {
                 .category(category)
                 .build();
 
+        fileUpload(foodPicture);
+
         foodRepository.save(food);
+    }
+    private void fileUpload(MultipartFile foodPicture) {
+        String fileName = StringUtils.cleanPath(foodPicture.getOriginalFilename());
+
+        String relativePath  = "src/main/resources/static/images/";
+
+        try{
+            Path uploadPath = Paths.get(relativePath);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+            try(InputStream inputStream = foodPicture.getInputStream()){
+                Path filePath = uploadPath.resolve(fileName);
+                Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (Exception e) {
+            System.out.println("fileUpload() Err --> " + e.getMessage());
+        }
+
     }
 
     private String makeCode(){

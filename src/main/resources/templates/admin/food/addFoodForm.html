@@ -6,30 +6,45 @@
     <title>음식 추가</title>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script>
-        function submitFoodInfo() {
+        function submitFoodInfo(event) {
+            event.preventDefault();
             var selectElement = document.getElementById('categoryName');
             var categoryCode = selectElement.value;
             var storeCode = [[${storeCode}]];
+            var topping = false;
+            var formData = new FormData();
+
+            var stockCheck = document.getElementById('stock').value;
+            var foodNameCheck = document.getElementById('foodName').value;
+            var foodPriceCheck = document.getElementById('foodPrice').value;
+
             var foodDto = {
                 "idx" : null,
                 "code" : null,
                 "name" : $('input[name="foodName"]').val(),
-                "picture" : $('input[name="foodPicture"]').val(),
                 "price" : $('input[name="foodPrice"]').val(),
-                "description" : $('input[name="description"]').val(),
+                "description" : $('#description').val(),
                 "stock" : $('input[name="stock"]').val(),
-                "topping" : null
+                "topping" : false
             };
 
+            if (stockCheck=== '' | foodNameCheck==='' || foodPriceCheck==='' ) {
+                alert('모든 필수 입력 필드를 작성해주세요.');
+                return; // 폼 전송을 막고 경고창을 표시
+            }
+            formData.append('foodPicture', $('#foodPicture')[0].files[0]);
+            formData.append('foodDto',JSON.stringify(foodDto));
             $.ajax({
-                /* 기본설정 */
                 type: "POST",
                 async: false,
                 url: "http://localhost:9010/food/addFood?categoryCode=" + categoryCode,
-                contentType : "application/json",
-                data: JSON.stringify(foodDto),
+                // contentType : "application/json",
+                processData: false,
+                contentType: false,
+                data: formData,
                 success: function(data) {
-                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food";
+                    console.log(foodDto);
+                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping="+topping;
                     alert(data)
                 },
                 error: function() {
@@ -42,7 +57,7 @@
 </head>
 <!--나중에 이미지 파일 업로드 해야 함-->
 <body>
-    <form id="addFood">
+    <form id="addFood" enctype="multipart/form-data">
         <label for="foodName">음식</label> : <input type="text" id="foodName" name="foodName" required>
         <br>
         <label for="foodPrice">가격</label>  : <input type="text" id="foodPrice" name="foodPrice" required>원
@@ -52,14 +67,14 @@
                 <option th:each=" category : ${categories}" th:value="${category.getCode()}" th:text="${category.getName()}"></option>
             </select>
         <br>
-        <label for="foodPicture">이미지</label>  : <input type="text" id="foodPicture" name="foodPricture">
+        <label for="foodPicture">이미지</label>  : <input type="file" id="foodPicture" accept="image/*"  name="foodPricture">
         <br>
         <label for="description">설명</label> : <br>
-        <textarea id="description" name="description" rows="4" cols="50" placeholder="설명을 입력하세요."></textarea>
+        <textarea id="description" rows="4" cols="50" placeholder="설명을 입력하세요."></textarea>
         <br>
         <label for="stock">재고</label> : <input type="text" id="stock" name="stock" required>
         <br>
-        <button th:onclick="submitFoodInfo()">음식 추가</button>
+        <button th:onclick="submitFoodInfo(event)">음식 추가</button>
         <input type="reset">
     </form>
 </body>
