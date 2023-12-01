@@ -50,6 +50,7 @@ public class CartController {
 
         log.info("CartController: foodDetails {}", foodDetails);
         Food food = foodService.convertDtoToEntity(foodDetails);
+        log.info("food : {}", food);
 
         cartItems = cartService.addToCart(cartItems, food, httpSession);
         httpSession.setAttribute("cartItems", cartItems);
