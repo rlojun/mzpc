@@ -23,7 +23,7 @@ public class Food extends BaseTimeEntity {
     private String code;
 
     //음식 이름
-    @Column(name = "food_name", length = 30, nullable = false, unique = true)
+    @Column(name = "food_name", length = 30, nullable = false)
     private String name;
 
     //음식 사진
