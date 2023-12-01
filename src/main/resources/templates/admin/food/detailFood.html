@@ -7,48 +7,62 @@
     <script>
         function enableEditing() {
             document.getElementById('name').removeAttribute('disabled');
-            document.getElementById('picture').removeAttribute('disabled');
             document.getElementById('price').removeAttribute('disabled');
-            document.getElementById('description').removeAttribute('disabled');
             document.getElementById('stock').removeAttribute('disabled');
 
             var modifyButton = document.getElementById('modifyButton');
             modifyButton.value = '수정';
-            modifyButton.setAttribute('onclick', 'saveChanges(event)');
+            modifyButton.setAttribute('onclick', 'saveChanges()');
 
             var foodPicture = document.getElementById('picture');
             foodPicture.type = 'file';
+            foodPicture.style.display = 'block';
 
             var reset = document.getElementById('reset');
-            reset.type='reset';
+            reset.type = 'reset';
         }
 
-        function saveChanges(event) {
-            event.preventDefault();
+        function handleFileInputChange() {
+            var fileInput = document.getElementById('picture');
+            var imgElement = document.getElementById('foodImage');
+            var file = fileInput.files[0];
+
+            if (file) {
+                document.getElementById('pictureText').value = file.name;
+                var reader = new FileReader();
+                reader.onloadend = function() {
+                    imgElement.src = reader.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveChanges() {
             var storeCode = [[${storeCode}]];
             var categoryName = document.getElementById('category').value;
             var foodDto = {
-                "idx" : document.getElementById('idx').value,
-                "code" : document.getElementById('code').value,
-                "name" : document.getElementById('name').value,
-                "price" : document.getElementById('price').value,
-                "description" : document.getElementById('description').value,
-                "stock" : document.getElementById('stock').value
+                "idx": document.getElementById('idx').value,
+                "code": document.getElementById('code').value,
+                "name": document.getElementById('name').value,
+                "price": document.getElementById('price').value,
+                "description": null,
+                "stock": document.getElementById('stock').value,
+                "picture": document.getElementById('pictureText').value
             };
 
             var formData = new FormData();
 
-            formData.append('foodPicture', $('#picture')[0].files[0]);
-            formData.append('foodDto',JSON.stringify(foodDto));
+            formData.append('picture', $('#picture')[0].files[0]);
+            formData.append('foodDto', JSON.stringify(foodDto));
             $.ajax({
                 type: "POST",
                 async: false,
-                url: "http://localhost:9010/food/modifyFood?categoryName="+categoryName,
+                url: "http://localhost:9010/food/modifyFood?categoryName=" + categoryName,
                 processData: false,
                 contentType: false,
                 data: formData,
                 success: function(data) {
-                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping="+false;
+                    window.location.href = "http://localhost:9010/admin/" + storeCode + "/food?topping=" + false;
                     alert(data)
                 },
                 error: function() {
@@ -57,18 +71,17 @@
             });
         }
 
-        function deleteFood(event) {
-            event.preventDefault();
+        function deleteFood() {
             var storeCode = [[${storeCode}]];
             var foodIdx = document.getElementById('idx').value;
             $.ajax({
                 type: "DELETE",
                 async: false,
                 url: "http://localhost:9010/food/deleteFood",
-                contentType : "application/json",
+                contentType: "application/json",
                 data: JSON.stringify(foodIdx),
                 success: function(data) {
-                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping="+false;
+                    window.location.href = "http://localhost:9010/admin/" + storeCode + "/food?topping=" + false;
                     alert(data)
                 },
                 error: function() {
@@ -79,31 +92,30 @@
     </script>
 </head>
 <body>
-    <form th:object="${food}">
-        <label for="name">음식</label> : <input type="text" id="name" th:value="*{getName()}" disabled>
-        <br>
-        <label for="price">가격</label> : <input type="text" id="price" th:value="*{getPrice()}" disabled>
-        <br>
-        <label for="category">카테고리</label> : <input type="text" id="category" th:value="*{getCategoryDto().getName()}" readonly>
-        <br>
-        <label for="picture">사진</label> : <input type="text" id="picture" th:value="*{getPicture()}" disabled>
-        <br>
-        <label for="description">설명</label>
-        <br>
-        <textarea id="description" rows="4" cols="50" th:text="*{getDescription()}" disabled></textarea>
-        <br>
-        <label for="stock">재고</label> : <input type="text" id="stock" th:value="*{getStock()}" disabled>
-        <br>
-        <label for="createdAt">생성 시간</label> : <input type="text" id="createdAt" th:value="*{getCreatedAt()}" readonly>
-        <br>
-        <label for="updatedAt">수정 시간</label> : <input type="text" id="updatedAt" th:value="*{getUpdateAt()}" readonly>
-        <br>
-        <input type="hidden" id="idx" th:value="*{getIdx()}">
-        <input type="hidden" id="code" th:value="*{getCode()}">
-        <input type="hidden" id="categoryDto" th:value="*{getCategoryDto()}">
-        <input type="button" id="modifyButton" onclick="enableEditing()" th:value="수정하기">
-        <input type="button" onclick="deleteFood()" th:value="삭제">
-        <input type="hidden" id="reset">
-    </form>
+<form th:object="${food}">
+    <label for="name">음식</label> : <input type="text" id="name" th:value="*{getName()}" disabled>
+    <br>
+    <label for="price">가격</label> : <input type="text" id="price" th:value="*{getPrice()}" disabled>
+    <br>
+    <label for="category">카테고리</label> : <input type="text" id="category" th:value="*{getCategoryDto().getName()}" readonly>
+    <br>
+    <img id="foodImage" th:src="@{/images/__${food.getPicture()}__}" style="width:100px; height:100px;" alt="음식 이미지" />
+    <br>
+    <label for="pictureText">사진</label> : <input type="text" id="pictureText" th:value="*{getPicture()}" disabled>
+    <input type="file" id="picture" style="display: none;" onchange="handleFileInputChange()">
+    <br>
+    <label for="stock">재고</label> : <input type="text" id="stock" th:value="*{getStock()}" disabled>
+    <br>
+    <label for="createdAt">생성 시간</label> : <input type="text" id="createdAt" th:value="*{getCreatedAt()}" readonly>
+    <br>
+    <label for="updatedAt">수정 시간</label> : <input type="text" id="updatedAt" th:value="*{getUpdateAt()}" readonly>
+    <br>
+    <input type="hidden" id="idx" th:value="*{getIdx()}">
+    <input type="hidden" id="code" th:value="*{getCode()}">
+    <input type="hidden" id="categoryDto" th:value="*{getCategoryDto()}">
+    <input type="button" id="modifyButton" onclick="enableEditing()" th:value="수정하기">
+    <input type="button" onclick="deleteFood()" th:value="삭제">
+    <input type="hidden" id="reset">
+</form>
 </body>
 </html>

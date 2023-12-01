@@ -23,7 +23,7 @@ public class AdminFoodRestController {
         this.adminFoodService = adminFoodService;
     }
     @PostMapping(value = "/addFood")
-    public ResponseEntity<String> addFood(@RequestPart MultipartFile foodPicture,
+    public ResponseEntity<String> addFood(@RequestPart ("picture") MultipartFile foodPicture,
                                           @RequestParam ("foodDto") String foodDtoJson,
                                           @RequestParam String categoryCode) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -42,7 +42,7 @@ public class AdminFoodRestController {
     }
 
     @PostMapping(value = "/modifyFood")
-    public ResponseEntity<String> modifyFood(@RequestPart MultipartFile foodPicture,
+    public ResponseEntity<String> modifyFood(@RequestPart ("picture") MultipartFile foodPicture,
                                              @RequestParam ("foodDto") String foodDtoJson,
                                              @RequestParam String categoryName) {
         ObjectMapper objectMapper = new ObjectMapper();

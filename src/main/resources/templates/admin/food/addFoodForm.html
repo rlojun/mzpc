@@ -30,9 +30,9 @@
 
             if (stockCheck=== '' | foodNameCheck==='' || foodPriceCheck==='' ) {
                 alert('모든 필수 입력 필드를 작성해주세요.');
-                return; // 폼 전송을 막고 경고창을 표시
+                return;
             }
-            formData.append('foodPicture', $('#foodPicture')[0].files[0]);
+            formData.append('picture', $('#foodPicture')[0].files[0]);
             formData.append('foodDto',JSON.stringify(foodDto));
             $.ajax({
                 type: "POST",
@@ -55,7 +55,6 @@
     </script>
 
 </head>
-<!--나중에 이미지 파일 업로드 해야 함-->
 <body>
     <form id="addFood" enctype="multipart/form-data">
         <label for="foodName">음식</label> : <input type="text" id="foodName" name="foodName" required>

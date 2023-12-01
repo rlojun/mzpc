@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>토핑 상세보기</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+        function enableEditing() {
+            document.getElementById('name').removeAttribute('disabled');
+            document.getElementById('picture').removeAttribute('disabled');
+            document.getElementById('price').removeAttribute('disabled');
+            document.getElementById('stock').removeAttribute('disabled');
+
+            var modifyButton = document.getElementById('modifyButton');
+            modifyButton.value = '수정';
+            modifyButton.setAttribute('onclick', 'saveChanges()');
+
+            var foodPicture = document.getElementById('picture');
+            foodPicture.type = 'file';
+            foodPicture.style.display = 'block';
+
+            var reset = document.getElementById('reset');
+            reset.type='reset';
+        }
+        function handleFileInputChange() {
+            var fileInput = document.getElementById('picture');
+            var imgElement = document.getElementById('toppingImage');
+            var file = fileInput.files[0];
+
+            if (file) {
+                document.getElementById('pictureText').value = file.name;
+                var reader = new FileReader();
+                reader.onloadend = function() {
+                    imgElement.src = reader.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveChanges() {
+            var storeCode = [[${storeCode}]];
+            var categoryName = document.getElementById('category').value;
+            var foodDto = {
+                "idx" : document.getElementById('idx').value,
+                "code" : document.getElementById('code').value,
+                "name" : document.getElementById('name').value,
+                "price" : document.getElementById('price').value,
+                "description" : null,
+                "stock" : document.getElementById('stock').value,
+                "picture": document.getElementById('pictureText').value,
+                topping : true
+            };
+
+            var formData = new FormData();
+
+            formData.append('picture', $('#picture')[0].files[0]);
+            formData.append('foodDto',JSON.stringify(foodDto));
+            $.ajax({
+                type: "POST",
+                async: false,
+                url: "http://localhost:9010/food/modifyFood?categoryName="+categoryName,
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function(data) {
+                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping="+true;
+                    alert(data)
+                },
+                error: function() {
+                    alert("오류가 발생했습니다.")
+                }
+            });
+        }
+
+        function deleteTopping() {
+            var storeCode = [[${storeCode}]];
+            var foodIdx = document.getElementById('idx').value;
+            $.ajax({
+                type: "DELETE",
+                async: false,
+                url: "http://localhost:9010/food/deleteFood",
+                contentType : "application/json",
+                data: JSON.stringify(foodIdx),
+                success: function(data) {
+                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping="+true;
+                    alert(data)
+                },
+                error: function() {
+                    alert("오류가 발생했습니다.")
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <form th:object="${food}">
+        <label for="name">음식</label> : <input type="text" id="name" th:value="*{getName()}" disabled>
+        <br>
+        <label for="price">가격</label> : <input type="text" id="price" th:value="*{getPrice()}" disabled>
+        <br>
+        <label for="category">카테고리</label> : <input type="text" id="category" th:value="*{getCategoryDto().getName()}" readonly>
+        <br>
+        <img id="toppingImage" th:src="@{/images/__${food.getPicture()}__}" style="width:100px; height:100px;" alt="음식 이미지" />
+        <br>
+        <label for="pictureText">사진</label> : <input type="text" id="pictureText" th:value="*{getPicture()}" disabled>
+        <input type="file" id="picture" style="display: none;" onchange="handleFileInputChange()">
+        <br>
+        <label for="stock">재고</label> : <input type="text" id="stock" th:value="*{getStock()}" disabled>
+        <br>
+        <label for="createdAt">생성 시간</label> : <input type="text" id="createdAt" th:value="*{getCreatedAt()}" readonly>
+        <br>
+        <label for="updatedAt">수정 시간</label> : <input type="text" id="updatedAt" th:value="*{getUpdateAt()}" readonly>
+        <br>
+        <input type="hidden" id="idx" th:value="*{getIdx()}">
+        <input type="hidden" id="code" th:value="*{getCode()}">
+        <input type="hidden" id="categoryDto" th:value="*{getCategoryDto()}">
+        <input type="button" id="modifyButton" onclick="enableEditing()" th:value="수정하기">
+        <input type="button" onclick="deleteTopping()" th:value="삭제">
+        <input type="hidden" id="reset">
+    </form>
+</body>
+</html>

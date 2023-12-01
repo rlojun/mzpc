@@ -72,11 +72,20 @@ public class AdminFoodController {
     }
 
     @GetMapping(value = "/addFoodForm")
-    public String addFoodForm(@PathVariable String storeCode, Model model){
+    public String addFoodForm(@PathVariable String storeCode, @RequestParam boolean topping ,Model model){
         List<CategoryDto> categoryDtos = adminCategoryService.getListCategory(storeCode);
         model.addAttribute("storeCode", storeCode);
         model.addAttribute("categories",categoryDtos);
-        return "/admin/food/addFoodForm";
+
+        String resultView = "";
+        if (topping == false) {
+            resultView = "/admin/food/addFoodForm";
+        } else if (topping == true) {
+            resultView = "/admin/food/topping/addToppingForm";
+
+        }
+
+        return resultView;
     }
 
     @GetMapping(value = "/addToppingForm")
@@ -85,16 +94,25 @@ public class AdminFoodController {
         model.addAttribute("storeCode", storeCode);
         model.addAttribute("categories",categoryDtos);
 
-        return "/admin/food/addToppingForm";
+        return "/admin/food/topping/addToppingForm";
     }
 
     @GetMapping(value = "/detailFood")
-    public String detailFood(@PathVariable String storeCode, @RequestParam String categoryCode, @RequestParam String foodCode, Model model){
+    public String detailFood(@PathVariable String storeCode, @RequestParam String categoryCode,
+                             @RequestParam String foodCode, @RequestParam boolean topping,
+                             Model model){
         FoodDto foodDto = adminFoodService.getFoodList(categoryCode,foodCode);
         model.addAttribute("food",foodDto);
         model.addAttribute("storeCode",storeCode);
 
-        return "/admin/food/detailFood";
+        String resultView = "";
+        if (topping == false) {
+            resultView = "detailFood";
+        } else if (topping == true) {
+            resultView = "topping/detailTopping";
+        }
+
+        return "/admin/food/"+resultView;
     }
 
 
