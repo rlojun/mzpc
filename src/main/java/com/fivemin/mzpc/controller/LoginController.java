@@ -107,6 +107,7 @@ public class LoginController {
 
             session.setAttribute("storeCode", storeCode);
             session.setAttribute("storeName", encodedStoreName);
+            session.setAttribute("members", members);
             model.addAttribute("storeName", encodedStoreName);
             // url 리펙토링 필요!
             return String.format("redirect:/members/%s",encodedStoreName);

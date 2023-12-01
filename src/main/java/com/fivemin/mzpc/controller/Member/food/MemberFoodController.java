@@ -44,14 +44,18 @@ public class MemberFoodController {
 
         if (validStoreName != null) {
             List<FoodDto> foodDtoList = foodService.getListFood(storeName);
-            model.addAttribute("foodDtoList", foodDtoList);
+            List<FoodDto> filteredFoodDtoList = foodDtoList.stream()
+                    .filter(foodDto -> !foodDto.isTopping())
+                    .collect(Collectors.toList());
+            model.addAttribute("foodDtoList", filteredFoodDtoList);
+            log.info("topping check : " + filteredFoodDtoList);
 
             // Unique Category 만들기 위해
-            List<String> foodDtoCategories = foodDtoList.stream()
+            List<String> foodDtoCategories = filteredFoodDtoList.stream()
                     .map(FoodDto::getCategoryName)
                     .distinct()
                     .collect(Collectors.toList());
-
+            log.info("foodDtoCategories: {}", foodDtoCategories);
             model.addAttribute("foodDtoCategories", foodDtoCategories);
         }
 
@@ -77,6 +81,11 @@ public class MemberFoodController {
             FoodDto foodDetails = foodService.getFoodDetails(foodCode);
             model.addAttribute("foodDetails", foodDetails);
             log.info("MFController - detail: FoodDetails {}", foodDetails);
+
+            List<FoodDto> toppings = foodService.getToppingsByCategory(foodDetails.getCategoryName());
+            model.addAttribute("toppings", toppings);
+            log.info("toppings : {}", toppings);
+            log.info("categoryName : {}", foodDetails.getCategoryName());
         }
 
         return new ModelAndView("members/food/detailFood");

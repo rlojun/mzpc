@@ -10,12 +10,13 @@ public class CartDto {
     private Long idx;
     private String code;
     private String payments;
-    private boolean buyCheck = false;
-    private Food food;
-    private Members member;
 
-    // private String name; = foodName => food
-    // private Integer price; = foodPrice => food
-    // private boolean topping = false; = ifTopping => food
-    // private String storeName; cart -> food -> category -> store
+    private Food food;
+    private String cartName;
+    private Integer cartPrice;
+
+    private Members member;
+    private Long memberIdx;
+
+    private String storeName;
 }

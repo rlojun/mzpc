@@ -38,7 +38,8 @@ public class CartController {
         this.foodService = foodService;
     }
     @PostMapping("/addToCart")
-    public String addToCart(@ModelAttribute FoodDto foodDetails,
+    public String addToCart(@ModelAttribute
+                                FoodDto foodDetails,
                             @PathVariable(required = false) String storeName,
                             HttpSession httpSession) {
         String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
@@ -53,7 +54,7 @@ public class CartController {
         Food food = foodService.convertDtoToEntity(foodDetails);
 
 
-        cartItems = cartService.addToCart(cartItems, food);
+        cartItems = cartService.addToCart(cartItems, food, httpSession);
         httpSession.setAttribute("cartItems", cartItems);
         log.info("CartController: cartItems {} :", cartItems);
 

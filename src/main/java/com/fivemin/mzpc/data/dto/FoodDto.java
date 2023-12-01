@@ -19,7 +19,7 @@ public class FoodDto {
     private final Integer price;
     private final String description;
     private final Integer stock;
-    private final boolean topping = false;
+    private final boolean topping;
     private String storeName;
     private final LocalDateTime createdAt;
     private final LocalDateTime updateAt;

@@ -17,6 +17,15 @@
         <input type="hidden" th:field="*{price}" th:value="${foodDetails.price}" />
         <input type="hidden" th:field="*{storeName}" th:value="${foodDetails.storeName}" />
         <input type="hidden" th:field="*{topping}" th:value="false"/>
+        <div th:if="${toppings}" class="topping-section">
+            <h3>토핑</h3>
+            <div th:each="topping : ${toppings}" class="topping-option">
+                <label>
+                    <input type="checkbox" th:value="${topping.name}" class="topping-checkbox"/>
+                    <span th:text="${topping.name}"></span>
+                </label>
+            </div>
+        </div>
     </div>
     <button type="submit"
             class="add-to-cart-btn"
@@ -34,14 +43,24 @@
             const price = $(this).data('price');
             const storeName = $(this).data('store-name');
 
+            // Get selected toppings
+            const selectedToppings = [];
+            $('.topping-checkbox:checked').each(function () {
+                selectedToppings.push($(this).val());
+            });
+
+            // Include toppings in the data
+            const postData = {
+                name: foodName,
+                code: foodCode,
+                price: price,
+                toppings: selectedToppings.join(',')
+            };
+
             $.ajax({
                 type: 'POST',
                 url: '/members/' + encodeURIComponent(storeName) + '/cart/addToCart',
-                data: {
-                    name: foodName,
-                    code: foodCode,
-                    price: price
-                },
+                data: postData,
                 error: function (error) {
                     console.error('Error adding item to the cart', error);
                 }
