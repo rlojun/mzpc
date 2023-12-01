@@ -160,22 +160,22 @@
 
         <ul class="filters_menu">
             <li class="active" data-filter="*">All</li>
-            <li th:each="categoryName : ${foodDtoCategories}" th:text="${categoryName}"
+            <li th:each="categoryName : ${distinctFoodCategories}" th:text="${categoryName}"
                 th:data-filter="'.' + ${categoryName}"></li>
         </ul>
 
         <div class="filters-content">
             <div class="row grid">
-                <div th:each="categoryName: ${foodDtoCategories}" class="col-sm-6 col-lg-4 all"
-                     th:classappend="${categoryName}">
+                <div th:each="menu: ${foodDtoList}" class="col-sm-6 col-lg-4 all"
+                    th:classappend="${menu.getCategoryName()}">
                     <div class="box">
-                        <div th:each="menu : ${foodDtoList}" th:if="${menu.categoryName == categoryName}">
-                            <div class="img-box">
+                    <!--                        <div th:each="menu : ${foodDtoList}" th:if="${menu.categoryName == categoryName}">-->
+                            <div class="img-box" th:attr="data-category-name=${menu.getCategoryName()},data-food-code=${menu.getName()}">
                                 <img th:src="${menu.picture}" alt="">
                             </div>
-                            <div class="detail-box">
-                                <h5 th:text="${menu.name}"/>
-                                <p th:text="${menu.description}"/>
+                            <div class="detail-box" th:attr="data-category-name=${menu.getCategoryName()},data-food-code=${menu.getName()}">
+                                <h5 th:text="${menu.getName()}"/>
+                                <p th:text="${menu.getDescription()}"/>
                                 <div class="options">
                                     <h6 th:text="${menu.price + '원'}"/>
                                     <a th:href="@{/members/{storeName}/food/detail/{foodName}(storeName=${(storeName)}, foodName=${menu.name}, foodCode=${menu.code})}">
@@ -194,7 +194,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </section>
 
 <!-- end food section -->

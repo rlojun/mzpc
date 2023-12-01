@@ -7,8 +7,7 @@ import com.fivemin.mzpc.service.member.CartService;
 import com.fivemin.mzpc.service.member.FoodService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -25,52 +24,49 @@ import java.util.List;
  */
 @Data
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/members/{storeName}/cart")
 public class CartController {
 
     private final CartService cartService;
     private final FoodService foodService;
 
-
     public CartController(CartService cartService, FoodService foodService) {
         this.cartService = cartService;
         this.foodService = foodService;
     }
-    @PostMapping("/addToCart")
-    public String addToCart(@ModelAttribute
-                                FoodDto foodDetails,
-                            @PathVariable(required = false) String storeName,
-                            HttpSession httpSession) {
-        String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
 
+    @PostMapping("/addToCart")
+    public ResponseEntity<String> addToCart(@ModelAttribute FoodDto foodDetails,
+                                            @PathVariable(required = false) String storeName,
+                                            HttpSession httpSession) {
+
+        String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
         List<CartDto> cartItems = (List<CartDto>) httpSession.getAttribute("cartItems");
 
         if (cartItems == null) {
             cartItems = new ArrayList<>();
         }
+
         log.info("CartController: foodDetails {}", foodDetails);
-
         Food food = foodService.convertDtoToEntity(foodDetails);
-
 
         cartItems = cartService.addToCart(cartItems, food, httpSession);
         httpSession.setAttribute("cartItems", cartItems);
         log.info("CartController: cartItems {} :", cartItems);
 
-        return "redirect:/members/" + encodedStoreName + "/food/listFood";
-    }
-    @GetMapping("/showCart")
-    public String showCart(@PathVariable String storeName, Model model, HttpSession httpSession) {
+        String redirectUrl = "/members/" + encodedStoreName + "/food/listFood";
 
-//        String memberCode = (String) httpSession.getAttribute("memberCode");
-//        List<CartDto> cartItems = cartService.getCartByMemberCode(memberCode);
+        return ResponseEntity.ok(redirectUrl);
+    }
+
+    @GetMapping("/showCart")
+    public ResponseEntity<List<CartDto>> showCart(@PathVariable String storeName, HttpSession httpSession) {
 
         Long memberIdx = (Long) httpSession.getAttribute("memberIdx");
         List<CartDto> cartItems = cartService.getCartByMemberIdx(memberIdx);
 
-        model.addAttribute("cartItems", cartItems);
-        return "cart";
+        return ResponseEntity.ok(cartItems);
     }
 
     /*

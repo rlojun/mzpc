@@ -43,13 +43,11 @@
             const price = $(this).data('price');
             const storeName = $(this).data('store-name');
 
-            // Get selected toppings
             const selectedToppings = [];
             $('.topping-checkbox:checked').each(function () {
                 selectedToppings.push($(this).val());
             });
 
-            // Include toppings in the data
             const postData = {
                 name: foodName,
                 code: foodCode,
@@ -61,6 +59,9 @@
                 type: 'POST',
                 url: '/members/' + encodeURIComponent(storeName) + '/cart/addToCart',
                 data: postData,
+                success: function (redirectUrl) {
+                    window.location.href = redirectUrl;
+                },
                 error: function (error) {
                     console.error('Error adding item to the cart', error);
                 }

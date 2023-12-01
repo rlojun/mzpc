@@ -23,7 +23,7 @@ public class FoodService {
         this.foodRepository = foodRepository;
     }
 
-    public List<FoodDto> getListFood(String storeName) {
+    public List<FoodDto> getFoodList(String storeName) {
 
         List<Food> foodList = foodRepository.findByStoreName(storeName);
         log.info("storeName: {} ", storeName);
@@ -99,5 +99,22 @@ public class FoodService {
                 .stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
+    }
+
+    public List<FoodDto> filterFoodByToppings(List<FoodDto> foodDtoList) {
+        List<FoodDto> filteredFoodDtoList = foodDtoList.stream()
+                .filter(foodDto -> !foodDto.isTopping())
+                .collect(Collectors.toList());
+        log.info("topping check : " + filteredFoodDtoList);
+        return filteredFoodDtoList;
+    }
+
+    public List<String> createDistinctCategories(List<FoodDto> filteredFoodList) {
+        List<String> distinctFoodCategories = filteredFoodList.stream()
+                .map(FoodDto::getCategoryName)
+                .distinct()
+                .collect(Collectors.toList());
+        log.info("distinctFoodCategories: {}", distinctFoodCategories);
+        return distinctFoodCategories;
     }
 }

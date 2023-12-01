@@ -15,7 +15,6 @@ import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 /*
@@ -43,20 +42,13 @@ public class MemberFoodController {
         model.addAttribute("validStoreName", validStoreName);
 
         if (validStoreName != null) {
-            List<FoodDto> foodDtoList = foodService.getListFood(storeName);
-            List<FoodDto> filteredFoodDtoList = foodDtoList.stream()
-                    .filter(foodDto -> !foodDto.isTopping())
-                    .collect(Collectors.toList());
-            model.addAttribute("foodDtoList", filteredFoodDtoList);
-            log.info("topping check : " + filteredFoodDtoList);
+            List<FoodDto> foodDtoList = foodService.getFoodList(storeName);
+            List<FoodDto> filteredFoodList = foodService.filterFoodByToppings(foodDtoList);
+            List<String> distinctFoodCategories = foodService.createDistinctCategories(filteredFoodList);
 
-            // Unique Category 만들기 위해
-            List<String> foodDtoCategories = filteredFoodDtoList.stream()
-                    .map(FoodDto::getCategoryName)
-                    .distinct()
-                    .collect(Collectors.toList());
-            log.info("foodDtoCategories: {}", foodDtoCategories);
-            model.addAttribute("foodDtoCategories", foodDtoCategories);
+            model.addAttribute("foodDtoList", filteredFoodList);
+            model.addAttribute("distinctFoodCategories", distinctFoodCategories);
+
         }
 
         return new ModelAndView("members/food/listFood");

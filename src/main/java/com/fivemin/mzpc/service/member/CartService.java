@@ -33,6 +33,8 @@ public class CartService {
 
     public List<CartDto> addToCart(List<CartDto> cartItems, Food food, HttpSession httpSession) {
         Members members = (Members) httpSession.getAttribute("members");
+        food = foodRepository.getByFoodCode(food.getCode());
+        log.info("foodCode: {}", food.getCode());
 
         Cart cart = new Cart();
         cart.setFood(food);
@@ -48,8 +50,9 @@ public class CartService {
 
         cart = cartRepository.save(cart);
 
+        Food finalFood = food;
         boolean itemExists = cartItems.stream()
-                .anyMatch(item -> item.getFood().getIdx().equals(food.getIdx()));
+                .anyMatch(item -> item.getFood().getIdx().equals(finalFood.getIdx()));
 
         if (!itemExists) {
 
