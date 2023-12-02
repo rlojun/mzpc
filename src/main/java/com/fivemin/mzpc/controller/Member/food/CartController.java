@@ -38,6 +38,7 @@ public class CartController {
 
     @PostMapping("/addToCart")
     public ResponseEntity<String> addToCart(@ModelAttribute FoodDto foodDetails,
+                                            @RequestParam("code") String foodCode,
                                             @PathVariable(required = false) String storeName,
                                             HttpSession httpSession) {
 
@@ -49,16 +50,20 @@ public class CartController {
         }
 
         log.info("CartController: foodDetails {}", foodDetails);
+        if (foodDetails.isTopping() == null) {
+            foodDetails.setTopping(false);
+        }
         Food food = foodService.convertDtoToEntity(foodDetails);
         log.info("food : {}", food);
 
-        cartItems = cartService.addToCart(cartItems, food, httpSession);
+        cartItems = cartService.addToCart(cartItems, httpSession, foodCode);
         httpSession.setAttribute("cartItems", cartItems);
         log.info("CartController: cartItems {} :", cartItems);
 
         String redirectUrl = "/members/" + encodedStoreName + "/food/listFood";
-
+        log.info(redirectUrl);
         return ResponseEntity.ok(redirectUrl);
+
     }
 
     @GetMapping("/showCart")

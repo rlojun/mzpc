@@ -31,32 +31,31 @@ public class CartService {
         return cartRepository.getCartByMemberIdx(memberIdx);
     }
 
-    public List<CartDto> addToCart(List<CartDto> cartItems, Food food, HttpSession httpSession) {
+    public List<CartDto> addToCart(List<CartDto> cartItems, HttpSession httpSession, String foodCode) {
+        CartDto cartItem = new CartDto();
         Members members = (Members) httpSession.getAttribute("members");
-        food = foodRepository.getByFoodCode(food.getCode());
+        Food food = foodRepository.getByFoodCode(foodCode);
         log.info("foodCode: {}", food.getCode());
 
         Cart cart = new Cart();
         cart.setFood(food);
         cart.setMembers(members);
-        cart.setPayments(null);
+        cart.setPayments("현금");
         cart.setCode(cart.generateUniqueCode());
 
         log.info("CartService - addToCart: cartFood: {}", cart.getFood().getName());
         log.info("CartService - addToCart: cartIdx: {}", cart.getIdx());
         log.info("CartService - addToCart: cartCode: {}", cart.getCode());
         log.info("CartService - addToCart: cartMember: {}", cart.getMembers().getId());
-        log.info("CartService - addToCart: cartPayment: {}", cart.getPayments());
+        log.info("CartService - addToCart: cartPayment: {}", "현금");
 
         cart = cartRepository.save(cart);
 
-        Food finalFood = food;
         boolean itemExists = cartItems.stream()
-                .anyMatch(item -> item.getFood().getIdx().equals(finalFood.getIdx()));
+                .anyMatch(item -> item.getFood().getIdx().equals(food.getIdx()));
 
         if (!itemExists) {
 
-            CartDto cartItem = new CartDto();
             cartItem.setIdx(cart.getIdx());
             cartItem.setFood(cart.getFood());
             cartItem.setMember(cart.getMembers());

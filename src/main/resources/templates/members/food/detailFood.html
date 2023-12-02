@@ -6,8 +6,8 @@
     <title>Food Details</title>
 </head>
 <body>
-<form class="add-to-cart" th:object="${foodDetails}" method="post"
-      th:action="@{/members/{storeName}/cart/addToCart(storeName=${foodDetails.storeName})}">
+<form class="add-to-cart" th:object="${foodDetails}" method="post">
+<!--      th:action="@{/members/{storeName}/cart/addToCart(storeName=${foodDetails.storeName})}">-->
     <div>
         <h5 th:text="${foodDetails.name}"></h5>
         <img th:src="${foodDetails.picture}" alt="Food Image">
@@ -16,7 +16,6 @@
         <input type="hidden" th:field="*{code}" th:value="${foodDetails.code}" />
         <input type="hidden" th:field="*{price}" th:value="${foodDetails.price}" />
         <input type="hidden" th:field="*{storeName}" th:value="${foodDetails.storeName}" />
-        <input type="hidden" th:field="*{topping}" th:value="false"/>
         <div th:if="${toppings}" class="topping-section">
             <h3>토핑</h3>
             <div th:each="topping : ${toppings}" class="topping-option">
@@ -37,7 +36,8 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('.add-to-cart-btn').on('click', function () {
+        $('.add-to-cart-btn').on('click', function (event) {
+            event.preventDefault();
             const foodName = $(this).data('food-name');
             const foodCode = $(this).data('food-code');
             const price = $(this).data('price');
@@ -60,6 +60,8 @@
                 url: '/members/' + encodeURIComponent(storeName) + '/cart/addToCart',
                 data: postData,
                 success: function (redirectUrl) {
+                    console.log('Received redirectUrl:', redirectUrl);
+                    console.log(foodName, price, selectedToppings)
                     window.location.href = redirectUrl;
                 },
                 error: function (error) {

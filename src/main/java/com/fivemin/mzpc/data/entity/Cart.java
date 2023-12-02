@@ -41,7 +41,7 @@ public class Cart {
     }
 
     //결제 방식 ------- payment로 바뀌자
-    @Column(name = "payments", length = 15)
+    @Column(name = "payments", length = 15, columnDefinition = "현금")
     private String payments;
 
     @OneToOne

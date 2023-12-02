@@ -72,7 +72,6 @@ public class FoodService {
         Food food = new Food();
         food.setName(foodDto.getName());
         food.setPrice(foodDto.getPrice());
-        food.isTopping();
         log.info(food.getName());
         log.info("price: {}", food.getPrice());
         return food;
