@@ -1,8 +1,8 @@
 package com.fivemin.mzpc.controller.Member.food;
 
-import com.fivemin.mzpc.data.dto.CartDto;
 import com.fivemin.mzpc.data.dto.FoodDto;
 import com.fivemin.mzpc.data.entity.Cart;
+import com.fivemin.mzpc.data.entity.Food;
 import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.service.member.CartService;
 import com.fivemin.mzpc.service.member.FoodService;
@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /*
@@ -57,12 +58,23 @@ public class MemberFoodController {
 
             Members member = (Members) httpSession.getAttribute("members");
             Long memberIdx = member.getIdx();
-            log.info("memberIdx : {}", memberIdx);
 
-            // List<CartDto> cartItems = cartService.getCartByMemberIdx(memberIdx);
-            List<Cart> cartItems = cartService.getCartByMemberIdx(memberIdx);
-            model.addAttribute("cartItems", cartItems);
-            log.info("cartItems : {}", cartItems);
+//            Cart cartEntity = cartService.getCartByMemberIdx(memberIdx);
+//            List <Food> cartFoods = cartEntity.getFoods();
+//            log.info("Size of cartFoods" + cartFoods.size());
+            Cart cartEntity = (Cart) httpSession.getAttribute("cartItems");
+            log.info("cartEntity = " + cartEntity.getFoods().size());
+
+            if (cartEntity != null) {
+//                List<String> foodNamesList = cartEntity.getFoods().stream()
+//                        .map(Food::getName)
+//                        .collect(Collectors.toList());
+
+//                model.addAttribute("cartEntity", cartEntity);
+                model.addAttribute("cartEntity", cartEntity);
+
+//                model.addAttribute("foodNamesList", foodNamesList);
+            }
         }
 
         return new ModelAndView("members/food/listFood");

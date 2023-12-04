@@ -31,42 +31,39 @@ public class CartService {
         this.foodRepository = foodRepository;
     }
 
-    public CartDto addToCart(CartDto cartItems, HttpSession httpSession, String foodCode, String selectedToppings) {
-
-        Members members = (Members) httpSession.getAttribute("members");
+    public Cart addToCart(String foodCode, String selectedToppings, Members members) {
         Food mainFood = foodRepository.getByFoodCode(foodCode);
         Food topping = foodRepository.getByFoodName(selectedToppings);
+
         List<Food> foodList = new ArrayList<>();
         foodList.add(mainFood);
         if (topping != null) {
             foodList.add(topping);
         }
+        Cart cart = cartRepository.findCartByMemberIdx(members.getIdx());
 
-        Cart cart = new Cart();
-
-        if (cartItems == null) {
-            cartItems = CartDto.builder()
+        if (cart == null) {
+            cart = new Cart();
+            cart = Cart.builder()
+                    .idx(cart.getIdx())
                     .code(cart.generateUniqueCode())
                     .payments("현금")
-                    .food(foodList)
-                    .member(members)
-                    .memberIdx(members.getIdx())
-                    .storeName(mainFood.getCategory().getStore().getName())
+                    .foods(foodList)
+                    .members(members)
                     .build();
         } else {
-            cartItems.getFood().add(mainFood);
-            if (topping != null) {
-                cartItems.getFood().add(topping);
-            }
+//            cart.getFoods().add(mainFood);
+//            if (topping != null) {
+//                cart.getFoods().add(topping);
+            cart.setFoods(foodList);
         }
-        log.info("CartController: cartItems names: {}", cartItems.getFood().stream()
-                .map(Food::getName)
-                .collect(Collectors.toList()));
-        return cartItems;
+        log.info("idx"+ cart.getIdx());
+        log.info("foodsList" + foodList.size());
+        cartRepository.save(cart);
+        return cart;
     }
 
-    // public List<CartDto> getCartByMemberIdx(Long memberIdx) {
-    public List<Cart> getCartByMemberIdx(Long memberIdx) {
+    public Cart getCartByMemberIdx(Long memberIdx) {
         return cartRepository.findCartByMemberIdx(memberIdx);
     }
 

@@ -1,14 +1,17 @@
 package com.fivemin.mzpc.data.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Entity
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Cart {
 
     //장바구니 index
@@ -41,15 +44,13 @@ public class Cart {
     }
 
     //결제 방식 ------- payment로 바뀌자
-    @Column(name = "payments", length = 15, columnDefinition = "현금")
+    @Column(name = "payments", length = 15)
     private String payments;
 
     @OneToOne
     @JoinColumn(name = "member_idx", nullable = false)
     private Members members;
 
-    @ManyToOne
-    @JoinColumn(name = "food_idx", nullable = false)
-    private Food food;
-
+    @OneToMany(mappedBy = "cart")
+    private List<Food> foods = new ArrayList<>();
 }

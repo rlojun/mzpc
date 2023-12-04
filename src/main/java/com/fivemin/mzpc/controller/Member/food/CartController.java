@@ -2,7 +2,9 @@ package com.fivemin.mzpc.controller.Member.food;
 
 import com.fivemin.mzpc.data.dto.CartDto;
 import com.fivemin.mzpc.data.dto.FoodDto;
+import com.fivemin.mzpc.data.entity.Cart;
 import com.fivemin.mzpc.data.entity.Food;
+import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.service.member.CartService;
 import com.fivemin.mzpc.service.member.FoodService;
 import lombok.Data;
@@ -36,21 +38,23 @@ public class CartController {
     }
 
     @PostMapping("/addToCart")
-    public ResponseEntity<String> addToCart(@ModelAttribute FoodDto mainFood,
+    public ResponseEntity<String> addToCart(@ModelAttribute FoodDto foodDetails,
                                             @RequestParam("code") String foodCode,
                                             @RequestParam("toppings") String selectedToppings,
                                             @PathVariable(required = false) String storeName,
                                             HttpSession httpSession) {
 
         String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
-        CartDto cartItems= (CartDto) httpSession.getAttribute("cartItems");
-        log.info("CartController: mainFood {}", mainFood);
+        Members members = (Members) httpSession.getAttribute("members");
 
-        cartItems = cartService.addToCart(cartItems, httpSession, foodCode, selectedToppings);
+//        Cart existingCartItems = cartService.getCartByMemberIdx(members.getIdx());
+//        Cart cartItems = (Cart) httpSession.getAttribute("cartItems");
 
+        Cart cartItems = cartService.addToCart(foodCode, selectedToppings, members);
         httpSession.setAttribute("cartItems", cartItems);
-        log.info("CartController: number of cartItems {} :", cartItems.getFood().size());
-        log.info("CartController: cartItems {} :", cartItems.getFood().stream()
+
+        log.info("CartController: number of cartItems {} :", cartItems.getFoods().size());
+        log.info("CartController: cartItems {} :", cartItems.getFoods().stream()
                 .map(Food::getName)
                 .collect(Collectors.toList()));
 

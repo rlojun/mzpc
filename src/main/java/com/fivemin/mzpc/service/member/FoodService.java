@@ -70,25 +70,6 @@ public class FoodService {
         return null;
     }
 
-    public Food convertFoodDtoToEntity(FoodDto foodDto) {
-        Food food = new Food();
-        food.setName(foodDto.getName());
-        food.setPrice(foodDto.getPrice());
-        return food;
-    }
-
-    public Cart convertCartDtoToEntity(CartDto cartDto) {
-        Cart cart = new Cart();
-        cart.setCode(cartDto.getCode());
-        return cart;
-    }
-
-//    public List<Food> convertListDtoToEntity(List<FoodDto> foodDtoList) {
-//        return foodDtoList.stream()
-//                .map(FoodService::convertDtoToEntity)
-//                .collect(Collectors.toList());
-//    }
-
     public FoodDto convertToDto(Food food) {
         return FoodDto.builder()
                 .idx(food.getIdx())
