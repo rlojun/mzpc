@@ -11,12 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@Transactional
 public class CartService {
 
     private final CartRepository cartRepository;
@@ -29,41 +31,6 @@ public class CartService {
         this.foodRepository = foodRepository;
     }
 
-//    public List<CartDto> getCartByMemberIdx(Long memberIdx) {
-//
-//        List<Cart> cartList = cartRepository.findCartByMemberIdx(memberIdx);
-//
-//        return CartDto.builder()
-//                .cartPrice(cartList.get)
-//        List<CartDto> cartDtoList = cartList.
-//    }
-
-    // post topping changes
-//    public CartDto addToCart(CartDto cartItems, HttpSession httpSession, String mainFoodCode, Cart cartList) {
-//        Members members = (Members) httpSession.getAttribute("members");
-//        Food food = foodRepository.getByFoodCode(mainFoodCode);
-//        List<Food> foodList = new ArrayList<>();
-//        foodList.add(food);
-//
-//        Cart cart = new Cart();
-//        log.info("foodCode: {}", food.getCode());
-//
-//        if (cartItems == null) {
-//            cartItems = CartDto.builder()
-//                    .code(cart.generateUniqueCode())
-//                    .payments("현금")
-//                    .food(foodList)
-//                    .member(members)
-//                    .memberIdx(members.getIdx())
-//                    .storeName(food.getCategory().getStore().getName())
-//                    .build();
-//        }
-//        cartItems.getFood().add(food);
-//
-//        return cartItems;
-//    }
-
-    // pre topping changes
     public CartDto addToCart(CartDto cartItems, HttpSession httpSession, String foodCode, String selectedToppings) {
 
         Members members = (Members) httpSession.getAttribute("members");
@@ -98,35 +65,14 @@ public class CartService {
         return cartItems;
     }
 
+    // public List<CartDto> getCartByMemberIdx(Long memberIdx) {
+    public List<Cart> getCartByMemberIdx(Long memberIdx) {
+        return cartRepository.findCartByMemberIdx(memberIdx);
+    }
 
-//    public List<CartDto> addToCart(List<CartDto> cartItems, HttpSession httpSession, String foodCode) {
-//        CartDto cartItem = new CartDto();
-//        Members members = (Members) httpSession.getAttribute("members");
-//        Food food = foodRepository.getByFoodCode(foodCode);
-//        log.info("foodCode: {}", food.getCode());
-//
-//        Cart cart = new Cart();
-//        cart.setFood(food);
-//        cart.setMembers(members);
-//        cart.setPayments("현금");
-//        cart.setCode(cart.generateUniqueCode());
-//        cart = cartRepository.save(cart);
-//
-//        boolean itemExists = cartItems.stream()
-//                .anyMatch(item -> item.getFood().getIdx().equals(food.getIdx()));
-//
-//        if (!itemExists) {
-//
-//            cartItem.setIdx(cart.getIdx());
-//            cartItem.setFood(cart.getFood());
-//            cartItem.setMember(cart.getMembers());
-//            cartItem.setPayments(cart.getPayments());
-//
-//            cartItems.add(cartItem);
-//            log.info("CartService - addToCart: cartItems {} :", cartItems);
-//
-//        }
-//
-//        return cartItems;
-//    }
+    public void clearCart(String memberId) {
+        log.info("ClearCart check");
+        cartRepository.clearCartByMemberId(memberId);
+    }
+
 }

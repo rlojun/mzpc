@@ -1,6 +1,8 @@
 package com.fivemin.mzpc.controller.Member.food;
 
+import com.fivemin.mzpc.data.dto.CartDto;
 import com.fivemin.mzpc.data.dto.FoodDto;
+import com.fivemin.mzpc.data.entity.Cart;
 import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.service.member.CartService;
 import com.fivemin.mzpc.service.member.FoodService;
@@ -56,9 +58,11 @@ public class MemberFoodController {
             Members member = (Members) httpSession.getAttribute("members");
             Long memberIdx = member.getIdx();
             log.info("memberIdx : {}", memberIdx);
-//            List<CartDto> cartItems = cartService.getCartByMemberIdx(memberIdx);
-//            model.addAttribute("cartItems", cartItems);
-//            log.info("cartItems : {}", cartItems);
+
+            // List<CartDto> cartItems = cartService.getCartByMemberIdx(memberIdx);
+            List<Cart> cartItems = cartService.getCartByMemberIdx(memberIdx);
+            model.addAttribute("cartItems", cartItems);
+            log.info("cartItems : {}", cartItems);
         }
 
         return new ModelAndView("members/food/listFood");

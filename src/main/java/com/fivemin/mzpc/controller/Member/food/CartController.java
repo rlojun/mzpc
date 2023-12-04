@@ -35,36 +35,6 @@ public class CartController {
         this.foodService = foodService;
     }
 
-//    // post Topping Changes
-//    @PostMapping("/addToCart")
-//    public ResponseEntity<String> addToCart(@ModelAttribute CartDto addToCart,
-//                                            @RequestParam("code") String mainFoodCode,
-//                                            @PathVariable(required = false) String storeName,
-//                                            HttpSession httpSession) {
-//
-//        String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
-//        CartDto cartItems= (CartDto) httpSession.getAttribute("cartItems");
-//
-////        for (Food food : addToCart.getFood()) {
-////            if (food.isTopping() == null) {
-////                food.setTopping(false);
-////            }
-////        }
-//        Cart cartList = foodService.convertCartDtoToEntity(addToCart);
-//
-//        cartItems = cartService.addToCart(cartItems, httpSession, mainFoodCode, cartList);
-//        httpSession.setAttribute("cartItems", cartItems);
-//        log.info("CartController: number of cartItems {} :", cartItems.getFood().size());
-//        log.info("CartController: cartItems {} :", cartItems.getFood().stream()
-//                .map(Food::getName)
-//                .collect(Collectors.toList()));
-//
-//        String redirectUrl = "/members/" + encodedStoreName + "/food/listFood";
-//        return ResponseEntity.ok(redirectUrl);
-//
-//    }
-
-//      before topping changes
     @PostMapping("/addToCart")
     public ResponseEntity<String> addToCart(@ModelAttribute FoodDto mainFood,
                                             @RequestParam("code") String foodCode,

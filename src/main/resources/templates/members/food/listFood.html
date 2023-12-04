@@ -202,12 +202,12 @@
 <section class="cart_section layout_padding-bottom">
     <div class="heading_container heading_center psudo_white_primary mb_45">
         <h2>Shopping Cart</h2>
-    </div>
+    </div>git
     <div class="item">
         <div class="box">
             <div class="detail-box">
                 <ul id="cartItems">
-                            <li th:each="cartItem : ${cartItems}" th:text="${cartItem}"></li>
+                            <li th:each="cartItem : ${cartItems}" th:text="${cartItem.getFood().getName()}"></li>
                 </ul>
             </div>
         </div>

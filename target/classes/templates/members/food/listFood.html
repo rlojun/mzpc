@@ -207,7 +207,7 @@
         <div class="box">
             <div class="detail-box">
                 <ul id="cartItems">
-                            <li th:each="cartItem : ${cartItems}" th:text="${cartItem}"></li>
+                            <li th:each="cartItem : ${cartItems}" th:text="${cartItem.getFood().getName()}"></li>
                 </ul>
             </div>
         </div>

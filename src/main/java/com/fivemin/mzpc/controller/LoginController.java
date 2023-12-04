@@ -6,6 +6,7 @@ import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.service.LoginService;
 import com.fivemin.mzpc.service.email.EmailService;
 import com.fivemin.mzpc.service.email.VerificationCodeUtil;
+import com.fivemin.mzpc.service.member.CartService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,6 +39,14 @@ public class LoginController {
     @Autowired
     private EmailService emailService;
 
+
+    private final CartService cartService;
+
+    @Autowired
+    public LoginController(
+            CartService cartService) {
+        this.cartService = cartService;
+    }
     //로그인 페이지 이동
     @GetMapping(value = "")
     public String loginForm() {
@@ -119,7 +128,15 @@ public class LoginController {
     // 로그아웃
     @GetMapping("/logout")
     public String logout(HttpSession session){
+        // 멤버 카트 비우기
+        String memberId = (String) session.getAttribute("id");
+        log.info("sessionDestroyed ID : {}", memberId);
+        if (memberId != null) {
+            cartService.clearCart(memberId);
+        }
+
         session.invalidate();
+
         return "redirect:/login?logout";
     }
 
