@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -62,7 +63,7 @@ public class CartService {
 //        return cartItems;
 //    }
 
-// pre topping changes
+    // pre topping changes
     public CartDto addToCart(CartDto cartItems, HttpSession httpSession, String foodCode, String selectedToppings) {
 
         Members members = (Members) httpSession.getAttribute("members");
@@ -70,7 +71,9 @@ public class CartService {
         Food topping = foodRepository.getByFoodName(selectedToppings);
         List<Food> foodList = new ArrayList<>();
         foodList.add(mainFood);
-        foodList.add(topping);
+        if (topping != null) {
+            foodList.add(topping);
+        }
 
         Cart cart = new Cart();
 
@@ -83,9 +86,15 @@ public class CartService {
                     .memberIdx(members.getIdx())
                     .storeName(mainFood.getCategory().getStore().getName())
                     .build();
+        } else {
+            cartItems.getFood().add(mainFood);
+            if (topping != null) {
+                cartItems.getFood().add(topping);
+            }
         }
-        cartItems.getFood().add(mainFood);
-
+        log.info("CartController: cartItems names: {}", cartItems.getFood().stream()
+                .map(Food::getName)
+                .collect(Collectors.toList()));
         return cartItems;
     }
 
