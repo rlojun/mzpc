@@ -207,7 +207,7 @@
         <div class="box">
             <div class="detail-box">
                 <ul id="cartItems">
-                    <!--        <li th:each="cartItem : ${cartItems}" th:text="${cartItem.food.name}"></li>-->
+                            <li th:each="cartItem : ${cartItems}" th:text="${cartItem}"></li>
                 </ul>
             </div>
         </div>
@@ -336,7 +336,7 @@
                     price: price
                 },
                 success: function (response) {
-                    updateCartUI(response);
+                    updateCartSection(response);
                 },
                 error: function (error) {
                     console.error('Error adding item to the cart', error);
@@ -344,15 +344,12 @@
             });
         });
 
-        function updateCartUI(cartItems) {
-            $('#cartItems').empty();
-            $.each(cartItems, function (index, item) {
-                console.log('Processing cartItem:', item);
-                if (item.food !== undefined && item.food.name !== undefined && item.food.price !== undefined) {
-                    $('#cartItems').append('<li>' + item.food.name + ' - ' + item.food.price + '</li>');
-                } else {
-                    console.error('Invalid cart item:', item);
-                }
+        function updateCartSection(cartItems) {
+            const cartSection = $('#cartSection');
+            cartSection.empty();
+            cartItems.forEach(cartItem => {
+                const cartItemElement = $('<div>').text(cartItem.name);
+                cartSection.append(cartItemElement);
             });
         }
     });

@@ -1,6 +1,8 @@
 package com.fivemin.mzpc.controller.Member.food;
 
 import com.fivemin.mzpc.data.dto.FoodDto;
+import com.fivemin.mzpc.data.entity.Members;
+import com.fivemin.mzpc.service.member.CartService;
 import com.fivemin.mzpc.service.member.FoodService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -31,9 +33,11 @@ import java.util.List;
 public class MemberFoodController {
 
     private final FoodService foodService;
+    private final CartService cartService;
 
-    public MemberFoodController(FoodService foodService) {
+    public MemberFoodController(FoodService foodService, CartService cartService) {
         this.foodService = foodService;
+        this.cartService = cartService;
     }
 
     @GetMapping("/listFood")
@@ -49,6 +53,12 @@ public class MemberFoodController {
             model.addAttribute("foodDtoList", filteredFoodList);
             model.addAttribute("distinctFoodCategories", distinctFoodCategories);
 
+            Members member = (Members) httpSession.getAttribute("members");
+            Long memberIdx = member.getIdx();
+            log.info("memberIdx : {}", memberIdx);
+//            List<CartDto> cartItems = cartService.getCartByMemberIdx(memberIdx);
+//            model.addAttribute("cartItems", cartItems);
+//            log.info("cartItems : {}", cartItems);
         }
 
         return new ModelAndView("members/food/listFood");
@@ -72,7 +82,6 @@ public class MemberFoodController {
 
             FoodDto foodDetails = foodService.getFoodDetails(foodCode);
             model.addAttribute("foodDetails", foodDetails);
-            log.info("MFController - detail: FoodDetails {}", foodDetails);
 
             List<FoodDto> toppings = foodService.getToppingsByCategory(foodDetails.getCategoryName());
             model.addAttribute("toppings", toppings);

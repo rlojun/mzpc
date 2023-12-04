@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Collectors;
 
 /*
 - 기능
@@ -36,44 +35,103 @@ public class CartController {
         this.foodService = foodService;
     }
 
+//    // post Topping Changes
+//    @PostMapping("/addToCart")
+//    public ResponseEntity<String> addToCart(@ModelAttribute CartDto addToCart,
+//                                            @RequestParam("code") String mainFoodCode,
+//                                            @PathVariable(required = false) String storeName,
+//                                            HttpSession httpSession) {
+//
+//        String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
+//        CartDto cartItems= (CartDto) httpSession.getAttribute("cartItems");
+//
+////        for (Food food : addToCart.getFood()) {
+////            if (food.isTopping() == null) {
+////                food.setTopping(false);
+////            }
+////        }
+//        Cart cartList = foodService.convertCartDtoToEntity(addToCart);
+//
+//        cartItems = cartService.addToCart(cartItems, httpSession, mainFoodCode, cartList);
+//        httpSession.setAttribute("cartItems", cartItems);
+//        log.info("CartController: number of cartItems {} :", cartItems.getFood().size());
+//        log.info("CartController: cartItems {} :", cartItems.getFood().stream()
+//                .map(Food::getName)
+//                .collect(Collectors.toList()));
+//
+//        String redirectUrl = "/members/" + encodedStoreName + "/food/listFood";
+//        return ResponseEntity.ok(redirectUrl);
+//
+//    }
+
+//      before topping changes
     @PostMapping("/addToCart")
-    public ResponseEntity<String> addToCart(@ModelAttribute FoodDto foodDetails,
+    public ResponseEntity<String> addToCart(@ModelAttribute FoodDto mainFood,
                                             @RequestParam("code") String foodCode,
+                                            @RequestParam("toppings") String selectedToppings,
                                             @PathVariable(required = false) String storeName,
                                             HttpSession httpSession) {
 
         String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
-        List<CartDto> cartItems = (List<CartDto>) httpSession.getAttribute("cartItems");
+        CartDto cartItems= (CartDto) httpSession.getAttribute("cartItems");
+        log.info("CartController: mainFood {}", mainFood);
 
-        if (cartItems == null) {
-            cartItems = new ArrayList<>();
-        }
+        cartItems = cartService.addToCart(cartItems, httpSession, foodCode, selectedToppings);
 
-        log.info("CartController: foodDetails {}", foodDetails);
-        if (foodDetails.isTopping() == null) {
-            foodDetails.setTopping(false);
-        }
-        Food food = foodService.convertDtoToEntity(foodDetails);
-        log.info("food : {}", food);
-
-        cartItems = cartService.addToCart(cartItems, httpSession, foodCode);
         httpSession.setAttribute("cartItems", cartItems);
-        log.info("CartController: cartItems {} :", cartItems);
+        log.info("CartController: number of cartItems {} :", cartItems.getFood().size());
+        log.info("CartController: cartItems {} :", cartItems.getFood().stream()
+                .map(Food::getName)
+                .collect(Collectors.toList()));
 
         String redirectUrl = "/members/" + encodedStoreName + "/food/listFood";
-        log.info(redirectUrl);
         return ResponseEntity.ok(redirectUrl);
 
     }
 
-    @GetMapping("/showCart")
-    public ResponseEntity<List<CartDto>> showCart(@PathVariable String storeName, HttpSession httpSession) {
+//    @PostMapping("/addToCart")
+//    public ResponseEntity<String> addToCart(@ModelAttribute FoodDto foodDetails,
+//                                            @RequestParam("code") String foodCode,
+//                                            @PathVariable(required = false) String storeName,
+//                                            HttpSession httpSession) {
+//
+//        String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
+//        List<CartDto> cartItems = (List<CartDto>) httpSession.getAttribute("cartItems");
+//        CartDto cartItem = (CartDto) httpSession.getAttribute("cartItems");
+//
+//
+////        if (cartItems == null) {
+////            cartItems = new ArrayList<>();
+////        }
+//
+//        log.info("CartController: foodDetails {}", foodDetails);
+//        if (foodDetails.isTopping() == null) {
+//            foodDetails.setTopping(false);
+//        }
+//        Food food = foodService.convertDtoToEntity(foodDetails);
+//        log.info("food : {}", food);
+//
+////        cartItems = cartService.addToCart(cartItems, httpSession, foodCode);
+//        cartItem = cartService.addToCart(cartItem, httpSession, foodCode);
+//        httpSession.setAttribute("cartItem", cartItem);
+//        log.info("CartController: cartItem {} :", cartItems);
+////        httpSession.setAttribute("cartItems", cartItems);
+////        log.info("CartController: cartItems {} :", cartItems);
+//
+//        String redirectUrl = "/members/" + encodedStoreName + "/food/listFood";
+//        log.info(redirectUrl);
+//        return ResponseEntity.ok(redirectUrl);
+//
+//    }
 
-        Long memberIdx = (Long) httpSession.getAttribute("memberIdx");
-        List<CartDto> cartItems = cartService.getCartByMemberIdx(memberIdx);
-
-        return ResponseEntity.ok(cartItems);
-    }
+//    @GetMapping("/showCart")
+//    public ResponseEntity<List<CartDto>> showCart(@PathVariable String storeName, HttpSession httpSession) {
+//
+//        Long memberIdx = (Long) httpSession.getAttribute("memberIdx");
+//        List<CartDto> cartItems = cartService.getCartByMemberIdx(memberIdx);
+//
+//        return ResponseEntity.ok(cartItems);
+//    }
 
     /*
 

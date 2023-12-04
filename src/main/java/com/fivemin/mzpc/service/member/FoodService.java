@@ -1,6 +1,8 @@
 package com.fivemin.mzpc.service.member;
 
+import com.fivemin.mzpc.data.dto.CartDto;
 import com.fivemin.mzpc.data.dto.FoodDto;
+import com.fivemin.mzpc.data.entity.Cart;
 import com.fivemin.mzpc.data.entity.Food;
 import com.fivemin.mzpc.data.repository.FoodRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -68,14 +70,24 @@ public class FoodService {
         return null;
     }
 
-    public Food convertDtoToEntity(FoodDto foodDto) {
+    public Food convertFoodDtoToEntity(FoodDto foodDto) {
         Food food = new Food();
         food.setName(foodDto.getName());
         food.setPrice(foodDto.getPrice());
-        log.info(food.getName());
-        log.info("price: {}", food.getPrice());
         return food;
     }
+
+    public Cart convertCartDtoToEntity(CartDto cartDto) {
+        Cart cart = new Cart();
+        cart.setCode(cartDto.getCode());
+        return cart;
+    }
+
+//    public List<Food> convertListDtoToEntity(List<FoodDto> foodDtoList) {
+//        return foodDtoList.stream()
+//                .map(FoodService::convertDtoToEntity)
+//                .collect(Collectors.toList());
+//    }
 
     public FoodDto convertToDto(Food food) {
         return FoodDto.builder()
@@ -104,11 +116,9 @@ public class FoodService {
     }
 
     public List<FoodDto> filterFoodByToppings(List<FoodDto> foodDtoList) {
-        List<FoodDto> filteredFoodDtoList = foodDtoList.stream()
+        return foodDtoList.stream()
                 .filter(foodDto -> !foodDto.isTopping())
                 .collect(Collectors.toList());
-        log.info("topping check : " + filteredFoodDtoList);
-        return filteredFoodDtoList;
     }
 
     public List<String> createDistinctCategories(List<FoodDto> filteredFoodList) {
