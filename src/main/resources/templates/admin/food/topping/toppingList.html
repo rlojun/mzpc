@@ -35,7 +35,7 @@
             var foodCode = element.getAttribute("data-food-code");
             var storeCode = [[${storeCode}]];
 
-            window.location.href ="http://localhost:9010/admin/"+storeCode+"/detailFood?categoryCode="+categoryCode+"&foodCode="+foodCode;
+            window.location.href ="http://localhost:9010/admin/"+storeCode+"/detailFood?categoryCode="+categoryCode+"&foodCode="+foodCode+"&topping="+true;
         }
     </script>
 </head>
@@ -109,7 +109,7 @@
                         <div>
                             <div class="img-box" th:attr="data-category-code=${food.getCategoryDto().getCode()},data-food-code=${food.getCode()}"
                                  onclick="clickFood(this)">
-                                <img src="images/f1.png" alt="">
+                                <img th:src="@{/images/__${food.getPicture()}__}" alt="기본 이미지">
                             </div>
                             <div class="detail-box" th:attr="data-category-code=${food.getCategoryDto().getCode()},data-food-code=${food.getCode()}"
                                  onclick="clickFood(this)">
@@ -123,7 +123,7 @@
             </div>
         </div>
         <hr>
-        <button th:onclick="|location.href='@{/admin/{storeCode}/addToppingForm(storeCode=${storeCode})}'|">토핑 추가</button>
+        <button th:onclick="|location.href='@{/admin/{storeCode}/addFoodForm(storeCode=${storeCode}, topping=true)}'|">토핑 추가</button>
     </div>
 </section>
 

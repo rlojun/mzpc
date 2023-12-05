@@ -13,14 +13,15 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @Controller
-@RequestMapping("/{adminId}/order")
+@RequestMapping("/{stoerCode}/order")
 public class AdminOrderController {
 
     // 사용자가 주문한 주문 목록
-    @GetMapping("/listOrder")
-    public String listOrder(){
+    @GetMapping("/orderList")
+    public String orderList(@PathVariable String stoerCode){
 
-        return "admin/listOrder";
+
+        return "null";
     }
 
     // 취소, 완료 메서드 묶어서 하나 더 만들기 ( 매핑 어노테이션 url 작성)
@@ -36,16 +37,16 @@ public class AdminOrderController {
 //    }
 
     // 주문 목록의 주문 취소 버튼 기능
-    @GetMapping("/cancelOrder")
-    public String cancelOrder() {
-
-        return "redirect:/{adminId}/listOrder";
-    }
+//    @GetMapping("/cancelOrder")
+//    public String cancelOrder() {
+//
+//        return "redirect:/{adminId}/listOrder";
+//    }
 
     // 주문 목록의 주문 완료 버튼 기능
-    @GetMapping("/completeOrder")
-    public String completeOrder() {
-
-        return "redirect:/{adminId}/listOrder";
-    }
+//    @GetMapping("/completeOrder")
+//    public String completeOrder() {
+//
+//        return "redirect:/{adminId}/listOrder";
+//    }
 }

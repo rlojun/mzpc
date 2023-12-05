@@ -12,14 +12,14 @@ INSERT INTO admin(admin_idx,admin_code,admin_id,admin_pw,admin_name,admin_ssn,ad
 
 #---------------------------------------------------------------------------------------
 #MEMBERS
-INSERT INTO members(member_idx,member_code,member_id,member_pw,member_name,member_ssn,phone_number,member_email,address, remaining_time, mileage, store_idx) VALUES
-(1, 312,'cjun','w123','최준','880421-1256232','010-2452-3321','cjun@naver.com','경기도 고양시 덕양구 강촌로 191',0,0,1);
+INSERT INTO members(member_idx,member_code,member_id,member_pw,member_name,member_ssn,phone_number,member_email,address, remaining_time, login_remaining_time, mileage, store_idx) VALUES
+(1, 312,'cjun','w123','최준','880421-1256232','010-2452-3321','cjun@naver.com','경기도 고양시 덕양구 강촌로 191','00:00:00', '00:00:00',0,1);
 
-INSERT INTO members(member_idx,member_code,member_id,member_pw,member_name,member_ssn,phone_number,member_email, remaining_time, mileage, store_idx) VALUES
-(2, 313,'base','vvs1234','강희준','960203-1423462','010-8291-4312','base1234@gmail.com','02:00:00',20,1);
+INSERT INTO members(member_idx,member_code,member_id,member_pw,member_name,member_ssn,phone_number,member_email, remaining_time, login_remaining_time, mileage, store_idx) VALUES
+    (2, 313,'base','vvs1234','강희준','960203-1423462','010-8291-4312','base1234@gmail.com','02:00:00','02:00:00',20,1);
 
-INSERT INTO members(member_idx,member_code,member_id,member_pw,member_name,member_ssn,phone_number,member_email, remaining_time, mileage, store_idx) VALUES
-(3, 314,'sudo','s1234','이수두','960203-2642321','010-4561-2212','sudo@gmail.com','03:00:00',40,1);
+INSERT INTO members(member_idx,member_code,member_id,member_pw,member_name,member_ssn,phone_number,member_email, remaining_time, login_remaining_time, mileage, store_idx) VALUES
+    (3, 314,'sudo','s1234','이수두','960203-2642321','010-4561-2212','sudo@gmail.com','03:00:00','03:00:00',40,1);
 
 
 #-------------------------------------------------------------------------------------------
@@ -53,14 +53,14 @@ INSERT INTO category VALUES
 
 #---------------------------------------------------------------------------------------
 #FOOD
-INSERT INTO food(food_idx, food_code, food_name, food_price,topping, category_idx) VALUES
-(NULL,822, '진라면', 1200, false ,1);
+INSERT INTO food(food_idx, food_code, food_name, food_price,topping,stock ,category_idx) VALUES
+(NULL,822, '진라면', 1200, false, 55,1);
 
-INSERT INTO food(food_idx, food_code, food_name, food_price,topping ,category_idx) VALUES
-(NULL,821, '짜파게티',1300, false ,1);
+INSERT INTO food(food_idx, food_code, food_name, food_price,topping,stock,category_idx) VALUES
+(NULL,821, '짜파게티',1300, false,221 ,1);
 
-INSERT INTO food(food_idx, food_code, food_name, food_price,topping, category_idx)VALUES
-(NULL,823, '홈런볼', 900,false, 2);
+INSERT INTO food(food_idx, food_code, food_name, food_price,topping, stock,category_idx)VALUES
+(NULL,823, '홈런볼', 900,false, 55,2);
 
 
 

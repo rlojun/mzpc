@@ -45,7 +45,7 @@ public class CartService {
                 .idx(cart.getIdx())
                 .code(cart.generateUniqueCode())
                 .payments("현금")
-                .foods(foodList)
+//                .foods(foodList)
                 .members(members)
                 .build();
 
@@ -67,10 +67,10 @@ public class CartService {
         httpSession.setAttribute("foodList", savedFoodList);
 
         Cart updatedCart = (Cart) httpSession.getAttribute("cartItems");
-        updatedCart.getFoods().add(mainFood);
-        if (topping != null) {
-            updatedCart.getFoods().add(topping);
-        }
+//        updatedCart.getFoods().add(mainFood);
+//        if (topping != null) {
+//            updatedCart.getFoods().add(topping);
+//        }
         cartRepository.save(updatedCart);
         return updatedCart;
     }

@@ -3,8 +3,6 @@ package com.fivemin.mzpc.data.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 @Entity
@@ -53,6 +51,4 @@ public class Cart {
     @JoinColumn(name = "member_idx", nullable = false)
     private Members members;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.PERSIST)
-    private List<Food> foods = new ArrayList<>();
 }

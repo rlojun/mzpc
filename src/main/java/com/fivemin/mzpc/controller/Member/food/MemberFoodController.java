@@ -52,7 +52,7 @@ public class MemberFoodController {
 
             model.addAttribute("foodDtoList", filteredFoodList);
             model.addAttribute("distinctFoodCategories", distinctFoodCategories);
-            //           Members member = (Members) httpSession.getAttribute("members");
+ //           Members member = (Members) httpSession.getAttribute("members");
 //            Long memberIdx = member.getIdx();
 //            Cart cartEntity = cartService.getCartByMemberIdx(memberIdx);
 //            List <Food> cartFoods = cartEntity.getFoods();

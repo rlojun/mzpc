@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>토핑 추가하기</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+        function submitToppingInfo(event) {
+            event.preventDefault();
+            var selectElement = document.getElementById('categoryName');
+            var categoryCode = selectElement.value;
+            var storeCode = [[${storeCode}]];
+
+            var formData = new FormData();
+
+            var foodDto = {
+                "idx" : null,
+                "code" : null,
+                "name" : $('input[name="toppingName"]').val(),
+                "price" : $('input[name="toppingPrice"]').val(),
+                "description" : null,
+                "stock" : $('input[name="stock"]').val(),
+                "topping" : true
+            };
+
+            if (foodDto.name === '' || foodDto.price === '' || foodDto.stock === '') {
+                alert('모든 필수 입력 필드를 작성해주세요.');
+                return;
+            }
+
+            formData.append('picture', $('#toppingPicture')[0].files[0]);
+            formData.append('foodDto', JSON.stringify(foodDto));
+
+            $.ajax({
+                type: "POST",
+                async: false,
+                url: "http://localhost:9010/food/addFood?categoryCode=" + categoryCode,
+                // contentType : "application/json",
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function(data) {
+                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food"+"?topping="+true;
+                    alert(data)
+                },
+                error: function() {
+                    alert("에러가 발생했습니다.")
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <form id="addTopping" enctype="multipart/form-data">
+            <label for="toppingName">토핑</label> : <input type="text" id="toppingName" name="toppingName" required>
+            <br>
+            <label for="toppingPrice">가격</label>  : <input type="text" id="toppingPrice" name="toppingPrice" required>원
+            <br>
+            <label for="categoryName">카테고리</label>  :
+            <select id="categoryName" name="selectCategory">
+                <option th:each=" category : ${categories}" th:value="${category.getCode()}" th:text="${category.getName()}"></option>
+            </select>
+            <br>
+            <label for="toppingPicture">이미지</label>  : <input type="file" id="toppingPicture" accept="image/*"  name="toppingPicture">
+            <br>
+            <label for="stock">재고</label> : <input type="text" id="stock" name="stock" required>
+            <br>
+            <button th:onclick="submitToppingInfo(event)">음식 추가</button>
+            <input type="reset">
+    </form>
+</body>
+</html>

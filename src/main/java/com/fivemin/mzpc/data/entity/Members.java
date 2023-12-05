@@ -61,11 +61,18 @@ public class Members {
     @Column(name = "address")
     private String address;
 
+    @Column(name="start_time")
+    private LocalDateTime startTime;
+
     // 잔여 시간
     // 회원 가입시 기본 디폴트 값 0 설정
     @Column(nullable = false)
-    @DateTimeFormat(pattern = "HH:mm:ss")
+    @DateTimeFormat(pattern = "H:mm:ss")
     private LocalTime remainingTime = LocalTime.of(0, 0, 0);
+
+    @Column(nullable = false)
+    @DateTimeFormat(pattern = "H:mm:ss")
+    private LocalTime loginRemainingTime = LocalTime.of(0, 0, 0);
 
     // 잔여 마일리지
     // 회원가입시 기본 디폴트 값 0 설정

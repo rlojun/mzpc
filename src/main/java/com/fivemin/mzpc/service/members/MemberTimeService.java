@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
@@ -62,34 +64,52 @@ public class MemberTimeService {
     // 상품 구매                                                  이거 상품의 본 가격,  추가되는 시간
     public void purchaseTime(String memberId, int usedMileage, int timePrice, LocalTime additionalTime, String timeCode) {
         log.info("memberId : {} : ", memberId);
-        // 사용자 찾기
+
         Members member = memberRepository.findById(memberId);
 
-        // 추가 시간 추가
-        member.setRemainingTime(member.getRemainingTime().plusHours(additionalTime.getHour())
-                .plusMinutes(additionalTime.getMinute())
-                .plusSeconds(additionalTime.getSecond()));
-
-        // 사용한 마일리지 차감
+        processAdditionalTime(member, additionalTime);
         member.setMileage(member.getMileage() - usedMileage);
 
-        // 상품 가격의 2%를 마일리지로 적립
         int earnedMileage = (int) (timePrice * 0.02);
         member.setMileage(member.getMileage() + earnedMileage);
 
-        // 엔티티 저장
         memberRepository.save(member);
 
-        // 시간 정보
         Times times = timesRepository.findByCode(timeCode);
 
-        // 구매 기록 저장
+        MileageInfo mileageInfo = createMileageInfo(member, usedMileage, earnedMileage, times);
+        mileageInfoRepository.save(mileageInfo);
+    }
+
+    private void processAdditionalTime(Members member, LocalTime additionalTime) {
+        member.setLoginRemainingTime(member.getLoginRemainingTime().plusHours(additionalTime.getHour())
+                .plusMinutes(additionalTime.getMinute())
+                .plusSeconds(additionalTime.getSecond()));
+    }
+
+    private MileageInfo createMileageInfo(Members member, int usedMileage, int earnedMileage, Times times) {
         MileageInfo mileageInfo = new MileageInfo();
         mileageInfo.setMembers(member);
         mileageInfo.setUse(usedMileage);
         mileageInfo.setSave(earnedMileage);
         mileageInfo.setTimes(times);
-        mileageInfoRepository.save(mileageInfo);
+        return mileageInfo;
+    }
+
+    public Members realRemainingTime(String memberId){
+        Members members = memberRepository.findById(memberId);
+
+        // 현재 시간 - 로그인 시간
+        Duration betweenTime = Duration.between(members.getStartTime(), LocalDateTime.now());
+        LocalTime betweenLocalTime = LocalTime.ofSecondOfDay(betweenTime.getSeconds());
+
+        // 실시간 남은 시간
+        Duration durationRemainingTime = Duration.between(betweenLocalTime, members.getLoginRemainingTime());
+        LocalTime remainingTime = LocalTime.ofSecondOfDay(durationRemainingTime.getSeconds());
+
+        // remainingTime 최신화
+        members.setRemainingTime(remainingTime);
+        return memberRepository.save(members);
     }
 
     // 시간구매, 마일리지 사용 내역

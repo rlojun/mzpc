@@ -5,7 +5,8 @@
     <title>카테고리 수정하기</title>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script>
-        function updateCategory() {
+        function updateCategory(event) {
+            event.preventDefault();
             var categoryName =  $('input[name="categoryName"]').val();
             var storeCode = [[${storeCode}]];
             var categoryDto = {
@@ -21,7 +22,7 @@
                 async : false,
                 data : JSON.stringify(categoryDto),
                 success: function (data) {
-                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food";
+                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping="+false;
                     alert(data)
                 },
                 error : function () {
@@ -38,7 +39,7 @@
     수정할 카테고리 명  : <input type="text" name="categoryName">
     <input type="hidden" th:value="${categoryDto.getIdx()}" name="categoryIdx">
     <input type="hidden" th:value="${categoryDto.getCode()}" name="categoryCode">
-    <button onclick="updateCategory()">카테고리 수정</button>
+    <button onclick="updateCategory(event)">카테고리 수정</button>
   </form>
 </body>
 </html>

@@ -1,7 +1,6 @@
 package com.fivemin.mzpc.controller.Member.food;
 
 import com.fivemin.mzpc.data.entity.Cart;
-import com.fivemin.mzpc.data.entity.Food;
 import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.service.member.CartService;
 import com.fivemin.mzpc.service.member.FoodService;
