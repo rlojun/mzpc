@@ -44,7 +44,7 @@ public class AdminCategoryRestController {
 
         return ResponseEntity.ok("카테고리가 추가 되었습니다.");
     }
-    
+
     @PutMapping(value = "/modifyCategory")
     private ResponseEntity<String> modifyCategory(@RequestBody CategoryDto categoryDto) {
 

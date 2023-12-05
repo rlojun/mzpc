@@ -30,7 +30,7 @@ public class AdminFoodService {
     }
 
     public List<FoodDto> getFoodList(String storeCode,boolean topping) {
-        List<Food> foods = foodRepository.findByStorerCode(storeCode,topping);
+        List<Food> foods = foodRepository.findByStoreCode(storeCode,topping);
         List<FoodDto> foodDtos = new ArrayList<>();
 
         for ( Food food : foods) {
@@ -48,7 +48,7 @@ public class AdminFoodService {
                     .picture(food.getPicture())
                     .description(food.getDescription())
                     .stock(food.getStock())
-                    .topping(food.getTopping())
+                    .topping(food.isTopping())
                     .categoryDto(categoryDto)
                     .build();
             foodDtos.add(foodDto);
@@ -74,7 +74,7 @@ public class AdminFoodService {
                     .price(foods.getPrice())
                     .picture(foods.getPicture())
                     .description(foods.getDescription())
-                    .topping(foods.getTopping())
+                    .topping(foods.isTopping())
                     .build();
             foodDtoList.add(foodDto);
         }
@@ -124,7 +124,7 @@ public class AdminFoodService {
                 .price(food.getPrice())
                 .description(food.getDescription())
                 .stock(food.getStock())
-                .topping(food.getTopping())
+                .topping(food.isTopping())
                 .createdAt(food.getCreatedAt())
                 .updateAt(food.getUpdatedAt())
                 .categoryDto(categoryDto)

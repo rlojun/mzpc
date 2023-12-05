@@ -1,13 +1,17 @@
 package com.fivemin.mzpc.data.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @Entity
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Cart {
 
     //장바구니 index
@@ -20,16 +24,33 @@ public class Cart {
     @Column(name = "cart_code",nullable = false, unique = true)
     private String code;
 
-    //결제 방식
-    @Column(name = "payments",nullable = false, length = 15)
+    @PrePersist
+    protected void onCreate() {
+        this.code = generateUniqueCode();
+    }
+
+    public String generateUniqueCode() {
+        int codeLength = 6;
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder code = new StringBuilder();
+
+        Random random = new Random();
+        for (int i = 0; i < codeLength; i++) {
+            int index = random.nextInt(characters.length());
+            code.append(characters.charAt(index));
+        }
+
+        return code.toString();
+    }
+
+    //결제 방식 ------- payment로 바뀌자
+    @Column(name = "payments", length = 15)
     private String payments;
 
-    // 주문할 상품 선택 여부
-    @Column(name = "buy_check")
-    private boolean buyCheck;
+    @OneToOne
+    @JoinColumn(name = "member_idx", nullable = false)
+    private Members members;
 
-    @ManyToOne
-    @JoinColumn(name = "food_idx", nullable = false)
-    private Food food;
-
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.PERSIST)
+    private List<Food> foods = new ArrayList<>();
 }

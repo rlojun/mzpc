@@ -6,6 +6,7 @@ import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.service.LoginService;
 import com.fivemin.mzpc.service.email.EmailService;
 import com.fivemin.mzpc.service.email.VerificationCodeUtil;
+import com.fivemin.mzpc.service.member.CartService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,6 +39,14 @@ public class LoginController {
     @Autowired
     private EmailService emailService;
 
+
+    private final CartService cartService;
+
+    @Autowired
+    public LoginController(
+            CartService cartService) {
+        this.cartService = cartService;
+    }
     //로그인 페이지 이동
     @GetMapping(value = "")
     public String loginForm() {
@@ -101,10 +111,12 @@ public class LoginController {
 
             String storeName = members.getStore().getName();
             String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
+
             session.setAttribute("storeName", encodedStoreName);
+            session.setAttribute("members", members);
             model.addAttribute("storeName", encodedStoreName);
             // url 리펙토링 필요!
-            return String.format("redirect:/members/%s/food",encodedStoreName);
+            return String.format("redirect:/members/%s",encodedStoreName);
         }else{
             return "redirect:/login?error";
         }
@@ -113,7 +125,15 @@ public class LoginController {
     // 로그아웃
     @GetMapping("/logout")
     public String logout(HttpSession session){
+        // 멤버 카트 비우기
+        String memberId = (String) session.getAttribute("id");
+        log.info("sessionDestroyed ID : {}", memberId);
+        if (memberId != null) {
+            cartService.clearCart(memberId);
+        }
+
         session.invalidate();
+
         return "redirect:/login?logout";
     }
 
