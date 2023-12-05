@@ -45,8 +45,12 @@ public class Cart {
     @Column(name = "payments", length = 15)
     private String payments;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "member_idx", nullable = false)
     private Members members;
+
+    @ManyToOne
+    @JoinColumn(name = "food_idx", nullable = false)
+    private Food food;
 
 }

@@ -49,8 +49,4 @@ public class Food extends BaseTimeEntity {
     @JoinColumn(name = "category_idx",nullable = false)
     public Category category;
 
-    @ManyToOne
-    @JoinColumn(name = "cart_idx")
-    private Cart cart;
-
 }
