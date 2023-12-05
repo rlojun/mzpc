@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- Basic -->
     <meta charset="utf-8" />
@@ -28,6 +28,13 @@
     <link href="/bootstrap/css/style.css" rel="stylesheet" />
     <!-- responsive style -->
     <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- SockJS 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+
+    <!-- Stomp 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
 </head>
 
@@ -46,6 +53,72 @@
               MZPC
             </span>
                 </a>
+<!-- -->
+                <div id="remainingTimeDisplay" style="color:white;"></div>
+                <script>
+                    // 서버에서 remainingTime을 가져오는 함수
+                    async function fetchRemainingTime() {
+                        try {
+                            const response = await fetch('/api/updateRemainingTime');
+                            const data = await response.json();
+
+                            // remainingTimeDisplay 요소에 시간을 표시
+                            document.getElementById('remainingTimeDisplay').innerText = data.remainingTime;
+
+                            // 서버에서 가져온 시간이 유효하면 타이머 시작
+                            if (data.remainingTime !== '') {
+                                startCountdown(data.remainingTime);
+                            }
+                        } catch (error) {
+                            console.error('Error fetching remaining time:', error);
+                        }
+                    }
+
+                    // 남은 시간을 표시하고 감소시키는 함수
+                    function startCountdown(remainingTime) {
+                        // 남은 시간을 초로 변환
+                        let remainingSeconds = calculateRemainingSeconds(remainingTime);
+
+                        // 1초마다 시간 갱신
+                        const countdownInterval = setInterval(() => {
+                            // 시간 감소
+                            remainingSeconds--;
+                            if (remainingSeconds < 0) {
+                                remainingSeconds = 0;
+                            }
+
+                            // 시간이 0보다 작으면 타이머 종료
+                            if (remainingSeconds <= 0) {
+                                clearInterval(countdownInterval);
+                                document.getElementById('remainingTimeDisplay').innerText = '시간 종료';
+                            } else {
+                                // 남은 시간을 시분초로 변환하여 표시
+                                const formattedTime = formatRemainingTime(remainingSeconds);
+                                document.getElementById('remainingTimeDisplay').innerText = formattedTime;
+                            }
+                        }, 1000);
+                    }
+
+                    // 시간을 초로 변환하는 함수
+                    function calculateRemainingSeconds(remainingTime) {
+                        const timeArray = remainingTime.split(':');
+                        return parseInt(timeArray[0]) * 3600 + parseInt(timeArray[1]) * 60 + parseInt(timeArray[2]);
+                    }
+
+                    // 남은 시간을 시분초 형식으로 변환하는 함수
+                    function formatRemainingTime(remainingSeconds) {
+                        const hours = Math.floor(remainingSeconds / 3600);
+                        const minutes = Math.floor((remainingSeconds % 3600) / 60);
+                        const seconds = remainingSeconds % 60;
+                        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                    }
+
+                    // 페이지 로드 시 남은 시간 가져오기 및 타이머 시작
+                    fetchRemainingTime();
+                </script>
+
+
+                <!--@@@@@@@@@@@@@@@@@@@@@ -->
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class=""> </span>
@@ -66,6 +139,9 @@
                             <a class="nav-link" href="qna">문의하기 </a>
                         </li>
                     </ul>
+                    <div>
+
+                    </div>
                     <div class="user_option">
                         <a href="" class="user_link">
                             <i class="fa fa-user" aria-hidden="true"></i>
@@ -125,7 +201,7 @@
                 </svg>
                         </a>
                         <div class="user_option">
-                            <a href="/login/logout" class="order_online">
+                            <a href="/login/members/logout" class="order_online">
                                 로그아웃
                             </a>
                         </div>
@@ -155,6 +231,10 @@
                             </div>
                         </div>
                     </div><!-- End Icon Box -->
+                    <div id="remainingTime">
+                        <h4>남은 시간:</h4>
+                        <p id="realRemainingTime" th:text="${realRemainingTime}"></p>
+                    </div>
                     <a th:href="@{/members/{storeName}/listPurchaseTime(storeName=${storeName})}"> 상품 구매 내역</a>
                 </div>
             </div>
@@ -245,7 +325,6 @@
     </div>
 </footer>
 <!-- footer section -->
-
 <!-- jQery -->
 <script src="/bootstrap/js/jquery-3.4.1.min.js"></script>
 <!-- popper js -->

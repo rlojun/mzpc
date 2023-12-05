@@ -30,7 +30,7 @@ public class Times extends BaseTimeEntity {
 
     //추가 시간
     @Column(name = "add_time",nullable = false)
-    @DateTimeFormat(pattern = "HH:mm:ss")
+    @DateTimeFormat(pattern = "H:mm:ss")
     private LocalTime addTime;
 
     //가격

@@ -171,7 +171,7 @@
         <p id="paymentAmount"></p>
 
         <input type="hidden" id="timePrice" name="timePrice" th:value="${times.price}" />
-        <input type="hidden" id="additionalTime" name="additionalTime" th:value="${times.addTime.format(T(java.time.format.DateTimeFormatter).ofPattern('HH:mm:ss'))}" />
+        <input type="hidden" id="additionalTime" name="additionalTime" th:value="${times.addTime.format(T(java.time.format.DateTimeFormatter).ofPattern('H:mm:ss'))}" />
         <button type="submit">결제하기</button>
     </form>
 </body>
