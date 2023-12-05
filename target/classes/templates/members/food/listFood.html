@@ -167,33 +167,35 @@
         <div class="filters-content">
             <div class="row grid">
                 <div th:each="menu: ${foodDtoList}" class="col-sm-6 col-lg-4 all"
-                    th:classappend="${menu.getCategoryName()}">
+                     th:classappend="${menu.getCategoryName()}">
                     <div class="box">
-                    <!--                        <div th:each="menu : ${foodDtoList}" th:if="${menu.categoryName == categoryName}">-->
-                            <div class="img-box" th:attr="data-category-name=${menu.getCategoryName()},data-food-code=${menu.getName()}">
-                                <img th:src="${menu.picture}" alt="">
-                            </div>
-                            <div class="detail-box" th:attr="data-category-name=${menu.getCategoryName()},data-food-code=${menu.getName()}">
-                                <h5 th:text="${menu.getName()}"/>
-                                <p th:text="${menu.getDescription()}"/>
-                                <div class="options">
-                                    <h6 th:text="${menu.price + '원'}"/>
-                                    <a th:href="@{/members/{storeName}/food/detail/{foodName}(storeName=${(storeName)}, foodName=${menu.name}, foodCode=${menu.code})}">
-                                        <i class="material-icons">add</i>
-                                    </a>
-                                    <a href="">
-                                        <i class="material-icons">grade</i>
-                                    </a>
-                                    <a href="">
-                                        <i class="material-icons">add_shopping_cart</i>
-                                    </a>
-                                </div>
+                        <!--                        <div th:each="menu : ${foodDtoList}" th:if="${menu.categoryName == categoryName}">-->
+                        <div class="img-box"
+                             th:attr="data-category-name=${menu.getCategoryName()},data-food-code=${menu.getName()}">
+                            <img th:src="${menu.picture}" alt="">
+                        </div>
+                        <div class="detail-box"
+                             th:attr="data-category-name=${menu.getCategoryName()},data-food-code=${menu.getName()}">
+                            <h5 th:text="${menu.getName()}"/>
+                            <p th:text="${menu.getDescription()}"/>
+                            <div class="options">
+                                <h6 th:text="${menu.price + '원'}"/>
+                                <a th:href="@{/members/{storeName}/food/detail/{foodName}(storeName=${(storeName)}, foodName=${menu.name}, foodCode=${menu.code})}">
+                                    <i class="material-icons">add</i>
+                                </a>
+                                <a href="">
+                                    <i class="material-icons">grade</i>
+                                </a>
+                                <a href="">
+                                    <i class="material-icons">add_shopping_cart</i>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </section>
 
 <!-- end food section -->
@@ -207,11 +209,7 @@
         <div class="box">
             <div class="detail-box">
                 <ul id="cartItems">
-                    <li th:each="cartItem : ${cartEntity}">
-                        <ul>
-                            <th:block th:each="food : ${cartEntity.foods}" th:text="${food.name}"></th:block>
-                        </ul>
-                    </li>
+                    <li th:each="food : ${cartEntity.foods}" th:text="${food.name}"></li>
                 </ul>
             </div>
         </div>
