@@ -102,7 +102,7 @@
     <img id="foodImage" th:src="@{/images/__${food.getPicture()}__}" style="width:100px; height:100px;" alt="음식 이미지" />
     <br>
     <label for="pictureText">사진</label> : <input type="text" id="pictureText" th:value="*{getPicture()}" disabled>
-    <input type="file" id="picture" style="display: none;" onchange="handleFileInputChange()">
+    <input type="file" id="picture" style="display: none;" onchange="handleFileInputChange()" enctype="multipart/form-data" >
     <br>
     <label for="stock">재고</label> : <input type="text" id="stock" th:value="*{getStock()}" disabled>
     <br>

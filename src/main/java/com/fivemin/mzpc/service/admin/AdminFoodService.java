@@ -55,7 +55,7 @@ public class AdminFoodService {
                     .picture(food.getPicture())
                     .description(food.getDescription())
                     .stock(food.getStock())
-                    .topping(food.getTopping())
+                    .topping(food.isTopping())
                     .categoryDto(categoryDto)
                     .build();
             foodDtos.add(foodDto);
@@ -81,7 +81,7 @@ public class AdminFoodService {
                     .price(foods.getPrice())
                     .picture(foods.getPicture())
                     .description(foods.getDescription())
-                    .topping(foods.getTopping())
+                    .topping(foods.isTopping())
                     .build();
             foodDtoList.add(foodDto);
         }
@@ -135,7 +135,7 @@ public class AdminFoodService {
                 .price(food.getPrice())
                 .description(food.getDescription())
                 .stock(food.getStock())
-                .topping(food.getTopping())
+                .topping(food.isTopping())
                 .createdAt(food.getCreatedAt())
                 .updateAt(food.getUpdatedAt())
                 .categoryDto(categoryDto)
@@ -150,11 +150,11 @@ public class AdminFoodService {
         Food food = foodRepository.findById(foodDto.getIdx()).orElse(null);
 
         if(food != null){
+            String fileName = foodPicture==null?"" : foodPicture.getOriginalFilename() ;
             Food updateFood = Food.builder()
                     .idx(foodDto.getIdx())
                     .code(foodDto.getCode())
                     .name(foodDto.getName())
-                    .picture(foodPicture.getOriginalFilename())
                     .price(foodDto.getPrice())
                     .description(foodDto.getDescription())
                     .stock(foodDto.getStock())
@@ -174,22 +174,25 @@ public class AdminFoodService {
     }
 
     private void fileUpload(MultipartFile foodPicture) {
-        String fileName = StringUtils.cleanPath(foodPicture.getOriginalFilename());
 
-        String relativePath  = "src/main/resources/static/images/";
+        if (foodPicture!=null) {
+            String fileName = StringUtils.cleanPath(foodPicture.getOriginalFilename());
 
-        try{
-            Path uploadPath = Paths.get(relativePath);
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
+            String relativePath = "src/main/resources/static/images/";
+
+            try {
+                Path uploadPath = Paths.get(relativePath);
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+                try (InputStream inputStream = foodPicture.getInputStream()) {
+                    Path filePath = uploadPath.resolve(fileName);
+                    Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+                }
+            } catch (Exception e) {
+                System.out.println("fileUpload() Err --> " + e.getMessage());
             }
-            try(InputStream inputStream = foodPicture.getInputStream()){
-                Path filePath = uploadPath.resolve(fileName);
-                Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-            }
-        } catch (Exception e) {
-            System.out.println("fileUpload() Err --> " + e.getMessage());
         }
-
     }
+
 }
