@@ -4,18 +4,16 @@ import lombok.*;
 
 import java.time.LocalTime;
 
+@ToString
+@Builder
 @Getter
 @Setter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class TimeDto {
-
+    private String idx;
     private String code;
     private String name;
     private Integer price;
     private LocalTime addTime;
     private boolean save;
-    // private TimeDto timeDto;
+    private StoreDto storeDto;
 }
