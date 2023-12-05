@@ -3,6 +3,7 @@ package com.fivemin.mzpc.data.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Random;
 
 @Entity
@@ -21,8 +22,6 @@ public class Cart {
     // 장바구니 일련번호
     @Column(name = "cart_code",nullable = false, unique = true)
     private String code;
-
-
 
     @PrePersist
     protected void onCreate() {
@@ -51,4 +50,6 @@ public class Cart {
     @JoinColumn(name = "member_idx", nullable = false)
     private Members members;
 
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.PERSIST)
+    private List<Food> foods;
 }
