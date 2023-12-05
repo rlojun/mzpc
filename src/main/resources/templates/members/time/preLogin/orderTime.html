@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/pre/{storeName}/purchaseTime/{timeCode} (storeName=${storeName}, timeCode=${timeCode})}" method="post">
+  <input type="hidden" id="memberId" name="memberId" th:value="${session.id}" />
+
+  <p th:text="${'상품명 : ' + times.name}" ></p>
+  <p th:text="${'추가 시간 : ' + times.addTime}" ></p>
+  <p th:text="${'가격 : ' + times.price + '원'}"></p>
+  <p th:text="${'저장 유무 : ' + times.save}"></p>
+  <p th:text="${'남은 마일리지 : ' + memberMileage + '원'}"></p>
+
+  <!-- 사용자가 입력한 마일리지 -->
+  <label for="usedMileage">사용할 마일리지:</label>
+  <input type="number" id="usedMileage" name="usedMileage" value="0" min="0" max="${memberMileage}" oninput="updatePaymentAmount()" />
+
+  <!-- 사용할 마일리지를 반영한 결제 금액 -->
+  <p id="paymentAmount"></p>
+
+  <input type="hidden" id="timePrice" name="timePrice" th:value="${times.price}" />
+  <input type="hidden" id="additionalTime" name="additionalTime" th:value="${times.addTime.format(T(java.time.format.DateTimeFormatter).ofPattern('H:mm:ss'))}" />
+  <button type="submit">결제하기</button>
+</form>
+</body>
+</html>
