@@ -100,7 +100,7 @@ public class MemberTimeService {
         Members members = memberRepository.findById(memberId);
 
         // 현재 시간 - 로그인 시간
-        Duration betweenTime = Duration.between(members.getStartTime(), LocalDateTime.now());
+        Duration betweenTime = Duration.between(members.getStartTime(), LocalDateTime.now().plusSeconds(1));
         LocalTime betweenLocalTime = LocalTime.ofSecondOfDay(betweenTime.getSeconds());
 
         // 실시간 남은 시간
