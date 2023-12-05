@@ -2,7 +2,6 @@ package com.fivemin.mzpc.controller.Member.food;
 
 import com.fivemin.mzpc.data.dto.FoodDto;
 import com.fivemin.mzpc.data.entity.Cart;
-import com.fivemin.mzpc.data.entity.Food;
 import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.service.member.CartService;
 import com.fivemin.mzpc.service.member.FoodService;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.stream.Collectors;
 
 /*
 - 기능
@@ -58,10 +56,10 @@ public class CartController {
         }
         Cart updatedCartItems = (Cart) httpSession.getAttribute("cartItems");
 
-        log.info("CartController: number of cartItems {} :", updatedCartItems.getFoods().size());
-        log.info("CartController: cartItems {} :", updatedCartItems.getFoods().stream()
-                .map(Food::getName)
-                .collect(Collectors.toList()));
+//        log.info("CartController: number of cartItems {} :", updatedCartItems.getFoods().size());
+//        log.info("CartController: cartItems {} :", updatedCartItems.getFoods().stream()
+//                .map(Food::getName)
+//                .collect(Collectors.toList()));
 
         String redirectUrl = "/members/" + encodedStoreName + "/food/listFood";
         return ResponseEntity.ok(redirectUrl);
