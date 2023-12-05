@@ -49,7 +49,6 @@ public class CartService {
                 .members(members)
                 .build();
 
-
         cartRepository.save(cart);
         httpSession.setAttribute("foodList", foodList);
 

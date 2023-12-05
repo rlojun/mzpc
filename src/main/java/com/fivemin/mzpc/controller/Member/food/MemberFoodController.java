@@ -57,12 +57,14 @@ public class MemberFoodController {
 //            Cart cartEntity = cartService.getCartByMemberIdx(memberIdx);
 //            List <Food> cartFoods = cartEntity.getFoods();
 //            log.info("Size of cartFoods" + cartFoods.size());
+
             Cart cartEntity = (Cart) httpSession.getAttribute("cartItems");
 
-//            if (cartEntity != null) {
-//                log.info("cartEntity = " + cartEntity.getFoods().size());
-//                model.addAttribute("cartEntity", cartEntity);
-//            }
+
+            if (cartEntity != null) {
+                log.info("cartEntity = " + cartEntity.getFoods().size());
+                model.addAttribute("cartEntity", cartEntity);
+            }
         }
 
         return new ModelAndView("members/food/listFood");

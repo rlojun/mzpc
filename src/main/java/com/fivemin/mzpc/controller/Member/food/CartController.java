@@ -1,6 +1,5 @@
 package com.fivemin.mzpc.controller.Member.food;
 
-import com.fivemin.mzpc.data.dto.FoodDto;
 import com.fivemin.mzpc.data.entity.Cart;
 import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.service.member.CartService;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.stream.Collectors;
 
 /*
 - 기능
@@ -35,7 +35,8 @@ public class CartController {
     }
 
     @PostMapping("/addToCart")
-    public ResponseEntity<String> addToCart(@ModelAttribute FoodDto foodDetails,
+    public ResponseEntity<String> addToCart(
+//                                            @ModelAttribute FoodDto foodDetails,
                                             @RequestParam("code") String foodCode,
                                             @RequestParam("toppings") String selectedToppings,
                                             @PathVariable(required = false) String storeName,
@@ -43,9 +44,8 @@ public class CartController {
 
         String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
         Members members = (Members) httpSession.getAttribute("members");
-
-//        Cart existingCartItems = cartService.getCartByMemberIdx(members.getIdx());
         Cart cartItems = (Cart) httpSession.getAttribute("cartItems");
+        log.info("selected Toppings : {}", selectedToppings);
 
         if (cartItems == null) {
             Cart newCartItems = cartService.addToCart(foodCode, selectedToppings, members, httpSession);
@@ -56,10 +56,10 @@ public class CartController {
         }
         Cart updatedCartItems = (Cart) httpSession.getAttribute("cartItems");
 
-//        log.info("CartController: number of cartItems {} :", updatedCartItems.getFoods().size());
-//        log.info("CartController: cartItems {} :", updatedCartItems.getFoods().stream()
-//                .map(Food::getName)
-//                .collect(Collectors.toList()));
+        log.info("CartController: number of cartItems {} :", updatedCartItems.getFoods().size());
+        log.info("CartController: cartItems {} :", updatedCartItems.getFoods().stream()
+                .map(Food::getName)
+                .collect(Collectors.toList()));
 
         String redirectUrl = "/members/" + encodedStoreName + "/food/listFood";
         return ResponseEntity.ok(redirectUrl);
