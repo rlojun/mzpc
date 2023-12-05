@@ -110,11 +110,8 @@ public class LoginController {
             session.setAttribute("pw", members.getPw());
 
             String storeName = members.getStore().getName();
-            String storeCode = members.getStore().getCode();
-
             String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
 
-            session.setAttribute("storeCode", storeCode);
             session.setAttribute("storeName", encodedStoreName);
             session.setAttribute("members", members);
             model.addAttribute("storeName", encodedStoreName);
