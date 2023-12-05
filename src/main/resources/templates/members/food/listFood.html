@@ -209,7 +209,9 @@
         <div class="box">
             <div class="detail-box">
                 <ul id="cartItems">
+                    <th:block th:if="${cartEntity != null}">
                     <li th:each="food : ${cartEntity.foods}" th:text="${food.name}"></li>
+                    </th:block>
                 </ul>
             </div>
         </div>

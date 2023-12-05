@@ -19,13 +19,7 @@ public class FoodDto {
     private final Integer price;
     private final String description;
     private final Integer stock;
-    private Boolean topping;
-    public Boolean isTopping() {
-        return topping;
-    }
-    public void setTopping(Boolean topping) {
-        this.topping = topping;
-    }
+    private boolean topping;
     private String storeName;
     private final LocalDateTime createdAt;
     private final LocalDateTime updateAt;

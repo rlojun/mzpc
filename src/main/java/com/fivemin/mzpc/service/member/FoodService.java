@@ -1,8 +1,6 @@
 package com.fivemin.mzpc.service.member;
 
-import com.fivemin.mzpc.data.dto.CartDto;
 import com.fivemin.mzpc.data.dto.FoodDto;
-import com.fivemin.mzpc.data.entity.Cart;
 import com.fivemin.mzpc.data.entity.Food;
 import com.fivemin.mzpc.data.repository.FoodRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -63,6 +61,7 @@ public class FoodService {
                     .price(food.getPrice())
                     .picture(food.getPicture())
                     .description(food.getDescription())
+                    .topping(food.isTopping())
                     .storeName(food.getCategory().getStore().getName())
                     .categoryName(food.getCategory().getName())
                     .build();
@@ -87,14 +86,16 @@ public class FoodService {
                 .categoryName(food.getCategory().getName())
                 .categoryIdx(food.getCategory().getIdx())
                 .build();
+
     }
 
     public List<FoodDto> getToppingsByCategory(String categoryName) {
-        return foodRepository.findByCategoryNameAndTopping(categoryName, true)
+        return foodRepository.findToppingByCategoryName(categoryName, true)
                 .stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
+
 
     public List<FoodDto> filterFoodByToppings(List<FoodDto> foodDtoList) {
         return foodDtoList.stream()

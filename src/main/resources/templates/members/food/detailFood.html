@@ -42,18 +42,20 @@
             const foodCode = $(this).data('food-code');
             const price = $(this).data('price');
             const storeName = $(this).data('store-name');
-
             const selectedToppings = [];
             $('.topping-checkbox:checked').each(function () {
                 selectedToppings.push($(this).val());
             });
-
             const postData = {
                 name: foodName,
                 code: foodCode,
                 price: price,
                 toppings: selectedToppings.join(',')
             };
+
+            if (postData.toppings === 'null') {
+                postData.toppings = false;
+            }
 
             $.ajax({
                 type: 'POST',

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
 public interface MemberRepository extends JpaRepository<Members, Long> {
 
     // 로그인 시 사용
