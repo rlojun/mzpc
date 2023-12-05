@@ -70,7 +70,7 @@
                             <a class="nav-link" href="food">먹거리 주문하기 <span class="sr-only">(current)</span> </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="time">시간 충전하기</a>
+                            <a class="nav-link" th:href="@{/members/{storeName}/time(storeName=${storeName})}">시간 충전하기</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="qna">문의하기</a>
@@ -137,9 +137,12 @@
                   </g>
                 </svg>
                         </a>
-                        <a href="/login/logout" class="order_online">
-                            로그아웃
-                        </a>
+                        <!--태섭 -->
+                        <div class="user_option">
+                            <a href="/login/logout" class="order_online">
+                                로그아웃
+                            </a>
+                        </div>
                     </div>
                 </div>
             </nav>
