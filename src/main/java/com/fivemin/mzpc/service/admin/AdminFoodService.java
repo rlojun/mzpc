@@ -37,7 +37,7 @@ public class AdminFoodService {
     }
 
     public List<FoodDto> getFoodList(String storeCode,boolean topping) {
-        List<Food> foods = foodRepository.findByStorerCode(storeCode,topping);
+        List<Food> foods = foodRepository.findByStoreCode(storeCode,topping);
         List<FoodDto> foodDtos = new ArrayList<>();
 
         for ( Food food : foods) {

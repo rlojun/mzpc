@@ -1,5 +1,6 @@
 package com.fivemin.mzpc.data.dto;
 
+import com.fivemin.mzpc.data.entity.Category;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -8,19 +9,29 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class FoodDto {
 
-    private Long idx;
-    private String code;
-    private String name;
-    private String picture;
-    private Integer price;
-    private String description;
-    private Integer stock;
-    private boolean topping;
-    private LocalDateTime createdAt;
-    private LocalDateTime updateAt;
-    private CategoryDto categoryDto;
+    private final Long idx;
+    private final String code;
+    private final String name;
+    private final String picture;
+    private final Integer price;
+    private final String description;
+    private final Integer stock;
+    private Boolean topping;
+    public Boolean isTopping() {
+        return topping;
+    }
+    public void setTopping(Boolean topping) {
+        this.topping = topping;
+    }
+    private String storeName;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updateAt;
+    private final CategoryDto categoryDto;
+    private final Category category;
+    private final String categoryCode;
+    private final String categoryName;
+    private final Long categoryIdx;
 }

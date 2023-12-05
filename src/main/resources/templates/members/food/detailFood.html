@@ -1,10 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Food Details</title>
 </head>
 <body>
+<form class="add-to-cart" th:object="${foodDetails}" method="post">
+<!--      th:action="@{/members/{storeName}/cart/addToCart(storeName=${foodDetails.storeName})}">-->
+    <div>
+        <h5 th:text="${foodDetails.name}"></h5>
+        <img th:src="${foodDetails.picture}" alt="Food Image">
+        <h5 th:text="${foodDetails.description}"></h5>
+        <input type="hidden" th:field="*{name}" th:value="${foodDetails.name}" />
+        <input type="hidden" th:field="*{code}" th:value="${foodDetails.code}" />
+        <input type="hidden" th:field="*{price}" th:value="${foodDetails.price}" />
+        <input type="hidden" th:field="*{storeName}" th:value="${foodDetails.storeName}" />
+        <div th:if="${toppings}" class="topping-section">
+            <h3>토핑</h3>
+            <div th:each="topping : ${toppings}" class="topping-option">
+                <label>
+                    <input type="checkbox" th:value="${topping.name}" class="topping-checkbox"/>
+                    <span th:text="${topping.name}"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <button type="submit"
+            class="add-to-cart-btn"
+        th:attr="data-food-name=${foodDetails.name}, data-food-code=${foodDetails.code}, data-price=${foodDetails.price}, data-store-name=${foodDetails.storeName}">
+        카트에 담기
+    </button>
 
+</form>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.add-to-cart-btn').on('click', function (event) {
+            event.preventDefault();
+            const foodName = $(this).data('food-name');
+            const foodCode = $(this).data('food-code');
+            const price = $(this).data('price');
+            const storeName = $(this).data('store-name');
+
+            const selectedToppings = [];
+            $('.topping-checkbox:checked').each(function () {
+                selectedToppings.push($(this).val());
+            });
+
+            const postData = {
+                name: foodName,
+                code: foodCode,
+                price: price,
+                toppings: selectedToppings.join(',')
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/members/' + encodeURIComponent(storeName) + '/cart/addToCart',
+                data: postData,
+                success: function (redirectUrl) {
+                    console.log('Received redirectUrl:', redirectUrl);
+                    console.log(foodName, price, selectedToppings)
+                    window.location.href = redirectUrl;
+                },
+                error: function (error) {
+                    console.error('카트 담기 오류 발생', error);
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>
