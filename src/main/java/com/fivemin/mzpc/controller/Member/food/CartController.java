@@ -48,13 +48,19 @@ public class CartController {
         Members members = (Members) httpSession.getAttribute("members");
 
 //        Cart existingCartItems = cartService.getCartByMemberIdx(members.getIdx());
-//        Cart cartItems = (Cart) httpSession.getAttribute("cartItems");
+        Cart cartItems = (Cart) httpSession.getAttribute("cartItems");
 
-        Cart cartItems = cartService.addToCart(foodCode, selectedToppings, members);
-        httpSession.setAttribute("cartItems", cartItems);
+        if (cartItems == null) {
+            Cart newCartItems = cartService.addToCart(foodCode, selectedToppings, members, httpSession);
+            httpSession.setAttribute("cartItems", newCartItems);
+        } else {
+            Cart updatedCartItems = cartService.updateCart(foodCode, selectedToppings, httpSession);
+            httpSession.setAttribute("cartItems", updatedCartItems);
+        }
+        Cart updatedCartItems = (Cart) httpSession.getAttribute("cartItems");
 
-        log.info("CartController: number of cartItems {} :", cartItems.getFoods().size());
-        log.info("CartController: cartItems {} :", cartItems.getFoods().stream()
+        log.info("CartController: number of cartItems {} :", updatedCartItems.getFoods().size());
+        log.info("CartController: cartItems {} :", updatedCartItems.getFoods().stream()
                 .map(Food::getName)
                 .collect(Collectors.toList()));
 

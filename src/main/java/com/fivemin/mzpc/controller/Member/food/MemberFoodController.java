@@ -55,25 +55,16 @@ public class MemberFoodController {
 
             model.addAttribute("foodDtoList", filteredFoodList);
             model.addAttribute("distinctFoodCategories", distinctFoodCategories);
-
-            Members member = (Members) httpSession.getAttribute("members");
-            Long memberIdx = member.getIdx();
-
+ //           Members member = (Members) httpSession.getAttribute("members");
+//            Long memberIdx = member.getIdx();
 //            Cart cartEntity = cartService.getCartByMemberIdx(memberIdx);
 //            List <Food> cartFoods = cartEntity.getFoods();
 //            log.info("Size of cartFoods" + cartFoods.size());
             Cart cartEntity = (Cart) httpSession.getAttribute("cartItems");
-            log.info("cartEntity = " + cartEntity.getFoods().size());
 
             if (cartEntity != null) {
-//                List<String> foodNamesList = cartEntity.getFoods().stream()
-//                        .map(Food::getName)
-//                        .collect(Collectors.toList());
-
-//                model.addAttribute("cartEntity", cartEntity);
+                log.info("cartEntity = " + cartEntity.getFoods().size());
                 model.addAttribute("cartEntity", cartEntity);
-
-//                model.addAttribute("foodNamesList", foodNamesList);
             }
         }
 
@@ -109,29 +100,14 @@ public class MemberFoodController {
     }
 
 
-//    // @GetMapping("/favorites")
-//    // public String listFoodFavorites() {
-//    //    return "members/food/listFood/{favorites}";
-//    // }
-//
-//
-////    topping : true / false 로 구별 ( 토핑 / 일반 음식 )
-////    @GetMapping("/{topping}")
-////    public String listTopping() {
-////        return "";
-////    }
-//
-//    /*
+//    @GetMapping("/favorites")
+//    public String listFoodFavorites() {
+//       return "members/food/listFood/{favorites}";
+//    }
 //    addFoodFavorites
 //    (음식 즐겨 찾기 설정 하기)
 //
 //    deleteFoodFavorites
 //    (음식 즐겨 찾기 제거 하기)
 //
-//**************************************** 삭제 예정
-//    returnFoodList
-//    (음식 상세 화면 에서 음식 상품 목록 으로 돌아 가기 메서드)
-//
-//     */
-
 }

@@ -1,6 +1,5 @@
 package com.fivemin.mzpc.service.member;
 
-import com.fivemin.mzpc.data.dto.CartDto;
 import com.fivemin.mzpc.data.entity.Cart;
 import com.fivemin.mzpc.data.entity.Food;
 import com.fivemin.mzpc.data.entity.Members;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -31,37 +29,53 @@ public class CartService {
         this.foodRepository = foodRepository;
     }
 
-    public Cart addToCart(String foodCode, String selectedToppings, Members members) {
+    public Cart addToCart(String foodCode, String selectedToppings, Members members, HttpSession httpSession) {
         Food mainFood = foodRepository.getByFoodCode(foodCode);
         Food topping = foodRepository.getByFoodName(selectedToppings);
 
         List<Food> foodList = new ArrayList<>();
+
         foodList.add(mainFood);
         if (topping != null) {
             foodList.add(topping);
         }
-        Cart cart = cartRepository.findCartByMemberIdx(members.getIdx());
 
-        if (cart == null) {
-            cart = new Cart();
-            cart = Cart.builder()
-                    .idx(cart.getIdx())
-                    .code(cart.generateUniqueCode())
-                    .payments("현금")
-                    .foods(foodList)
-                    .members(members)
-                    .build();
-        } else {
-//            cart.getFoods().add(mainFood);
-//            if (topping != null) {
-//                cart.getFoods().add(topping);
-            cart.setFoods(foodList);
-        }
-        log.info("idx"+ cart.getIdx());
-        log.info("foodsList" + foodList.size());
+        Cart cart = new Cart();
+        cart = Cart.builder()
+                .idx(cart.getIdx())
+                .code(cart.generateUniqueCode())
+                .payments("현금")
+                .foods(foodList)
+                .members(members)
+                .build();
+
+
         cartRepository.save(cart);
+        httpSession.setAttribute("foodList", foodList);
+
         return cart;
     }
+
+    public Cart updateCart(String foodCode, String selectedToppings, HttpSession httpSession) {
+        Food mainFood = foodRepository.getByFoodCode(foodCode);
+        Food topping = foodRepository.getByFoodName(selectedToppings);
+
+        List<Food> savedFoodList = (List<Food>) httpSession.getAttribute("foodList");
+        savedFoodList.add(mainFood);
+        if (topping != null) {
+            savedFoodList.add(topping);
+        }
+        httpSession.setAttribute("foodList", savedFoodList);
+
+        Cart updatedCart = (Cart) httpSession.getAttribute("cartItems");
+        updatedCart.getFoods().add(mainFood);
+        if (topping != null) {
+            updatedCart.getFoods().add(topping);
+        }
+        cartRepository.save(updatedCart);
+        return updatedCart;
+    }
+
 
     public Cart getCartByMemberIdx(Long memberIdx) {
         return cartRepository.findCartByMemberIdx(memberIdx);
