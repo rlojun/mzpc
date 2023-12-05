@@ -53,14 +53,14 @@ INSERT INTO category VALUES
 
 #---------------------------------------------------------------------------------------
 #FOOD
-INSERT INTO food(food_idx, food_code, food_name, food_price,topping, category_idx) VALUES
-(NULL,822, '진라면', 1200, false ,1);
+INSERT INTO food(food_idx, food_code, food_name, food_price,topping,stock ,category_idx) VALUES
+(NULL,822, '진라면', 1200, false, 55,1);
 
-INSERT INTO food(food_idx, food_code, food_name, food_price,topping ,category_idx) VALUES
-(NULL,821, '짜파게티',1300, false ,1);
+INSERT INTO food(food_idx, food_code, food_name, food_price,topping,stock,category_idx) VALUES
+(NULL,821, '짜파게티',1300, false,221 ,1);
 
-INSERT INTO food(food_idx, food_code, food_name, food_price,topping, category_idx)VALUES
-(NULL,823, '홈런볼', 900,false, 2);
+INSERT INTO food(food_idx, food_code, food_name, food_price,topping, stock,category_idx)VALUES
+(NULL,823, '홈런볼', 900,false, 55,2);
 
 
 

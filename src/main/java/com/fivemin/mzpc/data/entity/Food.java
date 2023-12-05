@@ -23,7 +23,7 @@ public class Food extends BaseTimeEntity {
     private String code;
 
     //음식 이름
-    @Column(name = "food_name", length = 30)
+    @Column(name = "food_name", length = 30, nullable = false)
     private String name;
 
     //음식 사진
@@ -31,7 +31,7 @@ public class Food extends BaseTimeEntity {
     private String picture;
 
     //음식 가격
-    @Column(name = "food_price")
+    @Column(name = "food_price", nullable = false)
     private Integer price;
 
     //음식 설명
@@ -39,11 +39,11 @@ public class Food extends BaseTimeEntity {
     private String description;
 
     //음식 재고
-    @Column(name = "stock")
+    @Column(name = "stock", nullable = false)
     private Integer stock;
 
-    @Column(name = "topping")
-    private boolean topping;
+    @Column(name = "topping", nullable = false)
+    private boolean topping=false;
 
     @ManyToOne
     @JoinColumn(name = "category_idx",nullable = false)
