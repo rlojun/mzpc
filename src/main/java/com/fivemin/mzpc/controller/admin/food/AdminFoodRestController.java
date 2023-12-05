@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/food")
@@ -42,17 +43,20 @@ public class AdminFoodRestController {
     }
 
     @PostMapping(value = "/modifyFood")
-    public ResponseEntity<String> modifyFood(@RequestPart ("picture") MultipartFile foodPicture,
+    public ResponseEntity<String> modifyFood(@RequestParam (value = "picture",required = false) MultipartFile foodPicture,
                                              @RequestParam ("foodDto") String foodDtoJson,
                                              @RequestParam String categoryName) {
         ObjectMapper objectMapper = new ObjectMapper();
+
         try {
             FoodDto foodDto = objectMapper.readValue(foodDtoJson, FoodDto.class);
-            log.info("foodPicture : {}", foodPicture.getOriginalFilename());
-            log.info("foodDtoJson : {}",foodDto);
-            log.info("categoryName : {}",categoryName);
+//            if (foodPicture.isEmpty()) {
+                log.info("foodPicture : {}", Optional.ofNullable(foodPicture));
+                log.info("foodDtoJson : {}", foodDto);
+                log.info("categoryName : {}", categoryName);
+//            }
 
-        adminFoodService.modifyFood(foodDto,categoryName,foodPicture);
+            adminFoodService.modifyFood(foodDto,categoryName,foodPicture);
 
         } catch (IOException e) {
             System.out.println("modifyFood() Err --> "+ e.getMessage());
