@@ -3,11 +3,13 @@ package com.fivemin.mzpc.data.entity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,9 +63,9 @@ public class Members {
 
     // 잔여 시간
     // 회원 가입시 기본 디폴트 값 0 설정
-//    @Column(nullable = false)
-//    @DateTimeFormat(pattern = "HH:mm:ss")
-//    private LocalTime remainingTime = LocalTime.of(0, 0, 0);
+    @Column(nullable = false)
+    @DateTimeFormat(pattern = "HH:mm:ss")
+    private LocalTime remainingTime = LocalTime.of(0, 0, 0);
 
     // 잔여 마일리지
     // 회원가입시 기본 디폴트 값 0 설정
