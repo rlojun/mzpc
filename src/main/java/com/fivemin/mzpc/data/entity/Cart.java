@@ -51,6 +51,4 @@ public class Cart {
     @JoinColumn(name = "member_idx", nullable = false)
     private Members members;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.PERSIST)
-    private List<Food> foods = new ArrayList<>();
 }

@@ -58,10 +58,10 @@ public class CartController {
         }
         Cart updatedCartItems = (Cart) httpSession.getAttribute("cartItems");
 
-        log.info("CartController: number of cartItems {} :", updatedCartItems.getFoods().size());
-        log.info("CartController: cartItems {} :", updatedCartItems.getFoods().stream()
-                .map(Food::getName)
-                .collect(Collectors.toList()));
+//        log.info("CartController: number of cartItems {} :", updatedCartItems.getFoods().size());
+//        log.info("CartController: cartItems {} :", updatedCartItems.getFoods().stream()
+//                .map(Food::getName)
+//                .collect(Collectors.toList()));
 
         String redirectUrl = "/members/" + encodedStoreName + "/food/listFood";
         return ResponseEntity.ok(redirectUrl);
