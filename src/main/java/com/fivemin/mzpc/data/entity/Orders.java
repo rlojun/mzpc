@@ -26,6 +26,9 @@ public class Orders {
     @Column(name = "purchase_status",nullable = false)
     private boolean purchaseStatus=false;
 
+    @Column(name = "payment", length = 15)
+    private String payment;
+
     @OneToOne
     @JoinColumn(name = "cart_idx", nullable = false)
     private Cart cart;
