@@ -41,10 +41,6 @@ public class Cart {
         return code.toString();
     }
 
-    //결제 방식 ------- payment로 바뀌자
-    @Column(name = "payments", length = 15)
-    private String payments;
-
     @ManyToOne
     @JoinColumn(name = "member_idx", nullable = false)
     private Members members;
