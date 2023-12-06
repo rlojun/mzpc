@@ -38,23 +38,18 @@ public class CartController {
     }
 
     @PostMapping("/addToCart")
-    public ResponseEntity<String> addToCart(@RequestParam("code") String foodCode,
+    public ResponseEntity<String> addToCart(@RequestParam("code") String mainFood,
                                             @RequestParam("toppings") String selectedToppings,
                                             @PathVariable(required = false) String storeName,
                                             HttpSession httpSession) {
 
         String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
         Members members = (Members) httpSession.getAttribute("members");
-        Cart cartItems = (Cart) httpSession.getAttribute("cartItems");
         log.info("selected Toppings : {}", selectedToppings);
 
-        if (cartItems == null) {
-            Cart newCartItems = cartService.addToCart(foodCode, selectedToppings, members, httpSession);
-            httpSession.setAttribute("cartItems", newCartItems);
-        } else {
-            Cart updatedCartItems = cartService.updateCart(foodCode, selectedToppings, httpSession);
-            httpSession.setAttribute("cartItems", updatedCartItems);
-        }
+        List<Cart> cartItems = cartService.addToCart(mainFood, selectedToppings, members);
+        httpSession.setAttribute("cartItems", cartItems);
+
         httpSession.getAttribute("cartItems");
 
         String redirectUrl = "/members/" + encodedStoreName + "/food/listFood";

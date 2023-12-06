@@ -1,5 +1,6 @@
 package com.fivemin.mzpc.service.member;
 
+import com.fivemin.mzpc.data.dto.CartDto;
 import com.fivemin.mzpc.data.entity.Cart;
 import com.fivemin.mzpc.data.entity.Food;
 import com.fivemin.mzpc.data.entity.Members;
@@ -29,52 +30,39 @@ public class CartService {
         this.foodRepository = foodRepository;
     }
 
-    public Cart addToCart(String foodCode, String selectedToppings, Members members, HttpSession httpSession) {
+    public List<Cart> addToCart(String foodCode, String selectedToppings, Members members) {
         Food mainFood = foodRepository.getByFoodCode(foodCode);
         Food topping = foodRepository.getByFoodName(selectedToppings);
 
-        List<Food> foodList = new ArrayList<>();
+        List<Cart> cartList = cartRepository.findCartListByMemberIdx(members.getIdx());
 
-        foodList.add(mainFood);
-        if (topping != null) {
-            foodList.add(topping);
-        }
-
-        Cart cart = new Cart();
-        cart = Cart.builder()
-                .idx(cart.getIdx())
-                .code(cart.generateUniqueCode())
-                .payments("현금")
-                .foods(foodList)
+        Cart mainCart = new Cart();
+        mainCart = Cart.builder()
+                .idx(mainCart.getIdx())
+                .code(mainCart.generateUniqueCode())
+                .food(mainFood)
                 .members(members)
                 .build();
+        cartList.add(mainCart);
+        cartRepository.save(mainCart);
 
-        cartRepository.save(cart);
-        httpSession.setAttribute("foodList", foodList);
-
-        return cart;
-    }
-
-    public Cart updateCart(String foodCode, String selectedToppings, HttpSession httpSession) {
-        Food mainFood = foodRepository.getByFoodCode(foodCode);
-        Food topping = foodRepository.getByFoodName(selectedToppings);
-
-        List<Food> savedFoodList = (List<Food>) httpSession.getAttribute("foodList");
-        savedFoodList.add(mainFood);
         if (topping != null) {
-            savedFoodList.add(topping);
+            Cart toppingCart = new Cart();
+            toppingCart = Cart.builder()
+                    .idx(toppingCart.getIdx())
+                    .code(toppingCart.generateUniqueCode())
+                    .food(topping)
+                    .members(members)
+                    .build();
+            cartList.add(toppingCart);
+            cartRepository.save(toppingCart);
         }
-        httpSession.setAttribute("foodList", savedFoodList);
 
-        Cart updatedCart = (Cart) httpSession.getAttribute("cartItems");
-        updatedCart.setFoods(savedFoodList);
-        cartRepository.save(updatedCart);
-        return updatedCart;
+        return cartList;
     }
 
-
-    public Cart getCartByMemberIdx(Long memberIdx) {
-        return cartRepository.findCartByMemberIdx(memberIdx);
+    public List<Cart> getCartListByMemberIdx(Long memberIdx) {
+        return cartRepository.findCartListByMemberIdx(memberIdx);
     }
 
     public void clearCart(String memberId) {
