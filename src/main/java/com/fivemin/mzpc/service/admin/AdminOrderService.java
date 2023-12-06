@@ -6,21 +6,30 @@ import com.fivemin.mzpc.data.dto.MembersDto;
 import com.fivemin.mzpc.data.dto.OrdersDto;
 import com.fivemin.mzpc.data.entity.Orders;
 import com.fivemin.mzpc.data.repository.OrdersRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class AdminOrderService {
 
-    private OrdersRepository ordersRepository;
+    private final OrdersRepository ordersRepository;
+
+    private final EntityManager entityManager;
+
 
     @Autowired
-    public AdminOrderService(OrdersRepository ordersRepository) {
+    public AdminOrderService(OrdersRepository ordersRepository, EntityManager entityManager) {
         this.ordersRepository = ordersRepository;
+        this.entityManager = entityManager;
     }
+
 
     public List<OrdersDto> getOrderList(String stoerCode) {
 
@@ -30,6 +39,7 @@ public class AdminOrderService {
         for (Orders orders: ordersList) {
             FoodDto foodDto = FoodDto.builder()
                     .name(orders.getCart().getFood().getName())
+                    .price(orders.getCart().getFood().getPrice())
                     .topping(orders.getCart().getFood().isTopping())
                     .build();
 
@@ -55,5 +65,29 @@ public class AdminOrderService {
         }
 
         return ordersDtos;
+    }
+
+    @Transactional
+    public void completeOrder(OrdersDto ordersDto) {
+        Orders orderList = ordersRepository.findByCode(ordersDto.getCode());
+
+        Orders orders = Orders.builder()
+                .idx(orderList.getIdx())
+                .cookComplete(ordersDto.isCookComplete())
+                .purchaseStatus(ordersDto.isPurchaseStatus())
+                .build();
+
+
+        ordersRepository.modifyByCode(orders.getIdx(),orders.isCookComplete(),orders.isPurchaseStatus());
+
+        entityManager.flush();
+    }
+
+    @Transactional
+    public void rejectOrder(String orderCode) {
+        Orders byCode = ordersRepository.findByCode(orderCode);
+
+        ordersRepository.deleteById(byCode.getIdx());
+
     }
 }

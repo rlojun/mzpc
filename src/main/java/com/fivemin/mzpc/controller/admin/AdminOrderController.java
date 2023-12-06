@@ -38,6 +38,7 @@ public class AdminOrderController {
         List<OrdersDto> ordersDtos = adminOrderService.getOrderList(stoerCode);
 
         model.addAttribute("ordersDtos",ordersDtos);
+        model.addAttribute("storeCode",stoerCode);
         log.info("ordersDtos : {}",ordersDtos);
         return "/admin/order/orderList";
     }

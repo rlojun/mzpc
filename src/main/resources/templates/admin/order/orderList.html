@@ -1,25 +1,104 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="shortcut icon" href="/bootstrap/images/favicon.png" type="">
     <title>주문 목록</title>
+
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css" />
+
+    <!--owl slider stylesheet -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <!-- nice select  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
+    <!-- font awesome style -->
+    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="/bootstrap/css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
+    <script>
+        function complete(button){
+            var orderCode = button.getAttribute('data-order-code');
+            var OrdersDto = {
+                "code" : orderCode,
+                "cookComplete" : true,
+                "purchaseStatus" : true,
+            };
+            var storeCode = [[${storeCode}]];
+
+            $.ajax({
+                type:"POST",
+                async : false,
+                url : "http://localhost:9010/orders/completeOrder",
+                contentType: "application/json",
+                data : JSON.stringify(OrdersDto),
+                success: function(data) {
+                    alert(data);
+                    window.location.href = "http://localhost:9010/admin/" + storeCode + "/food?topping=" + false;
+                },
+                error : function() {
+                    alert("실패");
+                }
+            });
+        }
+
+        function reject(button) {
+            var orderCode = button.getAttribute('data-order-code');
+
+            $.ajax({
+                type:"DELETE",
+                async : false,
+                url : "http://localhost:9010/orders/rejectOrder",
+                contentType: "application/json",
+                data : orderCode,
+                success: function(data) {
+                    alert(data);
+                    // window.location.href = "http://localhost:9010/admin/" + storeCode + "/food?topping=" + false;
+                },
+                error : function() {
+                    alert("실패");
+                }
+            });
+        }
+    </script>
 </head>
-<body>
+<body class="sub_page">
+
+<div class="hero_area">
+    <div class="bg-box">
+        <img src="/bootstrap/images/admin-bg.png" alt="">
+    </div>
+    <header th:replace="fragments/admin/header :: header"></header>
+</div>
     <table border="1">
         <tr>
             <th>인덱스</th>
             <th>사용자 이름</th>
             <th>주문 음식</th>
-            <th></th>
-            <th></th>
+            <th>가격</th>
+            <th>조리 완료</th>
+            <th>취소</th>
         </tr>
-        <tr th:each="order, status : ${ordersDtos}" th:if="${order.isPurchaseStatus() eq false and order.isCookComplete() eq false}">
-                <td th:text="${status.index}+1"></td>
-                <td th:text="${order.getCartDto().getMembersDto().getName()}"></td>
-                <td th:text="${order.getCartDto().getFoodDto().getName()}"></td>
-                <td></td>
-                <td></td>
-        </tr>
+            <tr th:each="order, status : ${ordersDtos}" th:if="${order.isPurchaseStatus() eq false and order.isCookComplete() eq false}">
+                    <td th:text="${status.index}+1"></td>
+                    <td th:text="${order.getCartDto().getMembersDto().getName()}" id="memberName"></td>
+                    <td th:text="${order.getCartDto().getFoodDto().getName()}" id="foodName"></td>
+                    <td th:text="${order.getCartDto().getFoodDto().getPrice()}" id="foodPrice"></td>
+                    <td><button onclick="complete(this)" th:attr="data-order-code=${order.getCode()}">완료</button></td>
+                    <td><button onclick="reject(this)" th:attr="data-order-code=${order.getCode()}">취소</button></td>
+            </tr>
     </table>
 </body>
 </html>
