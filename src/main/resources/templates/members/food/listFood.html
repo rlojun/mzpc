@@ -111,13 +111,49 @@
     <div class="item">
         <div class="box">
             <div class="detail-box">
-                <ul id="cartItems">
-                    <th:block th:if="${cartList != null}">
-                        <div th:each="cart, cartIndex : ${cartList}" class="cartItem">
-                            <span th:text="${cartIndex.index + 1 + '. ' + cart.food.name + ' - ' + cart.food.price + '원'}"></span>
+                <form action="/checkout" method="post">
+                    <ul id="cartItems">
+                        <th:block th:if="${cartList != null}">
+                            <div th:each="cart, cartIndex : ${cartList}" class="cartItem">
+                                <span th:text="${cartIndex.index + 1 + '. ' + cart.food.name + ' - ' + cart.food.price + '원'}"></span>
+
+                                <input type="hidden" name="foodNames" th:value="${cart.food.name}">
+                                <input type="hidden" name="foodPrices" th:value="${cart.food.price}">
+                            </div>
+                        </th:block>
+                    </ul>
+
+                    <div class="payment-methods">
+                        <label>
+                            <input type="radio" name="paymentMethod" value="cash" id="cash" checked>
+                            현금
+                        </label>
+                        <label>
+                            <input type="radio" name="paymentMethod" value="card" id="card">
+                            신용 카드
+                        </label>
+                        <label>
+                            <input type="radio" name="paymentMethod" value="kakaoPay" id="kakaoPay">
+                            카카오 페이
+                        </label>
+                        <div class="cash-options">
+                            <label>
+                                <input type="radio" name="cashAmount" value="50000"> ₩50,000
+                            </label>
+                            <label>
+                                <input type="radio" name="cashAmount" value="10000"> ₩10,000
+                            </label>
+                            <label>
+                                <input type="radio" name="cashAmount" value="5000"> ₩5,000
+                            </label>
+                            <label>
+                                <input type="radio" name="cashAmount" value="custom"> 직접 입력
+                                <input type="text" name="customAmount" placeholder="Enter amount">
+                            </label>
                         </div>
-                    </th:block>
-                </ul>
+                    </div>
+                    <button type="submit" class="purchase-btn">결제 하기</button>
+                </form>
             </div>
         </div>
     </div>
@@ -263,7 +299,35 @@
         }
     });
 </script>
+<script>
+    $(document).ready(function () {
+        const paymentMethodRadios = $('input[name="paymentMethod"]');
+        const cashOptions = $('.cash-options');
 
+        cashOptions.toggle($('#cash').is(':checked'));
+
+        paymentMethodRadios.change(function () {
+            if (this.value === 'cash') {
+                cashOptions.show();
+            } else {
+                cashOptions.hide();
+            }
+        });
+
+        const cashAmountRadios = $('input[name="cashAmount"]');
+        const customAmountInput = $('input[name="customAmount"]');
+
+        cashAmountRadios.change(function () {
+            if (this.value === 'custom') {
+                customAmountInput.prop('disabled', false);
+            } else {
+                customAmountInput.prop('disabled', true);
+            }
+        });
+
+        cashAmountRadios.filter(':checked').trigger('change');
+    });
+</script>
 </body>
 
 </html>

@@ -58,10 +58,6 @@ public class CartController {
     }
 
     /*
-
-    addCart
-    (카트에 음식 + 토핑 추가하기)
-
     purchaseCartKakao
     (카트 상품 카카오페이로 결제하기 + 요청사항)
 
@@ -73,6 +69,5 @@ public class CartController {
 
     deleteCart
     (카트에 담긴 상품 제거)
-
      */
 }
