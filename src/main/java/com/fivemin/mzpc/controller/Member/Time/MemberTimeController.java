@@ -42,19 +42,9 @@ public class MemberTimeController {
 
     // 시간 상품 목록
     @GetMapping("/time")
-    public String listTime(@PathVariable String storeName, Model model,
-                           HttpServletRequest request) {
+    public String listTime(@PathVariable String storeName, Model model) {
         log.info("storeName : {} : ==>", storeName);
         List<TimeDto> memberListTime = memberTimeService.listTime(storeName);
-
-        // 남은 시간 띄우는 로직
-        HttpSession session = request.getSession();
-        String memberId = (String) session.getAttribute("id");
-        Members updateTimeMember = memberTimeService.realRemainingTime(memberId);
-        LocalTime realRemainingTime = updateTimeMember.getRemainingTime();
-        log.info("realRemainingTime : {} : ", realRemainingTime);
-
-        model.addAttribute("realRemainingTime", realRemainingTime);
         model.addAttribute("memberListTime", memberListTime);
         return "members/time/listTime";
     }

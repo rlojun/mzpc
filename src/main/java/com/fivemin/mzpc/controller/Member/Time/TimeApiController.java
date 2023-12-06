@@ -2,6 +2,7 @@ package com.fivemin.mzpc.controller.Member.Time;
 
 import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.service.LoginService;
+import com.fivemin.mzpc.service.members.MemberTimeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,9 @@ public class TimeApiController {
     @Autowired
     LoginService loginService;
 
+    @Autowired
+    MemberTimeService memberTimeService;
+
     @GetMapping("/api/updateRemainingTime")
     public ResponseEntity<?> updateRemainingTime(HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -37,7 +41,8 @@ public class TimeApiController {
             return ResponseEntity.badRequest().body("Invalid memberId");
         }
 
-        LocalTime remainingTime = loginUser.getRemainingTime();
+        Members updateTimeMember = memberTimeService.realRemainingTime(sessionId);
+        LocalTime remainingTime = updateTimeMember.getRemainingTime();
         log.info("remainingTime : {} : ", remainingTime);
 
         // LocalTime을 문자열로 변환하여 JSON 형식으로 응답
