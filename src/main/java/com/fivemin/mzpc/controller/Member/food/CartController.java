@@ -1,6 +1,7 @@
 package com.fivemin.mzpc.controller.Member.food;
 
 import com.fivemin.mzpc.data.entity.Cart;
+import com.fivemin.mzpc.data.entity.Food;
 import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.service.member.CartService;
 import com.fivemin.mzpc.service.member.FoodService;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /*
@@ -35,9 +38,7 @@ public class CartController {
     }
 
     @PostMapping("/addToCart")
-    public ResponseEntity<String> addToCart(
-//                                            @ModelAttribute FoodDto foodDetails,
-                                            @RequestParam("code") String foodCode,
+    public ResponseEntity<String> addToCart(@RequestParam("code") String foodCode,
                                             @RequestParam("toppings") String selectedToppings,
                                             @PathVariable(required = false) String storeName,
                                             HttpSession httpSession) {
@@ -54,61 +55,12 @@ public class CartController {
             Cart updatedCartItems = cartService.updateCart(foodCode, selectedToppings, httpSession);
             httpSession.setAttribute("cartItems", updatedCartItems);
         }
-        Cart updatedCartItems = (Cart) httpSession.getAttribute("cartItems");
-
-        log.info("CartController: number of cartItems {} :", updatedCartItems.getFoods().size());
-        log.info("CartController: cartItems {} :", updatedCartItems.getFoods().stream()
-                .map(Food::getName)
-                .collect(Collectors.toList()));
+        httpSession.getAttribute("cartItems");
 
         String redirectUrl = "/members/" + encodedStoreName + "/food/listFood";
         return ResponseEntity.ok(redirectUrl);
 
     }
-
-//    @PostMapping("/addToCart")
-//    public ResponseEntity<String> addToCart(@ModelAttribute FoodDto foodDetails,
-//                                            @RequestParam("code") String foodCode,
-//                                            @PathVariable(required = false) String storeName,
-//                                            HttpSession httpSession) {
-//
-//        String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
-//        List<CartDto> cartItems = (List<CartDto>) httpSession.getAttribute("cartItems");
-//        CartDto cartItem = (CartDto) httpSession.getAttribute("cartItems");
-//
-//
-////        if (cartItems == null) {
-////            cartItems = new ArrayList<>();
-////        }
-//
-//        log.info("CartController: foodDetails {}", foodDetails);
-//        if (foodDetails.isTopping() == null) {
-//            foodDetails.setTopping(false);
-//        }
-//        Food food = foodService.convertDtoToEntity(foodDetails);
-//        log.info("food : {}", food);
-//
-////        cartItems = cartService.addToCart(cartItems, httpSession, foodCode);
-//        cartItem = cartService.addToCart(cartItem, httpSession, foodCode);
-//        httpSession.setAttribute("cartItem", cartItem);
-//        log.info("CartController: cartItem {} :", cartItems);
-////        httpSession.setAttribute("cartItems", cartItems);
-////        log.info("CartController: cartItems {} :", cartItems);
-//
-//        String redirectUrl = "/members/" + encodedStoreName + "/food/listFood";
-//        log.info(redirectUrl);
-//        return ResponseEntity.ok(redirectUrl);
-//
-//    }
-
-//    @GetMapping("/showCart")
-//    public ResponseEntity<List<CartDto>> showCart(@PathVariable String storeName, HttpSession httpSession) {
-//
-//        Long memberIdx = (Long) httpSession.getAttribute("memberIdx");
-//        List<CartDto> cartItems = cartService.getCartByMemberIdx(memberIdx);
-//
-//        return ResponseEntity.ok(cartItems);
-//    }
 
     /*
 

@@ -22,8 +22,6 @@ public class Cart {
     @Column(name = "cart_code",nullable = false, unique = true)
     private String code;
 
-
-
     @PrePersist
     protected void onCreate() {
         this.code = generateUniqueCode();
