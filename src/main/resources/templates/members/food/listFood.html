@@ -112,9 +112,9 @@
         <div class="box">
             <div class="detail-box">
                 <ul id="cartItems">
-                    <th:block th:if="${cartEntity != null}">
-                        <div th:each="food, foodIndex : ${cartEntity.foods}" class="cartItem">
-                            <span th:text="${foodIndex.index + 1 + '. ' + food.name + ' - ' + food.price + '원'}"></span>
+                    <th:block th:if="${cartList != null}">
+                        <div th:each="cart, cartIndex : ${cartList}" class="cartItem">
+                            <span th:text="${cartIndex.index + 1 + '. ' + cart.food.name + ' - ' + cart.food.price + '원'}"></span>
                         </div>
                     </th:block>
                 </ul>

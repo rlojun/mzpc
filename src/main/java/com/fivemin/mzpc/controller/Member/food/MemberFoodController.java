@@ -2,6 +2,7 @@ package com.fivemin.mzpc.controller.Member.food;
 
 import com.fivemin.mzpc.data.dto.FoodDto;
 import com.fivemin.mzpc.data.entity.Cart;
+import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.service.member.CartService;
 import com.fivemin.mzpc.service.member.FoodService;
 import lombok.extern.slf4j.Slf4j;
@@ -52,18 +53,12 @@ public class MemberFoodController {
 
             model.addAttribute("foodDtoList", filteredFoodList);
             model.addAttribute("distinctFoodCategories", distinctFoodCategories);
- //           Members member = (Members) httpSession.getAttribute("members");
-//            Long memberIdx = member.getIdx();
-//            Cart cartEntity = cartService.getCartByMemberIdx(memberIdx);
-//            List <Food> cartFoods = cartEntity.getFoods();
-//            log.info("Size of cartFoods" + cartFoods.size());
 
-            Cart cartEntity = (Cart) httpSession.getAttribute("cartItems");
+            Members members = (Members) httpSession.getAttribute("members");
+            List<Cart> cartList = cartService.getCartListByMemberIdx(members.getIdx());
 
-
-            if (cartEntity != null) {
-                log.info("cartEntity = " + cartEntity.getFoods().size());
-                model.addAttribute("cartEntity", cartEntity);
+            if (cartList != null) {
+                model.addAttribute("cartList", cartList);
             }
         }
 
