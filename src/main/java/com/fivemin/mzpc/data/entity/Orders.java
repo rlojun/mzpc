@@ -26,7 +26,7 @@ public class Orders {
     @Column(name = "purchase_status",nullable = false)
     private boolean purchaseStatus=false;
 
-    @Column(name = "payment", length = 15)
+    @Column(name = "payment", length = 15, nullable = false)
     private String payment;
 
     @OneToOne
