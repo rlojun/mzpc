@@ -125,16 +125,16 @@
 
                     <div class="payment-methods">
                         <label>
-                            <input type="radio" name="paymentMethod" value="cash" id="cash" checked>
-                            현금
-                        </label>
-                        <label>
-                            <input type="radio" name="paymentMethod" value="card" id="card">
+                            <input type="radio" name="paymentMethod" value="card" id="card" checked>
                             신용 카드
                         </label>
                         <label>
                             <input type="radio" name="paymentMethod" value="kakaoPay" id="kakaoPay">
                             카카오 페이
+                        </label>
+                        <label>
+                            <input type="radio" name="paymentMethod" value="cash" id="cash" >
+                            현금
                         </label>
                         <div class="cash-options">
                             <label>
@@ -303,6 +303,8 @@
     $(document).ready(function () {
         const paymentMethodRadios = $('input[name="paymentMethod"]');
         const cashOptions = $('.cash-options');
+        const cashAmountRadios = $('input[name="cashAmount"]');
+        const customAmountInput = $('input[name="customAmount"]');
 
         cashOptions.toggle($('#cash').is(':checked'));
 
@@ -311,11 +313,9 @@
                 cashOptions.show();
             } else {
                 cashOptions.hide();
+                customAmountInput.prop('disabled', true);
             }
         });
-
-        const cashAmountRadios = $('input[name="cashAmount"]');
-        const customAmountInput = $('input[name="customAmount"]');
 
         cashAmountRadios.change(function () {
             if (this.value === 'custom') {
