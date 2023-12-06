@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>주문 목록</title>
+</head>
+<body>
+    <table border="1">
+        <tr>
+            <th>인덱스</th>
+            <th>사용자 이름</th>
+            <th>주문 음식</th>
+            <th></th>
+            <th></th>
+        </tr>
+        <tr th:each="order, status : ${ordersDtos}">
+            <div th:if="${order.isPurchaseStatus() eq false and ${order.isCookComplete()} eq false}">
+                <td th:text="${status.index}+1"></td>
+                <td th:text="${order.getCartDto().getMembersDto().getName()}"></td>
+                <td th:text="${order.getCartDto().getFoodDto().getName()}"></td>
+                <td></td>
+                <td></td>
+            </div>
+        </tr>
+    </table>
+</body>
+</html>

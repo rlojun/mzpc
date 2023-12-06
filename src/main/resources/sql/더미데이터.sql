@@ -67,10 +67,23 @@ INSERT INTO food(food_idx, food_code, food_name, food_price,topping, stock,categ
 insert into cart(cart_idx,cart_code,food_idx,member_idx)
 values (null,542,1,1);
 
+insert into cart(cart_idx,cart_code,food_idx,member_idx)
+values (null,543,2,1);
+
+
+insert into cart(cart_idx,cart_code,food_idx,member_idx)
+values (null,544,2,2);
+
 #-------------------------
 #ORDERS
-insert into orders(orders_idx,orders_code,cook_complete,purchase_status,cart_idx,store_idx) values
-(null,245,false,false,1,1);
+insert into orders(orders_idx,orders_code,cook_complete,payment,purchase_status,cart_idx,store_idx) values
+(null,245,false,'현금',false,1,1);
+
+insert into orders(orders_idx,orders_code,cook_complete,payment,purchase_status,cart_idx,store_idx) values
+(null,246,false,'카드',false,2,1);
+
+insert into orders(orders_idx,orders_code,cook_complete,payment,purchase_status,cart_idx,store_idx) values
+    (null,247,true,'카드',true,3,1);
 
 
 
