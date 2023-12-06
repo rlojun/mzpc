@@ -20,7 +20,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-    show-sql: true
+    show-sql: false
 
   thymeleaf:
     prefix: classpath:/templates/

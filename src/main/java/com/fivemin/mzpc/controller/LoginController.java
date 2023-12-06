@@ -138,6 +138,10 @@ public class LoginController {
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
+        // 임시
+        String memberId = (String) session.getAttribute("id");
+        cartService.clearCart(memberId);
+        //
         session.invalidate();
         return "redirect:/login?logout";
     }
