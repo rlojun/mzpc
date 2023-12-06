@@ -61,6 +61,7 @@ public class FoodService {
                     .price(food.getPrice())
                     .picture(food.getPicture())
                     .description(food.getDescription())
+                    .topping(food.isTopping())
                     .storeName(food.getCategory().getStore().getName())
                     .categoryName(food.getCategory().getName())
                     .build();
@@ -85,14 +86,16 @@ public class FoodService {
                 .categoryName(food.getCategory().getName())
                 .categoryIdx(food.getCategory().getIdx())
                 .build();
+
     }
 
     public List<FoodDto> getToppingsByCategory(String categoryName) {
-        return foodRepository.findByCategoryNameAndTopping(categoryName, true)
+        return foodRepository.findToppingByCategoryName(categoryName, true)
                 .stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
+
 
     public List<FoodDto> filterFoodByToppings(List<FoodDto> foodDtoList) {
         return foodDtoList.stream()

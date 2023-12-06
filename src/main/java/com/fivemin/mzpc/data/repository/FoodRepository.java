@@ -28,7 +28,7 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
     Food getByFoodName(String foodName);
 
     @Query("SELECT food FROM Food food WHERE food.category.name = ?1 and food.topping = true")
-    List<Food> findByCategoryNameAndTopping(String categoryName, boolean isTopping);
+    List<Food> findToppingByCategoryName(String categoryName, boolean isTopping);
 
     @Query("SELECT food FROM Food food WHERE food.category.store.code = ?1 and food.topping=?2 ")
     List<Food> findByStoreCode(String storeCode,boolean topping);
