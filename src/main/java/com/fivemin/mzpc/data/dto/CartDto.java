@@ -14,13 +14,5 @@ public class CartDto {
     private Long idx;
     private String code;
     private String payments;
-
-    private List<Food> food;
-
-    private Integer cartPrice;
-
-    private Members member;
-    private Long memberIdx;
-
-    private String storeName;
+    private MembersDto membersDto;
 }

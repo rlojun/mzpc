@@ -13,9 +13,11 @@ public class Orders {
     //주문 index
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_idx")
+    @Column(name = "orders_idx")
     private Long idx;
 
+    @Column(name = "orders_code",nullable = false,unique = true)
+    private String code;
     //조리 여부
     @Column(name = "cook_complete",nullable = false)
     private boolean cookComplete=false;
@@ -27,4 +29,8 @@ public class Orders {
     @OneToOne
     @JoinColumn(name = "cart_idx", nullable = false)
     private Cart cart;
+
+    @ManyToOne
+    @JoinColumn(name = "store_idx",nullable = false)
+    private Store store;
 }
