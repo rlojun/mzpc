@@ -53,6 +53,25 @@
                 }
             });
         }
+
+        function reject(button) {
+            var orderCode = button.getAttribute('data-order-code');
+
+            $.ajax({
+                type:"DELETE",
+                async : false,
+                url : "http://localhost:9010/orders/rejectOrder",
+                contentType: "application/json",
+                data : orderCode,
+                success: function(data) {
+                    alert(data);
+                    // window.location.href = "http://localhost:9010/admin/" + storeCode + "/food?topping=" + false;
+                },
+                error : function() {
+                    alert("실패");
+                }
+            });
+        }
     </script>
 </head>
 <body class="sub_page">
@@ -78,7 +97,7 @@
                     <td th:text="${order.getCartDto().getFoodDto().getName()}" id="foodName"></td>
                     <td th:text="${order.getCartDto().getFoodDto().getPrice()}" id="foodPrice"></td>
                     <td><button onclick="complete(this)" th:attr="data-order-code=${order.getCode()}">완료</button></td>
-                    <td></td>
+                    <td><button onclick="reject(this)" th:attr="data-order-code=${order.getCode()}">취소</button></td>
             </tr>
     </table>
 </body>

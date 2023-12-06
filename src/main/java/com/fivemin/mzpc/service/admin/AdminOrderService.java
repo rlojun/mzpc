@@ -6,17 +6,17 @@ import com.fivemin.mzpc.data.dto.MembersDto;
 import com.fivemin.mzpc.data.dto.OrdersDto;
 import com.fivemin.mzpc.data.entity.Orders;
 import com.fivemin.mzpc.data.repository.OrdersRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class AdminOrderService {
 
     private final OrdersRepository ordersRepository;
@@ -83,9 +83,11 @@ public class AdminOrderService {
         entityManager.flush();
     }
 
-    private String makeCode(){
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'J'HHMMyyyymmddss");
-        return currentDateTime.format(formatter);
+    @Transactional
+    public void rejectOrder(String orderCode) {
+        Orders byCode = ordersRepository.findByCode(orderCode);
+
+        ordersRepository.deleteById(byCode.getIdx());
+
     }
 }
