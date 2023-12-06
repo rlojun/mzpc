@@ -13,14 +13,12 @@
             <th></th>
             <th></th>
         </tr>
-        <tr th:each="order, status : ${ordersDtos}">
-            <div th:if="${order.isPurchaseStatus() eq false and ${order.isCookComplete()} eq false}">
+        <tr th:each="order, status : ${ordersDtos}" th:if="${order.isPurchaseStatus() eq false and order.isCookComplete() eq false}">
                 <td th:text="${status.index}+1"></td>
                 <td th:text="${order.getCartDto().getMembersDto().getName()}"></td>
                 <td th:text="${order.getCartDto().getFoodDto().getName()}"></td>
                 <td></td>
                 <td></td>
-            </div>
         </tr>
     </table>
 </body>
