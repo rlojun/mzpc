@@ -1,13 +1,14 @@
 package com.fivemin.mzpc.data.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
-@Setter
 public class Orders {
 
     //주문 index
@@ -36,4 +37,5 @@ public class Orders {
     @ManyToOne
     @JoinColumn(name = "store_idx",nullable = false)
     private Store store;
+
 }
