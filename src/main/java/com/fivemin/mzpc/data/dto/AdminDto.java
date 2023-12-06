@@ -2,10 +2,7 @@ package com.fivemin.mzpc.data.dto;
 
 import lombok.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @ToString
 @Builder
 public class AdminDto {
