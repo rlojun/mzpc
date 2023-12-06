@@ -3,12 +3,14 @@ package com.fivemin.mzpc.data.dto;
 import com.fivemin.mzpc.data.entity.MileageInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
+@Data
 @Builder
 public class MembersDto {
     private Long idx;

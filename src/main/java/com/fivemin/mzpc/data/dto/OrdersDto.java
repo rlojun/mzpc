@@ -9,7 +9,9 @@ import lombok.Data;
 public class OrdersDto {
 
     private Long idx;
+    private String code;
     private boolean cookComplete;
     private boolean purchaseStatus;
+    private String payment;
     private CartDto cartDto;
 }

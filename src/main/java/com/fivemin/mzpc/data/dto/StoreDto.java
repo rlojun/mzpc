@@ -2,10 +2,7 @@ package com.fivemin.mzpc.data.dto;
 
 import lombok.*;
 
-@Getter
-@ToString
-@Setter
-@AllArgsConstructor
+@Data
 @Builder
 public class StoreDto {
     private final Long idx;

@@ -13,6 +13,6 @@ public class CartDto {
 
     private Long idx;
     private String code;
-    private String payments;
     private MembersDto membersDto;
+    private FoodDto foodDto;
 }

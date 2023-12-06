@@ -1,8 +1,15 @@
 package com.fivemin.mzpc.controller.admin;
 
 
+import com.fivemin.mzpc.data.dto.OrdersDto;
+import com.fivemin.mzpc.service.admin.AdminOrderService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /*
 -기능
@@ -13,15 +20,26 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @Controller
-@RequestMapping("/{stoerCode}/order")
+@Slf4j
+@RequestMapping("/admin/{stoerCode}")
 public class AdminOrderController {
+
+    private AdminOrderService adminOrderService;
+
+    @Autowired
+    public AdminOrderController(AdminOrderService adminOrderService) {
+        this.adminOrderService = adminOrderService;
+    }
 
     // 사용자가 주문한 주문 목록
     @GetMapping("/orderList")
-    public String orderList(@PathVariable String stoerCode){
+    public String orderList(@PathVariable String stoerCode, Model model){
 
+        List<OrdersDto> ordersDtos = adminOrderService.getOrderList(stoerCode);
 
-        return "null";
+        model.addAttribute("ordersDtos",ordersDtos);
+        log.info("ordersDtos : {}",ordersDtos);
+        return "/admin/order/orderList";
     }
 
     // 취소, 완료 메서드 묶어서 하나 더 만들기 ( 매핑 어노테이션 url 작성)
