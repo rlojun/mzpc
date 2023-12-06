@@ -3,7 +3,6 @@ package com.fivemin.mzpc.data.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Random;
 
 @Entity
@@ -46,10 +45,12 @@ public class Cart {
     @Column(name = "payments", length = 15)
     private String payments;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "member_idx", nullable = false)
     private Members members;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.PERSIST)
-    private List<Food> foods;
+    @ManyToOne
+    @JoinColumn(name = "food_idx", nullable = false)
+    private Food food;
+
 }
