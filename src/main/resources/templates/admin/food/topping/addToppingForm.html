@@ -75,6 +75,24 @@
                 });
             }
         }
+        function handleFileInputChange(event) {
+            var preview = document.getElementById('imagePreview'); // 이미지 미리보기 요소
+            var file = event.target.files[0]; // 선택된 파일
+            var reader = new FileReader(); // 파일 리더 객체 생성
+
+            reader.onloadend = function () {
+                preview.src = reader.result; // 선택한 이미지 파일의 URL을 이미지 미리보기에 설정
+            }
+
+            if (file) {
+                reader.readAsDataURL(file); // 선택한 파일을 읽어옴
+            } else {
+                preview.src = ""; // 파일이 없을 경우 미리보기를 비움
+            }
+        }
+
+        document.getElementById('foodPicture').addEventListener('change', handleFileInputChange);
+
     </script>
 </head>
 <body class="sub_page">
@@ -95,7 +113,10 @@
                 <option th:each=" category : ${categories}" th:value="${category.getCode()}" th:text="${category.getName()}"></option>
             </select>
             <br>
-            <label for="toppingPicture">이미지</label>  : <input type="file" id="toppingPicture" accept="image/*"  name="toppingPicture">
+            <img id="imagePreview" src="" style="max-width: 200px; max-height: 200px;">
+            <br>
+            <label for="toppingPicture">이미지</label>  :
+            <input type="file" id="toppingPicture" accept="image/*"  name="toppingPicture" onchange="handleFileInputChange(event)">
             <br>
             <label for="stock">재고</label> : <input type="text" id="stock" name="stock" required>
             <br>
