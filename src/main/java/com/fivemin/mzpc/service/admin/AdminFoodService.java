@@ -178,7 +178,7 @@ public class AdminFoodService {
         if (foodPicture!=null) {
             String fileName = StringUtils.cleanPath(foodPicture.getOriginalFilename());
 
-            String relativePath = "src/main/resources/static/images/";
+            String relativePath = "/bootstrap/images/";
 
             try {
                 Path uploadPath = Paths.get(relativePath);

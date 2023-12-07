@@ -36,11 +36,12 @@
             var storeCode = [[${storeCode}]];
             var topping = false;
             var formData = new FormData();
+            var confirmation = confirm("음식을 추가하시겠습니까?");
 
             var stockCheck = document.getElementById('stock').value;
             var foodNameCheck = document.getElementById('foodName').value;
             var foodPriceCheck = document.getElementById('foodPrice').value;
-
+            var foodPicture = $('#foodPicture')[0].files[0];
             var foodDto = {
                 "idx" : null,
                 "code" : null,
@@ -51,11 +52,11 @@
                 "topping" : false
             };
 
-            if (stockCheck=== '' | foodNameCheck==='' || foodPriceCheck==='' ) {
+            if (stockCheck=== '' | foodNameCheck==='' || foodPriceCheck==='' || foodPicture==null) {
                 alert('모든 필수 입력 필드를 작성해주세요.');
                 return;
             }
-            formData.append('picture', $('#foodPicture')[0].files[0]);
+            formData.append('picture', foodPicture);
             formData.append('foodDto',JSON.stringify(foodDto));
             $.ajax({
                 type: "POST",
@@ -71,7 +72,7 @@
                     alert(data)
                 },
                 error: function() {
-                    alert("에러가 발생했습니다.")
+                    alert("음식을 추가하는데 에러가 발생했습니다.")
                 }
             });
         }
