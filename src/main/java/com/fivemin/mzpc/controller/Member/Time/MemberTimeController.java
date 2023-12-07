@@ -13,8 +13,10 @@ import com.fivemin.mzpc.data.dto.TimeDto;
 import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.data.entity.MileageInfo;
 import com.fivemin.mzpc.data.entity.Times;
+import com.fivemin.mzpc.service.KakaoPayService;
 import com.fivemin.mzpc.service.LoginService;
 import com.fivemin.mzpc.service.members.MemberTimeService;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -39,6 +41,9 @@ public class MemberTimeController {
 
     @Autowired
     LoginService loginService;
+
+    @Setter(onMethod_ = @Autowired)
+    private KakaoPayService kakaopay;
 
     // 시간 상품 목록
     @GetMapping("/time")
@@ -75,16 +80,46 @@ public class MemberTimeController {
         return "members/time/orderTime";
     }
 
-    // 시간 구매 기능
+    // 카카오 페이 결제 준비
     @PostMapping("/purchaseTime/{timeCode}")
-    public String purchaseTime(@PathVariable String storeName,
-                               @PathVariable String timeCode,
-                               Model model,
-                               @RequestParam String memberId,
-                               @RequestParam int usedMileage,
-                               @RequestParam int timePrice,
-                               @RequestParam @DateTimeFormat(pattern = "H:mm:ss") LocalTime additionalTime) {
+    public String kakaoPay(@PathVariable String timeCode, HttpSession session,
+                           @RequestParam String memberId,
+                           @RequestParam int usedMileage,
+                           @RequestParam int timePrice,
+                           @RequestParam @DateTimeFormat(pattern = "H:mm:ss") LocalTime additionalTime) {
+        session.setAttribute("memberId", memberId);
+        session.setAttribute("usedMileage", usedMileage);
+        session.setAttribute("timePrice", timePrice);
+        session.setAttribute("additionalTime", additionalTime);
+        log.info("kakaoPay post............................................");
+        return "redirect:" + kakaopay.kakaoPayReady(timeCode, usedMileage);
+    }
+
+    // 카카오페이 결제 성공 페이지
+    @GetMapping("/purchaseTime/{timeCode}/kakaoPaySuccess")
+    public String kakaoPaySuccess(@RequestParam("pg_token") String pg_token, Model model,
+                                  @PathVariable String timeCode, @PathVariable String storeName,
+                                  HttpSession session) {
+        log.info("kakaoPaySuccess get............................................");
+        log.info("kakaoPaySuccess pg_token : " + pg_token);
+
+        int usedMileage = (int) session.getAttribute("usedMileage");
+        model.addAttribute("storeName", storeName);
+        model.addAttribute("info", kakaopay.kakaoPayInfo(pg_token, timeCode, usedMileage));
+        return "kakao/kakaoPaySuccess";
+    }
+
+    // 시간 추가 및 마일리지 적립 로직
+    @PostMapping("/purchaseTime/{timeCode}/kakaoPaySuccess")
+    public String kakaoPaySuccess(@PathVariable String storeName, @PathVariable String timeCode,
+                                  Model model,HttpSession session) {
+        String memberId = (String) session.getAttribute("memberId");
+        int usedMileage = (int) session.getAttribute("usedMileage");
+        int timePrice = (int) session.getAttribute("timePrice");
+        LocalTime additionalTime = (LocalTime) session.getAttribute("additionalTime");
+
         memberTimeService.purchaseTime(memberId, usedMileage, timePrice, additionalTime, timeCode);
+
         model.addAttribute("timeCode", timeCode);
         String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
         model.addAttribute("storeName", encodedStoreName);
