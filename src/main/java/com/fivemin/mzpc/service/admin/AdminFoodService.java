@@ -148,24 +148,23 @@ public class AdminFoodService {
     public void modifyFood(FoodDto foodDto,String categoryName,MultipartFile foodPicture) {
         Category category = categoryRepository.findByName(categoryName);
         Food food = foodRepository.findById(foodDto.getIdx()).orElse(null);
+        String fileName = foodPicture==null? food.getPicture() : foodPicture.getOriginalFilename();
+        Food updateFood = Food.builder()
+                .idx(foodDto.getIdx())
+                .code(foodDto.getCode())
+                .name(foodDto.getName())
+                .price(foodDto.getPrice())
+                .picture(fileName)
+                .description(foodDto.getDescription())
+                .stock(foodDto.getStock())
+                .topping(foodDto.isTopping())
+                .category(category)
+                .build();
 
-        if(food != null){
-            String fileName = foodPicture==null?"" : foodPicture.getOriginalFilename() ;
-            Food updateFood = Food.builder()
-                    .idx(foodDto.getIdx())
-                    .code(foodDto.getCode())
-                    .name(foodDto.getName())
-                    .price(foodDto.getPrice())
-                    .description(foodDto.getDescription())
-                    .stock(foodDto.getStock())
-                    .topping(foodDto.isTopping())
-                    .category(category)
-                    .build();
+        foodRepository.save(updateFood);
 
-            fileUpload(foodPicture);
+        fileUpload(foodPicture);
 
-            foodRepository.save(updateFood);
-        }
     }
 
     @Transactional
@@ -174,7 +173,7 @@ public class AdminFoodService {
     }
 
     private void fileUpload(MultipartFile foodPicture) {
-
+        //파일이 있는지 없는지 판단
         if (foodPicture!=null) {
             String fileName = StringUtils.cleanPath(foodPicture.getOriginalFilename());
 
