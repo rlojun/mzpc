@@ -34,7 +34,8 @@
             var selectElement = document.getElementById('categoryName');
             var categoryCode = selectElement.value;
             var storeCode = [[${storeCode}]];
-
+            var confirmation = confirm("토핑을 추가하시겠습니까?");
+            var toppingPicture = $('#toppingPicture')[0].files[0];
             var formData = new FormData();
 
             var foodDto = {
@@ -47,30 +48,32 @@
                 "topping" : true
             };
 
-            if (foodDto.name === '' || foodDto.price === '' || foodDto.stock === '') {
+            if (foodDto.name === '' || foodDto.price === '' || foodDto.stock === '' || toppingPicture==null) {
                 alert('모든 필수 입력 필드를 작성해주세요.');
                 return;
             }
 
-            formData.append('picture', $('#toppingPicture')[0].files[0]);
+            formData.append('picture',toppingPicture);
             formData.append('foodDto', JSON.stringify(foodDto));
 
-            $.ajax({
-                type: "POST",
-                async: false,
-                url: "http://localhost:9010/food/addFood?categoryCode=" + categoryCode,
-                // contentType : "application/json",
-                processData: false,
-                contentType: false,
-                data: formData,
-                success: function(data) {
-                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food"+"?topping="+true;
-                    alert(data)
-                },
-                error: function() {
-                    alert("에러가 발생했습니다.")
-                }
-            });
+            if (confirmation) {
+                $.ajax({
+                    type: "POST",
+                    async: false,
+                    url: "http://localhost:9010/food/addFood?categoryCode=" + categoryCode,
+                    // contentType : "application/json",
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    success: function (data) {
+                        window.location.href = "http://localhost:9010/admin/" + storeCode + "/food" + "?topping=" + true;
+                        alert(data)
+                    },
+                    error: function () {
+                        alert("토핑 추가하는데 에러 발생했습니다.")
+                    }
+                });
+            }
         }
     </script>
 </head>
