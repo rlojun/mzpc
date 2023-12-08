@@ -10,5 +10,8 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
     @Query("SELECT orders FROM Orders orders WHERE orders.store.code = ?1")
     List<Orders> findAllById(String storeCode);
 
-    Orders findByCode(String orderCode);
+    Orders findByCode(String code);
+
+    @Query("SELECT DISTINCT o FROM Orders o JOIN o.carts c WHERE c.members.idx = ?1")
+    List<Orders> findOrdersByMemberIdx(Long memberIdx);
 }

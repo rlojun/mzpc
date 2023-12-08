@@ -1,5 +1,6 @@
 package com.fivemin.mzpc.data.entity;
 
+import com.fivemin.mzpc.data.entity.base.BaseCreateEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,7 +14,7 @@ import java.util.Random;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Orders {
+public class Orders extends BaseCreateEntity {
 
     //주문 index
     @Id
@@ -52,6 +53,13 @@ public class Orders {
 
     @Column(name = "payment", length = 15, nullable = false)
     private String payment;
+
+    // 요청 사항
+    @Column(name = "note")
+    private String note;
+
+    @Column(name = "total_cost")
+    private Integer totalCost;
 
     @OneToMany(mappedBy = "orders", cascade = CascadeType.PERSIST)
     private List<Cart> carts = new ArrayList<>();

@@ -15,10 +15,14 @@ public interface CartRepository extends JpaRepository<Cart,Integer> {
 
     List<Cart> findAllByMembersIdx(Long memberIdx);
 
+    List<Cart> findAllByMembersIdxAndOrderCompleteIsFalse(Long memberIdx);
+
+
     @Modifying
-    @Query("DELETE FROM Cart c WHERE EXISTS (SELECT 1 FROM c.members m WHERE m.id = :memberId)")
-    void clearCartByMemberId(String memberId);
+    @Query("DELETE FROM Cart c WHERE EXISTS (SELECT 1 FROM c.members m WHERE m.idx = :memberIdx) AND c.orderComplete = false")
+    void clearCartByMemberIdx(Long memberIdx);
 
     @Query("SELECT c FROM Cart c WHERE c.orders.idx=:idx")
     List<Cart> findByOrdersIdx(Long idx);
+
 }

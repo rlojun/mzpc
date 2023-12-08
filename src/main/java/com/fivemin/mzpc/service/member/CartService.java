@@ -62,9 +62,13 @@ public class CartService {
         return cartRepository.findAllByMembersIdx(memberIdx);
     }
 
-    public void clearCart(String memberId) {
+    public List<Cart> getNewCartListByMemberIdx(Long memberIdx) {
+        return cartRepository.findAllByMembersIdxAndOrderCompleteIsFalse(memberIdx);
+    }
+
+    public void clearCart(Long memberIdx) {
         log.info("ClearCart check");
-        cartRepository.clearCartByMemberId(memberId);
+        cartRepository.clearCartByMemberIdx(memberIdx);
     }
 
 }

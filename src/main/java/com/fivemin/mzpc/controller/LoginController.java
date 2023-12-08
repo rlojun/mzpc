@@ -2,6 +2,7 @@ package com.fivemin.mzpc.controller;
 
 import com.fivemin.mzpc.data.dto.AuthDto;
 import com.fivemin.mzpc.data.entity.Admin;
+import com.fivemin.mzpc.data.entity.Cart;
 import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.service.LoginService;
 import com.fivemin.mzpc.service.email.EmailService;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 
 /*
@@ -52,6 +54,7 @@ public class LoginController {
             CartService cartService) {
         this.cartService = cartService;
     }
+
     @Autowired
     private MemberService memberService;
 
@@ -129,7 +132,7 @@ public class LoginController {
             model.addAttribute("storeName", encodedStoreName);
             if (members.getRemainingTime() != LocalTime.of(0, 0, 0)) {
                 return String.format("redirect:/members/%s", encodedStoreName);
-            }else{
+            } else {
                 return String.format("redirect:/pre/%s/time", encodedStoreName);
             }
         }
@@ -140,10 +143,13 @@ public class LoginController {
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        // 임시
-        String memberId = (String) session.getAttribute("id");
-        cartService.clearCart(memberId);
-        //
+        // 임시 - 원래대로 바꿔도 될듯
+        Members members = (Members) session.getAttribute("members");
+        Long memberIdx = members.getIdx();
+        List<Cart> cartList = cartService.getCartListByMemberIdx(memberIdx);
+        if (cartList.stream().anyMatch(cart -> !cart.isOrderComplete())) {
+            cartService.clearCart(memberIdx);
+        }
         session.invalidate();
         return "redirect:/login?logout";
     }
@@ -153,8 +159,10 @@ public class LoginController {
     public String memberLogout(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String memberId = (String) session.getAttribute("id");
+        Members members = (Members) session.getAttribute("members");
+        Long memberIdx = members.getIdx();
         memberTimeService.realRemainingTime(memberId);
-        cartService.clearCart(memberId);
+        cartService.clearCart(memberIdx);
         memberService.logoutMember(memberId);
         session.invalidate();
 
