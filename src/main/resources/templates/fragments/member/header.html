@@ -81,6 +81,17 @@
                             if (remainingSeconds <= 0) {
                                 clearInterval(countdownInterval);
                                 document.getElementById('remainingTimeDisplay').innerText = '시간 종료';
+                                $.ajax({
+                                    type : 'GET',
+                                    url : '/login/autoLogout',
+                                    data : {remainingTime : remainingTime},
+                                    success: function (redirectUrl) {
+                                        window.location.href = redirectUrl;
+                                    },
+                                    error: function () {
+                                        console.error('자동 로그아웃 요청 실패');
+                                    }
+                                })
                             } else {
                                 // 남은 시간을 시분초로 변환하여 표시
                                 const formattedTime = formatRemainingTime(remainingSeconds);
