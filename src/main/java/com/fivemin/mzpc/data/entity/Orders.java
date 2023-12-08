@@ -3,6 +3,9 @@ package com.fivemin.mzpc.data.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @Entity
 @Builder
@@ -19,6 +22,25 @@ public class Orders {
 
     @Column(name = "orders_code",nullable = false,unique = true)
     private String code;
+
+    @PrePersist
+    protected void onCreate() {
+        this.code = generateUniqueCode();
+    }
+    public static String generateUniqueCode() {
+        int codeLength = 6;
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder code = new StringBuilder();
+
+        Random random = new Random();
+        for (int i = 0; i < codeLength; i++) {
+            int index = random.nextInt(characters.length());
+            code.append(characters.charAt(index));
+        }
+
+        return code.toString();
+    }
+
     //조리 여부
     @Column(name = "cook_complete",nullable = false)
     private boolean cookComplete=false;
@@ -30,9 +52,8 @@ public class Orders {
     @Column(name = "payment", length = 15, nullable = false)
     private String payment;
 
-    @OneToOne
-    @JoinColumn(name = "cart_idx", nullable = false)
-    private Cart cart;
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.PERSIST)
+    private List<Cart> carts = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "store_idx",nullable = false)

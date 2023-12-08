@@ -7,7 +7,6 @@
 </head>
 <body>
 <form class="add-to-cart" th:object="${foodDetails}" method="post">
-<!--      th:action="@{/members/{storeName}/cart/addToCart(storeName=${foodDetails.storeName})}">-->
     <div>
         <h5 th:text="${foodDetails.name}"></h5>
         <img th:src="${foodDetails.picture}" alt="Food Image">
@@ -62,8 +61,6 @@
                 url: '/members/' + encodeURIComponent(storeName) + '/cart/addToCart',
                 data: postData,
                 success: function (redirectUrl) {
-                    console.log('Received redirectUrl:', redirectUrl);
-                    console.log(foodName, price, selectedToppings)
                     window.location.href = redirectUrl;
                 },
                 error: function (error) {

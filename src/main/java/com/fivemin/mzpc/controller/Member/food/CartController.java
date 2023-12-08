@@ -45,11 +45,9 @@ public class CartController {
 
         String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
         Members members = (Members) httpSession.getAttribute("members");
-        log.info("selected Toppings : {}", selectedToppings);
 
         List<Cart> cartItems = cartService.addToCart(mainFood, selectedToppings, members);
         httpSession.setAttribute("cartItems", cartItems);
-
         httpSession.getAttribute("cartItems");
 
         String redirectUrl = "/members/" + encodedStoreName + "/food/listFood";
@@ -58,10 +56,6 @@ public class CartController {
     }
 
     /*
-
-    addCart
-    (카트에 음식 + 토핑 추가하기)
-
     purchaseCartKakao
     (카트 상품 카카오페이로 결제하기 + 요청사항)
 
@@ -73,6 +67,5 @@ public class CartController {
 
     deleteCart
     (카트에 담긴 상품 제거)
-
      */
 }
