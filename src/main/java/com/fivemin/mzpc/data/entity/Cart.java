@@ -54,6 +54,6 @@ public class Cart {
     private Orders orders;
 
     @Column(name = "order_complete")
-    private boolean orderComplete;
+    private boolean orderComplete = false;
 
 }

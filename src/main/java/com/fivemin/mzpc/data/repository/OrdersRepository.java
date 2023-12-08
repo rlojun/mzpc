@@ -17,6 +17,6 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
     @Query("UPDATE Orders SET purchaseStatus=?2, cookComplete=?3 WHERE idx=?1")
     void modifyByCode(Long idx,boolean cookComplete,boolean purchaseStatus);
 
-    @Query("SELECT o FROM Orders o WHERE o.members.idx = ?1")
+    @Query("SELECT DISTINCT o FROM Orders o JOIN o.carts c WHERE c.members.idx = ?1")
     List<Orders> findOrdersByMemberIdx(Long memberIdx);
 }
