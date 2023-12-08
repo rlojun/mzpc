@@ -53,4 +53,7 @@ public class Cart {
     @JoinColumn(name = "orders_idx")
     private Orders orders;
 
+    @Column(name = "order_complete")
+    private boolean orderComplete;
+
 }

@@ -55,10 +55,6 @@ public class Orders {
     @OneToMany(mappedBy = "orders", cascade = CascadeType.PERSIST)
     private List<Cart> carts = new ArrayList<>();
 
-    @OneToOne
-    @JoinColumn(name ="members_idx")
-    private Members members;
-
     @ManyToOne
     @JoinColumn(name = "store_idx",nullable = false)
     private Store store;
