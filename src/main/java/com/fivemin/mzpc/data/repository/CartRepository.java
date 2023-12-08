@@ -12,6 +12,7 @@ public interface CartRepository extends JpaRepository<Cart,Integer> {
 
     @Query("SELECT cart FROM Cart cart WHERE cart.members.idx = ?1")
     Cart findCartByMemberIdx(Long memberIdx);
+
     List<Cart> findAllByMembersIdx(Long memberIdx);
 
     @Modifying
