@@ -63,7 +63,6 @@
                             <i class="bi bi-gem"></i>
                             <h4 th:text="${timeDto.name}"></h4>
                             <p th:text="${timeDto.price + '원'}"></p>
-                            <p th:text="'저장유무 : ' + ${timeDto.save}"></p>
                             <div>
                                 <a th:href="@{/admin/{storeCode}/time/modifyTime/{timeCode}(storeCode=${storeCode}, timeCode=${timeDto.code})}">수정</a>
                                 <a th:href="@{/admin/{storeCode}/time/deleteTime/{timeCode}(storeCode=${storeCode}, timeCode=${timeDto.code})}">삭제</a>

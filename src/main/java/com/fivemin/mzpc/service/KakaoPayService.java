@@ -53,7 +53,7 @@ public class KakaoPayService {
         params.add("item_name", times.getName());
         params.add("quantity", "1");
         params.add("total_amount", String.valueOf(times.getPrice()-usedMileage));
-        params.add("tax_free_amount", "100");
+        params.add("tax_free_amount", "0");
         params.add("approval_url",String.format("http://localhost:9010/members/%s/purchaseTime/%s/kakaoPaySuccess",storeName, timeCode));
         params.add("cancel_url", "http://localhost:9010/kakao/kakaoPayCancel");
         params.add("fail_url", "http://localhost:9010/kakao/kakaoPaySuccessFail");

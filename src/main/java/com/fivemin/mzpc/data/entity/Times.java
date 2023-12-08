@@ -37,9 +37,9 @@ public class Times extends BaseTimeEntity {
     @Column(name = "time_price", nullable = false)
     private Integer price;
 
-    //저장 뮤무
-    @Column(name ="save", nullable = false)
-    private boolean save;
+    // 삭제 유무
+    @Column(name ="check_delete", nullable = false)
+    private boolean checkDelete = false;
 
     @ManyToOne
     @JoinColumn(name = "store_idx",nullable = false)

@@ -131,7 +131,7 @@
     <!-- end header section -->
 </div>
 <br/>
-    <form action="/login/findPw" method="post">
+    <form action="/login/findPw" method="post" th:onsubmit="codeVerification()">
         <div class="heading_container heading_center">
             <h3>
                 PW 찾기
@@ -155,12 +155,9 @@
             <br>
             <button type="submit" class="btn btn-primary">인증 요청</button>
             <br/>
-            <div>
-                <p th:text="${result2}"></p>
-            </div>
         </div>
     </form>
-    <form action="/login/verifyCode" method="post">
+    <form action="/login/verifyCode" method="post" th:onsubmit="codeSuccess()">
         <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
             <div style="margin-bottom: 10px; text-align: left;">
                 <label for="memberInput" style="display: inline-block; width: 100px; text-align: right;">인증 코드 입력:</label>
@@ -169,5 +166,14 @@
                 <button type="submit" class="btn btn-primary">비밀번호 재설정</button>
         </div>
     </form>
+<script th:inline="javascript">
+    function codeVerification() {
+        alert('인증 번호를 전송 하였습니다.');
+    }
+
+    function codeSuccess() {
+        alert('인증을 성공하였습니다.');
+    }
+</script>
 </body>
 </html>

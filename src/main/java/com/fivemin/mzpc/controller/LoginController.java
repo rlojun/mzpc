@@ -11,6 +11,7 @@ import com.fivemin.mzpc.service.members.MemberTimeService;
 import com.fivemin.mzpc.service.member.CartService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +23,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
@@ -158,6 +160,23 @@ public class LoginController {
 
         return "redirect:/login?logout";
     }
+
+    @GetMapping("/autoLogout")
+    @ResponseBody
+    public ResponseEntity<String> autoLogout(HttpServletRequest request) {
+        log.info("autoLogout 실행");
+        HttpSession session = request.getSession();
+        String memberId = (String) session.getAttribute("id");
+        log.info("memberId : {} : ", memberId);
+        memberTimeService.realRemainingTime(memberId);
+        cartService.clearCart(memberId);
+        memberService.logoutMember(memberId);
+        session.invalidate();
+
+        String redirectUrl = "/login?logout";
+        return ResponseEntity.ok(redirectUrl);
+    }
+
 
     // 회원가입 페이지로 이동
     @GetMapping("/auth")
