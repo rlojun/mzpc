@@ -13,6 +13,7 @@ import java.util.Random;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 public class Orders extends BaseCreateEntity {
 
     //주문 index

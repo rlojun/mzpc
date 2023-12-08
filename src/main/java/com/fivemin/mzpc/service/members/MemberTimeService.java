@@ -50,6 +50,7 @@ public class MemberTimeService {
         }
 
         List<TimeDto> timeDtoList = timesList.stream()
+                .filter(times -> !times.isCheckDelete())
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
 
@@ -124,7 +125,6 @@ public class MemberTimeService {
                 .name(times.getName())
                 .price(times.getPrice())
                 .addTime(times.getAddTime())
-                .save(times.isSave())
                 .build();
     }
 }

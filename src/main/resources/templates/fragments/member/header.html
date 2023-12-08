@@ -81,6 +81,17 @@
                             if (remainingSeconds <= 0) {
                                 clearInterval(countdownInterval);
                                 document.getElementById('remainingTimeDisplay').innerText = '시간 종료';
+                                $.ajax({
+                                    type : 'GET',
+                                    url : '/login/autoLogout',
+                                    data : {remainingTime : remainingTime},
+                                    success: function (redirectUrl) {
+                                        window.location.href = redirectUrl;
+                                    },
+                                    error: function () {
+                                        console.error('자동 로그아웃 요청 실패');
+                                    }
+                                })
                             } else {
                                 // 남은 시간을 시분초로 변환하여 표시
                                 const formattedTime = formatRemainingTime(remainingSeconds);
@@ -124,7 +135,8 @@
                             <a th:unless="${storeName != null}" class="nav-link" th:onclick="noPermFoodPage()" th:href="@{/}">먹거리 주문하기</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/members/{storeName}/time(storeName=${storeName})}">시간 충전하기 <span class="sr-only">(current)</span> </a>
+                            <a th:if="${storeName != null}"class="nav-link" th:href="@{/members/{storeName}/time(storeName=${storeName})}">시간 충전하기 <span class="sr-only">(current)</span> </a>
+                            <a th:unless="${storeName != null}" class="nav-link" th:onclick="noPermFoodPage()" th:href="@{/}">시간 충전하기</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="qna">문의하기 </a>

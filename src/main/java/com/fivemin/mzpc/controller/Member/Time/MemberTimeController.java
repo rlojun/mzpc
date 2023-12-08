@@ -123,7 +123,7 @@ public class MemberTimeController {
         model.addAttribute("timeCode", timeCode);
         String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
         model.addAttribute("storeName", encodedStoreName);
-        return String.format("redirect:/members/%s/time", encodedStoreName);
+        return String.format("redirect:/members/%s", encodedStoreName);
     }
 
     // 시간 구매 내역 및 마일리지 내역

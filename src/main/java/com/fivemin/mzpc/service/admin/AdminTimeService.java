@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,6 +37,7 @@ public class AdminTimeService {
         }
 
         List<TimeDto> timeDtoList = timesList.stream()
+                .filter(times -> !times.isCheckDelete())
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
 
@@ -52,8 +52,8 @@ public class AdminTimeService {
         newTime.setStore(store);
         newTime.setName(timeDto.getName());
         newTime.setAddTime(timeDto.getAddTime());
+        newTime.setCheckDelete(false);
         newTime.setPrice(timeDto.getPrice());
-        newTime.setSave(timeDto.isSave());
 
         Times saveTime = timesRepository.save(newTime);
         return convertToDto(saveTime);
@@ -71,10 +71,17 @@ public class AdminTimeService {
         updateTime.setName(timeDto.getName());
         updateTime.setAddTime(timeDto.getAddTime());
         updateTime.setPrice(timeDto.getPrice());
-        updateTime.setSave(timeDto.isSave());
 
         Times updatedTime = timesRepository.save(updateTime);
         return convertToDto(updatedTime);
+    }
+
+    public TimeDto deleteTime(String timeCode){
+        Times deleteTime = timesRepository.findByCode(timeCode);
+
+        deleteTime.setCheckDelete(true);
+        Times deletedTime = timesRepository.save(deleteTime);
+        return convertToDto(deletedTime);
     }
 
     private TimeDto convertToDto(Times times) {
@@ -83,12 +90,6 @@ public class AdminTimeService {
                 .name(times.getName())
                 .price(times.getPrice())
                 .addTime(times.getAddTime())
-                .save(times.isSave())
                 .build();
-    }
-
-    @Transactional
-    public void deleteTime(String timeCode){
-        timesRepository.deleteByCode(timeCode);
     }
 }

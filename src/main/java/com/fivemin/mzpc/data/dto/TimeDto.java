@@ -14,6 +14,5 @@ public class TimeDto {
     private String name;
     private Integer price;
     private LocalTime addTime;
-    private boolean save;
     private StoreDto storeDto;
 }

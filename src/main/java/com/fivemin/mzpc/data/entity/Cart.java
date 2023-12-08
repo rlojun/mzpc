@@ -53,7 +53,7 @@ public class Cart {
     @JoinColumn(name = "orders_idx")
     private Orders orders;
 
-    @Column(name = "order_complete")
+    @Column(name = "order_complete",nullable = false)
     private boolean orderComplete=false;
 
 }

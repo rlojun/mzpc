@@ -132,7 +132,7 @@
     <!-- end header section -->
 </div>
 <br/>
-    <form action="/login/auth" method="POST">
+    <form action="/login/auth" method="POST" th:onsubmit="authSuccess()">
         <div class="heading_container heading_center">
             <h3>
                     회원 가입
@@ -186,5 +186,11 @@
         <button type="submit" class="btn btn-primary">회원 가입</button>
         </div>
     </form>
+
+<script th:inline="javascript">
+    function authSuccess() {
+        alert('회원가입을 축하드립니다!');
+    }
+</script>
 </body>
 </html>
