@@ -17,6 +17,7 @@ public class OrdersDto {
     private String code;
     private boolean cookComplete;
     private boolean purchaseStatus;
+    private String payment;
     private CartDto cartDto;
     private List<Cart> orderedFoods;
 }

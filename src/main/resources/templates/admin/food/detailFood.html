@@ -115,6 +115,8 @@
         }
     </script>
 </head>
+<body class="sub_page">
+
 <div class="hero_area">
     <div class="bg-box">
         <img src="/bootstrap/images/admin-bg.png" alt="">
@@ -135,9 +137,11 @@
     <br>
     <label for="stock">재고</label> : <input type="text" id="stock" th:value="*{getStock()}" disabled>
     <br>
-    <label for="createdAt">생성 시간</label> : <input type="text" id="createdAt" th:value="*{getCreatedAt()}" readonly>
+    <label for="createdAt">생성 시간</label> :
+    <input type="text" id="createdAt" th:value="${#temporals.format(food.createdAt, 'yyyy-MM-dd HH:mm:ss')}" readonly>
     <br>
-    <label for="updatedAt">수정 시간</label> : <input type="text" id="updatedAt" th:value="*{getUpdateAt()}" readonly>
+    <label for="updatedAt">수정 시간</label> :
+    <input type="text" id="updatedAt" th:value="${#temporals.format(food.updateAt, 'yyyy-MM-dd HH:mm:ss')}" readonly>
     <br>
     <input type="hidden" id="idx" th:value="*{getIdx()}">
     <input type="hidden" id="code" th:value="*{getCode()}">

@@ -36,11 +36,12 @@
             var storeCode = [[${storeCode}]];
             var topping = false;
             var formData = new FormData();
+            var confirmation = confirm("음식을 추가하시겠습니까?");
 
             var stockCheck = document.getElementById('stock').value;
             var foodNameCheck = document.getElementById('foodName').value;
             var foodPriceCheck = document.getElementById('foodPrice').value;
-
+            var foodPicture = $('#foodPicture')[0].files[0];
             var foodDto = {
                 "idx" : null,
                 "code" : null,
@@ -51,11 +52,11 @@
                 "topping" : false
             };
 
-            if (stockCheck=== '' | foodNameCheck==='' || foodPriceCheck==='' ) {
+            if (stockCheck=== '' | foodNameCheck==='' || foodPriceCheck==='' || foodPicture==null) {
                 alert('모든 필수 입력 필드를 작성해주세요.');
                 return;
             }
-            formData.append('picture', $('#foodPicture')[0].files[0]);
+            formData.append('picture', foodPicture);
             formData.append('foodDto',JSON.stringify(foodDto));
             $.ajax({
                 type: "POST",
@@ -71,10 +72,29 @@
                     alert(data)
                 },
                 error: function() {
-                    alert("에러가 발생했습니다.")
+                    alert("음식을 추가하는데 에러가 발생했습니다.")
                 }
             });
         }
+
+        function handleFileInputChange(event) {
+            var preview = document.getElementById('imagePreview'); // 이미지 미리보기 요소
+            var file = event.target.files[0]; // 선택된 파일
+            var reader = new FileReader(); // 파일 리더 객체 생성
+
+            reader.onloadend = function () {
+                preview.src = reader.result; // 선택한 이미지 파일의 URL을 이미지 미리보기에 설정
+            }
+
+            if (file) {
+                reader.readAsDataURL(file); // 선택한 파일을 읽어옴
+            } else {
+                preview.src = ""; // 파일이 없을 경우 미리보기를 비움
+            }
+        }
+
+        document.getElementById('foodPicture').addEventListener('change', handleFileInputChange);
+
     </script>
 
 </head>
@@ -96,7 +116,10 @@
                 <option th:each=" category : ${categories}" th:value="${category.getCode()}" th:text="${category.getName()}"></option>
             </select>
         <br>
-        <label for="foodPicture">이미지</label>  : <input type="file" id="foodPicture" accept="image/*"  name="foodPricture">
+        <img id="imagePreview" src="" style="max-width: 200px; max-height: 200px;">
+        <br>
+        <label for="foodPicture">이미지</label>  :
+        <input type="file" id="foodPicture" accept="image/*"  name="foodPricture" onchange="handleFileInputChange(event)">
         <br>
         <label for="description">설명</label> : <br>
         <textarea id="description" rows="4" cols="50" placeholder="설명을 입력하세요."></textarea>

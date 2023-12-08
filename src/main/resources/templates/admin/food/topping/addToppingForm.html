@@ -34,7 +34,8 @@
             var selectElement = document.getElementById('categoryName');
             var categoryCode = selectElement.value;
             var storeCode = [[${storeCode}]];
-
+            var confirmation = confirm("토핑을 추가하시겠습니까?");
+            var toppingPicture = $('#toppingPicture')[0].files[0];
             var formData = new FormData();
 
             var foodDto = {
@@ -47,31 +48,51 @@
                 "topping" : true
             };
 
-            if (foodDto.name === '' || foodDto.price === '' || foodDto.stock === '') {
+            if (foodDto.name === '' || foodDto.price === '' || foodDto.stock === '' || toppingPicture==null) {
                 alert('모든 필수 입력 필드를 작성해주세요.');
                 return;
             }
 
-            formData.append('picture', $('#toppingPicture')[0].files[0]);
+            formData.append('picture',toppingPicture);
             formData.append('foodDto', JSON.stringify(foodDto));
 
-            $.ajax({
-                type: "POST",
-                async: false,
-                url: "http://localhost:9010/food/addFood?categoryCode=" + categoryCode,
-                // contentType : "application/json",
-                processData: false,
-                contentType: false,
-                data: formData,
-                success: function(data) {
-                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food"+"?topping="+true;
-                    alert(data)
-                },
-                error: function() {
-                    alert("에러가 발생했습니다.")
-                }
-            });
+            if (confirmation) {
+                $.ajax({
+                    type: "POST",
+                    async: false,
+                    url: "http://localhost:9010/food/addFood?categoryCode=" + categoryCode,
+                    // contentType : "application/json",
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    success: function (data) {
+                        window.location.href = "http://localhost:9010/admin/" + storeCode + "/food" + "?topping=" + true;
+                        alert(data)
+                    },
+                    error: function () {
+                        alert("토핑 추가하는데 에러 발생했습니다.")
+                    }
+                });
+            }
         }
+        function handleFileInputChange(event) {
+            var preview = document.getElementById('imagePreview'); // 이미지 미리보기 요소
+            var file = event.target.files[0]; // 선택된 파일
+            var reader = new FileReader(); // 파일 리더 객체 생성
+
+            reader.onloadend = function () {
+                preview.src = reader.result; // 선택한 이미지 파일의 URL을 이미지 미리보기에 설정
+            }
+
+            if (file) {
+                reader.readAsDataURL(file); // 선택한 파일을 읽어옴
+            } else {
+                preview.src = ""; // 파일이 없을 경우 미리보기를 비움
+            }
+        }
+
+        document.getElementById('foodPicture').addEventListener('change', handleFileInputChange);
+
     </script>
 </head>
 <body class="sub_page">
@@ -92,7 +113,10 @@
                 <option th:each=" category : ${categories}" th:value="${category.getCode()}" th:text="${category.getName()}"></option>
             </select>
             <br>
-            <label for="toppingPicture">이미지</label>  : <input type="file" id="toppingPicture" accept="image/*"  name="toppingPicture">
+            <img id="imagePreview" src="" style="max-width: 200px; max-height: 200px;">
+            <br>
+            <label for="toppingPicture">이미지</label>  :
+            <input type="file" id="toppingPicture" accept="image/*"  name="toppingPicture" onchange="handleFileInputChange(event)">
             <br>
             <label for="stock">재고</label> : <input type="text" id="stock" name="stock" required>
             <br>

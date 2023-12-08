@@ -1,8 +1,10 @@
 package com.fivemin.mzpc.data.dto;
 
 import lombok.Builder;
+import lombok.Data;
 
 @Builder
+@Data
 public class MileageInfoDto {
     private Long idx;
     private String code;

@@ -6,26 +6,25 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Data
-@Getter
-@Setter
-@AllArgsConstructor
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class FoodDto {
 
-    private final Long idx;
-    private final String code;
-    private final String name;
-    private final String picture;
-    private final Integer price;
-    private final String description;
-    private final Integer stock;
+    private Long idx;
+    private String code;
+    private String name;
+    private String picture;
+    private Integer price;
+    private String description;
+    private Integer stock;
     private boolean topping;
     private String storeName;
-    private final LocalDateTime createdAt;
-    private final LocalDateTime updateAt;
-    private final CategoryDto categoryDto;
-    private final Category category;
-    private final String categoryCode;
-    private final String categoryName;
-    private final Long categoryIdx;
+    private LocalDateTime createdAt;
+    private LocalDateTime updateAt;
+    private CategoryDto categoryDto;
+    private Category category;
+    private String categoryCode;
+    private String categoryName;
+    private Long categoryIdx;
 }

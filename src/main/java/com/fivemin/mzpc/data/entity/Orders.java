@@ -8,11 +8,10 @@ import java.util.List;
 import java.util.Random;
 
 @Entity
-@Getter
-@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class Orders {
 
     //주문 index
@@ -50,7 +49,7 @@ public class Orders {
     @Column(name = "purchase_status",nullable = false)
     private boolean purchaseStatus=false;
 
-    @Column(name = "payment", length = 15)
+    @Column(name = "payment", length = 15, nullable = false)
     private String payment;
 
     @OneToMany(mappedBy = "orders", cascade = CascadeType.PERSIST)
@@ -63,4 +62,5 @@ public class Orders {
     @ManyToOne
     @JoinColumn(name = "store_idx",nullable = false)
     private Store store;
+
 }

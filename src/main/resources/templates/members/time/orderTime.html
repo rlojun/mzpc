@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- Basic -->
     <meta charset="utf-8" />
@@ -46,7 +46,6 @@
             document.getElementById('paymentAmount').innerText = '결제 금액: ' + paymentAmount + '원';
         }
     </script>
-
 </head>
 
 <body class="sub_page">
@@ -76,7 +75,7 @@
 
         <input type="hidden" id="timePrice" name="timePrice" th:value="${times.price}" />
         <input type="hidden" id="additionalTime" name="additionalTime" th:value="${times.addTime.format(T(java.time.format.DateTimeFormatter).ofPattern('H:mm:ss'))}" />
-        <button type="submit">결제하기</button>
+        <button type="submit">카카오 페이로 결제하기</button>
     </form>
 </body>
 </html>
