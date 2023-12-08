@@ -1,10 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>주문 목록</title>
 </head>
 <body>
+    <div th:each="order : ${orders}">
+        <h5>Cook Complete: <span th:text="${order.cookComplete}"></span></h5>
+        <h5>Purchase Status: <span th:text="${order.purchaseStatus}"></span></h5>
 
+        <h6>Food Items:</h6>
+        <ul>
+            <li th:each="orderedFood : ${order.getCarts()}">
+                <span th:text="${orderedFood.food.name}"></span>
+                -
+                <span th:text="${orderedFood.food.price} + '원'"></span>
+            </li>
+        </ul>
+    </div>
 </body>
 </html>

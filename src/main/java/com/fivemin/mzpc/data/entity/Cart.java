@@ -49,4 +49,8 @@ public class Cart {
     @JoinColumn(name = "food_idx", nullable = false)
     private Food food;
 
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "orders_idx")
+    private Orders orders;
+
 }

@@ -1,6 +1,5 @@
 package com.fivemin.mzpc.service.member;
 
-import com.fivemin.mzpc.data.dto.CartDto;
 import com.fivemin.mzpc.data.entity.Cart;
 import com.fivemin.mzpc.data.entity.Food;
 import com.fivemin.mzpc.data.entity.Members;
@@ -10,9 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,7 +31,7 @@ public class CartService {
         Food mainFood = foodRepository.getByFoodCode(foodCode);
         Food topping = foodRepository.getByFoodName(selectedToppings);
 
-        List<Cart> cartList = cartRepository.findCartListByMemberIdx(members.getIdx());
+        List<Cart> cartList = cartRepository.findAllByMembersIdx(members.getIdx());
 
         Cart mainCart = new Cart();
         mainCart = Cart.builder()
@@ -62,7 +59,7 @@ public class CartService {
     }
 
     public List<Cart> getCartListByMemberIdx(Long memberIdx) {
-        return cartRepository.findCartListByMemberIdx(memberIdx);
+        return cartRepository.findAllByMembersIdx(memberIdx);
     }
 
     public void clearCart(String memberId) {

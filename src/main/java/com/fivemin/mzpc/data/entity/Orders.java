@@ -1,13 +1,18 @@
 package com.fivemin.mzpc.data.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Orders {
 
     //주문 index
@@ -18,6 +23,25 @@ public class Orders {
 
     @Column(name = "orders_code",nullable = false,unique = true)
     private String code;
+
+    @PrePersist
+    protected void onCreate() {
+        this.code = generateUniqueCode();
+    }
+    public static String generateUniqueCode() {
+        int codeLength = 6;
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder code = new StringBuilder();
+
+        Random random = new Random();
+        for (int i = 0; i < codeLength; i++) {
+            int index = random.nextInt(characters.length());
+            code.append(characters.charAt(index));
+        }
+
+        return code.toString();
+    }
+
     //조리 여부
     @Column(name = "cook_complete",nullable = false)
     private boolean cookComplete=false;
@@ -29,9 +53,12 @@ public class Orders {
     @Column(name = "payment", length = 15)
     private String payment;
 
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.PERSIST)
+    private List<Cart> carts = new ArrayList<>();
+
     @OneToOne
-    @JoinColumn(name = "cart_idx", nullable = false)
-    private Cart cart;
+    @JoinColumn(name ="members_idx")
+    private Members members;
 
     @ManyToOne
     @JoinColumn(name = "store_idx",nullable = false)
