@@ -20,4 +20,5 @@ public class OrdersDto {
     private String payment;
     private CartDto cartDto;
     private List<Cart> orderedFoods;
+    private StoreDto storeDto;
 }
