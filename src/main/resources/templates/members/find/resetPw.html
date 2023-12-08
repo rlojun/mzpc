@@ -129,7 +129,7 @@
     </header>
     <!-- end header section -->
 </div>
-    <form action="/login/resetPw" method="post">
+    <form action="/login/resetPw" method="post" th:onsubmit="resetPw()">
         <br/>
         <div class="heading_container heading_center">
             <h3>
@@ -147,5 +147,10 @@
             <button type="submit" class="btn btn-primary">비밀번호 재설정</button>
         </div>
     </form>
+<script th:inline="javascript">
+    function resetPw() {
+        alert('비밀번호 재설정에 성공하였습니다.');
+    }
+</script>
 </body>
 </html>

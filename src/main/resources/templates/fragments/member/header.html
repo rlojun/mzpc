@@ -135,7 +135,8 @@
                             <a th:unless="${storeName != null}" class="nav-link" th:onclick="noPermFoodPage()" th:href="@{/}">먹거리 주문하기</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/members/{storeName}/time(storeName=${storeName})}">시간 충전하기 <span class="sr-only">(current)</span> </a>
+                            <a th:if="${storeName != null}"class="nav-link" th:href="@{/members/{storeName}/time(storeName=${storeName})}">시간 충전하기 <span class="sr-only">(current)</span> </a>
+                            <a th:unless="${storeName != null}" class="nav-link" th:onclick="noPermFoodPage()" th:href="@{/}">시간 충전하기</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="qna">문의하기 </a>
