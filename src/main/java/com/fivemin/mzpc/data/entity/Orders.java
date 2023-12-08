@@ -12,6 +12,7 @@ import java.util.Random;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 public class Orders {
 
     //주문 index

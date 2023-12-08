@@ -6,6 +6,7 @@ import com.fivemin.mzpc.data.dto.MembersDto;
 import com.fivemin.mzpc.data.dto.OrdersDto;
 import com.fivemin.mzpc.data.entity.Cart;
 import com.fivemin.mzpc.data.entity.Orders;
+import com.fivemin.mzpc.data.repository.CartRepository;
 import com.fivemin.mzpc.data.repository.OrdersRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +23,18 @@ public class AdminOrderService {
 
     private final OrdersRepository ordersRepository;
 
+    private final CartRepository cartRepository;
+
     private final EntityManager entityManager;
 
 
     @Autowired
-    public AdminOrderService(OrdersRepository ordersRepository, EntityManager entityManager) {
+    public AdminOrderService(OrdersRepository ordersRepository, CartRepository cartRepository, EntityManager entityManager) {
         this.ordersRepository = ordersRepository;
+        this.cartRepository = cartRepository;
         this.entityManager = entityManager;
     }
+
 
 
     public List<OrdersDto> getOrderList(String stoerCode) {
@@ -40,19 +45,25 @@ public class AdminOrderService {
 
         for (Orders orders: ordersList) {
 
-            for ( Cart cart :orders.getCarts()) {
+            for (Cart cart :orders.getCarts()) {
                 FoodDto foodDto = FoodDto.builder()
+                        .idx(cart.getFood().getIdx())
+                        .code(cart.getFood().getCode())
                         .name(cart.getFood().getName())
                         .price(cart.getFood().getPrice())
                         .topping(cart.getFood().isTopping())
                         .build();
 
                 MembersDto membersDto = MembersDto.builder()
+                        .idx(cart.getMembers().getIdx())
+                        .code(cart.getMembers().getCode())
                         .name(cart.getMembers().getName())
                         .mileage(cart.getMembers().getMileage())
                         .build();
 
                 CartDto cartDto = CartDto.builder()
+                        .idx(cart.getIdx())
+                        .code(cart.getCode())
                         .membersDto(membersDto)
                         .foodDto(foodDto)
                         .orderComplete(cart.isOrderComplete())
@@ -77,25 +88,26 @@ public class AdminOrderService {
 
     @Transactional
     public void completeOrder(OrdersDto ordersDto) {
-        Orders orderList = ordersRepository.findByCode(ordersDto.getCode());
+        Orders orders = ordersRepository.findByCode(ordersDto.getCode());
 
-        Orders orders = Orders.builder()
-                .idx(orderList.getIdx())
-                .cookComplete(ordersDto.isCookComplete())
-                .purchaseStatus(ordersDto.isPurchaseStatus())
-                .build();
+        orders.setCookComplete(ordersDto.isCookComplete());
+        orders.setPurchaseStatus(ordersDto.isPurchaseStatus());
 
-
-        ordersRepository.modifyByCode(orders.getIdx(),orders.isCookComplete(),orders.isPurchaseStatus());
+        entityManager.merge(orders);
 
         entityManager.flush();
     }
 
     @Transactional
     public void rejectOrder(String orderCode) {
-        Orders byCode = ordersRepository.findByCode(orderCode);
+        Orders orders = ordersRepository.findByCode(orderCode);
 
-        ordersRepository.deleteById(byCode.getIdx());
+        List<Cart> carts = cartRepository.findByOrdersIdx(orders.getIdx());
+
+        for ( Cart cart : carts) {
+            cart.setOrderComplete(false);
+            entityManager.merge(cart);
+        }
 
     }
 }
