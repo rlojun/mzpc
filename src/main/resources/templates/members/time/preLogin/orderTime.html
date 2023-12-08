@@ -1,29 +1,73 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <link rel="shortcut icon" href="/bootstrap/images/favicon.png" type="">
+
+  <title> Mzpc </title>
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css" />
+
+  <!--owl slider stylesheet -->
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+  <!-- nice select  -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
+  <!-- font awesome style -->
+  <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet" />
+
+  <!-- Custom styles for this template -->
+  <link href="/bootstrap/css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
+
+  <script th:inline="javascript">
+    function updatePaymentAmount() {
+      var timesPrice = [[${times.price}]];
+      var usedMileage = document.getElementById('usedMileage').value;
+      var remainingMileage = [[${memberMileage}]];
+
+      // 사용자가 입력한 마일리지가 남은 마일리지를 초과하지 않도록 확인
+      if (usedMileage > remainingMileage) {
+        usedMileage = remainingMileage;
+        document.getElementById('usedMileage').value = remainingMileage;
+      }
+
+      // 결제 금액 계산
+      var paymentAmount = timesPrice - usedMileage;
+      document.getElementById('paymentAmount').innerText = '결제 금액: ' + paymentAmount + '원';
+    }
+  </script>
 </head>
-<body>
-<form th:action="@{/pre/{storeName}/purchaseTime/{timeCode} (storeName=${storeName}, timeCode=${timeCode})}" method="post">
-  <input type="hidden" id="memberId" name="memberId" th:value="${session.id}" />
 
-  <p th:text="${'상품명 : ' + times.name}" ></p>
-  <p th:text="${'추가 시간 : ' + times.addTime}" ></p>
-  <p th:text="${'가격 : ' + times.price + '원'}"></p>
-  <p th:text="${'저장 유무 : ' + times.save}"></p>
-  <p th:text="${'남은 마일리지 : ' + memberMileage + '원'}"></p>
+<body class="sub_page">
+  <form th:action="@{/pre/{storeName}/purchaseTime/{timeCode} (storeName=${storeName}, timeCode=${timeCode})}" method="post">
+    <input type="hidden" id="memberId" name="memberId" th:value="${session.id}" />
 
-  <!-- 사용자가 입력한 마일리지 -->
-  <label for="usedMileage">사용할 마일리지:</label>
-  <input type="number" id="usedMileage" name="usedMileage" value="0" min="0" max="${memberMileage}" oninput="updatePaymentAmount()" />
+    <p th:text="${'상품명 : ' + times.name}" ></p>
+    <p th:text="${'추가 시간 : ' + times.addTime}" ></p>
+    <p th:text="${'가격 : ' + times.price + '원'}"></p>
+    <p th:text="${'저장 유무 : ' + times.save}"></p>
+    <p th:text="${'남은 마일리지 : ' + memberMileage + '원'}"></p>
 
-  <!-- 사용할 마일리지를 반영한 결제 금액 -->
-  <p id="paymentAmount"></p>
+    <!-- 사용자가 입력한 마일리지 -->
+    <label for="usedMileage">사용할 마일리지:</label>
+    <input type="number" id="usedMileage" name="usedMileage" value="0" min="0" max="${memberMileage}" oninput="updatePaymentAmount()" />
 
-  <input type="hidden" id="timePrice" name="timePrice" th:value="${times.price}" />
-  <input type="hidden" id="additionalTime" name="additionalTime" th:value="${times.addTime.format(T(java.time.format.DateTimeFormatter).ofPattern('H:mm:ss'))}" />
-  <button type="submit">결제하기</button>
-</form>
+    <!-- 사용할 마일리지를 반영한 결제 금액 -->
+    <p id="paymentAmount"></p>
+
+    <input type="hidden" id="timePrice" name="timePrice" th:value="${times.price}" />
+    <input type="hidden" id="additionalTime" name="additionalTime" th:value="${times.addTime.format(T(java.time.format.DateTimeFormatter).ofPattern('H:mm:ss'))}" />
+    <button type="submit">결제하기</button>
+  </form>
 </body>
 </html>
