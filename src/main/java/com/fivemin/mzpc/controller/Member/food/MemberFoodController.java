@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /*
@@ -58,7 +59,10 @@ public class MemberFoodController {
             List<Cart> cartList = cartService.getCartListByMemberIdx(members.getIdx());
 
             if (cartList != null) {
-                model.addAttribute("cartList", cartList);
+                List<Cart> filteredCartList = cartList.stream()
+                        .filter(cart -> !cart.isOrderComplete())
+                        .collect(Collectors.toList());
+                    model.addAttribute("cartList", filteredCartList);
             }
         }
 

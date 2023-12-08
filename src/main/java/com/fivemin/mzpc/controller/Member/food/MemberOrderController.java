@@ -21,6 +21,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -41,17 +43,10 @@ public class MemberOrderController {
         Members members = (Members) httpSession.getAttribute("members");
         List<Orders> ordersLog = orderService.getOrdersByMemberIdx(members.getIdx());
 
-        for (Orders order : ordersLog) {
-            log.info("Order ID: {}", order.getIdx()); // Adjust the property based on your Orders entity
-            for (Cart carts : order.getCarts()) {
-                log.info("Cart ID: {}", carts.getIdx()); // Adjust the property based on your Cart entity
-                log.info("Food Name: {}", carts.getFood().getName()); // Adjust the property based on your Food entity
-                log.info("Food Price: {}원", carts.getFood().getPrice()); // Adjust the property based on your Food entity
-            }
-        }
-
         if (ordersLog != null) {
-            model.addAttribute("orders", ordersLog);
+            List<Orders> ordersToReverse = new ArrayList<>(ordersLog);
+            Collections.reverse(ordersToReverse);
+            model.addAttribute("orders", ordersToReverse);
         }
 
         return new ModelAndView("members/food/listOrder");
@@ -59,13 +54,15 @@ public class MemberOrderController {
 
     @PostMapping("/checkout")
     public ResponseEntity<String> checkout(@ModelAttribute OrdersDto cartList,
+                                           @RequestParam String paymentMethod,
+                                           @RequestParam String notes,
                                            @PathVariable(required = false) String storeName,
                                            HttpSession httpSession) {
         String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
 
         Members member = (Members) httpSession.getAttribute("members");
 
-        Orders ordersDto = orderService.checkoutOrder(member);
+        Orders ordersDto = orderService.checkoutOrder(member, paymentMethod, notes);
         httpSession.setAttribute("ordersDto", ordersDto);
         httpSession.getAttribute("ordersDto");
 
