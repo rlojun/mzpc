@@ -89,13 +89,20 @@
     </div>
     <header th:replace="fragments/admin/header :: header"></header>
 </div>
-    <ul th:each=" order,status : ${ordersDtos}" th:if="${order.isCookComplete()==false} and ${order.getCartDtos.get(status.index).isOrderComplete()==true}">
+    <ul th:each=" order,status : ${ordersDtos}" th:if="${order.isCookComplete()==false} and ${order.cartDtos.get(status.index).isOrderComplete()==true}">
         <h2 th:text="${status.index+1+ '.'}"></h2>
         <p th:text="${'주문코드 : '+ order.getCode()}"></p>
         <p th:text="'사용자 이름 : ' + ${order.getCartDtos().get(status.index).getMembersDto().name}"></p>
         <ul th:each=" cart : ${order.cartDtos} ">
             <li th:text="${cart.getFoodDto().name}"></li>
         </ul>
+        <br>
+        요청사항
+        <br>
+        <textarea th:if="${order.getNote() != null}" th:text="${order.getNote()}"></textarea>
+        <br>
+        <b>총 금액 : <span th:text="${order.getTotalCost()}"></span></b>
+        <br>
         <button onclick="complete(this)" th:attr="data-order-code=${order.getCode()}">결제 완료</button>
         <button onclick="reject(this)" th:attr="data-order-code=${order.getCode()}">주문 취소</button>
         <hr>
