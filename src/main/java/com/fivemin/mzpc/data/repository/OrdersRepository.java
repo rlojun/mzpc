@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface OrdersRepository extends JpaRepository<Orders, Long> {
 
-    @Query("SELECT orders FROM Orders orders WHERE orders.store.code = ?1")
+    @Query("SELECT orders FROM Orders orders WHERE orders.store.code = ?1 order by orders.createdAt")
     List<Orders> findAllById(String storeCode);
 
     Orders findByCode(String code);
