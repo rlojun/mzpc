@@ -26,11 +26,7 @@ public class FoodService {
     public List<FoodDto> getFoodList(String storeName) {
 
         List<Food> foodList = foodRepository.findByStoreName(storeName);
-        log.info("storeName: {} ", storeName);
-        log.info("Size of foodList: {}", foodList.size());
-
         List<FoodDto> foodDtoList = new ArrayList<>();
-
         for (Food food : foodList) {
             FoodDto foodDto = FoodDto.builder()
                     .idx(food.getIdx())
@@ -46,7 +42,6 @@ public class FoodService {
                     .build();
             foodDtoList.add(foodDto);
         }
-
         return foodDtoList;
     }
 
