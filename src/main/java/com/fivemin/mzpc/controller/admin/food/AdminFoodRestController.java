@@ -50,13 +50,11 @@ public class AdminFoodRestController {
 
         try {
             FoodDto foodDto = objectMapper.readValue(foodDtoJson, FoodDto.class);
-//            if (foodPicture.isEmpty()) {
                 log.info("foodPicture : {}", Optional.ofNullable(foodPicture));
                 log.info("foodDtoJson : {}", foodDto);
                 log.info("categoryName : {}", categoryName);
-//            }
 
-            adminFoodService.modifyFood(foodDto,categoryName,foodPicture);
+                adminFoodService.modifyFood(foodDto,categoryName,foodPicture);
 
         } catch (IOException e) {
             System.out.println("modifyFood() Err --> "+ e.getMessage());
