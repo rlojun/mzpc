@@ -147,20 +147,20 @@ public class AdminFoodService {
     @Transactional
     public void modifyFood(FoodDto foodDto,String categoryName,MultipartFile foodPicture) {
         Category category = categoryRepository.findByName(categoryName);
-        Food food = foodRepository.findById(foodDto.getIdx()).orElse(null);
-        String fileName = foodPicture==null? food.getPicture() : foodPicture.getOriginalFilename();
-        Food updateFood = Food.builder()
-                .idx(foodDto.getIdx())
-                .code(foodDto.getCode())
-                .name(foodDto.getName())
-                .price(foodDto.getPrice())
-                .picture(fileName)
-                .description(foodDto.getDescription())
-                .stock(foodDto.getStock())
-                .topping(foodDto.isTopping())
-                .category(category)
-                .build();
+        Food updateFood = foodRepository.findById(foodDto.getIdx()).orElse(null);
+        String fileName = foodPicture==null? updateFood.getPicture() : foodPicture.getOriginalFilename();
 
+        updateFood.setIdx(foodDto.getIdx());
+        updateFood.setCode(foodDto.getCode());
+        updateFood.setName(foodDto.getName());
+        updateFood.setPrice(foodDto.getPrice());
+        updateFood.setPicture(fileName);
+        updateFood.setDescription(foodDto.getDescription());
+        updateFood.setStock(foodDto.getStock());
+        updateFood.setTopping(foodDto.isTopping());
+        updateFood.setCategory(category);
+
+        log.info("updateFood : {}",updateFood);
         foodRepository.save(updateFood);
 
         fileUpload(foodPicture);

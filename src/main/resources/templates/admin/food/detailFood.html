@@ -33,6 +33,7 @@
             document.getElementById('name').removeAttribute('disabled');
             document.getElementById('price').removeAttribute('disabled');
             document.getElementById('stock').removeAttribute('disabled');
+            document.getElementById('description').removeAttribute('disabled');
 
             var modifyButton = document.getElementById('modifyButton');
             modifyButton.value = '수정';
@@ -69,7 +70,7 @@
                 "code": document.getElementById('code').value,
                 "name": document.getElementById('name').value,
                 "price": document.getElementById('price').value,
-                "description": null,
+                "description": document.getElementById('description').value,
                 "stock": document.getElementById('stock').value,
                 "picture": document.getElementById('pictureText').value
             };
@@ -128,20 +129,24 @@
     <br>
     <label for="price">가격</label> : <input type="text" id="price" th:value="*{getPrice()}" disabled>
     <br>
-    <label for="category">카테고리</label> : <input type="text" id="category" th:value="*{getCategoryDto().getName()}" readonly>
+    <label for="category">카테고리</label> : <input type="text" id="category" th:value="*{getCategoryDto().getName()}" disabled>
     <br>
     <img id="foodImage" th:src="@{/images/__${food.getPicture()}__}" style="width:100px; height:100px;" alt="음식 이미지" />
     <br>
     <label for="pictureText">사진</label> : <input type="text" id="pictureText" th:value="*{getPicture()}" disabled>
-    <input type="file" id="picture" style="display: none;" onchange="handleFileInputChange()" enctype="multipart/form-data" >
+    <input type="file" id="picture" style="display: none;" onchange="handleFileInputChange()" enctype="multipart/form-data">
+    <br>
+    <label for="description">설명</label>
+    <br>
+    <textarea id="description" th:text="*{getDescription()}" disabled></textarea>
     <br>
     <label for="stock">재고</label> : <input type="text" id="stock" th:value="*{getStock()}" disabled>
     <br>
     <label for="createdAt">생성 시간</label> :
-    <input type="text" id="createdAt" th:value="${#temporals.format(food.createdAt, 'yyyy-MM-dd HH:mm:ss')}" readonly>
+    <input type="text" id="createdAt" th:value="${#temporals.format(food.createdAt, 'yyyy-MM-dd HH:mm:ss')}" disabled>
     <br>
     <label for="updatedAt">수정 시간</label> :
-    <input type="text" id="updatedAt" th:value="${#temporals.format(food.updateAt, 'yyyy-MM-dd HH:mm:ss')}" readonly>
+    <input type="text" id="updatedAt" th:value="${#temporals.format(food.updateAt, 'yyyy-MM-dd HH:mm:ss')}" disabled>
     <br>
     <input type="hidden" id="idx" th:value="*{getIdx()}">
     <input type="hidden" id="code" th:value="*{getCode()}">
