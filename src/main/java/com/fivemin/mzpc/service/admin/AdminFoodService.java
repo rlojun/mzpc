@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -179,8 +180,9 @@ public class AdminFoodService {
         //파일이 있는지 없는지 판단
         if (foodPicture!=null) {
             String fileName = StringUtils.cleanPath(foodPicture.getOriginalFilename());
+            log.info("파일경로 : {}", File.separator);
 
-            String relativePath = "/bootstrap/images/";
+            String relativePath = File.separator+"bootstrap"+File.separator+"images"+File.separator;
 
             try {
                 Path uploadPath = Paths.get(relativePath);
