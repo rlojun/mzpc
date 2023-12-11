@@ -55,6 +55,14 @@ public class CartController {
 
     }
 
+    @DeleteMapping("/removeFromCart")
+    public ResponseEntity<String> removeFromCart(@RequestParam("cartItemIdx") Long cartItemIdx,
+                                                 @PathVariable(required = false) String storeName) {
+        cartService.removeFromCart(cartItemIdx);
+        return ResponseEntity.ok("카트 아이템 제거 완료");
+    }
+
+
     /*
     purchaseCartKakao
     (카트 상품 카카오페이로 결제하기 + 요청사항)

@@ -175,9 +175,11 @@ public class LoginController {
         log.info("autoLogout 실행");
         HttpSession session = request.getSession();
         String memberId = (String) session.getAttribute("id");
+        Members member = (Members) session.getAttribute("members");
+
         log.info("memberId : {} : ", memberId);
         memberTimeService.realRemainingTime(memberId);
-        cartService.clearCart(memberId);
+        cartService.clearCart(member.getIdx());
         memberService.logoutMember(memberId);
         session.invalidate();
 

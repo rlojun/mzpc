@@ -62,7 +62,8 @@
         </div>
 
         <ul class="filters_menu">
-            <li class="active" data-filter="*">All</li>
+            <li class="active" data-filter="all">All</li>
+            <li data-filter="favorites">Favorites</li>
             <li th:each="categoryName : ${distinctFoodCategories}" th:text="${categoryName}"
                 th:data-filter="'.' + ${categoryName}"></li>
         </ul>
@@ -72,7 +73,6 @@
                 <div th:each="menu: ${foodDtoList}" class="col-sm-6 col-lg-4 all"
                      th:classappend="${menu.getCategoryName()}">
                     <div class="box">
-                        <!--                        <div th:each="menu : ${foodDtoList}" th:if="${menu.categoryName == categoryName}">-->
                         <div class="img-box"
                              th:attr="data-category-name=${menu.getCategoryName()},data-food-code=${menu.getName()}">
                             <img th:src="${menu.picture}" alt="">
@@ -86,12 +86,53 @@
                                 <a th:href="@{/members/{storeName}/food/detail/{foodName}(storeName=${(storeName)}, foodName=${menu.name}, foodCode=${menu.code})}">
                                     <i class="material-icons">add</i>
                                 </a>
-                                <a href="">
+                                <a href="#"
+                                   th:attr="onclick='addToFavorites(\'' + ${menu.idx} + '\', \'' + ${storeName} + '\'); return false;'">
                                     <i class="material-icons">grade</i>
                                 </a>
-                                <a href="">
-                                    <i class="material-icons">add_shopping_cart</i>
+                                <form class="directly-add-to-cart" method="post" id="addToCartForm">
+                                    <i class="material-icons shopping-cart-icon"
+                                       th:data-food-name="${menu.name}"
+                                       th:data-food-code="${menu.code}"
+                                       th:data-price="${menu.price}"
+                                       th:data-store-name="${menu.storeName}"
+                                       id="addToCartIcon">
+                                        add_shopping_cart
+                                    </i>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div th:each="favorites : ${favorites}" class="col-sm-6 col-lg-4 favorites">
+                    <div class="box">
+                        <div class="img-box"
+                             th:attr="data-food-code=${favorites.food.code}">
+                            <img th:src="${favorites.food.picture}" alt="">
+                        </div>
+                        <div class="detail-box"
+                             th:attr="data-food-code=${favorites.food.getName()}">
+                            <h5 th:text="${favorites.food.getName()}"/>
+                            <p th:text="${favorites.food.getDescription()}"/>
+                            <div class="options">
+                                <h6 th:text="${favorites.food.price + '원'}"/>
+                                <a th:href="@{/members/{storeName}/food/detail/{foodName}(storeName=${(storeName)}, foodName=${favorites.food.name}, foodCode=${favorites.food.code})}">
+                                    <i class="material-icons">add</i>
                                 </a>
+                                <a href="#"
+                                   th:attr="onclick='addToFavorites(\'' + ${favorites.food.idx} + '\', \'' + ${storeName} + '\'); return false;'">
+                                    <i class="material-icons">grade</i>
+                                </a>
+                                <!--                                <form class="directly-add-to-cart" method="post" id="addToCartForm">-->
+                                <!--                                    <i class="material-icons shopping-cart-icon"-->
+                                <!--                                       th:data-food-name="${favorites.food.name}"-->
+                                <!--                                       th:data-food-code="${favorites.food.code}"-->
+                                <!--                                       th:data-price="${favorites.food.price}"-->
+                                <!--                                       th:data-store-name="${favorites.food.category.store.name}"-->
+                                <!--                                       id="addToCartIcon">-->
+                                <!--                                        add_shopping_cart-->
+                                <!--                                    </i>-->
+                                <!--                                </form>-->
                             </div>
                         </div>
                     </div>
@@ -111,11 +152,17 @@
     <div class="item">
         <div class="box">
             <div class="detail-box">
-                <form th:action="@{/members/{storeName}/order/checkout(storeName=${(storeName)})}" th:object="${cartList}" method="post">
+                <form th:action="@{/members/{storeName}/order/checkout(storeName=${(storeName)})}"
+                      th:object="${cartList}" method="post">
                     <ul id="cartItems">
                         <th:block th:if="${cartList != null}">
-                            <div th:each="cart, cartIndex : ${cartList}" class="cartItem">
+                            <div th:each="cart, cartIndex : ${cartList}" class="cartItem"
+                                 th:data-cart-item-idx="${cart.idx}">
                                 <span th:text="${cartIndex.index + 1 + '. ' + cart.food.name + ' - ' + cart.food.price + '원'}"></span>
+                                <button type="button" class="remove-from-cart" th:data-cart-item-idx="${cart.idx}"
+                                        th:data-store-name="${cart.members.getStore().getName()}">
+                                    &times;
+                                </button>
                                 <input type="hidden" name="foodName" th:value="${cart.food.name}">
                                 <input type="hidden" name="foodPrice" th:value="${cart.food.price}">
                                 <input type="hidden" name="storeName" th:value="${cart.members.getStore().getName()}">
@@ -132,12 +179,12 @@
                             카카오 페이
                         </label>
                         <label>
-                            <input type="radio" name="paymentMethod" value="cash" id="cash" >
+                            <input type="radio" name="paymentMethod" value="cash" id="cash">
                             현금
                         </label>
-                        <div class ="notes">
+                        <div class="notes">
                             <label>
-                            <input type="text" placeholder="요청 사항">
+                                <input type="text" placeholder="요청 사항">
                             </label>
                         </div>
                         <div class="cash-options">
@@ -266,15 +313,14 @@
 <script src="/bootstrap/js/custom.js"></script>
 <!-- End Google Map -->
 
-<!-- Add to Cart Function-->
+<!-- Add to Cart / Remove from Cart / Update Cart Functions-->
 <script>
     $(document).ready(function () {
-        $('.directly-add-to-cart-btn').on('click', function () {
-
-            const foodName = $(this).data('food-name');
-            const foodCode = $(this).data('food-code');
-            const price = $(this).data('price');
-            const storeName = $(this).data('store-name');
+        $('#addToCartIcon').on('click', function () {
+            const foodName = $(this).attr('data-food-name');
+            const foodCode = $(this).attr('data-food-code');
+            const price = $(this).attr('data-price');
+            const storeName = $(this).attr('data-store-name');
 
             $.ajax({
                 type: 'POST',
@@ -292,18 +338,39 @@
                 }
             });
         });
+        $('.remove-from-cart').on('click', function () {
+            const cartItemIdx = $(this).data('cart-item-idx');
+            const storeName = $(this).data('store-name');
+
+            $.ajax({
+                type: 'DELETE',
+                url: '/members/' + encodeURIComponent(storeName) + '/cart/removeFromCart',
+                data: {
+                    cartItemIdx: cartItemIdx,
+                    storeName: storeName
+                },
+                success: function (response) {
+                    removeCartItem(cartItemIdx);
+                    updateCartSection(response);
+                },
+            });
+        });
+
+        function removeCartItem(cartItemIdx) {
+            $(`div[data-cart-item-idx="${cartItemIdx}"]`).remove();
+        }
 
         function updateCartSection(cartItems) {
-            const cartSection = $('#cartSection');
-            cartSection.empty();
-            cartItems.forEach(cartItem => {
+            const cartSection = $('#cartItems');
+            // cartSection.empty();
+            $.each(cartItems, function (index, cartItem) {
                 const cartItemElement = $('<div>').text(cartItem.name);
                 cartSection.append(cartItemElement);
             });
         }
     });
 </script>
-<!-- Purchase Cart Function-->
+<!-- Checkout Cart Function-->
 <script>
     $(document).ready(function () {
         $('.purchase-btn').on('click', function (event) {
@@ -336,7 +403,7 @@
         });
     });
 </script>
-<!-- Cash Amount Function-->
+<!-- Select Cash Amount Function-->
 <script>
     $(document).ready(function () {
         const paymentMethodRadios = $('input[name="paymentMethod"]');
@@ -365,6 +432,23 @@
 
         cashAmountRadios.filter(':checked').trigger('change');
     });
+</script>
+<!-- Add to Favorites Function-->
+<script>
+    function addToFavorites(foodIdx, storeName) {
+        foodIdx = parseInt(foodIdx);
+        $.ajax({
+            type: 'POST',
+            url: '/members/' + encodeURIComponent(storeName) + '/food/addFavorite',
+            data: {
+                foodIdx: foodIdx,
+            },
+            success: function (response) {
+            },
+            error: function (error) {
+            }
+        });
+    }
 </script>
 </body>
 
