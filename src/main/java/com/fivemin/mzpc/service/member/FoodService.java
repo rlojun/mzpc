@@ -1,7 +1,11 @@
 package com.fivemin.mzpc.service.member;
 
+import com.fivemin.mzpc.data.dto.FavoritesDto;
 import com.fivemin.mzpc.data.dto.FoodDto;
+import com.fivemin.mzpc.data.entity.Favorites;
 import com.fivemin.mzpc.data.entity.Food;
+import com.fivemin.mzpc.data.entity.Members;
+import com.fivemin.mzpc.data.repository.FavoritesRepository;
 import com.fivemin.mzpc.data.repository.FoodRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +20,13 @@ import java.util.stream.Collectors;
 public class FoodService {
 
     private final FoodRepository foodRepository;
+    private final FavoritesRepository favoritesRepository;
 
     @Autowired
     public FoodService(
-            FoodRepository foodRepository) {
+            FoodRepository foodRepository, FavoritesRepository favoritesRepository) {
         this.foodRepository = foodRepository;
+        this.favoritesRepository = favoritesRepository;
     }
 
     public List<FoodDto> getFoodList(String storeName) {
@@ -91,7 +97,6 @@ public class FoodService {
                 .collect(Collectors.toList());
     }
 
-
     public List<FoodDto> filterFoodByToppings(List<FoodDto> foodDtoList) {
         return foodDtoList.stream()
                 .filter(foodDto -> !foodDto.isTopping())
@@ -106,4 +111,33 @@ public class FoodService {
         log.info("distinctFoodCategories: {}", distinctFoodCategories);
         return distinctFoodCategories;
     }
+    public void addFavorite(Long foodIdx, Members members) {
+        Food food = foodRepository.getByFoodIdx(foodIdx);
+        log.info("foodIdx : {}", foodIdx);
+        log.info("members : {}", members);
+
+        Favorites favorites = new Favorites();
+            favorites.setFood(food);
+            favorites.setMembers(members);
+            favorites.setCode(favorites.getCode());
+
+            favoritesRepository.save(favorites);
+    }
+
+    public List<FavoritesDto> getFavorites(Long memberIdx) {
+        return favoritesRepository.findFavoritesByMemberIdx(memberIdx)
+                .stream()
+                .map(this::convertToFavoritesDto)
+                .collect(Collectors.toList());
+    }
+
+    public FavoritesDto convertToFavoritesDto(Favorites favorites) {
+        return FavoritesDto.builder()
+                .idx(favorites.getIdx())
+                .code(favorites.getCode())
+                .food(favorites.getFood())
+                .members(favorites.getMembers())
+                .build();
+    }
+
 }
