@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -30,13 +31,16 @@ public class AdminFoodService {
     private final FoodRepository foodRepository;
     private final CategoryRepository categoryRepository;
 
+    private final EntityManager entityManager;
+
     @Autowired
-    public AdminFoodService(FoodRepository foodRepository, CategoryRepository categoryRepository) {
+    public AdminFoodService(FoodRepository foodRepository, CategoryRepository categoryRepository, EntityManager entityManager) {
         this.foodRepository = foodRepository;
         this.categoryRepository = categoryRepository;
+        this.entityManager = entityManager;
     }
 
-    public List<FoodDto> getFoodList(String storeCode,boolean topping) {
+    public List<FoodDto> getFoodList(String storeCode, boolean topping) {
         List<Food> foods = foodRepository.findByStoreCode(storeCode,topping);
         List<FoodDto> foodDtos = new ArrayList<>();
 
@@ -160,8 +164,7 @@ public class AdminFoodService {
         updateFood.setTopping(foodDto.isTopping());
         updateFood.setCategory(category);
 
-        log.info("updateFood : {}",updateFood);
-        foodRepository.save(updateFood);
+        entityManager.merge(updateFood);
 
         fileUpload(foodPicture);
 
