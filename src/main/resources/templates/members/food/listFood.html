@@ -62,11 +62,10 @@
         </div>
 
         <ul class="filters_menu">
-            <li class="active" data-filter="*">All</li>
+            <li class="active" data-filter="all">All</li>
+            <li data-filter="favorites">Favorites</li>
             <li th:each="categoryName : ${distinctFoodCategories}" th:text="${categoryName}"
                 th:data-filter="'.' + ${categoryName}"></li>
-<!--            <li th:each="favoritesList : ${distinctFoodCategories}" th:text="${favoritesList}"-->
-<!--                th:data-filter="'.' + ${favoritesList}"></li>-->
         </ul>
 
         <div class="filters-content">
@@ -87,7 +86,8 @@
                                 <a th:href="@{/members/{storeName}/food/detail/{foodName}(storeName=${(storeName)}, foodName=${menu.name}, foodCode=${menu.code})}">
                                     <i class="material-icons">add</i>
                                 </a>
-                                <a href="">
+                                <a href="#"
+                                   th:attr="onclick='addToFavorites(\'' + ${menu.idx} + '\', \'' + ${storeName} + '\'); return false;'">
                                     <i class="material-icons">grade</i>
                                 </a>
                                 <form class="directly-add-to-cart" method="post" id="addToCartForm">
@@ -100,6 +100,39 @@
                                         add_shopping_cart
                                     </i>
                                 </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div th:each="favorites : ${favorites}" class="col-sm-6 col-lg-4 favorites">
+                    <div class="box">
+                        <div class="img-box"
+                             th:attr="data-food-code=${favorites.food.code}">
+                            <img th:src="${favorites.food.picture}" alt="">
+                        </div>
+                        <div class="detail-box"
+                             th:attr="data-food-code=${favorites.food.getName()}">
+                            <h5 th:text="${favorites.food.getName()}"/>
+                            <p th:text="${favorites.food.getDescription()}"/>
+                            <div class="options">
+                                <h6 th:text="${favorites.food.price + '원'}"/>
+                                <a th:href="@{/members/{storeName}/food/detail/{foodName}(storeName=${(storeName)}, foodName=${favorites.food.name}, foodCode=${favorites.food.code})}">
+                                    <i class="material-icons">add</i>
+                                </a>
+                                <a href="#"
+                                   th:attr="onclick='addToFavorites(\'' + ${favorites.food.idx} + '\', \'' + ${storeName} + '\'); return false;'">
+                                    <i class="material-icons">grade</i>
+                                </a>
+                                <!--                                <form class="directly-add-to-cart" method="post" id="addToCartForm">-->
+                                <!--                                    <i class="material-icons shopping-cart-icon"-->
+                                <!--                                       th:data-food-name="${favorites.food.name}"-->
+                                <!--                                       th:data-food-code="${favorites.food.code}"-->
+                                <!--                                       th:data-price="${favorites.food.price}"-->
+                                <!--                                       th:data-store-name="${favorites.food.category.store.name}"-->
+                                <!--                                       id="addToCartIcon">-->
+                                <!--                                        add_shopping_cart-->
+                                <!--                                    </i>-->
+                                <!--                                </form>-->
                             </div>
                         </div>
                     </div>
@@ -123,9 +156,11 @@
                       th:object="${cartList}" method="post">
                     <ul id="cartItems">
                         <th:block th:if="${cartList != null}">
-                            <div th:each="cart, cartIndex : ${cartList}" class="cartItem" th:data-cart-item-idx="${cart.idx}">
+                            <div th:each="cart, cartIndex : ${cartList}" class="cartItem"
+                                 th:data-cart-item-idx="${cart.idx}">
                                 <span th:text="${cartIndex.index + 1 + '. ' + cart.food.name + ' - ' + cart.food.price + '원'}"></span>
-                                <button type="button" class="remove-from-cart" th:data-cart-item-idx="${cart.idx}" th:data-store-name="${cart.members.getStore().getName()}">
+                                <button type="button" class="remove-from-cart" th:data-cart-item-idx="${cart.idx}"
+                                        th:data-store-name="${cart.members.getStore().getName()}">
                                     &times;
                                 </button>
                                 <input type="hidden" name="foodName" th:value="${cart.food.name}">
@@ -311,8 +346,8 @@
                 type: 'DELETE',
                 url: '/members/' + encodeURIComponent(storeName) + '/cart/removeFromCart',
                 data: {
-                    cartItemIdx : cartItemIdx,
-                    storeName : storeName
+                    cartItemIdx: cartItemIdx,
+                    storeName: storeName
                 },
                 success: function (response) {
                     removeCartItem(cartItemIdx);
@@ -324,7 +359,6 @@
         function removeCartItem(cartItemIdx) {
             $(`div[data-cart-item-idx="${cartItemIdx}"]`).remove();
         }
-
 
         function updateCartSection(cartItems) {
             const cartSection = $('#cartItems');
@@ -398,6 +432,23 @@
 
         cashAmountRadios.filter(':checked').trigger('change');
     });
+</script>
+<!-- Add to Favorites Function-->
+<script>
+    function addToFavorites(foodIdx, storeName) {
+        foodIdx = parseInt(foodIdx);
+        $.ajax({
+            type: 'POST',
+            url: '/members/' + encodeURIComponent(storeName) + '/food/addFavorite',
+            data: {
+                foodIdx: foodIdx,
+            },
+            success: function (response) {
+            },
+            error: function (error) {
+            }
+        });
+    }
 </script>
 </body>
 
