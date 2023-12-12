@@ -44,9 +44,8 @@ public class MemberOrderController {
         List<Orders> ordersLog = orderService.getOrdersByMemberIdx(members.getIdx());
 
         if (ordersLog != null) {
-            List<Orders> ordersToReverse = new ArrayList<>(ordersLog);
-            Collections.reverse(ordersToReverse);
-            model.addAttribute("orders", ordersToReverse);
+            Collections.reverse(ordersLog);
+            model.addAttribute("orders", ordersLog);
         }
 
         return new ModelAndView("members/food/listOrder");
