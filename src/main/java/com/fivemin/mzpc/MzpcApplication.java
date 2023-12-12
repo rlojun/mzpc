@@ -9,7 +9,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EntityScan("com.fivemin.mzpc.data.entity")
 @EnableJpaAuditing
 public class MzpcApplication {
-
+    static {
+        System.setProperty("com.amazonaws.sdk.disableEc2Metadata", "true");
+    }
     public static void main(String[] args) {
         SpringApplication.run(MzpcApplication.class, args);
     }
