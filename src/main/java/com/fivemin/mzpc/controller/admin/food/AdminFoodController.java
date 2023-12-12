@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
@@ -62,26 +63,26 @@ public class AdminFoodController {
         model.addAttribute("foods",foodDtos);
 
         String resultView = "";
-        if (topping == false) {
-            resultView = "/admin/food/listFood";
-        } else if (topping == true) {
-            resultView = "/admin/food/topping/toppingList";
+        if (!topping) {
+            resultView = "admin/food/listFood";
+        } else {
+            resultView = "admin/food/topping/toppingList";
 
         }
         return resultView;
     }
 
     @GetMapping(value = "/addFoodForm")
-    public String addFoodForm(@PathVariable String storeCode, @RequestParam boolean topping ,Model model){
+    public String addFoodForm(@PathVariable String storeCode, @RequestParam boolean topping , Model model){
         List<CategoryDto> categoryDtos = adminCategoryService.getListCategory(storeCode);
         model.addAttribute("storeCode", storeCode);
         model.addAttribute("categories",categoryDtos);
 
         String resultView = "";
-        if (topping == false) {
-            resultView = "/admin/food/addFoodForm";
-        } else if (topping == true) {
-            resultView = "/admin/food/topping/addToppingForm";
+        if (!topping) {
+            resultView = "admin/food/addFoodForm";
+        } else {
+            resultView = "admin/food/topping/addToppingForm";
 
         }
 
@@ -94,7 +95,7 @@ public class AdminFoodController {
         model.addAttribute("storeCode", storeCode);
         model.addAttribute("categories",categoryDtos);
 
-        return "/admin/food/topping/addToppingForm";
+        return "admin/food/topping/addToppingForm";
     }
 
     @GetMapping(value = "/detailFood")
@@ -106,13 +107,13 @@ public class AdminFoodController {
         model.addAttribute("storeCode",storeCode);
 
         String resultView = "";
-        if (topping == false) {
+        if (!topping) {
             resultView = "detailFood";
-        } else if (topping == true) {
+        } else if (topping) {
             resultView = "topping/detailTopping";
         }
 
-        return "/admin/food/"+resultView;
+        return "admin/food/"+resultView;
     }
 
 
