@@ -38,7 +38,7 @@ public class AdminTimeController {
         List<TimeDto> listTimes = adminTimeService.listTime(storeCode);
         log.info("listTime : {} : ==>  ", listTimes);
         model.addAttribute("listTime", listTimes);
-        return "/admin/time/listTime";
+        return "admin/time/listTime";
     }
 
     // 시간 상품 등록 폼 이동

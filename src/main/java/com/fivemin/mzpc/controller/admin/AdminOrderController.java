@@ -40,7 +40,7 @@ public class AdminOrderController {
         model.addAttribute("ordersDtos",ordersDtos);
         model.addAttribute("storeCode",stoerCode);
         log.info("ordersDtos : {}",ordersDtos);
-        return "/admin/order/orderList";
+        return "admin/order/orderList";
     }
 
     // 취소, 완료 메서드 묶어서 하나 더 만들기 ( 매핑 어노테이션 url 작성)

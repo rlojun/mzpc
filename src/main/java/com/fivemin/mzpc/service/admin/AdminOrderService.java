@@ -37,9 +37,9 @@ public class AdminOrderService {
 
 
 
-    public List<OrdersDto> getOrderList(String stoerCode) {
+    public List<OrdersDto> getOrderList(String storeCode) {
 
-        List<Orders> ordersList = ordersRepository.findAllById(stoerCode);
+        List<Orders> ordersList = ordersRepository.findAllByStoreCode(storeCode);
         List<OrdersDto> ordersDtos = new ArrayList<>();
         List<CartDto> cartDtos = new ArrayList<>();
 
@@ -77,6 +77,8 @@ public class AdminOrderService {
                     .cookComplete(orders.isCookComplete())
                     .purchaseStatus(orders.isPurchaseStatus())
                     .payment(orders.getPayment())
+                    .note(orders.getNote())
+                    .totalCost(orders.getTotalCost())
                     .cartDtos(cartDtos)
                     .build();
 

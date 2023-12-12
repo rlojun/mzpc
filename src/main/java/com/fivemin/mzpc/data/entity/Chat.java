@@ -37,7 +37,8 @@ public class Chat {
     @JoinColumn(name = "member_idx", nullable = false)
     private Members members;
 
-    private enum MessageType{
+    // 태섭 수정
+    public enum MessageType{
         ENTER,TALK
     }
 }

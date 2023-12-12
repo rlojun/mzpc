@@ -63,9 +63,9 @@ public class AdminFoodController {
 
         String resultView = "";
         if (topping == false) {
-            resultView = "/admin/food/listFood";
+            resultView = "admin/food/listFood";
         } else if (topping == true) {
-            resultView = "/admin/food/topping/toppingList";
+            resultView = "admin/food/topping/toppingList";
 
         }
         return resultView;
@@ -79,9 +79,9 @@ public class AdminFoodController {
 
         String resultView = "";
         if (topping == false) {
-            resultView = "/admin/food/addFoodForm";
+            resultView = "admin/food/addFoodForm";
         } else if (topping == true) {
-            resultView = "/admin/food/topping/addToppingForm";
+            resultView = "admin/food/topping/addToppingForm";
 
         }
 
@@ -94,7 +94,7 @@ public class AdminFoodController {
         model.addAttribute("storeCode", storeCode);
         model.addAttribute("categories",categoryDtos);
 
-        return "/admin/food/topping/addToppingForm";
+        return "admin/food/topping/addToppingForm";
     }
 
     @GetMapping(value = "/detailFood")
@@ -112,7 +112,7 @@ public class AdminFoodController {
             resultView = "topping/detailTopping";
         }
 
-        return "/admin/food/"+resultView;
+        return "admin/food/"+resultView;
     }
 
 
