@@ -7,38 +7,38 @@ import org.springframework.data.annotation.CreatedDate;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
 @Getter
 @Setter
-public class Chat {
-    //좌석 번호로 PK
+@Entity
+public class ChatMessage {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pc_num")
-    private Long pcNum;
+    private Long id;
 
-    //메세지 유형(Enter,Talk만 들어갈 수 있음)
     @Enumerated(EnumType.STRING)
-    @Column(length = 5, nullable = false)
     private MessageType type;
 
-    //사용자가 보낸 채팅
-    private String memberChat;
+    private String content;
 
-    //관리자가 보낸 채팅
-    private String adminChat;
+    private String sender;
 
-    //채팅한 날짜
+    private String Receiver;
+
+    private Long pcNum;
+
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime chatDate;
 
     @OneToOne
-    @JoinColumn(name = "member_idx", nullable = false)
+    @JoinColumn(name = "member_id", nullable = false)
     private Members members;
 
-    // 태섭 수정
-    public enum MessageType{
-        ENTER,TALK
+    private String time;
+
+    public void setTime(String time) {
+        this.time = time;  // 시간을 설정하는 setTime 메소드
     }
+
 }

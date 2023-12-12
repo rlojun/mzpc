@@ -1,0 +1,107 @@
+    <!DOCTYPE html>
+    <html lang="en" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>문의 사항</title>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/gh/sockjs/sockjs-client/dist/sockjs.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+    </head>
+    <body class="bg-gray-100">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-white shadow">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                <h1 class="text-3xl font-bold text-gray-900">
+                    1:1 문의
+                </h1>
+                <!-- 뒤로가기 버튼 -->
+                <button onclick="location.href='index.html'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    뒤로가기
+                </button>
+            </div>
+        </header>
+
+
+        <!-- Main -->
+        <main class="flex-1">
+            <div class="py-6">
+                <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+                    <!-- 내용 -->
+                    <div class="bg-white shadow sm:rounded-lg">
+                        <div class="px-4 py-5 sm:p-5">
+                            <!-- Chat Box -->
+                            <div id="chatBox" class="h-64 border overflow-auto mb-2">
+                                <!-- 채팅 메시지가 이곳에 추가됨 -->
+                            </div>
+                            <!-- Send Message Form -->
+                            <form id="sendMessageForm">
+                                <div class="chat-input">
+                                    <label for="chatInput"></label><input type="text" id="chatInput" class="w-full p-2 border border-gray-300 rounded-md mb-4" placeholder="메시지 입력..." required />
+                                    <input type="hidden" id="memberId" value="${memberId}">
+                                    <button id="sendButton" class="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">보내기</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+
+
+        <!-- Footer -->
+        <footer class="bg-white shadow p-4 text-center">
+            <span class="text-sm text-gray-500">문의사항이 있으시면 연락해주세요. 관리자: 010-7141-8847</span>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var socket = new SockJS('http://localhost:9010/ws');
+            var stompClient = Stomp.over(socket);
+            var roomId = 'room123'; // 채팅방의 이름
+            var topic = "/topic/" + roomId; // 채팅방의 토픽
+
+
+
+            // 웹 소켓 연결 서버
+            stompClient.connect({}, function (frame) {
+
+                stompClient.subscribe(topic, function(chatMessage) {
+                    var message = JSON.parse(chatMessage.body);
+                    var chatBox = document.querySelector('#chatBox')
+                    var messageContainer = document.createElement('div');
+                    var messageText = document.createTextNode(message.sender + ": " + message.content); // 메시지의 내용을 표시
+
+                    messageContainer.appendChild(messageText);
+                    chatBox.appendChild(messageContainer); // 채팅박스에 메시지를 추가
+                });
+            });
+
+            // 메시지 전송 설정
+            document.querySelector('#sendMessageForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                var messageInput = document.querySelector('#chatInput');
+                var chatBox = document.querySelector('#chatBox');
+
+                // 사용자의 ID를 가져옵니다.
+                var memberId = document.getElementById('memberId').value;
+
+                // 메시지 전송
+                stompClient.send(`/app/chat.sendMessage/${roomId}`, {}, JSON.stringify({
+                    'sender': memberId, // 사용자 ID를 보낸이로 설정
+                    'content': messageInput.value,
+                    'topic': `/topic/${roomId}` // 메시지를 보낼 토픽
+                }));
+
+                messageInput.value = '';
+            });
+        });
+        </script>
+        </body>
+    </html>
