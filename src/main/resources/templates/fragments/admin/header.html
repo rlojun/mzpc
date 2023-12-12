@@ -58,7 +58,7 @@
                             <a class="nav-link" href="/admin/order">주문 목록</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/admin/member">사용자 목록</a>
+                            <a class="nav-link" th:href="@{/admin/{storeCode}/listMember(storeCode=${storeCode})}">사용자 목록 <span class="sr-only">(current)</span> </a>
                         </li>
                     </ul>
                     <div class="user_option">

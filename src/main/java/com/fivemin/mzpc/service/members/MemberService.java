@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -51,4 +52,16 @@ public class MemberService {
         memberLoginHistory.setStatus(false);
         memberLoginHistoryRepository.save(memberLoginHistory);
     }
+
+    
+
+    public List<Members> getAllMembers() {
+        return memberRepository.findAll();
+    }
+
+    public Members getMemberById(String memberId) {
+        return memberRepository.findById(memberId); //.orElse(null);
+    }
+
+
 }
