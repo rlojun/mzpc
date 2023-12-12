@@ -1,4 +1,4 @@
-package com.fivemin.mzpc.service.members;
+package com.fivemin.mzpc.service.member;
 
 import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.data.entity.history.MemberLoginHistory;
