@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface OrdersRepository extends JpaRepository<Orders, Long> {
 
-    @Query("SELECT orders FROM Orders orders WHERE orders.store.code = ?1 order by orders.createdAt")
-    List<Orders> findAllByStoreCode(String storeCode);
-
     Orders findByCode(String code);
 
     @Query("SELECT DISTINCT o FROM Orders o JOIN o.carts c WHERE c.members.idx = ?1")
     List<Orders> findOrdersByMemberIdx(Long memberIdx);
+
+    @Query("SELECT orders FROM Orders orders WHERE orders.cookComplete = false and orders.store.code =?1 order by orders.createdAt")
+    List<Orders> findAllCookIncompleteByStoreCode(String storeCode);
 }

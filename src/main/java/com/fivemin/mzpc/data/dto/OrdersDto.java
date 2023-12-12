@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -24,4 +25,6 @@ public class OrdersDto {
     private List<Cart> orderedFoods;
     private StoreDto storeDto;
     private List<CartDto> cartDtos;
+    private String memberName;
+    private LocalDateTime createdAt;
 }
