@@ -62,11 +62,6 @@ public class CartService {
         return cartRepository.findAllByMembersIdx(memberIdx);
     }
 
-    // 유저별 주문 안한 카트 목록 가져오기 (안 쓰고 있음)
-    public List<Cart> getNewCartListByMemberIdx(Long memberIdx) {
-        return cartRepository.findAllByMembersIdxAndOrderCompleteIsFalse(memberIdx);
-    }
-
     public void removeFromCart(Long cartItemIdx) {
         cartRepository.removeFromCartByMemberIdx(cartItemIdx);
     }
