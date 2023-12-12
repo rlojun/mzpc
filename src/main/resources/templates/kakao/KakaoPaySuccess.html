@@ -5,7 +5,7 @@
     <title>Insert title here</title>
 </head>
 <body>
-    <form th:action="@{'/members/' + ${storeName} + '/purchaseTime/' + ${timeCode} + '/kakaoPaySuccess'}"
+    <form th:action="@{members/{storeName}/purchaseTime/{timeCode}/kakaoPaySuccess (storeName=${storeName}, timeCode=${timeCode})}"
           method="post">
         카카오페이 결제가 정상적으로 완료되었습니다.
 
