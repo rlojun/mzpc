@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
@@ -116,43 +115,4 @@ public class AdminFoodController {
         return "admin/food/"+resultView;
     }
 
-
-    //    // 카테고리별 음상 상품 리스트
-//    @GetMapping("/{categoryId}")
-//    public String listFoodCategory() {
-//        return "";
-//    }
-//
-//    // 즐겨찾기 리스트
-//    @GetMapping("/favorites")
-//    public String listFoodFavorites() {
-//        return "";
-//    }
-//
-//    // 토핑 리스트
-//    @GetMapping("/topping")
-//    public String listTopping(){return "";}
-//    /*
-//    addFoodForm
-//    (음식 상품 추가 화면 이동 메서드)
-//
-//    addFood
-//    (음식 상품 추가 등록 확인 메서드)
-//
-//    detailFood
-//    (음식 상품 상세 화면 이동 메서드)
-//
-//    returnFoodList
-//    (음식 상세 화면에서 음식 상품 목록으로 돌아가기 메서드)     // > 삭제 예정
-//
-//    modifyFoodForm
-//    (음식 상품 수정 화면으로 이동하는 메서드)
-//
-//    modifyFood
-//    (음식 상품 수정 확인 메서드)
-//
-//    deleteFood
-//    (음식 상품 삭제 확인 메서드)
-//
-//     */
 }
