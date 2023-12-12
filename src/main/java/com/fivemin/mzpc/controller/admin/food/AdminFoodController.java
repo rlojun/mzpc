@@ -62,26 +62,26 @@ public class AdminFoodController {
         model.addAttribute("foods",foodDtos);
 
         String resultView = "";
-        if (topping == false) {
-            resultView = "/admin/food/listFood";
-        } else if (topping == true) {
-            resultView = "/admin/food/topping/toppingList";
+        if (!topping) {
+            resultView = "admin/food/listFood";
+        } else {
+            resultView = "admin/food/topping/toppingList";
 
         }
         return resultView;
     }
 
     @GetMapping(value = "/addFoodForm")
-    public String addFoodForm(@PathVariable String storeCode, @RequestParam boolean topping ,Model model){
+    public String addFoodForm(@PathVariable String storeCode, @RequestParam boolean topping , Model model){
         List<CategoryDto> categoryDtos = adminCategoryService.getListCategory(storeCode);
         model.addAttribute("storeCode", storeCode);
         model.addAttribute("categories",categoryDtos);
 
         String resultView = "";
-        if (topping == false) {
-            resultView = "/admin/food/addFoodForm";
-        } else if (topping == true) {
-            resultView = "/admin/food/topping/addToppingForm";
+        if (!topping) {
+            resultView = "admin/food/addFoodForm";
+        } else {
+            resultView = "admin/food/topping/addToppingForm";
 
         }
 
@@ -94,7 +94,7 @@ public class AdminFoodController {
         model.addAttribute("storeCode", storeCode);
         model.addAttribute("categories",categoryDtos);
 
-        return "/admin/food/topping/addToppingForm";
+        return "admin/food/topping/addToppingForm";
     }
 
     @GetMapping(value = "/detailFood")
@@ -106,52 +106,13 @@ public class AdminFoodController {
         model.addAttribute("storeCode",storeCode);
 
         String resultView = "";
-        if (topping == false) {
+        if (!topping) {
             resultView = "detailFood";
-        } else if (topping == true) {
+        } else if (topping) {
             resultView = "topping/detailTopping";
         }
 
-        return "/admin/food/"+resultView;
+        return "admin/food/"+resultView;
     }
 
-
-    //    // 카테고리별 음상 상품 리스트
-//    @GetMapping("/{categoryId}")
-//    public String listFoodCategory() {
-//        return "";
-//    }
-//
-//    // 즐겨찾기 리스트
-//    @GetMapping("/favorites")
-//    public String listFoodFavorites() {
-//        return "";
-//    }
-//
-//    // 토핑 리스트
-//    @GetMapping("/topping")
-//    public String listTopping(){return "";}
-//    /*
-//    addFoodForm
-//    (음식 상품 추가 화면 이동 메서드)
-//
-//    addFood
-//    (음식 상품 추가 등록 확인 메서드)
-//
-//    detailFood
-//    (음식 상품 상세 화면 이동 메서드)
-//
-//    returnFoodList
-//    (음식 상세 화면에서 음식 상품 목록으로 돌아가기 메서드)     // > 삭제 예정
-//
-//    modifyFoodForm
-//    (음식 상품 수정 화면으로 이동하는 메서드)
-//
-//    modifyFood
-//    (음식 상품 수정 확인 메서드)
-//
-//    deleteFood
-//    (음식 상품 삭제 확인 메서드)
-//
-//     */
 }

@@ -62,8 +62,8 @@ public class CartService {
         return cartRepository.findAllByMembersIdx(memberIdx);
     }
 
-    public List<Cart> getNewCartListByMemberIdx(Long memberIdx) {
-        return cartRepository.findAllByMembersIdxAndOrderCompleteIsFalse(memberIdx);
+    public void removeFromCart(Long cartItemIdx) {
+        cartRepository.removeFromCartByMemberIdx(cartItemIdx);
     }
 
     public void clearCart(Long memberIdx) {

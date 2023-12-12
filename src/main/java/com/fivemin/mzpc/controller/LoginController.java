@@ -143,13 +143,6 @@ public class LoginController {
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        // 임시 - 원래대로 바꿔도 될듯
-        Members members = (Members) session.getAttribute("members");
-        Long memberIdx = members.getIdx();
-        List<Cart> cartList = cartService.getCartListByMemberIdx(memberIdx);
-        if (cartList.stream().anyMatch(cart -> !cart.isOrderComplete())) {
-            cartService.clearCart(memberIdx);
-        }
         session.invalidate();
         return "redirect:/login?logout";
     }
@@ -175,9 +168,11 @@ public class LoginController {
         log.info("autoLogout 실행");
         HttpSession session = request.getSession();
         String memberId = (String) session.getAttribute("id");
+        Members member = (Members) session.getAttribute("members");
+
         log.info("memberId : {} : ", memberId);
         memberTimeService.realRemainingTime(memberId);
-        cartService.clearCart(memberId);
+        cartService.clearCart(member.getIdx());
         memberService.logoutMember(memberId);
         session.invalidate();
 

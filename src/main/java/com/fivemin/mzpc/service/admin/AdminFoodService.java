@@ -1,5 +1,8 @@
 package com.fivemin.mzpc.service.admin;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.fivemin.mzpc.data.dto.CategoryDto;
 import com.fivemin.mzpc.data.dto.FoodDto;
 import com.fivemin.mzpc.data.entity.Category;
@@ -8,11 +11,16 @@ import com.fivemin.mzpc.data.repository.CategoryRepository;
 import com.fivemin.mzpc.data.repository.FoodRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,13 +38,22 @@ public class AdminFoodService {
     private final FoodRepository foodRepository;
     private final CategoryRepository categoryRepository;
 
+    private final EntityManager entityManager;
+
+    private final AmazonS3Client amazonS3Client;
+
+    @Value(value = "${cloud.aws.s3.bucket}")
+    private String bucket;
+
     @Autowired
-    public AdminFoodService(FoodRepository foodRepository, CategoryRepository categoryRepository) {
+    public AdminFoodService(FoodRepository foodRepository, CategoryRepository categoryRepository, EntityManager entityManager,AmazonS3Client amazonS3Client) {
         this.foodRepository = foodRepository;
         this.categoryRepository = categoryRepository;
+        this.entityManager = entityManager;
+        this.amazonS3Client = amazonS3Client;
     }
 
-    public List<FoodDto> getFoodList(String storeCode,boolean topping) {
+    public List<FoodDto> getFoodList(String storeCode, boolean topping) {
         List<Food> foods = foodRepository.findByStoreCode(storeCode,topping);
         List<FoodDto> foodDtos = new ArrayList<>();
 
@@ -106,10 +123,12 @@ public class AdminFoodService {
                 .category(category)
                 .build();
 
-        fileUpload(foodPicture);
+//        fileUpload(foodPicture);
 
         foodRepository.save(food);
+        putS3(foodPicture, foodPicture.getOriginalFilename());
     }
+
 
 
     private String makeCode(){
@@ -147,21 +166,20 @@ public class AdminFoodService {
     @Transactional
     public void modifyFood(FoodDto foodDto,String categoryName,MultipartFile foodPicture) {
         Category category = categoryRepository.findByName(categoryName);
-        Food food = foodRepository.findById(foodDto.getIdx()).orElse(null);
-        String fileName = foodPicture==null? food.getPicture() : foodPicture.getOriginalFilename();
-        Food updateFood = Food.builder()
-                .idx(foodDto.getIdx())
-                .code(foodDto.getCode())
-                .name(foodDto.getName())
-                .price(foodDto.getPrice())
-                .picture(fileName)
-                .description(foodDto.getDescription())
-                .stock(foodDto.getStock())
-                .topping(foodDto.isTopping())
-                .category(category)
-                .build();
+        Food updateFood = foodRepository.findById(foodDto.getIdx()).orElse(null);
+        String fileName = foodPicture==null? updateFood.getPicture() : foodPicture.getOriginalFilename();
 
-        foodRepository.save(updateFood);
+        updateFood.setIdx(foodDto.getIdx());
+        updateFood.setCode(foodDto.getCode());
+        updateFood.setName(foodDto.getName());
+        updateFood.setPrice(foodDto.getPrice());
+        updateFood.setPicture(fileName);
+        updateFood.setDescription(foodDto.getDescription());
+        updateFood.setStock(foodDto.getStock());
+        updateFood.setTopping(foodDto.isTopping());
+        updateFood.setCategory(category);
+
+        entityManager.merge(updateFood);
 
         fileUpload(foodPicture);
 
@@ -176,8 +194,9 @@ public class AdminFoodService {
         //파일이 있는지 없는지 판단
         if (foodPicture!=null) {
             String fileName = StringUtils.cleanPath(foodPicture.getOriginalFilename());
+            log.info("파일경로 : {}", File.separator);
 
-            String relativePath = "/bootstrap/images/";
+            String relativePath = File.separator+"bootstrap"+File.separator+"images"+File.separator;
 
             try {
                 Path uploadPath = Paths.get(relativePath);
@@ -192,6 +211,28 @@ public class AdminFoodService {
                 System.out.println("fileUpload() Err --> " + e.getMessage());
             }
         }
+    }
+
+    public String putS3(MultipartFile foodPicture, String fileName) {
+        log.info("bucket : {}",bucket);
+        try {
+            File uploadFile = convertMultiPartFileToFile(foodPicture);
+            amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(
+                    CannedAccessControlList.PublicRead));
+            return amazonS3Client.getUrl(bucket, fileName).toString();
+        } catch (IOException e) {
+            System.out.println("putS3() ==>"+e.getMessage());
+            return null;
+        }
+    }
+
+    //MutipartFile을 File로 타입 변경 메서드
+    private File convertMultiPartFileToFile(MultipartFile multipartFile) throws IOException {
+        File file = new File(multipartFile.getOriginalFilename());
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            fos.write(multipartFile.getBytes());
+        }
+        return file;
     }
 
 }

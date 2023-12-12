@@ -1,17 +1,17 @@
 package com.fivemin.mzpc.controller.Member.food;
 
+import com.fivemin.mzpc.data.dto.FavoritesDto;
 import com.fivemin.mzpc.data.dto.FoodDto;
 import com.fivemin.mzpc.data.entity.Cart;
+import com.fivemin.mzpc.data.entity.Favorites;
 import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.service.member.CartService;
 import com.fivemin.mzpc.service.member.FoodService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -45,17 +45,20 @@ public class MemberFoodController {
     @GetMapping("/listFood")
     public ModelAndView listFoodMember(Model model, @PathVariable(required = false) String storeName, HttpSession httpSession) {
         String validStoreName = (String) httpSession.getAttribute("storeName");
+        Members members = (Members) httpSession.getAttribute("members");
         model.addAttribute("validStoreName", validStoreName);
 
         if (validStoreName != null) {
             List<FoodDto> foodDtoList = foodService.getFoodList(storeName);
+            // 토핑 아닌 음식들만 노출 위한 메서드
             List<FoodDto> filteredFoodList = foodService.filterFoodByToppings(foodDtoList);
             List<String> distinctFoodCategories = foodService.createDistinctCategories(filteredFoodList);
+            List<FavoritesDto> favorites = foodService.getFavorites(members.getIdx());
 
             model.addAttribute("foodDtoList", filteredFoodList);
             model.addAttribute("distinctFoodCategories", distinctFoodCategories);
+            model.addAttribute("favorites", favorites);
 
-            Members members = (Members) httpSession.getAttribute("members");
             List<Cart> cartList = cartService.getCartListByMemberIdx(members.getIdx());
 
             if (cartList != null) {
@@ -90,8 +93,6 @@ public class MemberFoodController {
 
             List<FoodDto> toppings = foodService.getToppingsByCategory(foodDetails.getCategoryName());
             model.addAttribute("toppings", toppings);
-            log.info("toppings : {}", toppings);
-            log.info("categoryName : {}", foodDetails.getCategoryName());
         }
 
         return new ModelAndView("members/food/detailFood");
@@ -102,9 +103,24 @@ public class MemberFoodController {
 //    public String listFoodFavorites() {
 //       return "members/food/listFood/{favorites}";
 //    }
+
+
 //    addFoodFavorites
 //    (음식 즐겨 찾기 설정 하기)
-//
+    @PostMapping("/addFavorite")
+    public ResponseEntity<String> addFavorite(@RequestParam Long foodIdx,
+                                              @PathVariable(required = false) String storeName,
+                                              HttpSession httpSession) {
+        Members members = (Members) httpSession.getAttribute("members");
+        log.info("foodIdx + members : {} {}", foodIdx, members);
+
+        foodService.addFavorite(foodIdx, members);
+
+        return ResponseEntity.ok("즐겨 찾기에 추가했습니다.");
+    }
+
+
+
 //    deleteFoodFavorites
 //    (음식 즐겨 찾기 제거 하기)
 //
