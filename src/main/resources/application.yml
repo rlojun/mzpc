@@ -11,8 +11,13 @@ spring:
   session:
     store-type: redis
     redis:
-      host: mzpcredis-kkngkc.serverless.apn2.cache.amazonaws.com
-      port: 6379
+      host: localhost
+      port: 6380
+      password : 1234
+
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
 
   datasource:
     url: jdbc:mysql://localhost:3307/mzpc
