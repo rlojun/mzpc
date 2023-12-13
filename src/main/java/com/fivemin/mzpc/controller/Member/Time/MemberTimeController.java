@@ -115,7 +115,7 @@ public class MemberTimeController {
         log.info("usedMileage : {}", usedMileage);
         model.addAttribute("storeName", storeName);
         model.addAttribute("info", kakaopay.kakaoPayInfo(pg_token, timeCode, usedMileage));
-        return "kakao/kakaoPaySuccess";
+        return "kakao/KakaoPaySuccess";
     }
 
     // 시간 추가 및 마일리지 적립 로직
