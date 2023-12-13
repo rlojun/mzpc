@@ -67,7 +67,7 @@ public class AdminFoodService {
                     .code(food.getCode())
                     .name(food.getName())
                     .price(food.getPrice())
-                    .picture(food.getPicture())
+                    .picture("https://mzpc-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+food.getPicture())
                     .description(food.getDescription())
                     .stock(food.getStock())
                     .topping(food.isTopping())
