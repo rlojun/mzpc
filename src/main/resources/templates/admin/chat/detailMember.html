@@ -1,40 +1,60 @@
     <!DOCTYPE html>
-    <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+    <html xmlns:th="http://www.thymeleaf.org">
     <head>
+            <!-- Basic -->
+            <meta charset="utf-8" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <!-- Mobile Metas -->
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+            <!-- Site Metas -->
+            <meta name="keywords" content="" />
+            <meta name="description" content="" />
+            <meta name="author" content="" />
+            <link rel="shortcut icon" href="/bootstrap/images/favicon.png" type="">
+
+            <title> Mzpc </title>
+
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>문의 사항</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
         <script src="https://cdn.tailwindcss.com"></script>
+        <!-- bootstrap core css -->
+        <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css" />
+
+        <!--owl slider stylesheet -->
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+        <!-- nice select  -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
+        <!-- font awesome style -->
+        <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet" />
+
+        <!-- Custom styles for this template -->
+        <link href="/bootstrap/css/style.css" rel="stylesheet" />
+        <!-- responsive style -->
+        <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
         <style>
 
         </style>
     </head>
-    <body class="bg-gray-100">
-    <div class="min-h-screen flex flex-col">
-        <!-- Header -->
-        <header class="bg-white shadow">
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                <h1 class="text-3xl font-bold text-gray-900">
-                    사용자 목록
-                </h1>
-            </div>
-        </header>
+
+    <body class="sub_page">
+
+    <div class="hero_area">
+        <div class="bg-box">
+            <img src="/bootstrap/images/hero-bg.jpg" alt="">
+        </div>
+        <header th:replace="fragments/admin/header :: header"></header>
+    </div>
 
         <!-- Main -->
         <main class="flex-1">
             <div class="py-6">
                 <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-                    <!-- Tabs -->
-                    <div class="mb-6">
-                        <nav class="flex space-x-4" aria-label="Tabs">
-                            <a href="#" class="px-3 py-2 font-medium text-sm rounded-md text-gray-500 hover:text-gray-700">음식상품</a>
-                            <a href="#" class="px-3 py-2 font-medium text-sm rounded-md text-gray-500 hover:text-gray-700">시간상품</a>
-                            <a href="#" class="px-3 py-2 font-medium text-sm rounded-md text-gray-500 hover:text-gray-700">주문목록</a>
-                            <a href="#" class="px-3 py-2 font-medium text-sm rounded-md text-gray-900 bg-gray-200" aria-current="page">사용자목록</a>
-                        </nav>
-                    </div>
 
                     <!-- 내용 -->
                     <div class="bg-white shadow sm:rounded-lg">
@@ -72,7 +92,6 @@
 
                                 <!-- Send Message Form -->
                                 <form id="sendMessageForm">
-                                    <input type="hidden" id="memberId" th:value="${member.id}">
                                     <input type="hidden" id="adminId" th:value="${adminId}">
                                     <label for="messageInput"></label>
                                     <input type="text" id="messageInput" class="w-full p-2 border border-gray-300 rounded-md mb-4" placeholder="메시지 입력..." required />
@@ -94,7 +113,8 @@
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
 
-                    var socket = new SockJS('http://localhost:9010/ws');
+                //  var socket = new SockJS('http://localhost:9010/ws');
+                    var socket = new SockJS('http://mzpc.net/ws');
                     var stompClient = Stomp.over(socket);
                     var roomId = 'room123'; // 채팅방의 이름
                     var topic = "/topic/" + roomId; // 채팅방의 토픽
@@ -116,12 +136,10 @@
                             // 새로운 메시지가 도착했을 때 알림 표시
                             if (message.sender !== adminId) { // 메시지가 관리자로부터 오지 않았을 때
                                 var notificationIcon = document.querySelector('.notification-icon');
-                                notificationIcon.classList.add('blink'); // 'blink' 클래스 추가
+                                if (notificationIcon !== null) { // 요소가 실제로 존재하는지 확인
+                                    notificationIcon.classList.add('blink'); // 'blink' 클래스 추가
+                                }
 
-                                // 일정 시간 후 'blink' 클래스 제거
-                                setTimeout(function () {
-                                    notificationIcon.classList.remove('blink');
-                                }, 5000); // 5초 후 'blink' 클래스 제거
                             }
                         });
                     });
@@ -137,7 +155,7 @@
 
                         // 메시지 전송
                         stompClient.send("/app/chat.sendMessage/" + roomId, {}, JSON.stringify({
-                            'sender': 'hojun', // 관리자 ID를 보낸이로 설정
+                            'sender': adminId, // 관리자 ID를 보낸이로 설정
                             'content': messageInput.value,
                             'topic': topic
                         }));
