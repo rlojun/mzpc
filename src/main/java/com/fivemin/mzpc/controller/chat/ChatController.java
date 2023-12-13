@@ -18,6 +18,7 @@
     import org.springframework.web.bind.annotation.GetMapping;
     import org.springframework.web.bind.annotation.RestController;
 
+    import javax.servlet.http.HttpSession;
     import java.security.Principal;
     import java.text.SimpleDateFormat;
     import java.time.LocalDateTime;
@@ -43,28 +44,29 @@
         private final Map<String, String> userSessionMap = new ConcurrentHashMap<>();
 
         @MessageMapping("/app/chat.sendMessage/admin/{memberId}")
-        public void sendMessageToUser(@DestinationVariable String memberId, @Payload ChatMessage chatMessage) {
-            if (chatMessage.getSender() == null || chatMessage.getSender().isEmpty()) {
-
-                String ADMIN_NAME = "Admin";                // 고정된 관리자 이름
-                chatMessage.setSender(ADMIN_NAME);
+        public void sendMessageToUser(@DestinationVariable String memberId, @Payload ChatMessage chatMessage, HttpSession session) {
+            String username = (String) session.getAttribute("username");
+            if (username != null) {
+                chatMessage.setSender(username);
+            } else {
+                System.err.println("Session does not contain username. The user might not be authenticated.");
             }
-
-            chatMessage.setChatDate(LocalDateTime.now());
-            chatMessage.setTime(new SimpleDateFormat("HH:mm").format(new Date()));
 
             Members member = memberRepository.findByName(chatMessage.getSender());
             chatMessage.setMembers(member);
 
             // 사용자 ID에 맞는 토픽으로 메시지를 보냅니다.
-            messagingTemplate.convertAndSend(String.format("/topic/%s", memberId), chatMessage);
+            messagingTemplate.convertAndSend(String.format("/topic/room123", memberId), chatMessage);
         }
 
-
-        @MessageMapping("/chat.addUser")
-        @SendTo("/topic/public")
+    /*    @MessageMapping("/chat.addUser")
+        @SendTo("/topic/room123")
         public ChatMessage addUser(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor) {
             // 사용자 이름이 등록되어 있지 않으면, 에러 메시지를 반환
+            if (chatMessage.getSender() == null || chatMessage.getSender().isEmpty()) {
+                String ADMIN_NAME = "Admin"; // 고정된 관리자 이름
+                chatMessage.setSender(ADMIN_NAME);
+            }
             if (chatMessage.getSender() == null || chatMessage.getSender().isEmpty()) {
                 throw new IllegalArgumentException("사용자 이름이 필요합니다.");
             } else {
@@ -81,8 +83,8 @@
             chatMessage.setMembers(member);
 
             return chatMessage;
+*/
 
-        }
         @MessageMapping("/chat.sendMessage/{roomId}")
         public ChatMessage sendMessage(@DestinationVariable String roomId, ChatMessage chatMessage, Principal principal) {
             if (principal != null) {
@@ -96,19 +98,16 @@
             return chatMessage;
         }
 
-
-
-
-
-     /*   @MessageMapping("/app/chat.sendMessageToAdmin")
+        @MessageMapping("/app/chat.sendMessageToAdmin")
         public void sendMessageToAdmin(@Payload ChatMessage chatMessage) {
             // 받은 메시지의 보낸이를 설정
             Members member = memberRepository.findByName(chatMessage.getSender());
             chatMessage.setMembers(member);
 
             // 관리자에게 메시지 전송
-            messagingTemplate.convertAndSend("/topic/user", chatMessage);
-        }*/
+            messagingTemplate.convertAndSend("/topic/room123", chatMessage);
+
+        }
     }
 
 
