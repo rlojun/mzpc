@@ -1,7 +1,10 @@
 package com.fivemin.mzpc.service.admin;
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.fivemin.mzpc.data.dto.CategoryDto;
 import com.fivemin.mzpc.data.dto.FoodDto;
@@ -18,14 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -44,6 +40,9 @@ public class AdminFoodService {
 
     @Value(value = "${cloud.aws.s3.bucket}")
     private String bucket;
+
+    @Value(value = "${cloud.aws.region.static}")
+    private String region;
 
     @Autowired
     public AdminFoodService(FoodRepository foodRepository, CategoryRepository categoryRepository, EntityManager entityManager,AmazonS3Client amazonS3Client) {
@@ -129,8 +128,6 @@ public class AdminFoodService {
         putS3(foodPicture, foodPicture.getOriginalFilename());
     }
 
-
-
     private String makeCode(){
         LocalDateTime currentDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'F'HHMMyyyymmddss");
@@ -169,6 +166,10 @@ public class AdminFoodService {
         Food updateFood = foodRepository.findById(foodDto.getIdx()).orElse(null);
         String fileName = foodPicture==null? updateFood.getPicture() : foodPicture.getOriginalFilename();
 
+        if (foodPicture != null){
+            deleteFile(updateFood.getPicture());
+        }
+
         updateFood.setIdx(foodDto.getIdx());
         updateFood.setCode(foodDto.getCode());
         updateFood.setName(foodDto.getName());
@@ -181,52 +182,31 @@ public class AdminFoodService {
 
         entityManager.merge(updateFood);
 
-        fileUpload(foodPicture);
+        putS3(foodPicture,foodPicture.getOriginalFilename());
 
     }
 
     @Transactional
     public void deleteFood(Long foodIdx) {
+
+        Food food = foodRepository.findByIdx(foodIdx);
         foodRepository.deleteById(foodIdx);
-    }
-
-    private void fileUpload(MultipartFile foodPicture) {
-        //파일이 있는지 없는지 판단
-        if (foodPicture!=null) {
-            String fileName = StringUtils.cleanPath(foodPicture.getOriginalFilename());
-            log.info("파일경로 : {}", File.separator);
-
-            String relativePath = File.separator+"bootstrap"+File.separator+"images"+File.separator;
-
-            try {
-                Path uploadPath = Paths.get(relativePath);
-                if (!Files.exists(uploadPath)) {
-                    Files.createDirectories(uploadPath);
-                }
-                try (InputStream inputStream = foodPicture.getInputStream()) {
-                    Path filePath = uploadPath.resolve(fileName);
-                    Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-                }
-            } catch (Exception e) {
-                System.out.println("fileUpload() Err --> " + e.getMessage());
-            }
-        }
+        log.info("food_picture : {}",food.getPicture());
+        deleteFile(food.getPicture());
     }
 
     public String putS3(MultipartFile foodPicture, String fileName) {
-        log.info("bucket : {}",bucket);
         try {
             File uploadFile = convertMultiPartFileToFile(foodPicture);
             amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(
                     CannedAccessControlList.PublicRead));
             return amazonS3Client.getUrl(bucket, fileName).toString();
         } catch (IOException e) {
-            System.out.println("putS3() ==>"+e.getMessage());
+            System.out.println("파일을 추가하는데 오류가 발생했습니다.");
             return null;
         }
     }
 
-    //MutipartFile을 File로 타입 변경 메서드
     private File convertMultiPartFileToFile(MultipartFile multipartFile) throws IOException {
         File file = new File(multipartFile.getOriginalFilename());
         try (FileOutputStream fos = new FileOutputStream(file)) {
@@ -234,5 +214,22 @@ public class AdminFoodService {
         }
         return file;
     }
+
+    public void deleteFile(String foodPicture) {
+
+        AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
+                .withRegion(region)
+                .build();
+
+        try {
+            s3Client.deleteObject(new DeleteObjectRequest(bucket, foodPicture));
+            System.out.println("파일이 성공적으로 삭제되었습니다.");
+        } catch (Exception e) {
+            System.err.println("파일 삭제 중 오류가 발생했습니다: " + e.getMessage());
+        }
+    }
+
+    //MutipartFile을 File로 타입 변경 메서드
+
 
 }

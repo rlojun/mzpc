@@ -38,4 +38,5 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
     @Query("SELECT food FROM Food food WHERE food.category.code=?1 and food.code=?2")
     Food findByCode(String categoryCode, String foodCode);
 
+    Food findByIdx(Long foodIdx);
 }
