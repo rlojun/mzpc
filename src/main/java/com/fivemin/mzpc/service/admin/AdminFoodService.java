@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
@@ -122,10 +121,8 @@ public class AdminFoodService {
                 .category(category)
                 .build();
 
-//        fileUpload(foodPicture);
-
         foodRepository.save(food);
-        putS3(foodPicture, foodPicture.getOriginalFilename());
+        fileUpload(foodPicture, foodPicture.getOriginalFilename());
     }
 
     private String makeCode(){
@@ -168,6 +165,7 @@ public class AdminFoodService {
 
         if (foodPicture != null){
             deleteFile(updateFood.getPicture());
+            fileUpload(foodPicture,fileName);
         }
 
         updateFood.setIdx(foodDto.getIdx());
@@ -182,8 +180,6 @@ public class AdminFoodService {
 
         entityManager.merge(updateFood);
 
-        putS3(foodPicture,foodPicture.getOriginalFilename());
-
     }
 
     @Transactional
@@ -195,18 +191,23 @@ public class AdminFoodService {
         deleteFile(food.getPicture());
     }
 
-    public String putS3(MultipartFile foodPicture, String fileName) {
-        try {
-            File uploadFile = convertMultiPartFileToFile(foodPicture);
-            amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(
-                    CannedAccessControlList.PublicRead));
-            return amazonS3Client.getUrl(bucket, fileName).toString();
-        } catch (IOException e) {
-            System.out.println("파일을 추가하는데 오류가 발생했습니다.");
-            return null;
+    public String fileUpload(MultipartFile foodPicture, String fileName) {
+        String returnResult = "";
+        if (foodPicture!=null){
+            try {
+                File uploadFile = convertMultiPartFileToFile(foodPicture);
+                amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(
+                        CannedAccessControlList.PublicRead));
+                returnResult =  amazonS3Client.getUrl(bucket, fileName).toString();
+            } catch (IOException e) {
+                System.out.println("파일을 추가하는데 오류가 발생했습니다.");
+                returnResult = null;
+            }
         }
+        return returnResult;
     }
 
+    //MutipartFile을 File로 타입 변경 메서드
     private File convertMultiPartFileToFile(MultipartFile multipartFile) throws IOException {
         File file = new File(multipartFile.getOriginalFilename());
         try (FileOutputStream fos = new FileOutputStream(file)) {
@@ -229,7 +230,7 @@ public class AdminFoodService {
         }
     }
 
-    //MutipartFile을 File로 타입 변경 메서드
+
 
 
 }
