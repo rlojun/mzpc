@@ -8,10 +8,16 @@ server:
       timeout: 360000
 
 spring:
+  session:
+    store-type: redis
+    redis:
+      host: mzpcredis-kkngkc.serverless.apn2.cache.amazonaws.com
+      port: 6379
+
   datasource:
-    url: jdbc:mysql://localhost:3306/mzpc
+    url: jdbc:mysql://localhost:3307/mzpc
     username: root
-    password: 1234
+    password: 1q2w3e4r
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
