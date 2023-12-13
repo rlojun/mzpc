@@ -16,7 +16,9 @@
             public void registerStompEndpoints(StompEndpointRegistry registry) {
                 registry.addEndpoint("/ws")
                         .addInterceptors(new HttpSessionHandshakeInterceptor())
-                   //     .setAllowedOrigins("http://localhost:63342") // 특정 도메인만 허용
+                      .setAllowedOrigins("http://www.mzpc.net") // 특정 도메인만 허용
+                   //     .setAllowedOrigins("htt://localhost:9010/ws")
+                        //      .allowedOrigins("http://www.mzpc.net")
                         .setAllowedOriginPatterns("*")
                         .withSockJS();
             }

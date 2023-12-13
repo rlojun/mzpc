@@ -1,15 +1,49 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="shortcut icon" href="/bootstrap/images/favicon.png" type="">
+
+    <title> Mzpc </title>    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css" />
+
+    <!--owl slider stylesheet -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <!-- nice select  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
+    <!-- font awesome style -->
+    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+    <link href="/bootstrap/css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+
+    <!-- SockJS 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+
+    <!-- Stomp 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>문의 사항</title>
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+
+<!--    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
+  <!--  <style>
         @keyframes blink {
             0% {opacity: 1;}
             50% {opacity: 0.5;}
@@ -19,45 +53,23 @@
         .blink {
             animation: blink 1s linear infinite;
         }
-    </style>
+    </style>-->
 
 </head>
-<body class="bg-gray-100">
-<input type="hidden" id="adminId" value="admin">
+<body class="sub_page">
 
-<div class="min-h-screen flex flex-col">
-
-
-    <!-- Header -->
-    <header class="bg-white shadow">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            <h1 class="text-3xl font-bold text-gray-900">
-                사용자 목록
-            </h1>
-        </div>
-    </header>
-
-    <!-- Main content -->
-    <main class="flex-1">
-        <div class="py-6">
-            <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-                <!-- Tabs -->
-                <div class="mb-6">
-                    <nav class="flex space-x-4" aria-label="Tabs">
-                        <a href="#" class="px-3 py-2 font-medium text-sm rounded-md text-gray-500 hover:text-gray-700">음식상품</a>
-                        <a href="#" class="px-3 py-2 font-medium text-sm rounded-md text-gray-500 hover:text-gray-700">시간상품</a>
-                        <a href="#" class="px-3 py-2 font-medium text-sm rounded-md text-gray-500 hover:text-gray-700">주문목록</a>
-                        <a href="#" class="px-3 py-2 font-medium text-sm rounded-md text-gray-900 bg-gray-200"
-                           aria-current="page">사용자목록</a>
-                    </nav>
-                </div>
-
-
+<div class="hero_area">
+    <div class="bg-box">
+        <img src="/bootstrap/images/admin-bg.png" alt="">
+    </div>
+    <header th:replace="fragments/admin/header :: header"></header>
+</div>
+<div>
                 <!-- 내용 -->
                 <table class="table-fixed w-full">
                     <thead>
                     <tr>
-                        <th class="w-1/4 py-4 px-5 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                        <th class="w-1/5 py-4 px-5 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
                             이름
                         </th>
                         <th class="w-1/5 py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
@@ -66,7 +78,7 @@
                         <th class="w-1/5 py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
                             남은시간
                         </th>
-                        <th class="w-1/4 py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                        <th class="w-1/5 py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
                             채팅
                         </th>
                         <th class="w-1/5 py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
@@ -77,14 +89,14 @@
                     <tbody>
                     <tr class="hover:bg-grey-lighter" th:each="member : ${members}" th:data-store-code="${storeCode}">
                     <td class="py-1/4 px-6 border-b border-grey-light" th:text="${member.name}"></td>
-                        <td class="py-1/4 px-6 border-b border-grey-light" th:text="${member.startTime}"></td>
-                        <td class="py-1/4 px-6 border-b border-grey-light" th:text="${member.remainingTime}"></td>
-                        <td class="py-1/4 px-12 border-b border-grey-light">
-                            <button th:data-member-id="${member.id}" onclick="window.location.href='/admin/' + this.parentElement.dataset.storeCode + '/detailMember/' + this.dataset.memberId" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded">
+                        <td class="py-1/5 px-6 border-b border-grey-light" th:text="${member.startTime}"></td>
+                        <td class="py-1/5 px-6 border-b border-grey-light" th:text="${member.remainingTime}"></td>
+                        <td class="py-1/5 px-6 border-b border-grey-light">
+                            <button th:data-member-id="${member.id}" onclick="window.location.href='/admin/' + this.parentElement.dataset.storeCode + '/detailMember/' + this.dataset.memberId" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
                                 채팅
                             </button>
                         </td>
-                        <td class="py-1/4 px-12 border-b border-grey-light">
+                        <td class="py-1/5 px-12 border-b border-grey-light">
                             <span class="notification-number" style="display: none;">0</span> <!-- 알림 카운터 -->
                             <i class="fas">&#xf0f3;</i>
                         </td>
@@ -92,22 +104,19 @@
                     </tbody>
 
                 </table>
-            </div>
-        </div>
-    </main>
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        var adminId = document.getElementById('adminId').value;
-
-        var socket = new SockJS('http://localhost:9010/ws');
+        /*var adminId = document.getElementById('adminId').value;*/
+      //  var socket = new SockJS('http://localhost:9010/ws');
+        var socket = new SockJS('http://mzpc.net/ws');
         var stompClient = Stomp.over(socket);
-        var topic = "/topic/admin"; // 관리자 채팅방의 토픽
+        var topic = "/topic/room123"; // 관리자 채팅방의 토픽
 
         // 웹 소켓 연결 서버
         stompClient.connect({}, function (frame) {
             // 토픽 설정(구독)
-            stompClient.subscribe(topic, function (chatMessage) {
+            stompClient.subscribe(topic, function (chatMessage, adminId) {
                 var message = JSON.parse(chatMessage.body);
 
                 // 새로운 메시지가 도착했을 때 알림 표시
@@ -119,7 +128,7 @@
                     // 알림 카운터 선택 및 증가
                     var notificationNumber = chatButton.parentElement.parentElement.querySelector('.notification-number');
                     notificationNumber.style.display = 'inline';
-                    notificationNumber.textContent = Number(notificationNumber.textContent) + 1;
+                    notificationNumber.textContent = (Number(notificationNumber.textContent) + 1).toString();
 
                     // 일정 시간 후 'blink' 클래스 제거
                     setTimeout(function() {

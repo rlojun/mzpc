@@ -27,6 +27,8 @@
                 Members member = memberService.getMemberById(id); // ID를 사용하여 Members 엔티티 가져오기
                 if (member != null) {
                     String username = member.getName(); // Members 엔티티에서 사용자 이름 가져오기
+                    String memberId = member.getId();
+                    model.addAttribute("memberId", memberId);
                     model.addAttribute("username", username); // 사용자 이름을 Model 객체에 추가
                 }
             }
