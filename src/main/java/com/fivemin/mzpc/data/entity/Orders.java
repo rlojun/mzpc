@@ -68,4 +68,8 @@ public class Orders extends BaseCreateEntity {
     @JoinColumn(name = "store_idx",nullable = false)
     private Store store;
 
+    @ManyToOne
+    @JoinColumn(name = "members_idx")
+    private Members members;
+
 }
