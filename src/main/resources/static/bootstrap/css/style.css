@@ -1140,3 +1140,46 @@ a:focus {
 .footer_section_admin .footer-info p a {
   color: inherit;
 }
+
+.order_section .detail-box {
+  display: block;
+  padding: 10px 20px;
+  margin: 15px auto;
+  width: 40%;
+  background-color: #343a40;
+  color: #ffffff;
+  border-radius: 10px;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  border: none;
+  text-align: center;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.order_section .detail-box h5 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.order_section .detail-box ul {
+  list-style: none;
+  padding: 10px;
+  background-color: #001f3f;
+  border-radius: 10px;
+}
+
+.order_section .detail-box li {
+  color: #ffffff;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.order_section .detail-box a {
+  color: #ffbe33;
+  text-decoration: none;
+}
+
+.order_section .detail-box a:hover {
+  text-decoration: underline;
+}
+

@@ -94,28 +94,29 @@
     <header th:replace="fragments/admin/header :: header"></header>
 </div>
 
-<div th:each="order, iterStatus : ${ordersDtos}">
-    <h5>주문 번호: <span th:text="${iterStatus.index + 1}"></span></h5>
-    <p> 주문코드 : <span th:text="${order.getCode()}"></span></p>
-    <p> 사용자 이름 : <span th:text="${order.getMemberName()}"></span></p>
-    <p> 주문 일자 : <span th:text="${order.getCreatedAt()}"></span></p>
-    <ul>
-        <li th:each=" cart : ${order.getCartDtos()} ">
-            <span th:text="${cart.getFoodDto().name}"></span>
-        </li>
-    </ul>
-    <br>
-    요청사항
-    <br>
-    <label>
-        <textarea th:if="${order.getNote() != null}" th:text="${order.getNote()}"></textarea>
-    </label>
-    <br>
-    <b>총 금액 : <span th:text="${order.getTotalCost()}"></span></b>
-    <br>
-    <button onclick="complete(this)" th:attr="data-order-code=${order.getCode()}">결제 완료</button>
-    <button onclick="reject(this)" th:attr="data-order-code=${order.getCode()}">주문 취소</button>
-    <hr>
-</div>
+<section class="order_section">
+    <div th:each="order, iterStatus : ${ordersDtos}" class="detail-box">
+        <h5>주문 번호: <span th:text="${iterStatus.index + 1}"></span></h5>
+        <p> 주문코드 : <span th:text="${order.getCode()}"></span></p>
+        <p> 사용자 이름 : <span th:text="${order.getMemberName()}"></span></p>
+        <p> 주문 일자 : <span th:text="${order.getCreatedAt()}"></span></p>
+        <ul>
+            <li th:each=" cart : ${order.getCartDtos()} ">
+                <span th:text="${cart.getFoodDto().name} + ' : ' + ${cart.getFoodDto().price + '원'}"></span>
+            </li>
+        </ul>
+        <div th:if="${order.getNote() != null || not #strings.isEmpty(order.getNote())}">요청사항</div>
+        <label>
+            <textarea th:if="${order.getNote() != null || not #strings.isEmpty(order.getNote())}" th:text="${order.getNote()}" readonly style="resize: none;"></textarea>
+        </label>
+        <br>
+        <b>총 금액 : <span th:text="${order.getTotalCost() + '원'}"></span></b>
+        <br>
+        <button onclick="complete(this)" th:attr="data-order-code=${order.getCode()}">결제 완료</button>
+        <button onclick="reject(this)" th:attr="data-order-code=${order.getCode()}">주문 취소</button>
+        <hr>
+    </div>
+</section>
+<div th:replace="fragments/admin/footer :: footer"></div>
 </body>
 </html>
