@@ -58,23 +58,26 @@
             }
             formData.append('picture', foodPicture);
             formData.append('foodDto',JSON.stringify(foodDto));
-            $.ajax({
-                type: "POST",
-                async: false,
-                url: "http://localhost:9010/food/addFood?categoryCode=" + categoryCode,
-                // contentType : "application/json",
-                processData: false,
-                contentType: false,
-                data: formData,
-                success: function(data) {
-                    console.log(foodDto);
-                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping="+topping;
-                    alert(data)
-                },
-                error: function() {
-                    alert("음식을 추가하는데 에러가 발생했습니다.")
-                }
-            });
+
+            if (confirmation){
+                $.ajax({
+                    type: "POST",
+                    async: false,
+                    url: "http://localhost:9010/food/addFood?categoryCode=" + categoryCode,
+                    // contentType : "application/json",
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    success: function(data) {
+                        console.log(foodDto);
+                        window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping="+topping;
+                        alert(data)
+                    },
+                    error: function() {
+                        alert("음식을 추가하는데 에러가 발생했습니다.")
+                    }
+                });
+            }
         }
 
         function handleFileInputChange(event) {

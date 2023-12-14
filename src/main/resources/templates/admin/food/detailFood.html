@@ -65,6 +65,7 @@
         function saveChanges() {
             var storeCode = [[${storeCode}]];
             var categoryName = document.getElementById('category').value;
+            var confirmation = confirm("수정하시겠습니까?");
             var foodDto = {
                 "idx": document.getElementById('idx').value,
                 "code": document.getElementById('code').value,
@@ -79,40 +80,47 @@
 
             formData.append('picture', $('#picture')[0].files[0]);
             formData.append('foodDto', JSON.stringify(foodDto));
-            $.ajax({
-                type: "POST",
-                async: false,
-                url: "http://localhost:9010/food/modifyFood?categoryName=" + categoryName,
-                processData: false,
-                contentType: false,
-                data: formData,
-                success: function(data) {
-                    window.location.href = "http://localhost:9010/admin/" + storeCode + "/food?topping=" + false;
-                    alert(data)
-                },
-                error: function() {
-                    alert("오류가 발생했습니다.")
-                }
-            });
+
+            if (confirmation) {
+                $.ajax({
+                    type: "POST",
+                    async: false,
+                    url: "http://localhost:9010/food/modifyFood?categoryName=" + categoryName,
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    success: function(data) {
+                        window.location.href = "http://localhost:9010/admin/" + storeCode + "/food?topping=" + false;
+                        alert(data)
+                    },
+                    error: function() {
+                        alert("오류가 발생했습니다.")
+                    }
+                });
+            }
         }
 
         function deleteFood() {
             var storeCode = [[${storeCode}]];
             var foodIdx = document.getElementById('idx').value;
-            $.ajax({
-                type: "DELETE",
-                async: false,
-                url: "http://localhost:9010/food/deleteFood",
-                contentType: "application/json",
-                data: JSON.stringify(foodIdx),
-                success: function(data) {
-                    window.location.href = "http://localhost:9010/admin/" + storeCode + "/food?topping=" + false;
-                    alert(data)
-                },
-                error: function() {
-                    alert("오류가 발생했습니다.")
-                }
-            });
+            var confirmation = confirm("변경사항을 저장하시겠습니까?");
+
+            if (confirmation) {
+                $.ajax({
+                    type: "DELETE",
+                    async: false,
+                    url: "http://localhost:9010/food/deleteFood",
+                    contentType: "application/json",
+                    data: JSON.stringify(foodIdx),
+                    success: function(data) {
+                        window.location.href = "http://localhost:9010/admin/" + storeCode + "/food?topping=" + false;
+                        alert(data)
+                    },
+                    error: function() {
+                        alert("오류가 발생했습니다.")
+                    }
+                });
+            }
         }
     </script>
 </head>
