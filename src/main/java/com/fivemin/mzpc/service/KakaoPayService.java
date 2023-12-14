@@ -32,6 +32,8 @@ public class KakaoPayService {
     @Autowired
     private TimesRepository timesRepository;
 
+    private String totalAmount;
+
     public String kakaoPayReady(String timeCode, int usedMileage) {
 
         RestTemplate restTemplate = new RestTemplate();
@@ -53,10 +55,15 @@ public class KakaoPayService {
         params.add("item_name", times.getName());
         params.add("quantity", "1");
         params.add("total_amount", String.valueOf(times.getPrice()-usedMileage));
+        totalAmount = String.valueOf(times.getPrice() - usedMileage);
         params.add("tax_free_amount", "0");
-        params.add("approval_url",String.format("http://localhost:9010/members/%s/purchaseTime/%s/kakaoPaySuccess",storeName, timeCode));
-        params.add("cancel_url", "http://localhost:9010/kakao/kakaoPayCancel");
-        params.add("fail_url", "http://localhost:9010/kakao/kakaoPaySuccessFail");
+//        params.add("approval_url",String.format("http://localhost:9010/members/%s/purchaseTime/%s/kakaoPaySuccess",storeName, timeCode));
+//        params.add("cancel_url", "http://localhost:9010/kakao/kakaoPayCancel");
+//        params.add("fail_url", "http://localhost:9010/kakao/kakaoPaySuccessFail");
+
+        params.add("approval_url",String.format("http://mzpc.net/members/%s/purchaseTime/%s/kakaoPaySuccess",storeName, timeCode));
+        params.add("cancel_url", "http://mzpc.net/kakao/kakaoPayCancel");
+        params.add("fail_url", "http://mzpc.net/kakao/kakaoPaySuccessFail");
 
         HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 
@@ -69,10 +76,11 @@ public class KakaoPayService {
 
         } catch (RestClientException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.out.println("RestClientException Err ==> "+e.getMessage());
         } catch (URISyntaxException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
+            System.out.println("URISyntaxException Err ==> "+e.getMessage());
         }
         return "/pay";
     }
@@ -80,10 +88,10 @@ public class KakaoPayService {
     public KakaoPayApprovalVO kakaoPayInfo(String pg_token, String timeCode, int usedMileage) {
 
         log.info("KakaoPayInfoVO............................................");
-        log.info("-----------------------------");
 
         RestTemplate restTemplate = new RestTemplate();
         Times times = timesRepository.findByCode(timeCode);
+        log.info("times : {} ");
 
         // 서버로 요청할 Header
         HttpHeaders headers = new HttpHeaders();
@@ -98,7 +106,8 @@ public class KakaoPayService {
         params.add("partner_order_id", "1001");
         params.add("partner_user_id", "gorany");
         params.add("pg_token", pg_token);
-        params.add("total_amount", String.valueOf(times.getPrice()-usedMileage));
+        params.add("total_amount", totalAmount);
+       // params.add("total_amount", String.valueOf(times.getPrice()-usedMileage));
 
         HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 
@@ -118,5 +127,4 @@ public class KakaoPayService {
 
         return null;
     }
-
 }

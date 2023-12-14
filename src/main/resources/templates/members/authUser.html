@@ -159,7 +159,7 @@
         <!-- 사용자 주민번호 입력 -->
             <div style="margin-bottom: 10px; text-align: left;">
                 <label for="ssn" style="display: inline-block; width: 100px; text-align: right;">주민번호:</label>
-                <input type="text" id="ssn" name="ssn" pattern="^\d{6}-[1-4]\d{6}$" required><br>
+                <input type="text" id="ssn" name="ssn" pattern="^\d{6}-[1-4]\d{6}$" maxlength="14" required oninput="maskInput()"><br>
             </div>
         <!-- 사용자 핸드폰 번호 입력 -->
             <div style="margin-bottom: 10px; text-align: left;">
@@ -190,6 +190,16 @@
 <script th:inline="javascript">
     function authSuccess() {
         alert('회원가입을 축하드립니다!');
+    }
+    function maskInput() {
+        // 입력값 가져오기
+        let inputValue = document.getElementById("ssn").value;
+
+        // 마스킹 처리
+        if (inputValue.length >= 9) {
+            let maskedValue = inputValue.substring(0, 8) + '*'.repeat(inputValue.length - 9) + inputValue.slice(-1);
+            document.getElementById("ssn").value = maskedValue;
+        }
     }
 </script>
 </body>

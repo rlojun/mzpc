@@ -39,13 +39,13 @@ public class AdminCategoryController {
         model.addAttribute("listCategory", listCategory);
         model.addAttribute("storeCode", storeCode);
 
-        return "/admin/category/listCategory";
+        return "admin/category/listCategory";
     }
 
     @GetMapping(value = "/addCategoryForm")
     public String addFoodCategoryForm(@PathVariable String storeCode, Model model) {
         model.addAttribute("storeCode", storeCode);
-        return "/admin/category/addCategoryForm";
+        return "admin/category/addCategoryForm";
     }
 
     @GetMapping(value = "/modifyCategoryForm")
@@ -57,7 +57,7 @@ public class AdminCategoryController {
 
         model.addAttribute("categoryDto", categoryDto);
         model.addAttribute("storeCode",storeCode);
-        return "/admin/category/modifyCategoryForm";
+        return "admin/category/modifyCategoryForm";
     }
 
 //    @GetMapping(value = "/modifyCategoryForm")

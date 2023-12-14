@@ -91,6 +91,10 @@ public class MemberTimeController {
         session.setAttribute("usedMileage", usedMileage);
         session.setAttribute("timePrice", timePrice);
         session.setAttribute("additionalTime", additionalTime);
+
+        log.info("Session ID in kakaoPay: " + session.getId());
+        log.info("usedMileage in kakaoPay: " + session.getAttribute("usedMileage"));
+
         log.info("kakaoPay post............................................");
         return "redirect:" + kakaopay.kakaoPayReady(timeCode, usedMileage);
     }
@@ -103,10 +107,15 @@ public class MemberTimeController {
         log.info("kakaoPaySuccess get............................................");
         log.info("kakaoPaySuccess pg_token : " + pg_token);
 
-        int usedMileage = (int) session.getAttribute("usedMileage");
+        Integer usedMileage = (Integer) session.getAttribute("usedMileage");
+
+        if (usedMileage == null) {
+            usedMileage =0;
+        }
+        log.info("usedMileage : {}", usedMileage);
         model.addAttribute("storeName", storeName);
         model.addAttribute("info", kakaopay.kakaoPayInfo(pg_token, timeCode, usedMileage));
-        return "kakao/kakaoPaySuccess";
+        return "kakao/KakaoPaySuccess";
     }
 
     // 시간 추가 및 마일리지 적립 로직
@@ -123,7 +132,7 @@ public class MemberTimeController {
         model.addAttribute("timeCode", timeCode);
         String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
         model.addAttribute("storeName", encodedStoreName);
-        return String.format("redirect:/members/%s", encodedStoreName);
+        return String.format("redirect:/members/%s/time", encodedStoreName);
     }
 
     // 시간 구매 내역 및 마일리지 내역

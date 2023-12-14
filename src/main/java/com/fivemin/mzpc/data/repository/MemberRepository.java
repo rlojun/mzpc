@@ -2,7 +2,6 @@ package com.fivemin.mzpc.data.repository;
 
 import com.fivemin.mzpc.data.entity.Members;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
@@ -16,4 +15,6 @@ public interface MemberRepository extends JpaRepository<Members, Long> {
     Members findByNameAndSsnAndEmail(String name, String ssn, String email);
 
     Optional<Members> findBySsn(String ssn);
+
+    Members findByName(String name);
 }
