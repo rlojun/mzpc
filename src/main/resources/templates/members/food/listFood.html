@@ -75,7 +75,7 @@
                     <div class="box">
                         <div class="img-box"
                              th:attr="data-category-name=${menu.getCategoryName()},data-food-code=${menu.getName()}">
-                            <img th:src="${menu.picture}" alt="">
+                            <img th:src="@{'https://mzpc-s3-bucket.s3.ap-northeast-2.amazonaws.com/'+${menu.getPicture()}}" alt="기본이미지">
                         </div>
                         <div class="detail-box"
                              th:attr="data-category-name=${menu.getCategoryName()},data-food-code=${menu.getName()}">
@@ -355,34 +355,22 @@
         });
     });
 </script>
-<!-- Select Cash Amount Function-->
+<!-- 총 가격 계산-->
 <script>
-    $(document).ready(function () {
-        const paymentMethodRadios = $('input[name="paymentMethod"]');
-        const cashOptions = $('.cash-options');
-        const cashAmountRadios = $('input[name="cashAmount"]');
-        const customAmountInput = $('input[name="customAmount"]');
+    document.addEventListener('DOMContentLoaded', function () {
+        function updateTotalCost() {
+            let totalCost = 0;
 
-        cashOptions.toggle($('#cash').is(':checked'));
+            document.querySelectorAll('.cartItem input[name="foodPrice"]').forEach(function (priceInput) {
+                const price = parseInt(priceInput.value) || 0;
+                totalCost += price;
+            });
 
-        paymentMethodRadios.change(function () {
-            if (this.value === 'cash') {
-                cashOptions.show();
-            } else {
-                cashOptions.hide();
-                customAmountInput.prop('disabled', true);
-            }
-        });
+            document.getElementById('totalCost').innerText = totalCost + '원';
+        }
 
-        cashAmountRadios.change(function () {
-            if (this.value === 'custom') {
-                customAmountInput.prop('disabled', false);
-            } else {
-                customAmountInput.prop('disabled', true);
-            }
-        });
-
-        cashAmountRadios.filter(':checked').trigger('change');
+        updateTotalCost();
+        document.forms[0].addEventListener('change', updateTotalCost);
     });
 </script>
 </body>
