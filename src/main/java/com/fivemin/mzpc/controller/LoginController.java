@@ -127,7 +127,7 @@ public class LoginController {
             session.setAttribute("storeName", encodedStoreName);
             session.setAttribute("members", members);
             model.addAttribute("storeName", encodedStoreName);
-            if (members.getRemainingTime() != LocalTime.of(0, 0, 0)) {
+            if (members.getRemainingTime().isAfter(LocalTime.of(0, 0, 0))) {
                 return String.format("redirect:/members/%s", encodedStoreName);
             } else {
                 return String.format("redirect:/pre/%s/time", encodedStoreName);
