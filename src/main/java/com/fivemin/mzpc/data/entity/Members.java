@@ -26,7 +26,7 @@ public class Members {
     private Long idx;
 
     //사용자 일련번호
-    @Column(name = "member_code",nullable = false, unique = true)
+    @Column(name = "member_code",nullable = false, unique = true, length = 15)
     private String code;
 
     //사용자 아이디

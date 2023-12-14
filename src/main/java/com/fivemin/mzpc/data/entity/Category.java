@@ -19,7 +19,7 @@ public class Category{
     private Long idx;
 
     //카테고리 일련번호
-    @Column(name = "category_code",nullable = false, unique = true)
+    @Column(name = "category_code",nullable = false, unique = true, length = 15)
     private String code;
 
     //카테고리 이름

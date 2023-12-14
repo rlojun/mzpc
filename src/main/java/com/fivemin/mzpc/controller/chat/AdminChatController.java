@@ -3,7 +3,7 @@
     import com.fivemin.mzpc.data.entity.Admin;
     import com.fivemin.mzpc.data.entity.Members;
     import com.fivemin.mzpc.data.repository.AdminRepository;
-    import com.fivemin.mzpc.service.members.MemberService;
+    import com.fivemin.mzpc.service.member.MemberService;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.security.core.userdetails.UsernameNotFoundException;
     import org.springframework.stereotype.Controller;

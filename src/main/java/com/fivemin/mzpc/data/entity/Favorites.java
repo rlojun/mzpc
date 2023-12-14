@@ -18,7 +18,7 @@ public class Favorites {
     private Long idx;
 
     //즐겨찾기 일련번호
-    @Column(name = "favorites_code",nullable = false, unique = true)
+    @Column(name = "favorites_code",nullable = false, unique = true, length = 15)
     private String code;
 
     @PrePersist

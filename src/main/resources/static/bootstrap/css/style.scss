@@ -519,6 +519,7 @@ a:focus {
 
     .detail-box {
       padding: 25px;
+      height: 100px;
 
       h5 {
         font-weight: 600;
@@ -526,6 +527,8 @@ a:focus {
 
       p {
         font-size: 15px;
+        height: 50px;
+        overflow: auto;
       }
 
       h6 {

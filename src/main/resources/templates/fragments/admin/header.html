@@ -32,9 +32,33 @@
     <!-- Stomp 라이브러리 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 <body>
 <header class="header_section">
+    <script>
+        function checkOrders() {
+            var storeCode = [[${storeCode}]];
+            $.ajax({
+                url: 'http://localhost:9010/orders/checkOrders',
+                method: 'GET',
+                contentType: "application/json",
+                data : { storeCode: storeCode },
+                success: function(data) {
+                    if (data == true) {
+                        $('#incoming').text(data);
+                    }
+                },
+                error: function() {
+                    return null;
+                }
+            });
+        }
+
+        setInterval(checkOrders, 1000);
+
+    </script>
     <nav th:fragment="header">
         <div class="container">
             <nav class="navbar navbar-expand-lg custom_nav-container ">
@@ -56,6 +80,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/admin/order">주문 목록</a>
+                            <span th:id="incoming"></span>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/admin/{storeCode}/listMember(storeCode=${storeCode})}">사용자 목록 <span class="sr-only">(current)</span> </a>

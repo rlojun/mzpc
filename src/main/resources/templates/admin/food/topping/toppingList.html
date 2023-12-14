@@ -72,7 +72,7 @@
                         <div>
                             <div class="img-box" th:attr="data-category-code=${food.getCategoryDto().getCode()},data-food-code=${food.getCode()}"
                                  onclick="clickFood(this)">
-                                <img th:src="@{/bootstrap/images/__${food.getPicture()}__}" alt="기본 이미지">
+                                <img th:src="@{${food.getPicture()}}" alt="기본이미지">
                             </div>
                             <div class="detail-box" th:attr="data-category-code=${food.getCategoryDto().getCode()},data-food-code=${food.getCode()}"
                                  onclick="clickFood(this)">

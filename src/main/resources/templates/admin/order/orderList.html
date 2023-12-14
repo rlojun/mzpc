@@ -3,40 +3,44 @@
 
 <head>
     <!-- Basic -->
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <!-- Site Metas -->
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
     <link rel="shortcut icon" href="/bootstrap/images/favicon.png" type="">
     <title>주문 목록</title>
 
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css"/>
 
     <!--owl slider stylesheet -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
     <!-- nice select  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css"
+          integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ=="
+          crossorigin="anonymous"/>
     <!-- font awesome style -->
-    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet"/>
     <!-- Custom styles for this template -->
-    <link href="/bootstrap/css/style.css" rel="stylesheet" />
+    <link href="/bootstrap/css/style.css" rel="stylesheet"/>
     <!-- responsive style -->
-    <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
+    <link href="/bootstrap/css/responsive.css" rel="stylesheet"/>
     <script>
-        function complete(button){
+        function complete(button) {
             var confirmation = confirm("주문을 처리하시겠습니까?");
             var orderCode = button.getAttribute('data-order-code');
             var storeCode = [[${storeCode}]];
             var OrdersDto = {
-                "code" : orderCode,
-                "cookComplete" : true,
-                "purchaseStatus" : true,
+                "code": orderCode,
+                "cookComplete": true,
+                "purchaseStatus": true,
             };
 
             if (confirmation) {
@@ -47,7 +51,7 @@
                     contentType: "application/json",
                     data: JSON.stringify(OrdersDto),
                     success: function (data) {
-                        window.location.href = "http://localhost:9010/admin/"+storeCode+"/orderList";
+                        window.location.href = "http://localhost:9010/admin/" + storeCode + "/orderList";
                         alert(data);
                     },
                     error: function () {
@@ -62,18 +66,18 @@
             var confirmation = confirm("주문을 취소하시겠습니까?");
             var storeCode = [[${storeCode}]];
 
-            if (confirmation){
+            if (confirmation) {
                 $.ajax({
-                    type:"DELETE",
-                    async : false,
-                    url : "http://localhost:9010/orders/rejectOrder",
+                    type: "DELETE",
+                    async: false,
+                    url: "http://localhost:9010/orders/rejectOrder",
                     contentType: "application/json",
-                    data : orderCode,
-                    success: function(data) {
-                        window.location.href = "http://localhost:9010/admin/"+storeCode+"/orderList";
+                    data: orderCode,
+                    success: function (data) {
+                        window.location.href = "http://localhost:9010/admin/" + storeCode + "/orderList";
                         alert(data);
                     },
-                    error : function() {
+                    error: function () {
                         alert("실패");
                     }
                 });
@@ -89,23 +93,29 @@
     </div>
     <header th:replace="fragments/admin/header :: header"></header>
 </div>
-    <ul th:each=" order,status : ${ordersDtos}" th:if="${order.isCookComplete()==false} and ${order.cartDtos.get(status.index).isOrderComplete()==true}">
-        <h2 th:text="${status.index+1+ '.'}"></h2>
-        <p th:text="${'주문코드 : '+ order.getCode()}"></p>
-        <p th:text="'사용자 이름 : ' + ${order.getCartDtos().get(status.index).getMembersDto().name}"></p>
-        <ul th:each=" cart : ${order.cartDtos} ">
-            <li th:text="${cart.getFoodDto().name}"></li>
-        </ul>
-        <br>
-        요청사항
-        <br>
-        <textarea th:if="${order.getNote() != null}" th:text="${order.getNote()}"></textarea>
-        <br>
-        <b>총 금액 : <span th:text="${order.getTotalCost()}"></span></b>
-        <br>
-        <button onclick="complete(this)" th:attr="data-order-code=${order.getCode()}">결제 완료</button>
-        <button onclick="reject(this)" th:attr="data-order-code=${order.getCode()}">주문 취소</button>
-        <hr>
+
+<div th:each="order, iterStatus : ${ordersDtos}">
+    <h5>주문 번호: <span th:text="${iterStatus.index + 1}"></span></h5>
+    <p> 주문코드 : <span th:text="${order.getCode()}"></span></p>
+    <p> 사용자 이름 : <span th:text="${order.getMemberName()}"></span></p>
+    <p> 주문 일자 : <span th:text="${order.getCreatedAt()}"</p>
+    <ul>
+        <li th:each=" cart : ${order.getCartDtos()} ">
+            <span th:text="${cart.getFoodDto().name}"></span>
+        </li>
     </ul>
+    <br>
+    요청사항
+    <br>
+    <label>
+        <textarea th:if="${order.getNote() != null}" th:text="${order.getNote()}"></textarea>
+    </label>
+    <br>
+    <b>총 금액 : <span th:text="${order.getTotalCost()}"></span></b>
+    <br>
+    <button onclick="complete(this)" th:attr="data-order-code=${order.getCode()}">결제 완료</button>
+    <button onclick="reject(this)" th:attr="data-order-code=${order.getCode()}">주문 취소</button>
+    <hr>
+</div>
 </body>
 </html>

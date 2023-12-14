@@ -1,7 +1,7 @@
 package com.fivemin.mzpc.controller.chat;
 
 import com.fivemin.mzpc.data.entity.Members;
-import com.fivemin.mzpc.service.members.MemberService;
+import com.fivemin.mzpc.service.member.MemberService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

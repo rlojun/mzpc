@@ -39,11 +39,11 @@ public class AdminOrderService {
 
     public List<OrdersDto> getOrderList(String storeCode) {
 
-        List<Orders> ordersList = ordersRepository.findAllByStoreCode(storeCode);
+        List<Orders> ordersList = ordersRepository.findAllCookIncompleteByStoreCode(storeCode);
         List<OrdersDto> ordersDtos = new ArrayList<>();
-        List<CartDto> cartDtos = new ArrayList<>();
 
         for (Orders orders: ordersList) {
+            List<CartDto> cartDtos = new ArrayList<>();
 
             for (Cart cart :orders.getCarts()) {
                 FoodDto foodDto = FoodDto.builder()
@@ -72,6 +72,8 @@ public class AdminOrderService {
                 cartDtos.add(cartDto);
             }
 
+            CartDto lastCartDto = !cartDtos.isEmpty() ? cartDtos.get(cartDtos.size() - 1) : null;
+
             OrdersDto ordersDto = OrdersDto.builder()
                     .code(orders.getCode())
                     .cookComplete(orders.isCookComplete())
@@ -80,6 +82,8 @@ public class AdminOrderService {
                     .note(orders.getNote())
                     .totalCost(orders.getTotalCost())
                     .cartDtos(cartDtos)
+                    .createdAt(orders.getCreatedAt())
+                    .memberName(lastCartDto.getMembersDto().getName())
                     .build();
 
             ordersDtos.add(ordersDto);
@@ -111,5 +115,16 @@ public class AdminOrderService {
             entityManager.merge(cart);
         }
 
+    }
+
+    public boolean checkOrders(String storeCode) {
+        int count = ordersRepository.findAllByStoreCode(storeCode);
+        boolean result;
+        if (count == 0){
+            result = false;
+        }else {
+            result= true;
+        }
+        return result;
     }
 }

@@ -8,22 +8,28 @@ server:
       timeout: 360000
 
 spring:
-  session:
-    store-type: redis
-    redis:
-      host: localhost
-      port: 6380
-      password : 1234
-
-  jackson:
-    serialization:
-      WRITE_DATES_AS_TIMESTAMPS: false
-
   datasource:
-    url: jdbc:mysql://localhost:3307/mzpc
+    url: jdbc:mysql://localhost:3306/mzpc
     username: root
-    password: 1q2w3e4r
+    password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+cloud:
+  aws:
+    s3:
+      bucket: mzpc-s3-bucket
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
+    credentials:
+      access-key: AKIA6HZPM5DTOATITDU4
+      secret-key: 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
 
   jpa:
     hibernate:
@@ -45,7 +51,6 @@ logging:
       fivemin: DEBUG
 
 # email
-
 mail:
   smtp:
     auth: true
@@ -61,3 +66,4 @@ mail:
 AdminMail:
   id: kts3445@gmail.com
   password: cyejgurdyssgsgsv
+

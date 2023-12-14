@@ -7,8 +7,8 @@ import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.service.LoginService;
 import com.fivemin.mzpc.service.email.EmailService;
 import com.fivemin.mzpc.service.email.VerificationCodeUtil;
-import com.fivemin.mzpc.service.members.MemberService;
-import com.fivemin.mzpc.service.members.MemberTimeService;
+import com.fivemin.mzpc.service.member.MemberService;
+import com.fivemin.mzpc.service.member.MemberTimeService;
 import com.fivemin.mzpc.service.member.CartService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,7 +130,7 @@ public class LoginController {
             session.setAttribute("storeName", encodedStoreName);
             session.setAttribute("members", members);
             model.addAttribute("storeName", encodedStoreName);
-            if (members.getRemainingTime() != LocalTime.of(0, 0, 0)) {
+            if (members.getRemainingTime().isAfter(LocalTime.of(0, 0, 0))) {
                 return String.format("redirect:/members/%s", encodedStoreName);
             } else {
                 return String.format("redirect:/pre/%s/time", encodedStoreName);
@@ -143,7 +143,6 @@ public class LoginController {
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
-
         session.invalidate();
         return "redirect:/login?logout";
     }

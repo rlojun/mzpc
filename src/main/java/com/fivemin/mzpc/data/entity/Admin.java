@@ -20,7 +20,7 @@ public class Admin {
     private Long idx;
 
     // 관리자 일련번호
-    @Column(name = "admin_code",nullable = false, unique = true)
+    @Column(name = "admin_code",nullable = false, length = 15,unique = true)
     private String code;
 
     //관리자 아이디

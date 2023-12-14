@@ -5,7 +5,7 @@ import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.data.entity.Times;
 import com.fivemin.mzpc.service.KakaoPayService;
 import com.fivemin.mzpc.service.LoginService;
-import com.fivemin.mzpc.service.members.MemberTimeService;
+import com.fivemin.mzpc.service.member.MemberTimeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;

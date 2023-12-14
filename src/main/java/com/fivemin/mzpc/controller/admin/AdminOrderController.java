@@ -21,7 +21,7 @@ import java.util.List;
 
 @Controller
 @Slf4j
-@RequestMapping("/admin/{stoerCode}")
+@RequestMapping("/admin/{storeCode}")
 public class AdminOrderController {
 
     private AdminOrderService adminOrderService;
@@ -33,13 +33,12 @@ public class AdminOrderController {
 
     // 사용자가 주문한 주문 목록
     @GetMapping("/orderList")
-    public String orderList(@PathVariable String stoerCode, Model model){
+    public String orderList(@PathVariable String storeCode, Model model){
 
-        List<OrdersDto> ordersDtos = adminOrderService.getOrderList(stoerCode);
+        List<OrdersDto> filteredOrdersList = adminOrderService.getOrderList(storeCode);
 
-        model.addAttribute("ordersDtos",ordersDtos);
-        model.addAttribute("storeCode",stoerCode);
-        log.info("ordersDtos : {}",ordersDtos);
+        model.addAttribute("ordersDtos", filteredOrdersList);
+        model.addAttribute("storeCode",storeCode);
         return "admin/order/orderList";
     }
 
