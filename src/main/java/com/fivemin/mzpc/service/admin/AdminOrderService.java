@@ -117,4 +117,14 @@ public class AdminOrderService {
 
     }
 
+    public boolean checkOrders(String storeCode) {
+        int count = ordersRepository.findAllByStoreCode(storeCode);
+        boolean result;
+        if (count == 0){
+            result = false;
+        }else {
+            result= true;
+        }
+        return result;
+    }
 }
