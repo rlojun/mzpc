@@ -19,7 +19,7 @@ public class Food extends BaseTimeEntity {
     private Long idx;
 
     //음식 일련번호
-    @Column(name = "food_code",nullable = false, unique = true)
+    @Column(name = "food_code",nullable = false, unique = true,length = 15)
     private String code;
 
     //음식 이름

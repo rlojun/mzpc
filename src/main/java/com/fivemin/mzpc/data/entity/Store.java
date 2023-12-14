@@ -15,7 +15,7 @@ public class Store {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
-    @Column(name = "store_code", nullable = false, unique = true)
+    @Column(name = "store_code", nullable = false, unique = true,length = 15)
     private String code;
 
     @Column(name = "store_name", nullable = false, length = 20)
