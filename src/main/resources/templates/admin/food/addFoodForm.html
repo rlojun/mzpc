@@ -59,18 +59,25 @@
             formData.append('picture', foodPicture);
             formData.append('foodDto',JSON.stringify(foodDto));
 
+            var baseURL;
+
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                baseURL = 'http://localhost:9010';
+            } else {
+                baseURL = 'http://mzpc.net';
+            }
+
             if (confirmation){
                 $.ajax({
                     type: "POST",
                     async: false,
-                    url: "http://localhost:9010/food/addFood?categoryCode=" + categoryCode,
-                    // contentType : "application/json",
+                    url: baseURL+"/food/addFood?categoryCode=" + categoryCode,
                     processData: false,
                     contentType: false,
                     data: formData,
                     success: function(data) {
                         console.log(foodDto);
-                        window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping="+topping;
+                        window.location.href =baseURL+"/admin/"+storeCode+"/food?topping="+topping;
                         alert(data)
                     },
                     error: function() {
