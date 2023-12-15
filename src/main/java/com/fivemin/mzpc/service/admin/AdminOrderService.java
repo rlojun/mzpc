@@ -7,7 +7,6 @@ import com.fivemin.mzpc.data.entity.Cart;
 import com.fivemin.mzpc.data.entity.Orders;
 import com.fivemin.mzpc.data.repository.CartRepository;
 import com.fivemin.mzpc.data.repository.OrdersRepository;
-import com.fivemin.mzpc.data.repository.StoreRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

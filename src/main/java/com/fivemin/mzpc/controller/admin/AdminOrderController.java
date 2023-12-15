@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/admin/{storeCode}")
 public class AdminOrderController {
 
-    private AdminOrderService adminOrderService;
+    private final AdminOrderService adminOrderService;
 
     @Autowired
     public AdminOrderController(AdminOrderService adminOrderService) {
