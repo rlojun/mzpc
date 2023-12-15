@@ -155,7 +155,7 @@
 
                         // 메시지 전송
                         stompClient.send("/app/chat.sendMessage/" + roomId, {}, JSON.stringify({
-                            'sender': adminId, // 관리자 ID를 보낸이로 설정
+                            'sender': 'admin', // 관리자 ID를 보낸이로 설정
                             'content': messageInput.value,
                             'topic': topic
                         }));
