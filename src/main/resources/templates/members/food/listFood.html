@@ -230,11 +230,6 @@
             const paymentMethod = $('input[name="paymentMethod"]:checked').val();
             const notes = $('.notes input').val();
             const storeName = $('input[name="storeName"]').val();
-            const foodCode = $('input[name="foodCode"]').val();
-            if (!foodCode) {
-                alert('음식 추가 부탁드립니다.');
-                return;
-            }
 
             const postData = {
                 paymentMethod: paymentMethod,
