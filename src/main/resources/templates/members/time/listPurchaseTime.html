@@ -29,6 +29,8 @@
     <!-- responsive style -->
     <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
 
+    <script src="https://cdn.tailwindcss.com"></script>
+
 </head>
 
 <body class="sub_page">
@@ -39,28 +41,77 @@
     </div>
     <header th:replace="fragments/member/header :: header"></header>
 </div>
-<h2>구매 목록</h2>
 
-<table border="1">
-    <thead>
-    <tr>
-        <th>시간</th>
-        <th>가격</th>
-        <th>사용한 마일리지</th>
-        <th>적립한 마일리지</th>
-        <th>구매 시간</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="mileageInfo : ${mileageInfos}">
-        <td th:text="${mileageInfo.times.addTime}"></td>
-        <td th:text="${mileageInfo.times.price}"></td>
-        <td th:text="${mileageInfo.use}"></td>
-        <td th:text="${mileageInfo.save}"></td>
-        <td th:text="${mileageInfo.createdAt}"></td>
-    </tr>
-    </tbody>
-</table>
+<style>
+    .footer_section {
+        margin-top: 150px;  /* 위쪽 여백 추가 */
+    }
+
+    #purchaseBox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .form-style {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem; /* form 내 요소들 사이의 간격 */
+        max-width: 800px;
+        margin: auto;
+        background-color: white;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+        padding: 1.25rem;
+        font-family: 'Roboto', sans-serif; /* 글자 스타일 변경 */
+    }
+</style>
+
+<main class="flex-1">
+    <div class="py-6">
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+            <h2>구매 목록</h2>
+            <!-- 구매 목록 Box -->
+            <div id="purchaseBox" class="h-64 border overflow-auto mb-2">
+                <div class="form-style">
+                    <table class="table-fixed w-full">
+                        <thead>
+                        <tr>
+                            <th class="w-1/5 py-4 px-5 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                                시간
+                            </th>
+                            <th class="w-1/5 py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                                가격
+                            </th>
+                            <th class="w-1/5 py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                                사용한 마일리지
+                            </th>
+                            <th class="w-1/5 py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                                적립한 마일리지
+                            </th>
+                            <th class="w-1/5 py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                                구매 시간
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="mileageInfo : ${mileageInfos}">
+                            <td class="py-4 px-6 border-b border-grey-light" th:text="${mileageInfo.times.addTime}"></td>
+                            <td class="py-4 px-6 border-b border-grey-light" th:text="${mileageInfo.times.price}"></td>
+                            <td class="py-4 px-6 border-b border-grey-light" th:text="${mileageInfo.use}"></td>
+                            <td class="py-4 px-6 border-b border-grey-light" th:text="${mileageInfo.save}"></td>
+                            <td class="py-4 px-6 border-b border-grey-light" th:text="${mileageInfo.createdAt}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+
 
 <!-- footer section -->
 <footer class="footer_section">
@@ -81,7 +132,7 @@
                         <a href="">
                             <i class="fa fa-phone" aria-hidden="true"></i>
                             <span>
-                  Call +01 1234567890
+                 Call +010 7141 8847
                 </span>
                         </a>
                         <a href="">

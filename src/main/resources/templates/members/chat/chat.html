@@ -110,7 +110,7 @@
 
                 // 메시지 전송
                 stompClient.send(`/app/chat.sendMessage/${roomId}`, {}, JSON.stringify({
-                    'sender': 'lee', // 'sender' 필드에 로그인한 사용자의 ID를 설정
+                    'sender': 'sudo', // 'sender' 필드에 로그인한 사용자의 ID를 설정
                     'content': messageInput.value,
                     'topic': `/topic/${roomId}` // 메시지를 보낼 토픽
                 }));

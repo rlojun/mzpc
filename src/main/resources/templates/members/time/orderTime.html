@@ -29,6 +29,8 @@
     <!-- responsive style -->
     <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
 
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <script th:inline="javascript">
         function updatePaymentAmount() {
             var timesPrice = [[${times.price}]];
@@ -57,24 +59,156 @@
     <header th:replace="fragments/member/header :: header"></header>
 
 </div>
-    <form th:action="@{/members/{storeName}/purchaseTime/{memberCode}/{timeCode} (storeName=${storeName},memberCode=${memberCode} ,timeCode=${timeCode})}" method="post">
-        <input type="hidden" id="memberId" name="memberId" th:value="${session.id}" />
-
-        <p th:text="${'상품명 : ' + times.name}" ></p>
-        <p th:text="${'추가 시간 : ' + times.addTime}" ></p>
-        <p th:text="${'가격 : ' + times.price + '원'}"></p>
-        <p th:text="${'남은 마일리지 : ' + memberMileage + '원'}"></p>
-
-        <!-- 사용자가 입력한 마일리지 -->
-        <label for="usedMileage">사용할 마일리지:</label>
-        <input type="number" id="usedMileage" name="usedMileage" value="0" min="0" max="${memberMileage}" oninput="updatePaymentAmount()" />
-
-        <!-- 사용할 마일리지를 반영한 결제 금액 -->
-        <p id="paymentAmount"></p>
-
-        <input type="hidden" id="timePrice" name="timePrice" th:value="${times.price}" />
-        <input type="hidden" id="additionalTime" name="additionalTime" th:value="${times.addTime.format(T(java.time.format.DateTimeFormatter).ofPattern('H:mm:ss'))}" />
-        <button type="submit">카카오 페이로 결제하기</button>
-    </form>
 </body>
-</html>
+
+<style>
+    .form-style {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem; /* form 내 요소들 사이의 간격 */
+        max-width: 800px;
+        margin: auto;
+        background-color: white;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+        padding: 1.25rem;
+    }
+
+</style>
+
+<main class="flex-1">
+    <div class="py-6">
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+            <!-- 내용 -->
+            <div class="bg-white shadow sm:rounded-lg">
+                <div class="px-4 py-5 sm:p-5">
+                    <form th:action="@{/members/{storeName}/purchaseTime/{timeCode} (storeName=${storeName}, timeCode=${timeCode})}" method="post" class="form-style">
+                        <input type="hidden" id="memberId" name="memberId" th:value="${session.id}" />
+
+                        <table class="table-fixed w-full">
+                            <thead>
+                            <tr>
+                                <th class="w-1/5 py-4 px-5 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                                    상품명
+                                </th>
+                                <th class="w-1/5 py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                                    추가 시간
+                                </th>
+                                <th class="w-1/5 py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                                    가격
+                                </th>
+                                <th class="w-1/5 py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                                    남은 마일리지
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="py-4 px-6 border-b border-grey-light" th:text="${times.name}"></td>
+                                <td class="py-4 px-6 border-b border-grey-light" th:text="${times.addTime}"></td>
+                                <td class="py-4 px-6 border-b border-grey-light" th:text="${' ' + times.price + '원'}"></td>
+                                <td class="py-4 px-6 border-b border-grey-light" th:text="${' ' + memberMileage + '원'}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <style>
+                            #usedMileage {
+                                border: 1px solid #848484;  /* 테두리 색상 변경 */
+                            }
+                        </style>
+
+                        <!-- 사용자가 입력한 마일리지 -->
+                        <label for="usedMileage">사용할 마일리지:</label>
+                        <input type="number" id="usedMileage" name="usedMileage" value="0" min="0" max="${memberMileage}" oninput="updatePaymentAmount()" />
+
+                        <!-- 사용할 마일리지를 반영한 결제 금액 -->
+                        <p id="paymentAmount"></p>
+
+                        <input type="hidden" id="timePrice" name="timePrice" th:value="${times.price}" />
+                        <input type="hidden" id="additionalTime" name="additionalTime" th:value="${times.addTime.format(T(java.time.format.DateTimeFormatter).ofPattern('H:mm:ss'))}" />
+                        <button type="submit" class="w-full bg-yellow-300 text-black p-2 rounded-md hover:bg-yellow-300">카카오 페이로 결제하기</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<!-- footer section -->
+<footer class="footer_section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 footer-col">
+                <div class="footer_contact">
+                    <h4>
+                        Contact Us
+                    </h4>
+                    <div class="contact_link_box">
+                        <a href="">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <span>
+                  Location
+                </span>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-phone" aria-hidden="true"></i>
+                            <span>
+                  Call +010 7141 8847
+                </span>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                            <span>
+                  demo@gmail.com
+                </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 footer-col">
+                <div class="footer_detail">
+                    <a href="" class="footer-logo">
+                        MZPC
+                    </a>
+                    <p>
+                        Necessary, making this the first true generator on the Internet. It uses a dictionary of over
+                        200 Latin words, combined with
+                    </p>
+                    <div class="footer_social">
+                        <a href="">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-linkedin" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-instagram" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-pinterest" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 footer-col">
+                <h4>
+                    Opening Hours
+                </h4>
+                <p>
+                    Everyday
+                </p>
+                <p>
+                    10.00 Am -10.00 Pm
+                </p>
+            </div>
+        </div>
+        <div class="footer-info">
+        </div>
+    </div>
+</footer>
+
