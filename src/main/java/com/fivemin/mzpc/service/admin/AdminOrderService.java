@@ -2,7 +2,6 @@ package com.fivemin.mzpc.service.admin;
 
 import com.fivemin.mzpc.data.dto.CartDto;
 import com.fivemin.mzpc.data.dto.FoodDto;
-import com.fivemin.mzpc.data.dto.MembersDto;
 import com.fivemin.mzpc.data.dto.OrdersDto;
 import com.fivemin.mzpc.data.entity.Cart;
 import com.fivemin.mzpc.data.entity.Orders;
@@ -38,10 +37,8 @@ public class AdminOrderService {
 
 
     public List<OrdersDto> getOrderList(String storeCode) {
-
         List<Orders> ordersList = ordersRepository.findAllCookIncompleteByStoreCode(storeCode);
         List<OrdersDto> ordersDtos = new ArrayList<>();
-
         for (Orders orders: ordersList) {
             List<CartDto> cartDtos = new ArrayList<>();
 
@@ -54,25 +51,16 @@ public class AdminOrderService {
                         .topping(cart.getFood().isTopping())
                         .build();
 
-                MembersDto membersDto = MembersDto.builder()
-                        .idx(cart.getMembers().getIdx())
-                        .code(cart.getMembers().getCode())
-                        .name(cart.getMembers().getName())
-                        .mileage(cart.getMembers().getMileage())
-                        .build();
-
                 CartDto cartDto = CartDto.builder()
                         .idx(cart.getIdx())
                         .code(cart.getCode())
-                        .membersDto(membersDto)
                         .foodDto(foodDto)
                         .orderComplete(cart.isOrderComplete())
                         .build();
 
                 cartDtos.add(cartDto);
-            }
 
-            CartDto lastCartDto = !cartDtos.isEmpty() ? cartDtos.get(cartDtos.size() - 1) : null;
+            }
 
             OrdersDto ordersDto = OrdersDto.builder()
                     .code(orders.getCode())
@@ -83,7 +71,7 @@ public class AdminOrderService {
                     .totalCost(orders.getTotalCost())
                     .cartDtos(cartDtos)
                     .createdAt(orders.getCreatedAt())
-                    .memberName(lastCartDto.getMembersDto().getName())
+                    .memberName(orders.getMembers().getName())
                     .build();
 
             ordersDtos.add(ordersDto);

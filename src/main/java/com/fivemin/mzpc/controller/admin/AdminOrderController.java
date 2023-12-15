@@ -42,29 +42,4 @@ public class AdminOrderController {
         return "admin/order/orderList";
     }
 
-    // 취소, 완료 메서드 묶어서 하나 더 만들기 ( 매핑 어노테이션 url 작성)
-    // 주문 완료 + 취소 url
-//    @PostMapping("/{orderStatus}") //orderStatus 뷰에서 정한 id
-//    public void orderStatus(@PathVariable String orderStatus){
-//        if(orderStatus.equals("complete")){
-//            completeOrder();
-//        } else if (orderStatus.equals("complete")) {
-//            cancelOrder();
-//        }
-//
-//    }
-
-    // 주문 목록의 주문 취소 버튼 기능
-//    @GetMapping("/cancelOrder")
-//    public String cancelOrder() {
-//
-//        return "redirect:/{adminId}/listOrder";
-//    }
-
-    // 주문 목록의 주문 완료 버튼 기능
-//    @GetMapping("/completeOrder")
-//    public String completeOrder() {
-//
-//        return "redirect:/{adminId}/listOrder";
-//    }
 }
