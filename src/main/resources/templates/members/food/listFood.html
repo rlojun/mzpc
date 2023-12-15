@@ -146,7 +146,7 @@
 
 <div th:replace="fragments/member/foodCart :: div"></div>
 
-<div th:replace="fragments/member/footer :: footer"></div>
+<div th:replace="fragments/footer :: footer"></div>
 
 <!-- Add to Cart / Remove from Cart / Update Cart Functions-->
 <script>
@@ -229,16 +229,16 @@
             event.preventDefault();
             const paymentMethod = $('input[name="paymentMethod"]:checked').val();
             const notes = $('.notes input').val();
-            const cashAmount = $('input[name="cashAmount"]:checked').val();
-            const customAmount = $('input[name="customAmount"]').val();
             const storeName = $('input[name="storeName"]').val();
-
+            const foodCode = $('input[name="foodCode"]').val();
+            if (!foodCode) {
+                alert('음식 추가 부탁드립니다.');
+                return;
+            }
 
             const postData = {
                 paymentMethod: paymentMethod,
                 notes: notes,
-                cashAmount: cashAmount,
-                customAmount: customAmount,
             };
 
             $.ajax({
