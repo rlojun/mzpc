@@ -102,15 +102,17 @@ public class AdminOrderService {
 
     }
 
-    public boolean checkOrders(String storeCode) {
-        int count = ordersRepository.findAllByStoreCode(storeCode);
-        boolean result;
-        if (count == 0){
-            result = false;
-        }else {
-            result= true;
-        }
-        return result;
-    }
 
+    public boolean checkOrder() {
+        List<Cart> carts = cartRepository.findAll();
+        boolean Orderstatus = true;
+
+        for (Cart cart : carts) {
+            if (!cart.isOrderComplete()) {
+                Orderstatus = false;
+                break;
+            }
+        }
+        return Orderstatus;
+    }
 }

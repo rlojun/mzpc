@@ -26,9 +26,10 @@ public class AdminOrderController {
     // 사용자가 주문한 주문 목록
     @GetMapping("/orderList")
     public String orderList(@PathVariable String storeCode, Model model){
-
         List<OrdersDto> filteredOrdersList = adminOrderService.getOrderList(storeCode);
+        boolean orderStatus =adminOrderService.checkOrder();
 
+        model.addAttribute("orderStatus", orderStatus);
         model.addAttribute("ordersDtos", filteredOrdersList);
         model.addAttribute("storeCode",storeCode);
         return "admin/order/orderList";
