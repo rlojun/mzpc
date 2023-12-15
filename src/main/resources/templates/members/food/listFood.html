@@ -67,14 +67,13 @@
             <li th:each="categoryName : ${distinctFoodCategories}" th:text="${categoryName}"
                 th:data-filter="'.' + ${categoryName}"></li>
         </ul>
-
         <div class="filters-content">
             <div class="row grid">
-                <div th:each="menu: ${foodDtoList}" class="col-sm-6 col-lg-4 all"
+                <div th:each="menu: ${foodDtoList}" class="col-sm-6 col-lg-4 all menu-item"
                      th:classappend="${menu.getCategoryName()}">
                     <div class="box">
                         <div class="img-box"
-                             th:attr="data-category-name=${menu.getCategoryName()},data-food-code=${menu.getName()}">
+                             th:attr="data-category-name=${menu.getCategoryName()},data-food-code=${menu.getCode()}">
                             <img th:src="@{'https://mzpc-s3-bucket.s3.ap-northeast-2.amazonaws.com/'+${menu.getPicture()}}" alt="기본이미지">
                         </div>
                         <div class="detail-box"
@@ -104,39 +103,29 @@
                         </div>
                     </div>
                 </div>
-<!--                <div th:each="favorites : ${favorites}" class="col-sm-6 col-lg-4 favorites">-->
-<!--                    <div class="box">-->
-<!--                        <div class="img-box"-->
-<!--                             th:attr="data-food-code=${favorites.food.code}">-->
-<!--                            <img th:src="${favorites.food.picture}" alt="">-->
-<!--                        </div>-->
-<!--                        <div class="detail-box"-->
-<!--                             th:attr="data-food-code=${favorites.food.getName()}">-->
-<!--                            <h5 th:text="${favorites.food.getName()}"/>-->
-<!--                            <p th:text="${favorites.food.getDescription()}"/>-->
-<!--                            <div class="options">-->
-<!--                                <h6 th:text="${favorites.food.price + '원'}"/>-->
-<!--                                <a th:href="@{/members/{storeName}/food/detail/{foodName}(storeName=${(storeName)}, foodName=${favorites.food.name}, foodCode=${favorites.food.code})}">-->
-<!--                                    <i class="material-icons">add</i>-->
-<!--                                </a>-->
-<!--                                <a href="#"-->
-<!--                                   th:attr="onclick='addToFavorites(\'' + ${favorites.food.idx} + '\', \'' + ${storeName} + '\'); return false;'">-->
-<!--                                    <i class="material-icons">grade</i>-->
-<!--                                </a>-->
-<!--                                &lt;!&ndash;                                <form class="directly-add-to-cart" method="post" id="addToCartForm">&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                    <i class="material-icons shopping-cart-icon"&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                       th:data-food-name="${favorites.food.name}"&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                       th:data-food-code="${favorites.food.code}"&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                       th:data-price="${favorites.food.price}"&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                       th:data-store-name="${favorites.food.category.store.name}"&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                       id="addToCartIcon">&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                        add_shopping_cart&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                    </i>&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                </form>&ndash;&gt;-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
+                <div th:each="favorites : ${favorites}" class="col-sm-6 col-lg-4 favorites favorite-item">
+                    <div class="box">
+                        <div class="img-box"
+                             th:attr="data-food-code=${favorites.food.code}">
+                            <img th:src="${favorites.food.picture}" alt="">
+                        </div>
+                        <div class="detail-box"
+                             th:attr="data-food-name=${favorites.food.getName()}">
+                            <h5 th:text="${favorites.food.getName()}"/>
+                            <p th:text="${favorites.food.getDescription()}"/>
+                            <div class="options">
+                                <h6 th:text="${favorites.food.price + '원'}"/>
+                                <a th:href="@{/members/{storeName}/food/detail/{foodName}(storeName=${(storeName)}, foodName=${favorites.food.name}, foodCode=${favorites.food.code})}">
+                                    <i class="material-icons">add</i>
+                                </a>
+                                <a href="#"
+                                   th:attr="onclick='addToFavorites(\'' + ${favorites.food.idx} + '\', \'' + ${storeName} + '\'); return false;'">
+                                    <i class="material-icons">grade</i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
