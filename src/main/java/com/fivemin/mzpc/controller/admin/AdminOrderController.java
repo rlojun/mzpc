@@ -11,14 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/*
--기능
-사용자가 주문한 주문 리스트
-완료, 취소 버튼 생성
-    음식 나가고 나서 완료버튼, 조리 불가시 취소 버튼
-    두 버튼다 클릭시 목록에서 사라짐.
- */
-
 @Controller
 @Slf4j
 @RequestMapping("/admin/{storeCode}")

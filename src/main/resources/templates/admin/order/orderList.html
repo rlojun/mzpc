@@ -101,7 +101,7 @@
     <header th:replace="fragments/admin/header :: header"></header>
 </div>
 
-<div th:each="order, iterStatus : ${ordersDtos}">
+<div th:each="order, iterStatus : ${ordersDtos}" th:if="${order.isCookComplete()==true}">
     <h5>주문 번호: <span th:text="${iterStatus.index + 1}"></span></h5>
     <p> 주문코드 : <span th:text="${order.getCode()}"></span></p>
     <p> 사용자 이름 : <span th:text="${order.getMemberName()}"></span></p>
