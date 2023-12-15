@@ -92,16 +92,30 @@ public class AdminOrderService {
     @Transactional
     public void rejectOrder(String orderCode) {
         Orders orders = ordersRepository.findByCode(orderCode);
-
         List<Cart> carts = cartRepository.findByOrdersIdx(orders.getIdx());
 
         for ( Cart cart : carts) {
+            log.info("cart_idx : {}",cart.getIdx());
             cart.setOrderComplete(false);
-            entityManager.merge(cart);
+            cartRepository.save(cart);
         }
+
+        deleteOrder(orders,carts);
 
     }
 
+    @Transactional
+    public void deleteOrder(Orders orders, List<Cart> carts) {
+
+        for ( Cart cart : carts) {
+            cart.setOrders(null);
+            cartRepository.save(cart);
+
+        }
+
+        ordersRepository.delete(orders);
+
+    }
 
     public boolean checkOrder() {
         List<Cart> carts = cartRepository.findAll();
@@ -112,7 +126,10 @@ public class AdminOrderService {
                 Orderstatus = false;
                 break;
             }
+
         }
         return Orderstatus;
+
     }
+
 }
