@@ -5,6 +5,7 @@ import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.data.entity.Times;
 import com.fivemin.mzpc.service.KakaoPayService;
 import com.fivemin.mzpc.service.LoginService;
+import com.fivemin.mzpc.service.SessionService;
 import com.fivemin.mzpc.service.member.MemberTimeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,17 +33,25 @@ public class preLoginController {
     @Autowired
     KakaoPayService kakaopay;
 
+    @Autowired
+    SessionService sessionService;
+
     @GetMapping("/time")
-    public String listTime(@PathVariable String storeName, Model model){
+    public String listTime(@PathVariable String storeName, Model model, HttpSession session){
         List<TimeDto> memberListTime = memberTimeService.listTime(storeName);
+        String memberId = (String) session.getAttribute("id");
+        String memberCode = loginService.findByMemberId(memberId).getCode();
+
+        model.addAttribute("memberCode", memberCode);
         model.addAttribute("memberListTime", memberListTime);
         return "members/time/preLogin/listTime";
     }
 
     // 시간 구매 페이지
-    @GetMapping("/purchaseTime/{timeCode}")
+    @GetMapping("/purchaseTime/{memberCode}/{timeCode}")
     public String purchaseTime(@PathVariable String storeName,
                                @PathVariable String timeCode,
+                               @PathVariable String memberCode,
                                @RequestParam(value = "usedMileage", required = false, defaultValue = "0") int usedMileage,
                                Model model,
                                HttpServletRequest request) {
@@ -60,21 +69,24 @@ public class preLoginController {
         model.addAttribute("timeCode", timeCode);
         model.addAttribute("memberMileage", memberMileage);
         model.addAttribute("usedMileage", usedMileage);
+        model.addAttribute("memberCode", memberCode);
         return "members/time/preLogin/orderTime";
     }
 
-    @PostMapping("/purchaseTime/{timeCode}")
+    @PostMapping("/purchaseTime/{memberCode}/{timeCode}")
     public String kakaoPay(@PathVariable String timeCode, HttpSession session,
                            @RequestParam String memberId,
                            @RequestParam int usedMileage,
                            @RequestParam int timePrice,
+                           @PathVariable String memberCode,
                            @RequestParam @DateTimeFormat(pattern = "H:mm:ss") LocalTime additionalTime) {
-        session.setAttribute("memberId", memberId);
-        session.setAttribute("usedMileage", usedMileage);
-        session.setAttribute("timePrice", timePrice);
-        session.setAttribute("additionalTime", additionalTime);
+
+        sessionService.saveStringSession(memberCode, "memberId",memberId);
+        sessionService.saveIntSession(memberCode,"usedMileage", usedMileage);
+        sessionService.saveIntSession(memberCode, "timePrice", timePrice);
+        sessionService.saveLocalTimeSession(memberCode, "additionalTime", additionalTime);
         log.info("kakaoPay post............................................");
-        return "redirect:" + kakaopay.kakaoPayReady(timeCode, usedMileage);
+        return "redirect:" + kakaopay.kakaoPayReady(timeCode, usedMileage, memberCode);
     }
 //
 //

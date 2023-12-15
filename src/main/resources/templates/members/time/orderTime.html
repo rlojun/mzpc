@@ -57,7 +57,7 @@
     <header th:replace="fragments/member/header :: header"></header>
 
 </div>
-    <form th:action="@{/members/{storeName}/purchaseTime/{timeCode} (storeName=${storeName}, timeCode=${timeCode})}" method="post">
+    <form th:action="@{/members/{storeName}/purchaseTime/{memberCode}/{timeCode} (storeName=${storeName},memberCode=${memberCode} ,timeCode=${timeCode})}" method="post">
         <input type="hidden" id="memberId" name="memberId" th:value="${session.id}" />
 
         <p th:text="${'상품명 : ' + times.name}" ></p>

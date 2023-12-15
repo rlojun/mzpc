@@ -34,7 +34,7 @@ public class KakaoPayService {
 
     private String totalAmount;
 
-    public String kakaoPayReady(String timeCode, int usedMileage) {
+    public String kakaoPayReady(String timeCode, int usedMileage, String memberCode) {
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -61,7 +61,7 @@ public class KakaoPayService {
 //        params.add("cancel_url", "http://localhost:9010/kakao/kakaoPayCancel");
 //        params.add("fail_url", "http://localhost:9010/kakao/kakaoPaySuccessFail");
 
-        params.add("approval_url",String.format("http://mzpc.net/members/%s/purchaseTime/%s/kakaoPaySuccess",storeName, timeCode));
+        params.add("approval_url",String.format("http://mzpc.net/members/%s/purchaseTime/%s/%s/kakaoPaySuccess",storeName, memberCode,timeCode));
         params.add("cancel_url", "http://mzpc.net/kakao/kakaoPayCancel");
         params.add("fail_url", "http://mzpc.net/kakao/kakaoPaySuccessFail");
 

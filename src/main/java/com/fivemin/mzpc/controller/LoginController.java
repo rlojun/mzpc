@@ -5,6 +5,7 @@ import com.fivemin.mzpc.data.entity.Admin;
 import com.fivemin.mzpc.data.entity.Cart;
 import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.service.LoginService;
+import com.fivemin.mzpc.service.SessionService;
 import com.fivemin.mzpc.service.email.EmailService;
 import com.fivemin.mzpc.service.email.VerificationCodeUtil;
 import com.fivemin.mzpc.service.member.MemberService;
@@ -46,7 +47,6 @@ public class LoginController {
     @Autowired
     private EmailService emailService;
 
-
     private final CartService cartService;
 
     @Autowired
@@ -60,6 +60,9 @@ public class LoginController {
 
     @Autowired
     private MemberTimeService memberTimeService;
+
+    @Autowired
+    private SessionService sessionService;
 
     //로그인 페이지 이동
     @GetMapping(value = "")
@@ -153,12 +156,16 @@ public class LoginController {
         HttpSession session = request.getSession();
         String memberId = (String) session.getAttribute("id");
         Members members = (Members) session.getAttribute("members");
+
+        String memberCode = loginService.findByMemberId(memberId).getCode();
+        sessionService.deleteByCode(memberCode);
+
         Long memberIdx = members.getIdx();
         memberTimeService.realRemainingTime(memberId);
         cartService.clearCart(memberIdx);
         memberService.logoutMember(memberId);
-        session.invalidate();
 
+        session.invalidate();
         return "redirect:/login?logout";
     }
 
@@ -170,7 +177,9 @@ public class LoginController {
         String memberId = (String) session.getAttribute("id");
         Members member = (Members) session.getAttribute("members");
 
-        log.info("memberId : {} : ", memberId);
+        String memberCode = loginService.findByMemberId(memberId).getCode();
+        sessionService.deleteByCode(memberCode);
+
         memberTimeService.realRemainingTime(memberId);
         cartService.clearCart(member.getIdx());
         memberService.logoutMember(memberId);

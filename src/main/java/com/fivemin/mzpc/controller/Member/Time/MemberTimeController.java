@@ -15,6 +15,7 @@ import com.fivemin.mzpc.data.entity.MileageInfo;
 import com.fivemin.mzpc.data.entity.Times;
 import com.fivemin.mzpc.service.KakaoPayService;
 import com.fivemin.mzpc.service.LoginService;
+import com.fivemin.mzpc.service.SessionService;
 import com.fivemin.mzpc.service.member.MemberTimeService;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -45,24 +46,32 @@ public class MemberTimeController {
     @Setter(onMethod_ = @Autowired)
     private KakaoPayService kakaopay;
 
+    @Autowired
+    SessionService sessionService;
+
     // 시간 상품 목록
     @GetMapping("/time")
-    public String listTime(@PathVariable String storeName, Model model) {
+    public String listTime(@PathVariable String storeName, Model model, HttpSession session) {
         log.info("storeName : {} : ==>", storeName);
         List<TimeDto> memberListTime = memberTimeService.listTime(storeName);
+        String memberId = (String) session.getAttribute("id");
+        log.info("memberId : {}", memberId);
+        String memberCode = loginService.findByMemberId(memberId).getCode();
+
+        model.addAttribute("memberCode", memberCode);
         model.addAttribute("memberListTime", memberListTime);
         return "members/time/listTime";
     }
 
     // 시간 구매 페이지
-    @GetMapping("/purchaseTime/{timeCode}")
+    @GetMapping("/purchaseTime/{memberCode}/{timeCode}")
     public String purchaseTime(@PathVariable String storeName,
                                @PathVariable String timeCode,
+                               @PathVariable String memberCode,
                                @RequestParam(value = "usedMileage", required = false, defaultValue = "0") int usedMileage,
                                Model model,
                                HttpServletRequest request) {
         HttpSession session = request.getSession();
-        // 로그인한 사용자 확인
         String memberId = (String) session.getAttribute("id");
         log.info("memberId: {} ", memberId);
 
@@ -77,41 +86,48 @@ public class MemberTimeController {
         model.addAttribute("timeCode", timeCode);
         model.addAttribute("memberMileage", memberMileage);
         model.addAttribute("usedMileage", usedMileage);
+        model.addAttribute("memberCode", memberCode);
         return "members/time/orderTime";
     }
 
     // 카카오 페이 결제 준비
-    @PostMapping("/purchaseTime/{timeCode}")
+    @PostMapping("/purchaseTime/{memberCode}/{timeCode}")
     public String kakaoPay(@PathVariable String timeCode, HttpSession session,
                            @RequestParam String memberId,
                            @RequestParam int usedMileage,
                            @RequestParam int timePrice,
+                           @PathVariable String memberCode,
                            @RequestParam @DateTimeFormat(pattern = "H:mm:ss") LocalTime additionalTime) {
-        session.setAttribute("memberId", memberId);
-        session.setAttribute("usedMileage", usedMileage);
-        session.setAttribute("timePrice", timePrice);
-        session.setAttribute("additionalTime", additionalTime);
 
-        log.info("Session ID in kakaoPay: " + session.getId());
-        log.info("usedMileage in kakaoPay: " + session.getAttribute("usedMileage"));
+        sessionService.saveStringSession(memberCode, "memberId",memberId);
+        sessionService.saveIntSession(memberCode,"usedMileage", usedMileage);
+        sessionService.saveIntSession(memberCode, "timePrice", timePrice);
+        sessionService.saveLocalTimeSession(memberCode, "additionalTime", additionalTime);
+
+        log.info("usedMileage in kakaoPay: " + usedMileage);
+        log.info("memberId : {} ", memberId);
 
         log.info("kakaoPay post............................................");
-        return "redirect:" + kakaopay.kakaoPayReady(timeCode, usedMileage);
+        return "redirect:" + kakaopay.kakaoPayReady(timeCode, usedMileage, memberCode);
     }
 
     // 카카오페이 결제 성공 페이지
-    @GetMapping("/purchaseTime/{timeCode}/kakaoPaySuccess")
+    // 여기서 다시 세션 담아야함
+    @GetMapping("/purchaseTime/{memberCode}/{timeCode}/kakaoPaySuccess")
     public String kakaoPaySuccess(@RequestParam("pg_token") String pg_token, Model model,
                                   @PathVariable String timeCode, @PathVariable String storeName,
-                                  HttpSession session) {
+                                  HttpSession session, @PathVariable String memberCode) {
         log.info("kakaoPaySuccess get............................................");
         log.info("kakaoPaySuccess pg_token : " + pg_token);
 
-        Integer usedMileage = (Integer) session.getAttribute("usedMileage");
+        String memberId = sessionService.findByCodeAndName(memberCode, "memberId").getStringValue();
+        session.setAttribute("id", memberId);
+        log.info("memberId : {}", memberId);
+        Members members = loginService.findByMemberId(memberId);
+        session.setAttribute("members", members);
 
-        if (usedMileage == null) {
-            usedMileage =0;
-        }
+        int usedMileage = sessionService.findByCodeAndName(memberCode, "usedMileage").getIntValue();
+
         log.info("usedMileage : {}", usedMileage);
         model.addAttribute("storeName", storeName);
         model.addAttribute("info", kakaopay.kakaoPayInfo(pg_token, timeCode, usedMileage));
@@ -119,15 +135,17 @@ public class MemberTimeController {
     }
 
     // 시간 추가 및 마일리지 적립 로직
-    @PostMapping("/purchaseTime/{timeCode}/kakaoPaySuccess")
+    @PostMapping("/purchaseTime/{memberCode}/{timeCode}/kakaoPaySuccess")
     public String kakaoPaySuccess(@PathVariable String storeName, @PathVariable String timeCode,
-                                  Model model,HttpSession session) {
-        String memberId = (String) session.getAttribute("memberId");
-        int usedMileage = (int) session.getAttribute("usedMileage");
-        int timePrice = (int) session.getAttribute("timePrice");
-        LocalTime additionalTime = (LocalTime) session.getAttribute("additionalTime");
+                                  Model model,HttpSession session, @PathVariable String memberCode) {
+        String memberId = (String) session.getAttribute("id");
+        int usedMileage = sessionService.findByCodeAndName(memberCode, "usedMileage").getIntValue();
+        int timePrice = sessionService.findByCodeAndName(memberCode, "timePrice").getIntValue();
+        LocalTime additionalTime = sessionService.findByCodeAndName(memberCode, "additionalTime").getLocalTimeValue();
 
         memberTimeService.purchaseTime(memberId, usedMileage, timePrice, additionalTime, timeCode);
+
+        sessionService.deleteByCode(memberCode);
 
         model.addAttribute("timeCode", timeCode);
         String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
