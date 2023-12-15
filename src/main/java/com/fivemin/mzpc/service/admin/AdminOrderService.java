@@ -26,15 +26,12 @@ public class AdminOrderService {
 
     private final EntityManager entityManager;
 
-
     @Autowired
     public AdminOrderService(OrdersRepository ordersRepository, CartRepository cartRepository, EntityManager entityManager) {
         this.ordersRepository = ordersRepository;
         this.cartRepository = cartRepository;
         this.entityManager = entityManager;
     }
-
-
 
     public List<OrdersDto> getOrderList(String storeCode) {
         List<Orders> ordersList = ordersRepository.findAllCookIncompleteByStoreCode(storeCode);
@@ -115,4 +112,5 @@ public class AdminOrderService {
         }
         return result;
     }
+
 }
