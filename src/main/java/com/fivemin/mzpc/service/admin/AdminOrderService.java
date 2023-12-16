@@ -10,9 +10,9 @@ import com.fivemin.mzpc.data.repository.OrdersRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +25,7 @@ public class AdminOrderService {
     private final CartRepository cartRepository;
 
     private final EntityManager entityManager;
+
 
     @Autowired
     public AdminOrderService(OrdersRepository ordersRepository, CartRepository cartRepository, EntityManager entityManager) {
@@ -129,6 +130,15 @@ public class AdminOrderService {
 
         }
         return Orderstatus;
+
+    }
+
+    @Transactional(readOnly=true)
+    public boolean alarmOrder(String storeCode) {
+        List<Cart> carts = cartRepository.findAllByStoreIdx(storeCode);
+        List<Orders> orders = ordersRepository.findAllByStoreCode(storeCode);
+
+        return !carts.isEmpty() && !orders.isEmpty();
 
     }
 
