@@ -41,7 +41,7 @@
         function checkOrders() {
             var storeCode = [[${storeCode}]];
             $.ajax({
-                url: 'http://localhost:9010/orders/checkOrders',
+                url: 'http://localhost:9010/orders/alarmOrder',
                 method: 'GET',
                 contentType: "application/json",
                 data : { storeCode: storeCode },
