@@ -1,37 +1,79 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Food Details</title>
+    <!-- Basic -->
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <!-- Site Metas -->
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="shortcut icon" href="/bootstrap/images/favicon.png" type="">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+
+    <title> MZPC </title>
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css"/>
+
+    <!--owl slider stylesheet -->
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
+    <!-- nice select  -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css"
+          integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ=="
+          crossorigin="anonymous"/>
+    <!-- font awesome style -->
+    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="/bootstrap/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="/bootstrap/css/responsive.css" rel="stylesheet"/>
 </head>
-<body>
-<form class="add-to-cart" th:object="${foodDetails}" method="post">
-    <div>
-        <h5 th:text="${foodDetails.name}"></h5>
-        <img th:src="${foodDetails.picture}" alt="Food Image">
-        <h5 th:text="${foodDetails.description}"></h5>
-        <input type="hidden" th:field="*{name}" th:value="${foodDetails.name}" />
-        <input type="hidden" th:field="*{code}" th:value="${foodDetails.code}" />
-        <input type="hidden" th:field="*{price}" th:value="${foodDetails.price}" />
-        <input type="hidden" th:field="*{storeName}" th:value="${foodDetails.storeName}" />
-        <div th:if="${toppings}" class="topping-section">
-            <h3>토핑</h3>
-            <div th:each="topping : ${toppings}" class="topping-option">
-                <label>
-                    <input type="checkbox" th:value="${topping.name}" class="topping-checkbox"/>
-                    <span th:text="${topping.name}"></span>
-                </label>
+
+<body class="sub_page">
+
+<div class="hero_area">
+    <div class="bg-box">
+        <img src="/bootstrap/images/hero-bg.jpg" alt="">
+    </div>
+    <!-- header section strats -->
+    <header th:replace="fragments/member/header :: header"></header>
+    <!-- end header section -->
+</div>
+<section class="detail_section" style="width: 100%; text-align: center;">
+    <form class="add-to-cart" th:object="${foodDetails}" method="post">
+        <div>
+            <h5 th:text="${foodDetails.name}" style="text-align: center"></h5>
+                <img th:src="@{'https://mzpc-s3-bucket.s3.ap-northeast-2.amazonaws.com/'+${foodDetails.getPicture()}}"
+                     alt="Food Image">
+            <h5 th:text="${'가격 : ' + foodDetails.price + '원'}" style="text-align: center"></h5>
+            <h5 th:text="${foodDetails.description}" style="text-align: center"></h5>
+            <input type="hidden" th:field="*{name}" th:value="${foodDetails.name}"/>
+            <input type="hidden" th:field="*{code}" th:value="${foodDetails.code}"/>
+            <input type="hidden" th:field="*{price}" th:value="${foodDetails.price}"/>
+            <input type="hidden" th:field="*{storeName}" th:value="${foodDetails.storeName}"/>
+            <div th:if="${toppings != null and toppings.size() > 0}" class="topping-section">
+                <h3>토핑</h3>
+                <div th:each="topping : ${toppings}" class="topping-option">
+                    <label>
+                        <input type="checkbox" th:value="${topping.name}" class="topping-checkbox"/>
+                        <span th:text="${topping.name}"></span>
+                    </label>
+                </div>
             </div>
         </div>
-    </div>
-    <button type="submit"
-            class="add-to-cart-btn"
-        th:attr="data-food-name=${foodDetails.name}, data-food-code=${foodDetails.code}, data-price=${foodDetails.price}, data-store-name=${foodDetails.storeName}">
-        카트에 담기
-    </button>
-
-</form>
+        <button type="submit"
+                class="add-to-cart-btn" style="margin: 0 auto"
+                th:attr="data-food-name=${foodDetails.name}, data-food-code=${foodDetails.code}, data-price=${foodDetails.price}, data-store-name=${foodDetails.storeName}">
+            카트에 담기
+        </button>
+    </form>
+</section>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -70,5 +112,6 @@
         });
     });
 </script>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

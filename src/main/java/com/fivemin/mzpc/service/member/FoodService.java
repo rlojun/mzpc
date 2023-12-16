@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -140,4 +141,12 @@ public class FoodService {
                 .build();
     }
 
+    public boolean isFoodInFavorites(Long foodIdx, Members members) {
+        return favoritesRepository.existsByFoodIdxAndMembersIdx(foodIdx, members.getIdx());
+    }
+
+    @Transactional
+    public void removeFavorite(Long favoriteIdx) {
+        favoritesRepository.removeByIdx(favoriteIdx);
+    }
 }

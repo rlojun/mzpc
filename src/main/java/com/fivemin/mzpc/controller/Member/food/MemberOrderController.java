@@ -61,9 +61,7 @@ public class MemberOrderController {
 
         Members member = (Members) httpSession.getAttribute("members");
 
-        Orders ordersDto = orderService.checkoutOrder(member, paymentMethod, notes);
-        httpSession.setAttribute("ordersDto", ordersDto);
-        httpSession.getAttribute("ordersDto");
+        orderService.checkoutOrder(member, paymentMethod, notes);
 
         String redirectUrl = "/members/" + encodedStoreName + "/order/list";
         return ResponseEntity.ok(redirectUrl);
