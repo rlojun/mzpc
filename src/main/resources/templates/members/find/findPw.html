@@ -28,6 +28,8 @@
     <link href="/bootstrap/css/style.css" rel="stylesheet" />
     <!-- responsive style -->
     <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="sub_page">
@@ -131,49 +133,151 @@
     <!-- end header section -->
 </div>
 <br/>
-    <form action="/login/findPw" method="post" th:onsubmit="codeVerification()">
-        <div class="heading_container heading_center">
-            <h3>
-                PW 찾기
-            </h3>
-        </div>
-        <br/>
-        <br/>
-        <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
-            <div style="margin-bottom: 10px; text-align: left;">
-                <label for="name" style="display: inline-block; width: 100px; text-align: right;">이름:</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div style="margin-bottom: 10px; text-align: left;">
-                <label for="ssn" style="display: inline-block; width: 100px; text-align: right;">주민번호:</label>
-                <input type="text" id="ssn" name="ssn" required>
-            </div>
-            <div style="margin-bottom: 10px; text-align: left;">
-                <label for="email" style="display: inline-block; width: 100px; text-align: right;">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <br>
-            <button type="submit" class="btn btn-primary">인증 요청</button>
-            <br/>
-        </div>
-    </form>
-    <form action="/login/verifyCode" method="post" th:onsubmit="codeSuccess()">
-        <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
-            <div style="margin-bottom: 10px; text-align: left;">
-                <label for="memberInput" style="display: inline-block; width: 100px; text-align: right;">인증 코드 입력:</label>
-                <input type="text" id="memberInput" name="memberInput" required>
-            </div>
-                <button type="submit" class="btn btn-primary">비밀번호 재설정</button>
-        </div>
-    </form>
-<script th:inline="javascript">
-    function codeVerification() {
-        alert('인증 번호를 전송 하였습니다.');
-    }
+<main class="flex-1">
+    <div class="py-6">
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+            <!-- 내용 -->
+            <div class="bg-white shadow sm:rounded-lg">
+                <div class="px-4 py-5 sm:p-5">
+                    <!-- Login Form -->
+                    <form action="/login/findPw" method="post" th:onsubmit="codeVerification()"
+                          class="w-full max-w-md mx-auto mt-20 space-y-3">
+                        <div class="heading_container heading_center">
+                            <h2 class="text-2xl font-bold mb-5 text-center">PW 찾기</h2>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <label for="name" class="font-bold w-1/4">이름:</label>
+                            <input type="text" id="name" name="name" required
+                                   class="border-2 border-gray-200 p-2 rounded outline-none focus:border-purple-500 flex-grow">
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <label class="font-bold w-1/4">주민번호:</label>
+                            <input type="text" id="ssn1" name="ssn1" pattern="^\d{6}$" required
+                                   class="border-2 border-gray-200 p-2 rounded outline-none focus:border-purple-500 flex-grow w-1/3">
+                            <span>-</span>
+                            <input type="password" id="ssn2" name="ssn2" pattern="^[1-4]\d{6}$" required
+                                   class="border-2 border-gray-200 p-2 rounded outline-none focus:border-purple-500 flex-grow w-1/3">
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <label for="emailUser" class="font-bold w-1/4">이메일:</label>
+                            <input type="text" id="emailUser" name="emailUser" required
+                                   class="border-2 border-gray-200 p-2 rounded outline-none focus:border-purple-500 flex-grow w-1/3">
+                            <span>@</span>
+                            <select id="emailDomain" name="emailDomain" class="border-2 border-gray-200 p-2 rounded focus:border-purple-500 flex-grow w-1/3">
+                                <option value="naver.com">naver.com</option>
+                                <option value="gmail.com">gmail.com</option>
+                                <option value="daum.net">daum.net</option>
+                                <option value="nate.com">nate.com</option>
+                            </select>
+                        </div>
+                    </form>
 
-    function codeSuccess() {
-        alert('인증을 성공하였습니다.');
-    }
-</script>
+                    <form action="/login/verifyCode" method="post" th:onsubmit="codeSuccess()"
+                          class="w-full max-w-md mx-auto mt-20 space-y-3">
+                        <div class="flex items-center space-x-2">
+                            <label for="memberInput" class="font-bold w-1/4">인증 코드 입력:</label>
+                            <input type="text" id="memberInput" name="memberInput" required
+                                   class="border-2 border-gray-200 p-2 rounded outline-none focus:border-purple-500 flex-grow">
+                        </div>
+                        <div class="flex items-center space-x-2 mt-3">
+                            <button type="submit" class="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600 flex-grow">비밀번호 재설정</button>
+                        </div>
+                    </form>
+
+                    <script th:inline="javascript">
+                        function codeVerification() {
+                            alert('인증 번호를 전송 하였습니다.');
+                        }
+
+                        function codeSuccess() {
+                            alert('인증을 성공하였습니다.');
+                        }
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- footer section -->
+<footer class="footer_section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 footer-col">
+                <div class="footer_contact">
+                    <h4>
+                        Contact Us
+                    </h4>
+                    <div class="contact_link_box">
+                        <a href="">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <span>
+                  Location
+                </span>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-phone" aria-hidden="true"></i>
+                            <span>
+                 Call +010 7141 8847
+                </span>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                            <span>
+                  demo@gmail.com
+                </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 footer-col">
+                <div class="footer_detail">
+                    <a href="" class="footer-logo">
+                        Mzpc
+                    </a>
+                    <p>
+                        Necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with
+                    </p>
+                    <div class="footer_social">
+                        <a href="">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-linkedin" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-instagram" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-pinterest" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 footer-col">
+                <h4>
+                    Opening Hours
+                </h4>
+                <p>
+                    Everyday
+                </p>
+                <p>
+                    10.00 Am -10.00 Pm
+                </p>
+            </div>
+        </div>
+        <div class="footer-info">
+            <p>
+                &copy; <span id="displayYear"></span> All Rights Reserved By
+                <a href="https://html.design/">Free Html Templates</a><br><br>
+                &copy; Distributed By
+                <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
+            </p>
+        </div>
+    </div>
+</footer>
+<!-- footer section -->
 </body>
 </html>
