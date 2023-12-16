@@ -194,14 +194,19 @@ public class AdminFoodService {
     public String fileUpload(MultipartFile foodPicture, String fileName) {
         String returnResult = "";
         if (foodPicture!=null){
+            File uploadFile = null;
             try {
-                File uploadFile = convertMultiPartFileToFile(foodPicture);
+                uploadFile = convertMultiPartFileToFile(foodPicture);
                 amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(
                         CannedAccessControlList.PublicRead));
                 returnResult =  amazonS3Client.getUrl(bucket, fileName).toString();
             } catch (IOException e) {
                 System.out.println("파일을 추가하는데 오류가 발생했습니다.");
                 returnResult = null;
+            } finally {
+                if (uploadFile!=null){
+                    uploadFile.delete();
+                }
             }
         }
         return returnResult;
