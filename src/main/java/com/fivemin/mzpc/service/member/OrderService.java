@@ -1,6 +1,5 @@
 package com.fivemin.mzpc.service.member;
 
-import com.fivemin.mzpc.data.dto.OrdersDto;
 import com.fivemin.mzpc.data.entity.Cart;
 import com.fivemin.mzpc.data.entity.Food;
 import com.fivemin.mzpc.data.entity.Members;
@@ -10,8 +9,6 @@ import com.fivemin.mzpc.data.repository.OrdersRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.PostLoad;
 import java.util.List;
 
 @Service
