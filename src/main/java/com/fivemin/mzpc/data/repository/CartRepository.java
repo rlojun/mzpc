@@ -26,4 +26,6 @@ public interface CartRepository extends JpaRepository<Cart,Integer> {
     @Query("SELECT c FROM Cart c WHERE c.orders.idx=:idx")
     List<Cart> findByOrdersIdx(Long idx);
 
+    @Query("SELECT c FROM Cart c WHERE c.store.code=?1 and c.orderComplete=true")
+    List<Cart> findAllByStoreIdx(String storeCode);
 }

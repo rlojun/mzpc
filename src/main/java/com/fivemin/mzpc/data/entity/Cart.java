@@ -56,4 +56,7 @@ public class Cart {
     @Column(name = "order_complete",nullable = false)
     private boolean orderComplete=false;
 
+    @ManyToOne
+    @JoinColumn(name = "store_idx")
+    private Store store;
 }
