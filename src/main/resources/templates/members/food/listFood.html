@@ -89,16 +89,6 @@
                                    th:attr="onclick='addToFavorites(\'' + ${menu.idx} + '\', \'' + ${storeName} + '\'); return false;'">
                                     <i class="material-icons">grade</i>
                                 </a>
-                                <form class="directly-add-to-cart" method="post" id="addToCartForm">
-                                    <i class="material-icons shopping-cart-icon"
-                                       th:data-food-name="${menu.name}"
-                                       th:data-food-code="${menu.code}"
-                                       th:data-price="${menu.price}"
-                                       th:data-store-name="${menu.storeName}"
-                                       id="addToCartIcon">
-                                        add_shopping_cart
-                                    </i>
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -119,8 +109,8 @@
                                     <i class="material-icons">add</i>
                                 </a>
                                 <a href="#"
-                                   th:attr="onclick='addToFavorites(\'' + ${favorites.food.idx} + '\', \'' + ${storeName} + '\'); return false;'">
-                                    <i class="material-icons">grade</i>
+                                   th:attr="onclick='removeFromFavorites(\'' + ${favorites.idx} + '\', \'' + ${storeName} + '\'); return false;'">
+                                    <i class="material-icons" style="color: black;">grade</i>
                                 </a>
                             </div>
                         </div>
@@ -208,6 +198,36 @@
             },
             error: function (error) {
             }
+        });
+    }
+</script>
+<!-- Remove from Favorites Function-->
+<script>
+    function removeFromFavorites(favoriteIdx, storeName) {
+
+        const favoritesContainer = $('#favoritesContainer');
+
+        $.ajax({
+            type: 'DELETE',
+            url: '/members/' + encodeURIComponent(storeName) + '/food/removeFavorite',
+            data: {
+                favoriteIdx: favoriteIdx,
+            },
+            success: function (response) {
+                updateFavoritesSection(response)
+            },
+            error: function (error) {
+            }
+        });
+    }
+
+    function updateFavoritesSection(favorites) {
+        const favoritesContainer = $('#favoritesContainer');
+        favoritesContainer.empty();
+
+        $.each(favorites, function (index, favorite) {
+            const favoriteElement = $('<div>').text(favorite);
+            favoritesContainer.append(favoriteElement);
         });
     }
 </script>

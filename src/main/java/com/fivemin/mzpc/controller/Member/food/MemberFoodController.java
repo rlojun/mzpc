@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -112,16 +113,21 @@ public class MemberFoodController {
                                               @PathVariable(required = false) String storeName,
                                               HttpSession httpSession) {
         Members members = (Members) httpSession.getAttribute("members");
-        log.info("foodIdx + members : {} {}", foodIdx, members);
 
-        foodService.addFavorite(foodIdx, members);
-
-        return ResponseEntity.ok("즐겨 찾기에 추가했습니다.");
+        if (!foodService.isFoodInFavorites(foodIdx, members)) {
+            foodService.addFavorite(foodIdx, members);
+            return ResponseEntity.ok("즐겨 찾기에 추가했습니다.");
+        } else {
+            return ResponseEntity.badRequest().body("이 음식은 이미 즐겨 찾기에 추가되었습니다.");
+        }
     }
 
+    @Transactional
+    @DeleteMapping("/removeFavorite")
+    public ResponseEntity<String> removeFavorite(@RequestParam Long favoriteIdx,
+                                                 @PathVariable(required = false) String storeName) {
+        foodService.removeFavorite(favoriteIdx);
+        return ResponseEntity.ok("즐겨 찾기에 제거했습니다.");
+    }
 
-
-//    deleteFoodFavorites
-//    (음식 즐겨 찾기 제거 하기)
-//
 }
