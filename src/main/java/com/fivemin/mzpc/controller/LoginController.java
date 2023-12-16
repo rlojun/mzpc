@@ -2,8 +2,10 @@ package com.fivemin.mzpc.controller;
 
 import com.fivemin.mzpc.data.dto.AuthDto;
 import com.fivemin.mzpc.data.entity.Admin;
+import com.fivemin.mzpc.data.entity.Cart;
 import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.service.LoginService;
+import com.fivemin.mzpc.service.SessionService;
 import com.fivemin.mzpc.service.email.EmailService;
 import com.fivemin.mzpc.service.email.VerificationCodeUtil;
 import com.fivemin.mzpc.service.member.MemberService;
@@ -23,9 +25,11 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 
 /*
@@ -43,7 +47,6 @@ public class LoginController {
     @Autowired
     private EmailService emailService;
 
-
     private final CartService cartService;
 
     @Autowired
@@ -57,6 +60,9 @@ public class LoginController {
 
     @Autowired
     private MemberTimeService memberTimeService;
+
+    @Autowired
+    private SessionService sessionService;
 
     //로그인 페이지 이동
     @GetMapping(value = "")
@@ -127,7 +133,7 @@ public class LoginController {
             session.setAttribute("storeName", encodedStoreName);
             session.setAttribute("members", members);
             model.addAttribute("storeName", encodedStoreName);
-            if (members.getRemainingTime() != LocalTime.of(0, 0, 0)) {
+            if (members.getRemainingTime().isAfter(LocalTime.of(0, 0, 0))) {
                 return String.format("redirect:/members/%s", encodedStoreName);
             } else {
                 return String.format("redirect:/pre/%s/time", encodedStoreName);
@@ -150,12 +156,16 @@ public class LoginController {
         HttpSession session = request.getSession();
         String memberId = (String) session.getAttribute("id");
         Members members = (Members) session.getAttribute("members");
+
+        String memberCode = loginService.findByMemberId(memberId).getCode();
+        sessionService.deleteByCode(memberCode);
+
         Long memberIdx = members.getIdx();
         memberTimeService.realRemainingTime(memberId);
         cartService.clearCart(memberIdx);
         memberService.logoutMember(memberId);
-        session.invalidate();
 
+        session.invalidate();
         return "redirect:/login?logout";
     }
 
@@ -167,7 +177,9 @@ public class LoginController {
         String memberId = (String) session.getAttribute("id");
         Members member = (Members) session.getAttribute("members");
 
-        log.info("memberId : {} : ", memberId);
+        String memberCode = loginService.findByMemberId(memberId).getCode();
+        sessionService.deleteByCode(memberCode);
+
         memberTimeService.realRemainingTime(memberId);
         cartService.clearCart(member.getIdx());
         memberService.logoutMember(memberId);

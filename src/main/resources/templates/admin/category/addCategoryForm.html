@@ -33,27 +33,30 @@
             event.preventDefault();
             var categoryName = $('input[name="categoryName"]').val();
             var storeCode = [[${storeCode}]];
+            var confirmation = confirm("추가하시겠습니까?");
             var categoryDto = {
                 "idx": null,
                 "code": null,
                 "name": categoryName
             };
 
-            $.ajax({
-                type: "POST",
-                url: "http://localhost:9010/category/addCategory?storeCode=" + storeCode,
-                contentType: "application/json; charset=utf-8",
-                async : false,
-                data: JSON.stringify(categoryDto),
-                success: function(data) {
-                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping="+false;
-                    alert(data);
+            if (confirmation){
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:9010/category/addCategory?storeCode=" + storeCode,
+                    contentType: "application/json; charset=utf-8",
+                    async : false,
+                    data: JSON.stringify(categoryDto),
+                    success: function(data) {
+                        window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping="+false;
+                        alert(data);
 
-                },
-                error: function() {
-                    alert("이미 존재하는 카테고리입니다.")
-                }
-            });
+                    },
+                    error: function() {
+                        alert("이미 존재하는 카테고리입니다.")
+                    }
+                });
+            }
         }
 
     </script>

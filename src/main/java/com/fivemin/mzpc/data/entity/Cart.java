@@ -19,7 +19,7 @@ public class Cart {
     private Long idx;
 
     // 장바구니 일련번호
-    @Column(name = "cart_code",nullable = false, unique = true)
+    @Column(name = "cart_code",nullable = false, unique = true, length = 15)
     private String code;
 
     @PrePersist

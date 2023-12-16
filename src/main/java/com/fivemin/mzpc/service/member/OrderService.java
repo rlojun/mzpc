@@ -38,6 +38,7 @@ public class OrderService {
                 .totalCost(totalCost)
                 .note(notes)
                 .carts(cartList)
+                .members(member)
                 .store(member.getStore())
                 .build();
 

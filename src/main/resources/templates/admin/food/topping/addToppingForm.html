@@ -37,7 +37,7 @@
             var confirmation = confirm("토핑을 추가하시겠습니까?");
             var toppingPicture = $('#toppingPicture')[0].files[0];
             var formData = new FormData();
-
+            var baseURL;
             var foodDto = {
                 "idx" : null,
                 "code" : null,
@@ -47,6 +47,12 @@
                 "stock" : $('input[name="stock"]').val(),
                 "topping" : true
             };
+
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                baseURL = 'http://localhost:9010';
+            } else {
+                baseURL = 'http://mzpc.net';
+            }
 
             if (foodDto.name === '' || foodDto.price === '' || foodDto.stock === '' || toppingPicture==null) {
                 alert('모든 필수 입력 필드를 작성해주세요.');
@@ -60,13 +66,12 @@
                 $.ajax({
                     type: "POST",
                     async: false,
-                    url: "http://localhost:9010/food/addFood?categoryCode=" + categoryCode,
-                    // contentType : "application/json",
+                    url: baseURL+"/food/addFood?categoryCode=" + categoryCode,
                     processData: false,
                     contentType: false,
                     data: formData,
                     success: function (data) {
-                        window.location.href = "http://localhost:9010/admin/" + storeCode + "/food" + "?topping=" + true;
+                        window.location.href = baseURL+"/admin/" + storeCode + "/food" + "?topping=" + true;
                         alert(data)
                     },
                     error: function () {

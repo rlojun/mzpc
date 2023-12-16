@@ -14,4 +14,7 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
 
     @Query("SELECT orders FROM Orders orders WHERE orders.cookComplete = false and orders.store.code =?1 order by orders.createdAt")
     List<Orders> findAllCookIncompleteByStoreCode(String storeCode);
+
+    @Query("SELECT COUNT(o) FROM Orders o WHERE o.store.code=?1 and o.cookComplete=false")
+    Integer findAllByStoreCode(String storeCode);
 }

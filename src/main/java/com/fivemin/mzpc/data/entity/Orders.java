@@ -22,7 +22,7 @@ public class Orders extends BaseCreateEntity {
     @Column(name = "orders_idx")
     private Long idx;
 
-    @Column(name = "orders_code",nullable = false,unique = true)
+    @Column(name = "orders_code",nullable = false,unique = true, length = 15)
     private String code;
 
     @PrePersist
@@ -67,5 +67,9 @@ public class Orders extends BaseCreateEntity {
     @ManyToOne
     @JoinColumn(name = "store_idx",nullable = false)
     private Store store;
+
+    @ManyToOne
+    @JoinColumn(name = "members_idx")
+    private Members members;
 
 }

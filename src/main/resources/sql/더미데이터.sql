@@ -16,7 +16,7 @@ INSERT INTO members(member_idx,member_code,member_id,member_pw,member_name,membe
 (1, 312,'cjun','w123','최준','880421-1256232','010-2452-3321','cjun@naver.com','경기도 고양시 덕양구 강촌로 191','00:00:00', '00:00:00',0,1);
 
 INSERT INTO members(member_idx,member_code,member_id,member_pw,member_name,member_ssn,phone_number,member_email, remaining_time, login_remaining_time, mileage, store_idx) VALUES
-    (2, 313,'base','vvs1234','강희준','960203-1423462','010-8291-4312','base1234@gmail.com','02:00:00','02:00:00',20,1);
+    (2, 313,'base','v1234','강희준','960203-1423462','010-8291-4312','base1234@gmail.com','02:00:00','02:00:00',20,1);
 
 INSERT INTO members(member_idx,member_code,member_id,member_pw,member_name,member_ssn,phone_number,member_email, remaining_time, login_remaining_time, mileage, store_idx) VALUES
     (3, 314,'sudo','s1234','이수두','960203-2642321','010-4561-2212','sudo@gmail.com','03:00:00','03:00:00',40,1);
@@ -25,17 +25,20 @@ INSERT INTO members(member_idx,member_code,member_id,member_pw,member_name,membe
 #-------------------------------------------------------------------------------------------
 #Times
 
-INSERT INTO times(time_idx,time_code,time_name,add_time,time_price,save,store_idx)VALUES
+#Times
+
+INSERT INTO times(time_idx,time_code,time_name,add_time,time_price,check_delete ,store_idx)VALUES
 (NULL,413,'1시간','1:00:00',1200,FALSE,1);
 
-INSERT INTO times(time_idx, time_code,time_name,add_time,time_price,save,store_idx)VALUES
-    (NULL,414,'5시간','05:00:00',5500,TRUE,1);
+INSERT INTO times(time_idx, time_code,time_name,add_time,time_price,check_delete ,store_idx)VALUES
+    (NULL,414,'5시간','05:00:00',5500,FALSE,1);
 
-INSERT INTO times(time_idx, time_code,time_name,add_time,time_price,save,store_idx)VALUES
-    (NULL,415,'10시간','10:00:00',10000,TRUE,1);
+INSERT INTO times(time_idx, time_code,time_name,add_time,time_price,check_delete ,store_idx)VALUES
+    (NULL,415,'10시간','10:00:00',10000,FALSE,1);
 
-INSERT INTO times(time_idx, time_code,time_name,add_time,time_price,save,store_idx)VALUES
-    (NULL,416,'20시간','20:00:00',18000,TRUE,1);
+INSERT INTO times(time_idx, time_code,time_name,add_time,time_price,check_delete ,store_idx)VALUES
+    (NULL,416,'20시간','20:00:00',18000,FALSE,1);
+
 
 #---------------------------------------------------------------------------------------
 #CATEGORY

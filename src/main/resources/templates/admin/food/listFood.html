@@ -34,8 +34,15 @@
             var categoryCode = element.getAttribute("data-category-code");
             var foodCode = element.getAttribute("data-food-code");
             var storeCode = [[${storeCode}]];
+            var baseURL;
 
-            window.location.href ="http://localhost:9010/admin/"+storeCode+"/detailFood?categoryCode="+categoryCode+"&foodCode="+foodCode+"&topping="+false;
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                baseURL = 'http://localhost:9010';
+            } else {
+                baseURL = 'http://mzpc.net';
+            }
+
+            window.location.href =baseURL+"/admin/"+storeCode+"/detailFood?categoryCode="+categoryCode+"&foodCode="+foodCode+"&topping="+false;
         }
     </script>
 </head>
@@ -71,8 +78,7 @@
                         <div>
                             <div class="img-box" th:attr="data-category-code=${food.getCategoryDto().getCode()},data-food-code=${food.getCode()}"
                                  onclick="clickFood(this)">
-                                <img th:src="@{'https://mzpc-s3-bucket.s3.ap-northeast-2.amazonaws.com/'+${food.getPicture()}}" alt="기본이미지">
-
+                                <img th:src="@{${food.getPicture()}}" alt="기본이미지">
                             </div>
                             <div class="detail-box" th:attr="data-category-code=${food.getCategoryDto().getCode()},data-food-code=${food.getCode()}"
                                  onclick="clickFood(this)">
@@ -90,7 +96,6 @@
         <button th:onclick="|location.href='@{/admin/{storeCode}/listCategory(storeCode=${storeCode})}'|">카테고리 관리</button>
         <button th:onclick="|location.href='@{/admin/{storeCode}/addFoodForm(storeCode=${storeCode}, topping=false)}'|">음식 추가</button>
         <button th:onclick="|location.href='@{/admin/{storeCode}/food(storeCode=${storeCode}, topping = true)}'|">토핑 목록</button>
-        <button th:onclick="|location.href='@{/admin/{storeCode}/orderList(storeCode=${storeCode})}'|">주문 목록</button>
     </div>
 </section>
 

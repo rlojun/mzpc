@@ -34,11 +34,18 @@ public class AdminFoodRestController {
             log.info("foodDto : {}", foodDto);
             log.info("foodPicture : {}", foodPicture.getOriginalFilename());
             adminFoodService.addFood(foodDto,foodPicture,categoryCode);
-
+            
+            String message;
+            if (!foodDto.isTopping()) {
+                message = "음식이 추가되었습니다.";
+            } else {
+                message = "토핑이 추가되었습니다.";
+            }
+            return ResponseEntity.ok(message);
         } catch (IOException e) {
             System.out.println("addFood() Err --> "+ e.getMessage());
+            return null;
         }
-        return ResponseEntity.ok("음식이 추가되었습니다.");
 
     }
 

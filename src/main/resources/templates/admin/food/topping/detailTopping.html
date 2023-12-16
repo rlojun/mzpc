@@ -77,6 +77,13 @@
             };
             var confirmation = confirm("변경사항을 저장하시겠습니까?");
             var formData = new FormData();
+            var baseURL;
+
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                baseURL = 'http://localhost:9010';
+            } else {
+                baseURL = 'http://mzpc.net';
+            }
 
             formData.append('picture', $('#picture')[0].files[0]);
             formData.append('foodDto',JSON.stringify(foodDto));
@@ -85,12 +92,12 @@
                 $.ajax({
                     type: "POST",
                     async: false,
-                    url: "http://localhost:9010/food/modifyFood?categoryName=" + categoryName,
+                    url: baseURL+"/food/modifyFood?categoryName=" + categoryName,
                     processData: false,
                     contentType: false,
                     data: formData,
                     success: function (data) {
-                        window.location.href = "http://localhost:9010/admin/" + storeCode + "/food?topping=" + true;
+                        window.location.href = baseURL+"/admin/" + storeCode + "/food?topping=" + true;
                         alert(data)
                     },
                     error: function () {
@@ -104,6 +111,13 @@
             var confirmation = confirm("삭제하시겠습니까?");
             var storeCode = [[${storeCode}]];
             var foodIdx = document.getElementById('idx').value;
+            var baseURL;
+
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                baseURL = 'http://localhost:9010';
+            } else {
+                baseURL = 'http://mzpc.net';
+            }
 
             if (confirmation) {
                 $.ajax({
@@ -113,7 +127,7 @@
                     contentType: "application/json",
                     data: JSON.stringify(foodIdx),
                     success: function (data) {
-                        window.location.href = "http://localhost:9010/admin/" + storeCode + "/food?topping=" + true;
+                        window.location.href = baseURL+"/admin/" + storeCode + "/food?topping=" + true;
                         alert(data)
                     },
                     error: function () {

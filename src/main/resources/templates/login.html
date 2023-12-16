@@ -11,6 +11,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <link rel="shortcut icon" href="/bootstrap/images/favicon.png" type="">
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <title> MZPC </title>
 
@@ -156,38 +157,128 @@
 </div>
 
 <br/>
-<form action="/login" method="post">
-    <div class="heading_container heading_center">
-        <h2>
-            Login
-        </h2>
+<main class="flex-1">
+    <div class="py-6">
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+            <!-- 내용 -->
+            <div class="bg-white shadow sm:rounded-lg">
+                <div class="px-4 py-5 sm:p-5">
+                    <!-- Login Form -->
+                    <form action="/login" method="post" class="w-full max-w-md mx-auto mt-20 space-y-3">
+                        <div class="heading_container heading_center">
+                            <h2 class="text-2xl font-bold mb-5 text-center">Login</h2>
+                        </div>
+                        <div class="flex items-center space-x-2 w-full">
+                            <label for="id" class="font-bold w-1/4">아이디:</label>
+                            <input type="text" id="id" name="id" required
+                                   class="border-2 border-gray-200 p-1 rounded outline-none focus:border-purple-500 flex-grow">
+                        </div>
+                        <div class="flex items-center space-x-2 w-full">
+                            <label for="pw" class="font-bold w-1/4">비밀번호:</label>
+                            <input type="password" id="pw" name="pw" required
+                                   class="border-2 border-gray-200 p-1 rounded outline-none focus:border-purple-500 flex-grow">
+                        </div>
+                        <div class="flex items-center space-x-2 w-full">
+                            <input type="checkbox" id="isAdmin" name="isAdmin" class="mr-2">
+                            <label for="isAdmin">관리자 로그인</label>
+                        </div>
+                        <button type="submit" id="loginBtn" class="btn btn-primary w-1/2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">로그인</button>
+                        <div class="flex space-x-4 mt-4">
+                            <a href="/login/auth" class="text-blue-500 hover:underline">회원가입</a>
+                            <a href="/login/findId" class="text-blue-500 hover:underline">ID 찾기</a>
+                            <a href="/login/findPw" class="text-blue-500 hover:underline">PW 찾기</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <br/>
-    <br/>
-    <br/>
-    <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
-        <div style="margin-bottom: 10px; text-align: left;">
-            <label for="id" style="display: inline-block; width: 100px; text-align: right;">아이디:</label>
-            <input type="text" id="id" name="id" required>
+</main>
+
+
+
+<!-- footer section -->
+<footer class="footer_section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 footer-col">
+                <div class="footer_contact">
+                    <h4>
+                        Contact Us
+                    </h4>
+                    <div class="contact_link_box">
+                        <a href="">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <span>
+                  Location
+                </span>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-phone" aria-hidden="true"></i>
+                            <span>
+                 Call +010 7141 8847
+                </span>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                            <span>
+                  demo@gmail.com
+                </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 footer-col">
+                <div class="footer_detail">
+                    <a href="" class="footer-logo">
+                        Mzpc
+                    </a>
+                    <p>
+                        Necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with
+                    </p>
+                    <div class="footer_social">
+                        <a href="">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-linkedin" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-instagram" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-pinterest" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 footer-col">
+                <h4>
+                    Opening Hours
+                </h4>
+                <p>
+                    Everyday
+                </p>
+                <p>
+                    10.00 Am -10.00 Pm
+                </p>
+            </div>
         </div>
-        <div style="margin-bottom: 10px; text-align: left;">
-            <label for="pw" style="display: inline-block; width: 100px; text-align: right;">비밀번호:</label>
-            <input type="password" id="pw" name="pw" required>
-        </div>
-        <div style="margin-bottom: 10px; text-align: left;">
-            <input type="checkbox" id="isAdmin" name="isAdmin">
-            <label for="isAdmin">관리자 로그인</label>
-        </div>
-        <br/>
-        <div>
-            <button type="submit" class="btn btn-primary">로그인</button>
-            <a href="/login/auth" class="order_online">회원가입</a>
-            <a href="/login/findId" class="order_online">ID 찾기</a>
-            <a href="/login/findPw" class="order_online">PW 찾기</a>
+        <div class="footer-info">
+            <p>
+                &copy; <span id="displayYear"></span> All Rights Reserved By
+                <a href="https://html.design/">Free Html Templates</a><br><br>
+                &copy; Distributed By
+                <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
+            </p>
         </div>
     </div>
-</form>
-<br />
+</footer>
+<!-- footer section -->
+
 
 <!-- 로그인 실패 시 에러 메시지 표시 -->
 <div th:if="${param.error}" style="text-align: center">

@@ -65,16 +65,23 @@
             var orderCode = button.getAttribute('data-order-code');
             var confirmation = confirm("주문을 취소하시겠습니까?");
             var storeCode = [[${storeCode}]];
+            var baseURL;
+
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                baseURL = 'http://localhost:9010';
+            } else {
+                baseURL = 'http://mzpc.net';
+            }
 
             if (confirmation) {
                 $.ajax({
                     type: "DELETE",
                     async: false,
-                    url: "http://localhost:9010/orders/rejectOrder",
+                    url: baseURL+"/orders/rejectOrder",
                     contentType: "application/json",
                     data: orderCode,
                     success: function (data) {
-                        window.location.href = "http://localhost:9010/admin/" + storeCode + "/orderList";
+                        window.location.href = baseURL+"/admin/" + storeCode + "/orderList";
                         alert(data);
                     },
                     error: function () {
@@ -95,7 +102,7 @@
 </div>
 
 <section class="order_section">
-    <div th:each="order, iterStatus : ${ordersDtos}" class="detail-box">
+    <div th:each="order, iterStatus : ${ordersDtos}" class="detail-box" th:if="${order.isCookComplete()==true}">
         <h5>주문 번호: <span th:text="${iterStatus.index + 1}"></span></h5>
         <p> 주문코드 : <span th:text="${order.getCode()}"></span></p>
         <p> 사용자 이름 : <span th:text="${order.getMemberName()}"></span></p>

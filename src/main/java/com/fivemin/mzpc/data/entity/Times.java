@@ -21,7 +21,7 @@ public class Times extends BaseTimeEntity {
     @Column(name = "time_idx")
     private Long idx;
 
-    @Column(name = "time_code", nullable = false, unique = true)
+    @Column(name = "time_code", nullable = false, unique = true,length = 15)
     private String code;
 
     //시간 상품 명

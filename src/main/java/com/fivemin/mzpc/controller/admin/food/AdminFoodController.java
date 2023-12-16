@@ -16,21 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-
-/*
-- 기능
-카테고리 별 음식 상품 목록
-    화면에 갯수 넘어가면 스크롤
-음식 상품 상세보기
-    주문시 재고량 빠지는 기능
-    이건 member쪽일듯 - 원식
-음식 상품 수정
-    사진 및 재고량 등록
-음식 상품 삭제
-음식 상품 추가
- */
 @Controller
 @Slf4j
 @RequestMapping("/admin/{storeCode}") //관리자 pk

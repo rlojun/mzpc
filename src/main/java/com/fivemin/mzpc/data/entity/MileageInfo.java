@@ -20,7 +20,7 @@ public class MileageInfo extends BaseCreateEntity {
     private Long idx;
 
     //시간 추가 목록 일련번호
-    @Column(name = "time_purchase_code", nullable = false, unique = true)
+    @Column(name = "time_purchase_code", nullable = false, unique = true, length = 15)
     private String code;
 
     //적립 마일리지
