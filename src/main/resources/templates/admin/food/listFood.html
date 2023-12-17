@@ -78,7 +78,7 @@
                         <div>
                             <div class="img-box" th:attr="data-category-code=${food.getCategoryDto().getCode()},data-food-code=${food.getCode()}"
                                  onclick="clickFood(this)">
-                                <img th:src="@{'https://mzpc-s3-bucket.s3.ap-northeast-2.amazonaws.com/'+${food.getPicture()}}" alt="기본이미지">
+                                <img th:src="@{${food.getPicture()}}" alt="기본이미지">
 
                             </div>
                             <div class="detail-box" th:attr="data-category-code=${food.getCategoryDto().getCode()},data-food-code=${food.getCode()}"
