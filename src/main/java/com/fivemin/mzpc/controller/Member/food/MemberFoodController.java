@@ -3,7 +3,6 @@ package com.fivemin.mzpc.controller.Member.food;
 import com.fivemin.mzpc.data.dto.FavoritesDto;
 import com.fivemin.mzpc.data.dto.FoodDto;
 import com.fivemin.mzpc.data.entity.Cart;
-import com.fivemin.mzpc.data.entity.Favorites;
 import com.fivemin.mzpc.data.entity.Members;
 import com.fivemin.mzpc.service.member.CartService;
 import com.fivemin.mzpc.service.member.FoodService;
@@ -99,15 +98,6 @@ public class MemberFoodController {
         return new ModelAndView("members/food/detailFood");
     }
 
-
-//    @GetMapping("/favorites")
-//    public String listFoodFavorites() {
-//       return "members/food/listFood/{favorites}";
-//    }
-
-
-//    addFoodFavorites
-//    (음식 즐겨 찾기 설정 하기)
     @PostMapping("/addFavorite")
     public ResponseEntity<String> addFavorite(@RequestParam Long foodIdx,
                                               @PathVariable(required = false) String storeName,
