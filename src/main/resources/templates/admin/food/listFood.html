@@ -65,7 +65,7 @@
                 Menu
             </h2>
         </div>
-        <ul class="filters_menu">
+        <ul class="filters_menu filters_menu_common">
             <li class="active" data-filter="*">All</li>
             <li th:each="categorys : ${listCategory}" th:data-filter="'.'+ ${categorys.getCode()} ">
                 <span th:text="${categorys.getName()}" ></span>
