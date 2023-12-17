@@ -139,7 +139,9 @@
                             <a th:unless="${storeName != null}" class="nav-link" th:onclick="noPermFoodPage()" th:href="@{/}">시간 충전하기</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/members/{storeName}/chat(storeName=${storeName})}">문의하기 <span class="sr-only">(current)</span> </a>
+                            <a th:if="${storeName != null}" class="nav-link" th:href="@{/members/{storeName}/chat(storeName=${storeName})}">문의하기 <span class="sr-only">(current)</span> </a>
+                            <a th:unless="${storeName != null}" class="nav-link" th:onclick="noPermFoodPage()" th:href="@{/}">문의 하기</a>
+
                         </li>
                     </ul>
                     <span th:if="${session.id}!=null" style="color:white;" th:text="'Hi ' + ${session.id}"></span>
