@@ -74,7 +74,7 @@
                     <div class="box">
                         <div class="img-box"
                              th:attr="data-category-name=${menu.getCategoryName()},data-food-code=${menu.getCode()}">
-                            <img th:src="@{'https://mzpc-s3-bucket.s3.ap-northeast-2.amazonaws.com/'+${menu.getPicture()}}" alt="기본이미지">
+                            <img th:src="@{${menu.getPicture()}}" alt="기본이미지">
                         </div>
                         <div class="detail-box"
                              th:attr="data-category-name=${menu.getCategoryName()},data-food-code=${menu.getName()}">
