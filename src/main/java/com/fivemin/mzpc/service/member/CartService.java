@@ -39,6 +39,7 @@ public class CartService {
                 .code(mainCart.generateUniqueCode())
                 .food(mainFood)
                 .members(members)
+                .store(members.getStore())
                 .build();
         cartList.add(mainCart);
         cartRepository.save(mainCart);
@@ -50,6 +51,7 @@ public class CartService {
                     .code(toppingCart.generateUniqueCode())
                     .food(topping)
                     .members(members)
+                    .store(members.getStore())
                     .build();
             cartList.add(toppingCart);
             cartRepository.save(toppingCart);
