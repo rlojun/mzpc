@@ -3,45 +3,49 @@
 
 <head>
     <!-- Basic -->
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <!-- Site Metas -->
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
     <link rel="shortcut icon" href="/bootstrap/images/favicon.png" type="">
 
     <title>카테고리 리스트</title>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css"/>
 
     <!--owl slider stylesheet -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
     <!-- nice select  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css"
+          integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ=="
+          crossorigin="anonymous"/>
     <!-- font awesome style -->
-    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet"/>
     <!-- Custom styles for this template -->
-    <link href="/bootstrap/css/style.css" rel="stylesheet" />
+    <link href="/bootstrap/css/style.css" rel="stylesheet"/>
     <!-- responsive style -->
-    <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
+    <link href="/bootstrap/css/responsive.css" rel="stylesheet"/>
     <script>
         function deleteCategory(categoryIdx) {
             var storeCode = [[${storeCode}]];
             var confirmation = confirm("삭제하시겠습니까?");
 
-            if (confirmation){
+            if (confirmation) {
                 $.ajax({
-                    type:"DELETE",
-                    url : "http://localhost:9010/category/deleteCategory",
+                    type: "DELETE",
+                    url: "http://localhost:9010/category/deleteCategory",
                     contentType: "application/json; charset=utf-8",
-                    async : false,
+                    async: false,
                     data: JSON.stringify(categoryIdx),
                     success: function (data) {
-                        window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping="+false;
+                        window.location.href = "http://localhost:9010/admin/" + storeCode + "/food?topping=" + false;
                         alert(data)
                     },
                     error: function () {
@@ -51,6 +55,30 @@
             }
         }
     </script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body class="sub_page">
 
@@ -60,21 +88,45 @@
     </div>
     <header th:replace="fragments/admin/header :: header"></header>
 </div>
-    <table border="1">
+<div class="layout_padding">
+    <div class="heading_container heading_center">
+        <h2>
+            Category List
+        </h2>
+    </div>
+    <table class="table-fixed w-full">
+        <thead>
         <tr>
-            <th></th>
-            <th>카테고리명</th>
-            <th>수정</th>
-            <th>삭제</th>
+            <th class="w-1/5 py-4 px-5 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                #</th>
+            <th class="w-1/5 py-4 px-5 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                카테고리명</th>
+            <th class="w-1/5 py-4 px-5 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                수정</th>
+            <th class="w-1/5 py-4 px-5 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                삭제</th>
         </tr>
+        </thead>
+        <tbody>
         <tr th:each="category, index : *{listCategory}">
-            <td th:text="${index.index + 1}">인덱스</td>
-            <td th:text="${category.getName()}">카테고리명</td>
-            <td><button th:onclick="|location.href='@{/admin/{storeCode}/modifyCategoryForm(storeCode=${storeCode}, categoryCode=${category.code})}'|">수정</button></td>
-            <td><button th:attr="onclick='deleteCategory(\'' + ${category.idx} + '\')'">삭제</button></td>
+            <td class="py-1/4 px-6 border-b border-grey-light" th:text="${index.index + 1}">인덱스</td>
+            <td class="py-1/4 px-6 border-b border-grey-light" th:text="${category.getName()}">카테고리명</td>
+            <td class="py-1/4 px-6 border-b border-grey-light" >
+                <button th:onclick="|location.href='@{/admin/{storeCode}/modifyCategoryForm(storeCode=${storeCode}, categoryCode=${category.code})}'|" >
+                    수정
+                </button>
+            </td>
+            <td class="py-1/4 px-6 border-b border-grey-light">
+                <button th:attr="onclick='deleteCategory(\'' + ${category.idx} + '\')'">삭제</button>
+            </td>
         </tr>
+        </tbody>
     </table>
-    <button type="button" th:onclick="|location.href='@{/admin/{storeCode}/addCategoryForm(storeCode=${storeCode})}'|">카테고리 추가</button>
+    <br>
+    <button type="button" style="width: 180px;" class="button-18 mx-auto d-block mt-3 justify-content-center" th:onclick="|location.href='@{/admin/{storeCode}/addCategoryForm(storeCode=${storeCode})}'|">
+        카테고리 추가
+    </button>
+</div>
 <div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>
