@@ -73,5 +73,6 @@
     <input type="hidden" th:value="${categoryDto.getCode()}" name="categoryCode">
     <button onclick="updateCategory(event)">카테고리 수정</button>
   </form>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>
