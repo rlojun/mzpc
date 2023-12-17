@@ -3,32 +3,36 @@
 
 <head>
     <!-- Basic -->
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <!-- Site Metas -->
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
     <link rel="shortcut icon" href="/bootstrap/images/favicon.png" type="">
 
     <title> MZPC - Admin </title>
 
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css"/>
 
     <!--owl slider stylesheet -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
     <!-- nice select  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css"
+          integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ=="
+          crossorigin="anonymous"/>
     <!-- font awesome style -->
-    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet"/>
     <!-- Custom styles for this template -->
-    <link href="/bootstrap/css/style.css" rel="stylesheet" />
+    <link href="/bootstrap/css/style.css" rel="stylesheet"/>
     <!-- responsive style -->
-    <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
+    <link href="/bootstrap/css/responsive.css" rel="stylesheet"/>
 
     <script>
         function clickFood(element) {
@@ -43,7 +47,7 @@
                 baseURL = 'http://mzpc.net';
             }
 
-            window.location.href =baseURL+"/admin/"+storeCode+"/detailFood?categoryCode="+categoryCode+"&foodCode="+foodCode+"&topping="+true;
+            window.location.href = baseURL + "/admin/" + storeCode + "/detailFood?categoryCode=" + categoryCode + "&foodCode=" + foodCode + "&topping=" + true;
         }
     </script>
 </head>
@@ -66,22 +70,30 @@
                 Topping Menu
             </h2>
         </div>
-        <ul class="filters_menu">
+        <div style="display: flex; justify-content: center; align-items: center; margin-top: 40px;">
+            <button style="width: 140px;" class="button-18" th:onclick="|location.href='@{/admin/{storeCode}/addFoodForm(storeCode=${storeCode}, topping=true)}'|">
+                토핑 추가
+            </button>
+        </div>
+        <ul class="filters_menu filters_menu_common">
             <li class="active" data-filter="*">All</li>
             <li th:each="categorys : ${listCategory}" th:data-filter="'.'+ ${categorys.getCode()} ">
-                <span th:text="${categorys.getName()}" ></span>
+                <span th:text="${categorys.getName()}"></span>
             </li>
         </ul>
         <div class="filters-content">
             <div class="row grid">
-                <div th:each="food : ${foods}" class="col-sm-6 col-lg-4 all" th:classappend="${food.getCategoryDto().getCode()}">
+                <div th:each="food : ${foods}" class="col-sm-6 col-lg-4 all"
+                     th:classappend="${food.getCategoryDto().getCode()}">
                     <div class="box">
                         <div>
-                            <div class="img-box" th:attr="data-category-code=${food.getCategoryDto().getCode()},data-food-code=${food.getCode()}"
+                            <div class="img-box"
+                                 th:attr="data-category-code=${food.getCategoryDto().getCode()},data-food-code=${food.getCode()}"
                                  onclick="clickFood(this)">
                                 <img th:src="@{${food.getPicture()}}" alt="기본이미지">
                             </div>
-                            <div class="detail-box" th:attr="data-category-code=${food.getCategoryDto().getCode()},data-food-code=${food.getCode()}"
+                            <div class="detail-box"
+                                 th:attr="data-category-code=${food.getCategoryDto().getCode()},data-food-code=${food.getCode()}"
                                  onclick="clickFood(this)">
                                 <h5 th:text="${food.getName()}"></h5>
                                 <p th:text="${food.getDescription()}"></p>
@@ -92,8 +104,6 @@
                 </div>
             </div>
         </div>
-        <hr>
-        <button th:onclick="|location.href='@{/admin/{storeCode}/addFoodForm(storeCode=${storeCode}, topping=true)}'|">토핑 추가</button>
     </div>
 </section>
 
@@ -136,7 +146,8 @@
                         MZPC
                     </a>
                     <p>
-                        Necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with
+                        Necessary, making this the first true generator on the Internet. It uses a dictionary of over
+                        200 Latin words, combined with
                     </p>
                     <div class="footer_social">
                         <a href="">
@@ -184,7 +195,8 @@
 <!-- jQery -->
 <script src="/bootstrap/js/jquery-3.4.1.min.js"></script>
 <!-- popper js -->
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
 </script>
 <!-- bootstrap js -->
 <script src="/bootstrap/js/bootstrap.js"></script>

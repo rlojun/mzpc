@@ -3,31 +3,35 @@
 
 <head>
     <!-- Basic -->
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <!-- Site Metas -->
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
     <link rel="shortcut icon" href="/bootstrap/images/favicon.png" type="">
     <title>토핑 추가하기</title>
 
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css"/>
 
     <!--owl slider stylesheet -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
     <!-- nice select  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css"
+          integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ=="
+          crossorigin="anonymous"/>
     <!-- font awesome style -->
-    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet"/>
     <!-- Custom styles for this template -->
-    <link href="/bootstrap/css/style.css" rel="stylesheet" />
+    <link href="/bootstrap/css/style.css" rel="stylesheet"/>
     <!-- responsive style -->
-    <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
+    <link href="/bootstrap/css/responsive.css" rel="stylesheet"/>
     <script>
         function submitToppingInfo(event) {
             event.preventDefault();
@@ -39,13 +43,13 @@
             var formData = new FormData();
             var baseURL;
             var foodDto = {
-                "idx" : null,
-                "code" : null,
-                "name" : $('input[name="toppingName"]').val(),
-                "price" : $('input[name="toppingPrice"]').val(),
-                "description" : null,
-                "stock" : $('input[name="stock"]').val(),
-                "topping" : true
+                "idx": null,
+                "code": null,
+                "name": $('input[name="toppingName"]').val(),
+                "price": $('input[name="toppingPrice"]').val(),
+                "description": null,
+                "stock": $('input[name="stock"]').val(),
+                "topping": true
             };
 
             if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
@@ -54,24 +58,24 @@
                 baseURL = 'http://mzpc.net';
             }
 
-            if (foodDto.name === '' || foodDto.price === '' || foodDto.stock === '' || toppingPicture==null) {
+            if (foodDto.name === '' || foodDto.price === '' || foodDto.stock === '' || toppingPicture == null) {
                 alert('모든 필수 입력 필드를 작성해주세요.');
                 return;
             }
 
-            formData.append('picture',toppingPicture);
+            formData.append('picture', toppingPicture);
             formData.append('foodDto', JSON.stringify(foodDto));
 
             if (confirmation) {
                 $.ajax({
                     type: "POST",
                     async: false,
-                    url: baseURL+"/food/addFood?categoryCode=" + categoryCode,
+                    url: baseURL + "/food/addFood?categoryCode=" + categoryCode,
                     processData: false,
                     contentType: false,
                     data: formData,
                     success: function (data) {
-                        window.location.href = baseURL+"/admin/" + storeCode + "/food" + "?topping=" + true;
+                        window.location.href = baseURL + "/admin/" + storeCode + "/food" + "?topping=" + true;
                         alert(data)
                     },
                     error: function () {
@@ -80,6 +84,7 @@
                 });
             }
         }
+
         function handleFileInputChange(event) {
             var preview = document.getElementById('imagePreview'); // 이미지 미리보기 요소
             var file = event.target.files[0]; // 선택된 파일
@@ -108,25 +113,45 @@
     </div>
     <header th:replace="fragments/admin/header :: header"></header>
 </div>
-    <form id="addTopping" enctype="multipart/form-data">
-            <label for="toppingName">토핑</label> : <input type="text" id="toppingName" name="toppingName" required>
-            <br>
-            <label for="toppingPrice">가격</label>  : <input type="text" id="toppingPrice" name="toppingPrice" required>원
-            <br>
-            <label for="categoryName">카테고리</label>  :
-            <select id="categoryName" name="selectCategory">
-                <option th:each=" category : ${categories}" th:value="${category.getCode()}" th:text="${category.getName()}"></option>
-            </select>
-            <br>
-            <img id="imagePreview" src="" style="max-width: 200px; max-height: 200px;">
-            <br>
-            <label for="toppingPicture">이미지</label>  :
-            <input type="file" id="toppingPicture" accept="image/*"  name="toppingPicture" onchange="handleFileInputChange(event)">
-            <br>
-            <label for="stock">재고</label> : <input type="text" id="stock" name="stock" required>
-            <br>
-            <button th:onclick="submitToppingInfo(event)">음식 추가</button>
-            <input type="reset">
-    </form>
+<section class="book_section layout_padding">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2 class="mb-5">
+                Add Topping Page
+            </h2>
+        </div>
+        <div class="row justify-content-center">
+            <div>
+                <div class="form_container text-center">
+                    <form id="addTopping" enctype="multipart/form-data">
+                        <input type="text" id="toppingName" name="toppingName" class="form-control" placeholder="토핑 명"
+                               required/>
+                        <input type="text" id="toppingPrice" name="toppingPrice" class="form-control" placeholder="가격 (원)"
+                               required/>
+                        <select class="form-control nice-select wide" id="categoryName" name="selectCategory">
+                            <option disabled selected> 토핑 카테고리</option>
+                            <option th:each=" category : ${categories}" th:value="${category.getCode()}"
+                                    th:text="${category.getName()}">
+                            </option>
+                        </select>
+                        <input type="text" class="form-control" placeholder="재고" id="stock" name="stock" required>
+                        <label for="toppingPicture">이미지</label> :
+                        <input type="file" class="mx-auto" id="toppingPicture" accept="image/*" name="toppingPicture"
+                               onchange="handleFileInputChange(event)">
+                        <br/>
+                        <img id="imagePreview" src="" style="max-width: 200px; max-height: 200px;" alt="">
+                        <br/>
+                        <button style="width: 180px;" class="button-18 mr-3" th:onclick="submitToppingInfo(event)">
+                            음식 추가
+                        </button>
+                        <button type="reset" style="width: 180px;" class="button-18">
+                            Reset
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 </body>
 </html>
