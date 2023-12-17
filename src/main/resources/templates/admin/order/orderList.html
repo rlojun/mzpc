@@ -100,7 +100,6 @@
     </div>
     <header th:replace="fragments/admin/header :: header"></header>
 </div>
-
 <section class="order_section">
     <div th:each="order, iterStatus : ${ordersDtos}" class="detail-box" th:if="${order.isCookComplete()==true}">
         <h5>주문 번호: <span th:text="${iterStatus.index + 1}"></span></h5>

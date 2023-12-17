@@ -35,11 +35,12 @@ public class AdminOrderRestController {
         return ResponseEntity.ok("취소되었습니다.");
     }
 
-    @GetMapping(value = "/checkOrders")
-    public ResponseEntity<Boolean> checkOrders(@RequestParam ("storeCode") String storeCode) {
+    @GetMapping(value = "/alarmOrder")
+    public ResponseEntity<Boolean> checkOrder(@RequestParam ("storeCode") String storeCode) {
 
-        boolean result = adminOrderService.checkOrders(storeCode);
+        boolean result = adminOrderService.alarmOrder(storeCode);
 
         return ResponseEntity.ok(result);
     }
+
 }
