@@ -42,12 +42,12 @@ public class Members {
     private String name;
 
     // 사용자 주민 번호
-    @Column(name = "member_ssn",nullable = false, length = 100)
+    @Column(name = "member_ssn",nullable = false, unique = true, length = 100)
     @Pattern(regexp = "^(\\d{6}-[1-4]\\d{6})$", message="올바른 주민등록번호 형식이여야 합니다.")
     private String ssn;
 
     // 사용자 핸드폰 번호
-    @Column(name = "phone_number", nullable = false)
+    @Column(name = "phone_number", nullable = false, unique = true)
     @Pattern(regexp = "^[0-9]{3}-[0-9]{4}-[0-9]{4}$",message = "올바른 휴대폰 형식이어야 합니다.")
     private String number;
 
