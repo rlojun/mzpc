@@ -37,42 +37,50 @@ public class AdminOrderService {
     public List<OrdersDto> getOrderList(String storeCode) {
         List<Orders> ordersList = ordersRepository.findAllCookIncompleteByStoreCode(storeCode);
         List<OrdersDto> ordersDtos = new ArrayList<>();
-        for (Orders orders: ordersList) {
-            List<CartDto> cartDtos = new ArrayList<>();
 
-            for (Cart cart :orders.getCarts()) {
-                FoodDto foodDto = FoodDto.builder()
-                        .idx(cart.getFood().getIdx())
-                        .code(cart.getFood().getCode())
-                        .name(cart.getFood().getName())
-                        .price(cart.getFood().getPrice())
-                        .topping(cart.getFood().isTopping())
-                        .build();
+        if (ordersList != null) {
+            for (Orders orders: ordersList) {
+                if (orders != null && orders.getCarts() != null && orders.getMembers() != null) {
+                    List<CartDto> cartDtos = new ArrayList<>();
 
-                CartDto cartDto = CartDto.builder()
-                        .idx(cart.getIdx())
-                        .code(cart.getCode())
-                        .foodDto(foodDto)
-                        .orderComplete(cart.isOrderComplete())
-                        .build();
+                    for (Cart cart : orders.getCarts()) {
+                        FoodDto foodDto = FoodDto.builder()
+                                .idx(cart.getFood().getIdx())
+                                .code(cart.getFood().getCode())
+                                .name(cart.getFood().getName())
+                                .price(cart.getFood().getPrice())
+                                .topping(cart.getFood().isTopping())
+                                .build();
 
-                cartDtos.add(cartDto);
+                        CartDto cartDto = CartDto.builder()
+                                .idx(cart.getIdx())
+                                .code(cart.getCode())
+                                .foodDto(foodDto)
+                                .orderComplete(cart.isOrderComplete())
+                                .build();
+
+                        cartDtos.add(cartDto);
+
+                    }
+
+                    OrdersDto ordersDto = OrdersDto.builder()
+                            .code(orders.getCode())
+                            .cookComplete(orders.isCookComplete())
+                            .purchaseStatus(orders.isPurchaseStatus())
+                            .payment(orders.getPayment())
+                            .note(orders.getNote())
+                            .totalCost(orders.getTotalCost())
+                            .cartDtos(cartDtos)
+                            .createdAt(orders.getCreatedAt())
+                            .memberName(orders.getMembers().getName())
+                            .build();
+
+                    ordersDtos.add(ordersDto);
+                }
 
             }
-
-            OrdersDto ordersDto = OrdersDto.builder()
-                    .code(orders.getCode())
-                    .cookComplete(orders.isCookComplete())
-                    .purchaseStatus(orders.isPurchaseStatus())
-                    .payment(orders.getPayment())
-                    .note(orders.getNote())
-                    .totalCost(orders.getTotalCost())
-                    .cartDtos(cartDtos)
-                    .createdAt(orders.getCreatedAt())
-                    .memberName(orders.getMembers().getName())
-                    .build();
-
-            ordersDtos.add(ordersDto);
+        } else {
+            System.out.println("주문 목록 : null");
         }
 
         return ordersDtos;
