@@ -82,7 +82,7 @@
             <!-- 내용 -->
             <div class="bg-white shadow sm:rounded-lg">
                 <div class="px-4 py-5 sm:p-5">
-                    <form th:action="@{/members/{storeName}/purchaseTime/{timeCode} (storeName=${storeName}, timeCode=${timeCode})}" method="post" class="form-style">
+                    <form th:action="@{/members/{storeName}/purchaseTime/{memberCode}/{timeCode} (storeName=${storeName}, memberCode=${memberCode}, timeCode=${timeCode})}" method="post" class="form-style">
                         <input type="hidden" id="memberId" name="memberId" th:value="${session.id}" />
 
                         <table class="table-fixed w-full">
