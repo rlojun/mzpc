@@ -9,37 +9,36 @@ getYear();
 
 
 // isotope js
-// $(window).on('load', function () {
-//     $('.filters_menu li').click(function () {
-//         $('.filters_menu li').removeClass('active');
-//         $(this).addClass('active');
-//
-//         var data = $(this).attr('data-filter');
-//         $grid.isotope({
-//             filter: data
-//         })
-//     });
+$(window).on('load', function () {
+    $('.filters_menu li').click(function () {
+        $('.filters_menu li').removeClass('active');
+        $(this).addClass('active');
 
-    // var $grid = $(".grid").isotope({
-    //     itemSelector: ".all",
-    //     percentPosition: false,
-    //     masonry: {
-    //         columnWidth: ".all"
-    //     }
-    // })
+        var data = $(this).attr('data-filter');
+        $grid.isotope({
+            filter: data
+        })
+    });
 
-    $(window).on('load', function () {
-        $('.filters_menu li').click(function () {
-            $('.filters_menu li').removeClass('active');
+    var $grid = $(".grid").isotope({
+        itemSelector: ".all",
+        percentPosition: false,
+        masonry: {
+            columnWidth: ".all"
+        }
+    })
+
+        $('.filters_menu_member li').click(function () {
+            $('.filters_menu_member li').removeClass('active');
             $(this).addClass('active');
 
             var filterValue = $(this).attr('data-filter');
-            $grid.isotope({
+            $(".gridMembers").isotope({
                 filter: filterValue
             })
         });
 
-        var $grid = $(".grid").isotope({
+        var $gridMembers = $(".gridMembers").isotope({
         itemSelector: ".menu-item, .favorite-item",
         percentPosition: false,
         masonry: {

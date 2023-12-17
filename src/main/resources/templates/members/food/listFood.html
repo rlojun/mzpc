@@ -61,14 +61,14 @@
             </h2>
         </div>
 
-        <ul class="filters_menu">
+        <ul class="filters_menu_member filters_menu_common">
             <li class="active" data-filter=".all">All</li>
             <li data-filter=".favorites">Favorites</li>
             <li th:each="categoryName : ${distinctFoodCategories}" th:text="${categoryName}"
                 th:data-filter="'.' + ${categoryName}"></li>
         </ul>
         <div class="filters-content">
-            <div class="row grid">
+            <div class="row gridMembers">
                 <div th:each="menu: ${foodDtoList}" class="col-sm-6 col-lg-4 all menu-item"
                      th:classappend="${menu.getCategoryName()}">
                     <div class="box">
@@ -195,6 +195,8 @@
                 foodIdx: foodIdx,
             },
             success: function (response) {
+                // icon change
+                // getFavoritesFoodList()
             },
             error: function (error) {
             }
@@ -221,15 +223,15 @@
         });
     }
 
-    function updateFavoritesSection(favorites) {
-        const favoritesContainer = $('#favoritesContainer');
-        favoritesContainer.empty();
-
-        $.each(favorites, function (index, favorite) {
-            const favoriteElement = $('<div>').text(favorite);
-            favoritesContainer.append(favoriteElement);
-        });
-    }
+    // function updateFavoritesSection(favorites) {
+    //     const favoritesContainer = $('#favoritesContainer');
+    //     favoritesContainer.empty();
+    //
+    //     $.each(favorites, function (index, favorite) {
+    //         const favoriteElement = $('<div>').text(favorite);
+    //         favoritesContainer.append(favoriteElement);
+    //     });
+    // }
 </script>
 <!-- Checkout Cart Function-->
 <script>
@@ -277,6 +279,8 @@
         document.forms[0].addEventListener('change', updateTotalCost);
     });
 </script>
+
+
 </body>
 
 </html>
