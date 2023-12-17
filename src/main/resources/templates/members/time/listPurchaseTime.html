@@ -2,35 +2,62 @@
 <html lang="">
 <head>
     <!-- Basic -->
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <!-- Site Metas -->
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
     <link rel="shortcut icon" href="/bootstrap/images/favicon.png" type="">
 
     <title> Mzpc </title>
 
     <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css"/>
 
     <!--owl slider stylesheet -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
     <!-- nice select  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css"
+          integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ=="
+          crossorigin="anonymous"/>
     <!-- font awesome style -->
-    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet"/>
 
     <!-- Custom styles for this template -->
-    <link href="/bootstrap/css/style.css" rel="stylesheet" />
+    <link href="/bootstrap/css/style.css" rel="stylesheet"/>
     <!-- responsive style -->
-    <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
+    <link href="/bootstrap/css/responsive.css" rel="stylesheet"/>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!--    <script src="https://cdn.tailwindcss.com"></script>-->
+    <style>
+        table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+        }
 
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+    </style>
 </head>
 
 <body class="sub_page">
@@ -42,180 +69,50 @@
     <header th:replace="fragments/member/header :: header"></header>
 </div>
 
-<style>
-    .footer_section {
-        margin-top: 150px;  /* 위쪽 여백 추가 */
-    }
 
-    #purchaseBox {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .form-style {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem; /* form 내 요소들 사이의 간격 */
-        max-width: 800px;
-        margin: auto;
-        background-color: white;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
-        padding: 1.25rem;
-        font-family: 'Roboto', sans-serif; /* 글자 스타일 변경 */
-    }
-</style>
-
-<main class="flex-1">
-    <div class="py-6">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <h2>구매 목록</h2>
-            <!-- 구매 목록 Box -->
-            <div id="purchaseBox" class="h-64 border overflow-auto mb-2">
-                <div class="form-style">
-                    <table class="table-fixed w-full">
-                        <thead>
-                        <tr>
-                            <th class="w-1/5 py-4 px-5 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
-                                시간
-                            </th>
-                            <th class="w-1/5 py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
-                                가격
-                            </th>
-                            <th class="w-1/5 py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
-                                사용한 마일리지
-                            </th>
-                            <th class="w-1/5 py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
-                                적립한 마일리지
-                            </th>
-                            <th class="w-1/5 py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
-                                구매 시간
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="mileageInfo : ${mileageInfos}">
-                            <td class="py-4 px-6 border-b border-grey-light" th:text="${mileageInfo.times.addTime}"></td>
-                            <td class="py-4 px-6 border-b border-grey-light" th:text="${mileageInfo.times.price}"></td>
-                            <td class="py-4 px-6 border-b border-grey-light" th:text="${mileageInfo.use}"></td>
-                            <td class="py-4 px-6 border-b border-grey-light" th:text="${mileageInfo.save}"></td>
-                            <td class="py-4 px-6 border-b border-grey-light" th:text="${mileageInfo.createdAt}"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+<main class="flex-1 layout_padding">
+    <div class="heading_container heading_center">
+        <h2>
+            구매 목록
+        </h2>
     </div>
+<!--    <div class="py-6">-->
+<!--        <div id="purchaseBox" class="h-64 border overflow-auto mb-2">-->
+<!--            <div class="form-style">-->
+                <table class="table-fixed w-full">
+                    <thead>
+                    <tr>
+                        <th class="w-1/5 py-4 px-5 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                            시간
+                        </th>
+                        <th class="w-1/5 py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                            가격
+                        </th>
+                        <th class="w-1/5 py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                            사용한 마일리지
+                        </th>
+                        <th class="w-1/5 py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                            적립한 마일리지
+                        </th>
+                        <th class="w-1/5 py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                            구매 시간
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="mileageInfo : ${mileageInfos}">
+                        <td class="py-4 px-6 border-b border-grey-light" th:text="${mileageInfo.times.addTime}"></td>
+                        <td class="py-4 px-6 border-b border-grey-light" th:text="${mileageInfo.times.price}"></td>
+                        <td class="py-4 px-6 border-b border-grey-light" th:text="${mileageInfo.use}"></td>
+                        <td class="py-4 px-6 border-b border-grey-light" th:text="${mileageInfo.save}"></td>
+                        <td class="py-4 px-6 border-b border-grey-light" th:text="${mileageInfo.createdAt}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
 </main>
-
-
-
-
-<!-- footer section -->
-<footer class="footer_section">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 footer-col">
-                <div class="footer_contact">
-                    <h4>
-                        Contact Us
-                    </h4>
-                    <div class="contact_link_box">
-                        <a href="">
-                            <i class="fa fa-map-marker" aria-hidden="true"></i>
-                            <span>
-                  Location
-                </span>
-                        </a>
-                        <a href="">
-                            <i class="fa fa-phone" aria-hidden="true"></i>
-                            <span>
-                 Call +010 7141 8847
-                </span>
-                        </a>
-                        <a href="">
-                            <i class="fa fa-envelope" aria-hidden="true"></i>
-                            <span>
-                  demo@gmail.com
-                </span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 footer-col">
-                <div class="footer_detail">
-                    <a href="" class="footer-logo">
-                        Mzpc
-                    </a>
-                    <p>
-                        Necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with
-                    </p>
-                    <div class="footer_social">
-                        <a href="">
-                            <i class="fa fa-facebook" aria-hidden="true"></i>
-                        </a>
-                        <a href="">
-                            <i class="fa fa-twitter" aria-hidden="true"></i>
-                        </a>
-                        <a href="">
-                            <i class="fa fa-linkedin" aria-hidden="true"></i>
-                        </a>
-                        <a href="">
-                            <i class="fa fa-instagram" aria-hidden="true"></i>
-                        </a>
-                        <a href="">
-                            <i class="fa fa-pinterest" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 footer-col">
-                <h4>
-                    Opening Hours
-                </h4>
-                <p>
-                    Everyday
-                </p>
-                <p>
-                    10.00 Am -10.00 Pm
-                </p>
-            </div>
-        </div>
-        <div class="footer-info">
-            <p>
-                &copy; <span id="displayYear"></span> All Rights Reserved By
-                <a href="https://html.design/">Free Html Templates</a><br><br>
-                &copy; Distributed By
-                <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
-            </p>
-        </div>
-    </div>
-</footer>
-<!-- footer section -->
-
-<!-- jQery -->
-<script src="/bootstrap/js/jquery-3.4.1.min.js"></script>
-<!-- popper js -->
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-</script>
-<!-- bootstrap js -->
-<script src="/bootstrap/js/bootstrap.js"></script>
-<!-- owl slider -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
-</script>
-<!-- isotope js -->
-<script src="https://unpkg.com/isotope-layout@3.0.4/dist/isotope.pkgd.min.js"></script>
-<!-- nice select -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
-<!-- custom js -->
-<script src="/bootstrap/js/custom.js"></script>
-<!-- Google Map -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
-</script>
-<!-- End Google Map -->
-
+<div th:replace="fragments/footer :: footer"></div>
 </body>
-
 </html>
