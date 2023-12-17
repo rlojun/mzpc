@@ -153,7 +153,7 @@
     <div class="container">
         <div class="heading_container heading_center">
             <h2 class="mb-5">
-                Topping Details
+                Food Details
             </h2>
         </div>
         <div class="row justify-content-center">
@@ -168,12 +168,9 @@
                         <input type="text" id="category" class="form-control" th:value="*{getCategoryDto().getName()}" disabled>
                         <img id="foodImage" th:src="@{'https://mzpc-s3-bucket.s3.ap-northeast-2.amazonaws.com/'+${food.getPicture()}}"
                              style="width:100px; height:100px;" alt="음식 이미지"/>
-<!--                        <input type="text" id="pictureText" th:value="*{getPicture()}" disabled>-->
                         <div class="mt-2" style="text-align: center; position: relative;">
                             <input type="file" id="picture" style="display: none;" onchange="handleFileInputChange()" enctype="multipart/form-data">
                         </div>
-<!--                        <input type="file" id="picture" style="display: none;" onchange="handleFileInputChange()"-->
-<!--                               enctype="multipart/form-data">-->
                         <br>
                         <label for="description">설명</label>
                         <textarea id="description" class="form-control" style="height:100px" th:text="*{getDescription()}" disabled></textarea>
@@ -188,9 +185,6 @@
                         <input type="hidden" id="idx" th:value="*{getIdx()}">
                         <input type="hidden" id="code" th:value="*{getCode()}">
                         <input type="hidden" id="categoryDto" th:value="*{getCategoryDto()}">
-<!--                        <input type="button" id="modifyButton" onclick="enableEditing()" th:value="수정하기">-->
-<!--                        <input type="button" onclick="deleteFood()" th:value="삭제">-->
-<!--                        <input type="hidden" id="reset">-->
                         <button type="button" style="width: 180px;" class="button-18 mr-3" id="modifyButton" onclick="enableEditing()">수정하기</button>
                         <button type="button" style="width: 180px;" class="button-18 mr-3" onclick="deleteFood()">삭제</button>
                         <br>
