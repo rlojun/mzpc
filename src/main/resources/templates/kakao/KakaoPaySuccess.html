@@ -1,22 +1,70 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Insert title here</title>
+    <!-- Basic -->
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <!-- Site Metas -->
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="shortcut icon" href="/bootstrap/images/favicon.png" type="">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+
+    <title> MZPC </title>
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css"/>
+
+    <!--owl slider stylesheet -->
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
+    <!-- nice select  -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css"
+          integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ=="
+          crossorigin="anonymous"/>
+    <!-- font awesome style -->
+    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="/bootstrap/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="/bootstrap/css/responsive.css" rel="stylesheet"/>
+    <style>
+        .material-icons {
+            color: white;
+        }
+    </style>
 </head>
-<body>
-<form th:action="@{'/members/' + ${storeName} + '/purchaseTime/' + ${memberCode} + '/' +${timeCode} + '/kakaoPaySuccess'}" method="post">
-        카카오페이 결제가 정상적으로 완료되었습니다.
 
-        결제일시:     [[${info.approved_at}]]<br/>
-        주문번호:    [[${info.partner_order_id}]]<br/>
-        상품명:    [[${info.item_name}]]<br/>
-        상품수량:    [[${info.quantity}]]<br/>
-        결제금액:    [[${info.amount.total}]]<br/>
-        결제방법:    [[${info.payment_method_type}]]<br/>
-        <button type="submit">확인</button>
-    </form>
-<h2>[[${info}]]</h2>
+<body class="sub_page">
 
+<div class="hero_area">
+    <div class="bg-box">
+        <img src="/bootstrap/images/hero-bg.jpg" alt="">
+    </div>
+    <!-- header section strats -->
+    <header th:replace="fragments/member/header :: header"></header>
+    <!-- end header section -->
+</div>
+<section class="order_section">
+    <div class="detail-box">
+        <form th:action="@{'/members/' + ${storeName} + '/purchaseTime/' + ${memberCode} + '/' +${timeCode} + '/kakaoPaySuccess'}" method="post">
+            <h4>카카오페이 결제가 정상적으로 완료되었습니다.</h4>
+
+            <h5> 결제일시:     [[${info.approved_at}]]</h5>
+            <h5> 주문번호:    [[${info.partner_order_id}]]</h5>
+            <h5> 상품명:    [[${info.item_name}]]</h5>
+            <h5> 상품수량:    [[${info.quantity}]]</h5>
+            <h5> 결제금액:    [[${info.amount.total}]]</h5>
+            <h5> 결제방법:    [[${info.payment_method_type}]]</h5>
+            <button type="submit">확인</button>
+        </form>
+    </div>
+</section>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

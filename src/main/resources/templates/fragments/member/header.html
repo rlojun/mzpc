@@ -41,7 +41,8 @@
                 <a th:if="${storeName != null}" class="navbar-brand" th:href="@{/members/{storeName}(storeName=${storeName})}"><span>MZPC</span></a>
                 <a th:unless="${storeName != null}" class="navbar-brand" th:href="@{/}"><span>MZPC</span></a>
                 <!-- -->
-                <div th:if="${storeName != null}" id="remainingTimeDisplay" style="color:white;"></div>
+                <span th:if="${storeName != null}" style="color: white"> 남은시간 : <div id="remainingTimeDisplay" style="color:white;"></div></span>
+
                 <script>
                     // 서버에서 remainingTime을 가져오는 함수
                     async function fetchRemainingTime() {
@@ -51,9 +52,10 @@
 
                             // remainingTimeDisplay 요소에 시간을 표시
                             document.getElementById('remainingTimeDisplay').innerText = data.remainingTime;
+                            data.remainingTime = data.remainingTime || "00:00:00";
 
                             // 서버에서 가져온 시간이 유효하면 타이머 시작
-                            if (data.remainingTime !== '') {
+                            if (data.remainingTime !== '' && data.remainingTime !== "00:00:00") {
                                 startCountdown(data.remainingTime);
                             }
                         } catch (error) {
