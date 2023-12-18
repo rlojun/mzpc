@@ -50,33 +50,39 @@
     <header th:replace="fragments/member/header :: header"></header>
     <!-- end header section -->
 </div>
-<section class="order_section">
-        <div th:each="order, iterStatus : ${orders}" class="detail-box">
-            <h5>주문 번호: <span th:text="${orders.size() - iterStatus.index}"></span></h5>
-            <h5>조리 상태:
-                <span th:if="${order.cookComplete}">조리 완료</span>
-                <span th:unless="${order.cookComplete}">조리 미완료</span>
-            </h5>
-            <h5>결제 상태:
-                <span th:if="${order.purchaseStatus}">결제 완료</span>
-                <span th:unless="${order.purchaseStatus}">결제 미완료</span>
-            </h5>
-            <h5>결제 방식: <span th:text="${order.payment}"></span></h5>
-            <h5>결제 시간: <span th:text="${order.createdAt}"></span></h5>
-            <h5>음식 목록:</h5>
-            <ul>
-                <li th:each="orderedFood : ${order.getCarts()}">
-                    <span th:text="${orderedFood.food.name}"></span>
-                    -
-                    <span th:text="${orderedFood.food.price} + '원'"></span>
-                </li>
-            </ul>
-            <div th:if="${order.getNote() != null || not #strings.isEmpty(order.getNote())}">요청사항</div>
-            <label>
-                <textarea th:if="${order.getNote() != null || not #strings.isEmpty(order.getNote())}" th:text="${order.getNote()}" readonly style="resize: none;"></textarea>
-            </label>
-            <h5>총 금액: <span th:text="${order.totalCost} + '원'"></span></h5>
-        </div>
+<section class="order_section layout_padding">
+    <div class="heading_container heading_center">
+        <h2 class="mb-4">
+            Your Order List
+        </h2>
+    </div>
+    <div th:each="order, iterStatus : ${orders}" class="detail-box">
+        <h5>주문 번호: <span th:text="${orders.size() - iterStatus.index}"></span></h5>
+        <h5>조리 상태:
+            <span th:if="${order.cookComplete}">조리 완료</span>
+            <span th:unless="${order.cookComplete}">조리 미완료</span>
+        </h5>
+        <h5>결제 상태:
+            <span th:if="${order.purchaseStatus}">결제 완료</span>
+            <span th:unless="${order.purchaseStatus}">결제 미완료</span>
+        </h5>
+        <h5>결제 방식: <span th:text="${order.payment}"></span></h5>
+        <h5>결제 시간: <span th:text="${order.createdAt}"></span></h5>
+        <h5>음식 목록:</h5>
+        <ul>
+            <li th:each="orderedFood : ${order.getCarts()}">
+                <span th:text="${orderedFood.food.name}"></span>
+                -
+                <span th:text="${orderedFood.food.price} + '원'"></span>
+            </li>
+        </ul>
+        <div th:if="${order.getNote() != null || not #strings.isEmpty(order.getNote())}">요청사항</div>
+        <label>
+            <textarea th:if="${order.getNote() != null || not #strings.isEmpty(order.getNote())}"
+                      th:text="${order.getNote()}" readonly style="resize: none;"></textarea>
+        </label>
+        <h5>총 금액: <span th:text="${order.totalCost} + '원'"></span></h5>
+    </div>
 </section>
 <div th:replace="fragments/footer :: footer"></div>
 </body>
