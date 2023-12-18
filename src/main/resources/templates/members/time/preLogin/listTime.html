@@ -117,7 +117,7 @@
                             <p th:text="${timeDto.price + '원'}"></p>
                         </div>
                         <div>
-                            <a th:href="@{/members/{storeName}/purchaseTime/{timeCode}(storeName=${storeName}, timeCode=${timeDto.code})}">선택</a>
+                            <a th:href="@{/members/{storeName}/purchaseTime/memberCode/{timeCode}(storeName=${storeName}, memberCode=${memberCode}, timeCode=${timeDto.code})}">선택</a>
                         </div>
                     </div>
                 </div><!-- End Icon Box -->

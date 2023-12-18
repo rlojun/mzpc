@@ -20,10 +20,15 @@ public class AdminAdminService {
     public AdminDto getAdminName(Long storeIdx) {
         Admin admin = adminRepository.findByStoreIdx(storeIdx);
 
-        AdminDto adminDto = AdminDto.builder()
-                .name(admin.getName())
-                .build();
-
-        return adminDto;
+        if (admin != null) {
+            AdminDto adminDto = AdminDto.builder()
+                    .name(admin.getName())
+                    .build();
+            return adminDto;
+        } else {
+            System.out.println("관리자 목록이 없습니다.");
+            return null;
+        }
     }
+
 }
