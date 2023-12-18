@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <!-- Site Metas -->
+  <meta name="keywords" content=""/>
+  <meta name="description" content=""/>
+  <meta name="author" content=""/>
+  <link rel="shortcut icon" href="/bootstrap/images/favicon.png" type="">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+
+  <title> MZPC </title>
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css"/>
+
+  <!--owl slider stylesheet -->
+  <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
+  <!-- nice select  -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css"
+        integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ=="
+        crossorigin="anonymous"/>
+  <!-- font awesome style -->
+  <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet"/>
+  <!-- Custom styles for this template -->
+  <link href="/bootstrap/css/style.css" rel="stylesheet"/>
+  <!-- responsive style -->
+  <link href="/bootstrap/css/responsive.css" rel="stylesheet"/>
+  <style>
+    .material-icons {
+      color: white;
+    }
+  </style>
+</head>
+
+<body class="sub_page">
+
+<div class="hero_area layout_padding">
+  <div class="bg-box">
+    <img src="/bootstrap/images/hero-bg.jpg" alt="">
+  </div>
+  <!-- header section strats -->
+  <header th:replace="fragments/member/header :: header"></header>
+  <!-- end header section -->
+</div>
+<section class="order_section">
+  <div class="detail-box">
+      <h4>카카오페이 결제가 취소되었습니다.</h4>
+  </div>
+</section>
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>
