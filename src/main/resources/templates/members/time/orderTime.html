@@ -48,6 +48,21 @@
             document.getElementById('paymentAmount').innerText = '결제 금액: ' + paymentAmount + '원';
         }
     </script>
+
+    <style>
+        .form-style {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem; /* form 내 요소들 사이의 간격 */
+            max-width: 800px;
+            margin: auto;
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+            padding: 1.25rem;
+        }
+
+    </style>
 </head>
 
 <body class="sub_page">
@@ -59,22 +74,6 @@
     <header th:replace="fragments/member/header :: header"></header>
 
 </div>
-</body>
-
-<style>
-    .form-style {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem; /* form 내 요소들 사이의 간격 */
-        max-width: 800px;
-        margin: auto;
-        background-color: white;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
-        padding: 1.25rem;
-    }
-
-</style>
 
 <main class="flex-1">
     <div class="py-6">
@@ -82,7 +81,7 @@
             <!-- 내용 -->
             <div class="bg-white shadow sm:rounded-lg">
                 <div class="px-4 py-5 sm:p-5">
-                    <form th:action="@{/members/{storeName}/purchaseTime/{timeCode} (storeName=${storeName}, timeCode=${timeCode})}" method="post" class="form-style">
+                    <form th:action="@{/members/{storeName}/purchaseTime/{memberCode}/{timeCode} (storeName=${storeName}, memberCode=${memberCode}, timeCode=${timeCode})}" method="post" class="form-style">
                         <input type="hidden" id="memberId" name="memberId" th:value="${session.id}" />
 
                         <table class="table-fixed w-full">
@@ -137,78 +136,6 @@
 
 
 <!-- footer section -->
-<footer class="footer_section">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 footer-col">
-                <div class="footer_contact">
-                    <h4>
-                        Contact Us
-                    </h4>
-                    <div class="contact_link_box">
-                        <a href="">
-                            <i class="fa fa-map-marker" aria-hidden="true"></i>
-                            <span>
-                  Location
-                </span>
-                        </a>
-                        <a href="">
-                            <i class="fa fa-phone" aria-hidden="true"></i>
-                            <span>
-                  Call +010 7141 8847
-                </span>
-                        </a>
-                        <a href="">
-                            <i class="fa fa-envelope" aria-hidden="true"></i>
-                            <span>
-                  demo@gmail.com
-                </span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 footer-col">
-                <div class="footer_detail">
-                    <a href="" class="footer-logo">
-                        MZPC
-                    </a>
-                    <p>
-                        Necessary, making this the first true generator on the Internet. It uses a dictionary of over
-                        200 Latin words, combined with
-                    </p>
-                    <div class="footer_social">
-                        <a href="">
-                            <i class="fa fa-facebook" aria-hidden="true"></i>
-                        </a>
-                        <a href="">
-                            <i class="fa fa-twitter" aria-hidden="true"></i>
-                        </a>
-                        <a href="">
-                            <i class="fa fa-linkedin" aria-hidden="true"></i>
-                        </a>
-                        <a href="">
-                            <i class="fa fa-instagram" aria-hidden="true"></i>
-                        </a>
-                        <a href="">
-                            <i class="fa fa-pinterest" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 footer-col">
-                <h4>
-                    Opening Hours
-                </h4>
-                <p>
-                    Everyday
-                </p>
-                <p>
-                    10.00 Am -10.00 Pm
-                </p>
-            </div>
-        </div>
-        <div class="footer-info">
-        </div>
-    </div>
-</footer>
-
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

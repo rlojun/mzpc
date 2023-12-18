@@ -103,8 +103,9 @@ public class LoginController {
         if (admin != null && admin.getPw().equals(adminPw)) {
             session.setAttribute("id", admin.getId());
             session.setAttribute("pw", admin.getPw());
-
+            String storeName = admin.getStore().getName();
             String storeCode = admin.getStore().getCode();
+            session.setAttribute("storeName", storeName);
 
             // url 리펙토링 필요
             return String.format("redirect:/admin/%s/food?topping=%s", storeCode, false);
@@ -200,12 +201,23 @@ public class LoginController {
     // 회원 가입 로직 구현
     @PostMapping("/auth")
     public String auth(@Validated @ModelAttribute("authDTO") AuthDto authDTO,
-                       RedirectAttributes redirectAttributes, BindingResult result) {
+                       RedirectAttributes redirectAttributes, BindingResult result, Model model) {
         // 유효성 검사
         if (result.hasErrors()) {
+            model.addAttribute("authDTO", authDTO); // 입력한 정보를 다시 모델에 추가
             return "members/authUser";
         }
-        loginService.auth(authDTO);
+
+        try {
+            loginService.auth(authDTO, redirectAttributes);
+        } catch (Exception e) {
+            String errorMessage = e.getMessage();
+            redirectAttributes.addFlashAttribute("error", errorMessage);
+            log.info("errorMessage : {} ", errorMessage);
+            model.addAttribute("errorMessage", errorMessage);
+            model.addAttribute("authDTO", authDTO); // 입력한 정보를 다시 모델에 추가
+            return "members/authUser";
+        }
         return "redirect:/login";
     }
 

@@ -3,31 +3,35 @@
 
 <head>
     <!-- Basic -->
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <!-- Site Metas -->
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
     <link rel="shortcut icon" href="/bootstrap/images/favicon.png" type="">
     <title>토핑 상세보기</title>
 
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css"/>
 
     <!--owl slider stylesheet -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
     <!-- nice select  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css"
+          integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ=="
+          crossorigin="anonymous"/>
     <!-- font awesome style -->
-    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet"/>
     <!-- Custom styles for this template -->
-    <link href="/bootstrap/css/style.css" rel="stylesheet" />
+    <link href="/bootstrap/css/style.css" rel="stylesheet"/>
     <!-- responsive style -->
-    <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
+    <link href="/bootstrap/css/responsive.css" rel="stylesheet"/>
     <script>
         function enableEditing() {
             document.getElementById('name').removeAttribute('disabled');
@@ -44,8 +48,9 @@
             foodPicture.style.display = 'block';
 
             var reset = document.getElementById('reset');
-            reset.type='reset';
+            reset.type = 'reset';
         }
+
         function handleFileInputChange() {
             var fileInput = document.getElementById('picture');
             var imgElement = document.getElementById('toppingImage');
@@ -54,7 +59,7 @@
             if (file) {
                 document.getElementById('pictureText').value = file.name;
                 var reader = new FileReader();
-                reader.onloadend = function() {
+                reader.onloadend = function () {
                     imgElement.src = reader.result;
                 };
                 reader.readAsDataURL(file);
@@ -66,14 +71,14 @@
             var storeCode = [[${storeCode}]];
             var categoryName = document.getElementById('category').value;
             var foodDto = {
-                "idx" : document.getElementById('idx').value,
-                "code" : document.getElementById('code').value,
-                "name" : document.getElementById('name').value,
-                "price" : document.getElementById('price').value,
-                "description" : null,
-                "stock" : document.getElementById('stock').value,
+                "idx": document.getElementById('idx').value,
+                "code": document.getElementById('code').value,
+                "name": document.getElementById('name').value,
+                "price": document.getElementById('price').value,
+                "description": null,
+                "stock": document.getElementById('stock').value,
                 "picture": document.getElementById('pictureText').value,
-                topping : true
+                topping: true
             };
             var confirmation = confirm("변경사항을 저장하시겠습니까?");
             var formData = new FormData();
@@ -86,18 +91,18 @@
             }
 
             formData.append('picture', $('#picture')[0].files[0]);
-            formData.append('foodDto',JSON.stringify(foodDto));
+            formData.append('foodDto', JSON.stringify(foodDto));
 
-            if(confirmation) {
+            if (confirmation) {
                 $.ajax({
                     type: "POST",
                     async: false,
-                    url: baseURL+"/food/modifyFood?categoryName=" + categoryName,
+                    url: baseURL + "/food/modifyFood?categoryName=" + categoryName,
                     processData: false,
                     contentType: false,
                     data: formData,
                     success: function (data) {
-                        window.location.href = baseURL+"/admin/" + storeCode + "/food?topping=" + true;
+                        window.location.href = baseURL + "/admin/" + storeCode + "/food?topping=" + true;
                         alert(data)
                     },
                     error: function () {
@@ -127,7 +132,7 @@
                     contentType: "application/json",
                     data: JSON.stringify(foodIdx),
                     success: function (data) {
-                        window.location.href = baseURL+"/admin/" + storeCode + "/food?topping=" + true;
+                        window.location.href = baseURL + "/admin/" + storeCode + "/food?topping=" + true;
                         alert(data)
                     },
                     error: function () {
@@ -146,32 +151,53 @@
     </div>
     <header th:replace="fragments/admin/header :: header"></header>
 </div>
-    <form th:object="${food}">
-        <label for="name">음식</label> : <input type="text" id="name" th:value="*{getName()}" disabled>
-        <br>
-        <label for="price">가격</label> : <input type="text" id="price" th:value="*{getPrice()}" disabled>
-        <br>
-        <label for="category">카테고리</label> : <input type="text" id="category" th:value="*{getCategoryDto().getName()}" readonly>
-        <br>
-        <img id="toppingImage" th:src="@{/images/__${food.getPicture()}__}" style="width:100px; height:100px;" alt="음식 이미지" />
-        <br>
-        <label for="pictureText">사진</label> : <input type="text" id="pictureText" th:value="*{getPicture()}" disabled>
-        <input type="file" id="picture" style="display: none;" onchange="handleFileInputChange()">
-        <br>
-        <label for="stock">재고</label> : <input type="text" id="stock" th:value="*{getStock()}" disabled>
-        <br>
-        <label for="createdAt">생성 시간</label> :
-        <input type="text" id="createdAt" th:value="${#temporals.format(food.createdAt, 'yyyy-MM-dd HH:mm:ss')}" readonly>
-        <br>
-        <label for="updatedAt">수정 시간</label> :
-        <input type="text" id="updatedAt" th:value="${#temporals.format(food.updateAt, 'yyyy-MM-dd HH:mm:ss')}" readonly>
-        <br>
-        <input type="hidden" id="idx" th:value="*{getIdx()}">
-        <input type="hidden" id="code" th:value="*{getCode()}">
-        <input type="hidden" id="categoryDto" th:value="*{getCategoryDto()}">
-        <input type="button" id="modifyButton" onclick="enableEditing()" th:value="수정하기">
-        <input type="button" onclick="deleteTopping()" th:value="삭제">
-        <input type="hidden" id="reset">
-    </form>
+<section class="book_section layout_padding">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2 class="mb-5">
+                Topping Details
+            </h2>
+        </div>
+        <div class="row justify-content-center">
+            <div>
+                <div class="form_container text-center">
+                    <form th:object="${food}">
+                        <label for="name">토핑명</label>
+                        <input type="text" class="form-control" id="name" th:value="*{getName()}" disabled>
+                        <label for="price">가격</label>
+                        <input type="text" class="form-control" id="price" th:value="*{getPrice()}" disabled>
+                        <label for="category">카테고리</label>
+                        <input type="text" id="category" class="form-control" th:value="*{getCategoryDto().getName()}" disabled>
+                        <img id="foodImage" th:src="@{'https://mzpc-s3-bucket.s3.ap-northeast-2.amazonaws.com/'+${food.getPicture()}}"
+                             style="width:100px; height:100px;" alt="음식 이미지"/>
+                        <div class="mt-2" style="text-align: center; position: relative;">
+                            <input type="file" id="picture" style="display: none;" onchange="handleFileInputChange()" enctype="multipart/form-data">
+                        </div>
+                        <br>
+                        <label for="description">설명</label>
+                        <textarea id="description" class="form-control" style="height:100px" th:text="*{getDescription()}" disabled></textarea>
+                        <label for="stock">재고</label>
+                        <input type="text" id="stock" class="form-control" th:value="*{getStock()}" disabled>
+                        <label for="createdAt">생성 시간</label>
+                        <input type="text" id="createdAt" class="form-control"
+                               th:value="${#temporals.format(food.createdAt, 'yyyy-MM-dd HH:mm:ss')}" disabled>
+                        <label for="updatedAt">수정 시간</label>
+                        <input type="text" id="updatedAt" class="form-control"
+                               th:value="${#temporals.format(food.updateAt, 'yyyy-MM-dd HH:mm:ss')}" disabled>
+                        <input type="hidden" id="idx" th:value="*{getIdx()}">
+                        <input type="hidden" id="code" th:value="*{getCode()}">
+                        <input type="hidden" id="categoryDto" th:value="*{getCategoryDto()}">
+                        <button type="button" style="width: 180px;" class="button-18 mr-3" id="modifyButton" onclick="enableEditing()">수정하기</button>
+                        <button type="button" style="width: 180px;" class="button-18 mr-3" onclick="deleteTopping()">삭제</button>
+                        <br>
+                        <br>
+                        <input type="hidden" id="reset" style="width: 180px;" class="button-18 mr-3">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

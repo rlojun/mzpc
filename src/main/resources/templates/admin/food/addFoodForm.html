@@ -116,28 +116,48 @@
     </div>
     <header th:replace="fragments/admin/header :: header"></header>
 </div>
-    <form id="addFood" enctype="multipart/form-data">
-        <label for="foodName">음식</label> : <input type="text" id="foodName" name="foodName" required>
-        <br>
-        <label for="foodPrice">가격</label>  : <input type="text" id="foodPrice" name="foodPrice" required>원
-        <br>
-        <label for="categoryName">카테고리</label>  :
-            <select id="categoryName" name="selectCategory">
-                <option th:each=" category : ${categories}" th:value="${category.getCode()}" th:text="${category.getName()}"></option>
-            </select>
-        <br>
-        <img id="imagePreview" src="" style="max-width: 200px; max-height: 200px;">
-        <br>
-        <label for="foodPicture">이미지</label>  :
-        <input type="file" id="foodPicture" accept="image/*"  name="foodPricture" onchange="handleFileInputChange(event)">
-        <br>
-        <label for="description">설명</label> : <br>
-        <textarea id="description" rows="4" cols="50" placeholder="설명을 입력하세요."></textarea>
-        <br>
-        <label for="stock">재고</label> : <input type="text" id="stock" name="stock" required>
-        <br>
-        <button th:onclick="submitFoodInfo(event)">음식 추가</button>
-        <input type="reset">
-    </form>
+
+<section class="book_section layout_padding">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2 class="mb-5">
+                Add Food Page
+            </h2>
+        </div>
+        <div class="row justify-content-center">
+            <div>
+                <div class="form_container text-center">
+                    <form id="addFood" enctype="multipart/form-data">
+                        <input type="text" id="foodName" name="foodName" class="form-control" placeholder="음식 명"
+                               required/>
+                        <input type="text" id="foodPrice" name="foodPrice" class="form-control" placeholder="가격 (원)"
+                               required/>
+                        <select class="form-control nice-select wide" id="categoryName" name="selectCategory">
+                            <option disabled selected> 음식 카테고리</option>
+                            <option th:each=" category : ${categories}" th:value="${category.getCode()}"
+                                    th:text="${category.getName()}">
+                            </option>
+                        </select>
+                        <textarea id="description" class="form-control" style="height:100px" placeholder="설명을 입력하세요."></textarea>
+                        <input type="text" class="form-control" placeholder="재고" id="stock" name="stock" required>
+                        <label for="foodPicture">이미지</label> :
+                        <input type="file" class="mx-auto" id="foodPicture" accept="image/*" name="foodPicture"
+                               onchange="handleFileInputChange(event)">
+                        <br/>
+                        <img id="imagePreview" src="" style="max-width: 200px; max-height: 200px;" alt="">
+                        <br/>
+                        <button style="width: 180px;" class="button-18 mr-3" th:onclick="submitFoodInfo(event)">
+                            음식 추가
+                        </button>
+                        <button type="reset" style="width: 180px;" class="button-18">
+                            Reset
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

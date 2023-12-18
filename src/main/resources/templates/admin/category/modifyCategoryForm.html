@@ -3,42 +3,46 @@
 
 <head>
     <!-- Basic -->
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <!-- Site Metas -->
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
     <link rel="shortcut icon" href="/bootstrap/images/favicon.png" type="">
     <title>카테고리 수정하기</title>
 
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css"/>
 
     <!--owl slider stylesheet -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
     <!-- nice select  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css"
+          integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ=="
+          crossorigin="anonymous"/>
     <!-- font awesome style -->
-    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet"/>
     <!-- Custom styles for this template -->
-    <link href="/bootstrap/css/style.css" rel="stylesheet" />
+    <link href="/bootstrap/css/style.css" rel="stylesheet"/>
     <!-- responsive style -->
-    <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
+    <link href="/bootstrap/css/responsive.css" rel="stylesheet"/>
     <script>
         function updateCategory(event) {
             event.preventDefault();
-            var categoryName =  $('input[name="categoryName"]').val();
+            var categoryName = $('input[name="categoryName"]').val();
             var storeCode = [[${storeCode}]];
             var confirmation = confirm("변경사항을 저장하시겠습니까?");
             var baseURL;
             var categoryDto = {
-                "idx" : $('input[name="categoryIdx"]').val(),
-                "code" : $('input[name="categoryCode"]').val(),
-                "name" : categoryName
+                "idx": $('input[name="categoryIdx"]').val(),
+                "code": $('input[name="categoryCode"]').val(),
+                "name": categoryName
             };
 
             if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
@@ -75,13 +79,25 @@
     </div>
     <header th:replace="fragments/admin/header :: header"></header>
 </div>
-  <form id="modifyCategory">
-    카테고리 명 : <span th:text="${categoryDto.getName()}"></span>
-    <hr>
-    수정할 카테고리 명  : <input type="text" name="categoryName">
-    <input type="hidden" th:value="${categoryDto.getIdx()}" name="categoryIdx">
-    <input type="hidden" th:value="${categoryDto.getCode()}" name="categoryCode">
-    <button onclick="updateCategory(event)">카테고리 수정</button>
-  </form>
+<section class="book_section layout_padding">
+    <div class="heading_container heading_center">
+        <h2>
+            Edit Category
+        </h2>
+    </div>
+    <div class="row justify-content-center">
+        <form id="modifyCategory">
+            <div class="text-center">카테고리 명</div>
+            <span th:text="${categoryDto.getName()}" class="form-control text-center">카테고리 명</span>
+            <hr>
+            <input type="text" name="categoryName" class="form-control text-center" placeholder="수정할 카테고리 명">
+            <br>
+            <input type="hidden" th:value="${categoryDto.getIdx()}" name="categoryIdx">
+            <input type="hidden" th:value="${categoryDto.getCode()}" name="categoryCode">
+            <button onclick="updateCategory(event)" style="width: 180px;" class="button-18">카테고리 수정</button>
+        </form>
+    </div>
+</section>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

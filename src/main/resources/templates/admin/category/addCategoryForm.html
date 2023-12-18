@@ -3,31 +3,35 @@
 
 <head>
     <!-- Basic -->
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <!-- Site Metas -->
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
     <link rel="shortcut icon" href="/bootstrap/images/favicon.png" type="">
     <title>카테고리 추가하기</title>
 
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css"/>
 
     <!--owl slider stylesheet -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
     <!-- nice select  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css"
+          integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ=="
+          crossorigin="anonymous"/>
     <!-- font awesome style -->
-    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet"/>
     <!-- Custom styles for this template -->
-    <link href="/bootstrap/css/style.css" rel="stylesheet" />
+    <link href="/bootstrap/css/style.css" rel="stylesheet"/>
     <!-- responsive style -->
-    <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
+    <link href="/bootstrap/css/responsive.css" rel="stylesheet"/>
     <script>
         function submitCategory(event) {
             event.preventDefault();
@@ -52,14 +56,14 @@
                     type: "POST",
                     url: baseURL+"/category/addCategory?storeCode=" + storeCode,
                     contentType: "application/json; charset=utf-8",
-                    async : false,
+                    async: false,
                     data: JSON.stringify(categoryDto),
-                    success: function(data) {
-                        window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping="+false;
+                    success: function (data) {
+                        window.location.href = "http://localhost:9010/admin/" + storeCode + "/food?topping=" + false;
                         alert(data);
 
                     },
-                    error: function() {
+                    error: function () {
                         alert("이미 존재하는 카테고리입니다.")
                     }
                 });
@@ -77,10 +81,22 @@
     </div>
     <header th:replace="fragments/admin/header :: header"></header>
 </div>
-<!--    <form th:action="@{/{adminCode}/addCategory(adminCode=${adminCode})}", method="get">-->
-     <form id="addCategory">
-        카테고리 명 : <input type="text" name="categoryName">
-        <button onclick="submitCategory(event)">카테고리 추가</button>
-    </form>
+<section class="book_section layout_padding">
+    <div class="heading_container heading_center">
+        <h2>
+            Add Category
+        </h2>
+    </div>
+    <div class="row justify-content-center">
+        <form id="addCategory">
+            <input type="text" name="categoryName" class="form-control" placeholder="카테고리 명">
+            <br>
+            <button onclick="submitCategory(event)" style="width: 180px;" class="button-18">
+                카테고리 추가
+            </button>
+        </form>
+    </div>
+</section>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>
