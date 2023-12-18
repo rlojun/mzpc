@@ -62,7 +62,7 @@ public class KakaoPayService {
 //        params.add("fail_url", "http://localhost:9010/kakao/kakaoPaySuccessFail");
 
         params.add("approval_url",String.format("http://mzpc.net/members/%s/purchaseTime/%s/%s/kakaoPaySuccess",storeName, memberCode,timeCode));
-        params.add("cancel_url", "http://mzpc.net/kakao/kakaoPayCancel");
+        params.add("cancel_url", String.format("http://mzpc.net/members/%s/%s/kakaoPayCancel", storeName, memberCode));
         params.add("fail_url", "http://mzpc.net/kakao/kakaoPaySuccessFail");
 
         HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<MultiValueMap<String, String>>(params, headers);
