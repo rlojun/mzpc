@@ -11,44 +11,61 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <link rel="shortcut icon" href="/bootstrap/images/favicon.png" type="">
-
     <title> Mzpc </title>
-
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css" />
-
     <!--owl slider stylesheet -->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
     <!-- nice select  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
     <!-- font awesome style -->
     <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet" />
-
     <!-- Custom styles for this template -->
     <link href="/bootstrap/css/style.css" rel="stylesheet" />
     <!-- responsive style -->
     <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
     <!-- Stomp 라이브러리 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 </head>
-<body>
 <header class="header_section">
-    <style>
-        .red-dot {
-            width: 20px;
-            height: 20px;
-            background-color: red;
-            border-radius: 50%;
-            display: inline-block;
-        }
-    </style>
+    <nav th:fragment="header">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg custom_nav-container ">
+                <a class="navbar-brand" th:href="@{/admin/{storeCode}/food(storeCode=${storeCode}, topping=false)}">
+                    <span th:if="${#session != null}" th:text="${#strings.isEmpty(#session.getAttribute('storeName')) ? '' : #session.getAttribute('storeName')}"></span>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class=""> </span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav  mx-auto ">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/admin/{storeCode}/food(storeCode=${storeCode}, topping=false)}">음식 상품 <span class="sr-only">(current)</span> </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/admin/{storeCode}/time/listTime(storeCode=${storeCode})}">시간 상품 <span class="sr-only">(current)</span> </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/admin/{storeCode}/orderList(storeCode=${storeCode})}">주문 목록 <span id="incomingDot" class="red-dot"></span></a>
+
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/admin/{storeCode}/listMember(storeCode=${storeCode})}">사용자 목록 <span class="sr-only">(current)</span> </a>
+                        </li>
+                    </ul>
+                    <div class="user_option">
+                        <a href="/login/logout" class="order_online">
+                            로그아웃
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </nav>
     <script>
-
-
         function checkOrders() {
             var storeCode = [[${storeCode}]];
             $.ajax({
@@ -68,45 +85,39 @@
                 }
             });
         }
-
-
         setInterval(checkOrders, 1000);
-
     </script>
-    <nav th:fragment="header">
-        <div class="container">
-            <nav class="navbar navbar-expand-lg custom_nav-container ">
-                <a class="navbar-brand" th:href="@{/admin/{storeCode}/food(storeCode=${storeCode}, topping=false)}">
-                    <span th:if="${#session != null}" th:text="${#strings.isEmpty(#session.getAttribute('storeName')) ? '' : #session.getAttribute('storeName')}"></span>
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class=""> </span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav  mx-auto ">
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/admin/{storeCode}/food(storeCode=${storeCode}, topping=false)}">음식 상품 <span class="sr-only">(current)</span> </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/admin/{storeCode}/time/listTime(storeCode=${storeCode})}">시간 상품 <span class="sr-only">(current)</span> </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/admin/{storeCode}/orderList(storeCode=${storeCode})}">주문 목록 <div id="incomingDot" class="red-dot" style="display: none"></div></a>
+    <style>
+        .red-dot::before {
+            content: '\1F514';
+            font-size: 16px;
+            display: block;
+            color: white;
+            text-align: center;
+            line-height: 20px;
+        }
+        .red-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 1s infinite;
+        }
 
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/admin/{storeCode}/listMember(storeCode=${storeCode})}">사용자 목록 <span class="sr-only">(current)</span> </a>
-                        </li>
-                    </ul>
-                    <div class="user_option">
-                        <a href="/login/logout" class="order_online">
-                            로그아웃
-                        </a>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </nav>
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+        }
+    </style>
 </header>
-</body>
 </html>
