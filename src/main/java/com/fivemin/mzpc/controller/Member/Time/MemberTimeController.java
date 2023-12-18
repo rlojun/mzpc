@@ -92,7 +92,7 @@ public class MemberTimeController {
 
     // 카카오 페이 결제 준비
     @PostMapping("/purchaseTime/{memberCode}/{timeCode}")
-    public String kakaoPay(@PathVariable String timeCode, HttpSession session,
+    public String kakaoPay(@PathVariable String timeCode,
                            @RequestParam String memberId,
                            @RequestParam int usedMileage,
                            @RequestParam int timePrice,
@@ -126,6 +126,7 @@ public class MemberTimeController {
         Members members = loginService.findByMemberId(memberId);
         session.setAttribute("members", members);
 
+        sessionService.deleteByCode(memberCode);
         int usedMileage = sessionService.findByCodeAndName(memberCode, "usedMileage").getIntValue();
 
         log.info("usedMileage : {}", usedMileage);
@@ -163,5 +164,21 @@ public class MemberTimeController {
         model.addAttribute("mileageInfos", mileageInfos);
         model.addAttribute("storeName", storeName);
         return "members/time/listPurchaseTime";
+    }
+
+    // 카카오 페이 결제 취소
+    @GetMapping("/{memberCode}/kakaoPayCancel")
+    public String kakaoPayCancel(@PathVariable String storeName, Model model,
+                                 @PathVariable String memberCode,
+                                 HttpSession session){
+        String memberId = sessionService.findByCodeAndName(memberCode, "memberId").getStringValue();
+        session.setAttribute("id", memberId);
+        log.info("memberId : {}", memberId);
+        Members members = loginService.findByMemberId(memberId);
+        session.setAttribute("members", members);
+        sessionService.deleteByCode(memberCode);
+        model.addAttribute("memberCode", memberCode);
+        model.addAttribute("storeName", storeName);
+        return "kakao/kakaoPayCancel";
     }
 }

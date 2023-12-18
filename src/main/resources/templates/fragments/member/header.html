@@ -143,7 +143,7 @@
 
                         </li>
                     </ul>
-                    <span th:if="${session.id}!=null" style="color:white;" th:text="'Hi ' + ${session.id}"></span>
+                    <span th:if="${storeName}!=null" style="color:white;" th:text="'Hi ' + ${session.id}"></span>
                     <div class="user_option">
                         <a th:href="@{/members/{storeName}/order/list}" class="user_link">
                             <i class="fa fa-user" aria-hidden="true"></i>

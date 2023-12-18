@@ -74,7 +74,8 @@
                     <div class="box">
                         <div class="img-box"
                              th:attr="data-category-name=${menu.getCategoryName()},data-food-code=${menu.getCode()}">
-                            <img th:src="@{${menu.getPicture()}}" alt="기본이미지">
+                            <a th:href="@{/members/{storeName}/food/detail/{foodName}(storeName=${(storeName)}, foodName=${menu.name}, foodCode=${menu.code})}">
+                                <img th:src="@{${menu.getPicture()}}" alt="기본이미지"></a>
                         </div>
                         <div class="detail-box"
                              th:attr="data-category-name=${menu.getCategoryName()},data-food-code=${menu.getName()}">
@@ -97,7 +98,8 @@
                     <div class="box">
                         <div class="img-box"
                              th:attr="data-food-code=${favorites.food.code}">
-                            <img th:src="${favorites.food.picture}" alt="">
+                            <a th:href="@{/members/{storeName}/food/detail/{foodName}(storeName=${(storeName)}, foodName=${favorites.food.name}, foodCode=${favorites.food.code})}">
+                                <img th:src="@{${favorites.food.picture}}" alt="기본이미지"></a>
                         </div>
                         <div class="detail-box"
                              th:attr="data-food-name=${favorites.food.getName()}">
