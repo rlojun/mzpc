@@ -8,9 +8,9 @@
     <!-- Mobile Metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <!-- Site Metas -->
-    <meta name="keywords" content=""/>
-    <meta name="description" content=""/>
-    <meta name="author" content=""/>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
     <link rel="shortcut icon" href="/bootstrap/images/favicon.png" type="">
 
     <title>카테고리 리스트</title>
@@ -36,16 +36,22 @@
         function deleteCategory(categoryIdx) {
             var storeCode = [[${storeCode}]];
             var confirmation = confirm("삭제하시겠습니까?");
+            var baseURL;
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                baseURL = 'http://localhost:9010';
+            } else {
+                baseURL = 'http://mzpc.net';
+            }
 
-            if (confirmation) {
+            if (confirmation){
                 $.ajax({
-                    type: "DELETE",
-                    url: "http://localhost:9010/category/deleteCategory",
+                    type:"DELETE",
+                    url : baseURL+"/category/deleteCategory",
                     contentType: "application/json; charset=utf-8",
-                    async: false,
+                    async : false,
                     data: JSON.stringify(categoryIdx),
                     success: function (data) {
-                        window.location.href = "http://localhost:9010/admin/" + storeCode + "/food?topping=" + false;
+                        window.location.href =baseURL+"/admin/"+storeCode+"/food?topping="+false;
                         alert(data)
                     },
                     error: function () {

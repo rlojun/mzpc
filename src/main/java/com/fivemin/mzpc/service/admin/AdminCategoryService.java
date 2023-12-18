@@ -9,8 +9,8 @@ import com.fivemin.mzpc.data.repository.StoreRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -29,46 +29,98 @@ public class AdminCategoryService {
         this.storeRepository = storeRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<CategoryDto> getListCategory(String storeCode) {
         Store store = storeRepository.findByCode(storeCode);
         List<Category> category = categoryRepository.findByStoreIdx(store.getIdx());
         List<CategoryDto> categoryList = new ArrayList<>();
 
-        for(Category categories: category) {
-            CategoryDto categoryDto = CategoryDto.builder()
-                            .idx(categories.getIdx())
-                            .code(categories.getCode())
-                            .name(categories.getName())
-                            .build();
-            categoryList.add(categoryDto);
-        }
+        if (store != null && category != null) {
+            for (Category categories : category) {
+                CategoryDto categoryDto = CategoryDto.builder()
+                        .idx(categories.getIdx())
+                        .code(categories.getCode())
+                        .name(categories.getName())
+                        .build();
+                categoryList.add(categoryDto);
+            }
+            return categoryList;
 
-        return categoryList;
+        } else {
+            thorwError(storeCode);
+        }
+        return null;
+
     }
 
+    @Transactional(readOnly = true)
     public StoreDto getStore(String storeCode) {
         Store store = storeRepository.findByCode(storeCode);
 
-        StoreDto storeDto = StoreDto.builder()
-                .idx(store.getIdx())
-                .code(store.getCode())
-                .name(store.getName())
-                .build();
+        if (store != null) {
+            StoreDto storeDto = StoreDto.builder()
+                    .idx(store.getIdx())
+                    .code(store.getCode())
+                    .name(store.getName())
+                    .build();
 
-        return storeDto;
+            return storeDto;
+        } else {
+            thorwError(storeCode);
+
+        }
+        return null;
+
     }
 
     @Transactional
     public void addCategory(CategoryDto categoryDto, String storeCode) {
        Store store = storeRepository.findByCode(storeCode);
 
-       Category category = Category.builder()
-               .code(makeCode())
-               .name(categoryDto.getName())
-               .store(store)
-               .build();
+       if (store!=null) {
+           Category category = Category.builder()
+                   .code(makeCode())
+                   .name(categoryDto.getName())
+                   .store(store)
+                   .build();
 
-       categoryRepository.save(category);
+           categoryRepository.save(category);
+       }else {
+            thorwError(storeCode);
+       }
+
+    }
+
+    @Transactional(readOnly = true)
+    public CategoryDto modifyCategoryForm(String categoryCode) {
+        Category category = categoryRepository.findByCode(categoryCode);
+
+        if (category != null) {
+            CategoryDto categoryDto = CategoryDto.builder()
+                    .idx(category.getIdx())
+                    .code(category.getCode())
+                    .name(category.getName())
+                    .build();
+
+            return categoryDto;
+        } else {
+            throw new IllegalArgumentException("Category not found fore code : "+ categoryCode);
+        }
+
+    }
+
+    @Transactional
+    public void modifyCategory(CategoryDto categoryDto) {
+        categoryRepository.updateCategoryNameByIdx(categoryDto.getIdx(),categoryDto.getName());
+    }
+
+    @Transactional
+    public void deleteCategory(Long categoryIdx) {
+        categoryRepository.deleteById(categoryIdx);
+    }
+
+    private void thorwError(String storeCode) {
+        throw new IllegalArgumentException("Store not found for code : " + storeCode);
     }
 
     private String makeCode(){
@@ -76,30 +128,5 @@ public class AdminCategoryService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'C'HHMMyyyymmddss");
         return currentDateTime.format(formatter);
     }
-
-    public CategoryDto modifyCategoryForm(String categoryCode) {
-        Category category = categoryRepository.findByCode(categoryCode);
-
-        CategoryDto categoryDto = CategoryDto.builder()
-                .idx(category.getIdx())
-                .code(category.getCode())
-                .name(category.getName())
-                .build();
-
-        return categoryDto;
-    }
-
-    @Transactional
-    public void modifyCategory(CategoryDto categoryDto) {
-        categoryRepository.updateCategoryNameByIdx(categoryDto.getIdx(),categoryDto.getName());
-        log.info("name : {}", categoryDto.getName());
-        log.info("idx : {} ", categoryDto.getIdx());
-
-    }
-
-    public void deleteCategory(Long categoryIdx) {
-        categoryRepository.deleteById(categoryIdx);
-    }
-
 
 }
