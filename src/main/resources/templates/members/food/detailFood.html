@@ -45,34 +45,52 @@
     <header th:replace="fragments/member/header :: header"></header>
     <!-- end header section -->
 </div>
-<section class="detail_section" style="width: 100%; text-align: center;">
-    <form class="add-to-cart" th:object="${foodDetails}" method="post">
-        <div>
-            <h5 th:text="${foodDetails.name}" style="text-align: center"></h5>
-                <img th:src="@{'https://mzpc-s3-bucket.s3.ap-northeast-2.amazonaws.com/'+${foodDetails.getPicture()}}"
-                     alt="Food Image">
-            <h5 th:text="${'가격 : ' + foodDetails.price + '원'}" style="text-align: center"></h5>
-            <h5 th:text="${foodDetails.description}" style="text-align: center"></h5>
-            <input type="hidden" th:field="*{name}" th:value="${foodDetails.name}"/>
-            <input type="hidden" th:field="*{code}" th:value="${foodDetails.code}"/>
-            <input type="hidden" th:field="*{price}" th:value="${foodDetails.price}"/>
-            <input type="hidden" th:field="*{storeName}" th:value="${foodDetails.storeName}"/>
-            <div th:if="${toppings != null and toppings.size() > 0}" class="topping-section">
-                <h3>토핑</h3>
-                <div th:each="topping : ${toppings}" class="topping-option">
-                    <label>
-                        <input type="checkbox" th:value="${topping.name}" class="topping-checkbox"/>
-                        <span th:text="${topping.name}"></span>
-                    </label>
+<section class="detail_section layout_padding" style="width: 100%; text-align: center;">
+    <div class="container">
+        <div class="heading_container heading_center mb-4" style="color:black">
+            <h2>
+                음식 상세 보기
+            </h2>
+        </div>
+        <div class="row justify-content-center">
+            <div>
+                <div class="form_container text-center">
+                    <form class="add-to-cart" th:object="${foodDetails}" method="post">
+                        <div>
+                            <h5 th:text="${foodDetails.name}" style="text-align: center"></h5>
+                            <img th:src="@{'https://mzpc-s3-bucket.s3.ap-northeast-2.amazonaws.com/'+${foodDetails.getPicture()}}"
+                                 alt="Food Image">
+                            <h5 th:text="${'가격 : ' + foodDetails.price + '원'}" style="text-align: center"></h5>
+                            <h5 th:text="${foodDetails.description}" style="text-align: center"></h5>
+                            <input type="hidden" th:field="*{name}" th:value="${foodDetails.name}"/>
+                            <input type="hidden" th:field="*{code}" th:value="${foodDetails.code}"/>
+                            <input type="hidden" th:field="*{price}" th:value="${foodDetails.price}"/>
+                            <input type="hidden" th:field="*{storeName}" th:value="${foodDetails.storeName}"/>
+                            <div th:if="${toppings != null and toppings.size() > 0}" class="topping-section">
+                                <h4>토핑 목록</h4>
+                                <hr>
+                                <ul class="topping-list">
+                                    <li th:each="topping : ${toppings}" class="topping-option">
+                                        <label>
+                                            <input type="checkbox" th:value="${topping.name}"
+                                                   class="topping-checkbox"/>
+                                            <span th:text="${topping.name}"></span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <br>
+                        <button type="submit"
+                                class="button-18" style="width: 180px;"
+                                th:attr="data-food-name=${foodDetails.name}, data-food-code=${foodDetails.code}, data-price=${foodDetails.price}, data-store-name=${foodDetails.storeName}">
+                            카트에 담기
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
-        <button type="submit"
-                class="add-to-cart-btn" style="margin: 0 auto"
-                th:attr="data-food-name=${foodDetails.name}, data-food-code=${foodDetails.code}, data-price=${foodDetails.price}, data-store-name=${foodDetails.storeName}">
-            카트에 담기
-        </button>
-    </form>
+    </div>
 </section>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>

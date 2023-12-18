@@ -1187,7 +1187,6 @@ a:focus {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  padding: 20px;
 }
 
 .detail_section img {
@@ -1198,12 +1197,14 @@ a:focus {
 
 .topping-section {
   width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
 }
 
 .topping-option {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
 }
 
 .topping-checkbox {

@@ -118,7 +118,7 @@
     </main>
     <script th:inline="javascript">
         function authSuccess() {
-            var errorMessage = /*[(${errorMessage})]*/ null;
+            var errorMessage = [(${errorMessage})] null;
 
             if (!errorMessage || errorMessage.trim() === "") {
                 alert("회원가입을 축하드립니다!");
