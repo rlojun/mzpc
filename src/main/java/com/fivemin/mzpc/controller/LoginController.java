@@ -103,8 +103,9 @@ public class LoginController {
         if (admin != null && admin.getPw().equals(adminPw)) {
             session.setAttribute("id", admin.getId());
             session.setAttribute("pw", admin.getPw());
-
+            String storeName = admin.getStore().getName();
             String storeCode = admin.getStore().getCode();
+            session.setAttribute("storeName", storeName);
 
             // url 리펙토링 필요
             return String.format("redirect:/admin/%s/food?topping=%s", storeCode, false);

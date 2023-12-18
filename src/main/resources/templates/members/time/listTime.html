@@ -2,32 +2,36 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- Basic -->
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <!-- Site Metas -->
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
     <link rel="shortcut icon" href="/bootstrap/images/favicon.png" type="">
 
     <title> Mzpc </title>
 
     <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css"/>
 
     <!--owl slider stylesheet -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
     <!-- nice select  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css"
+          integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ=="
+          crossorigin="anonymous"/>
     <!-- font awesome style -->
-    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet"/>
 
     <!-- Custom styles for this template -->
-    <link href="/bootstrap/css/style.css" rel="stylesheet" />
+    <link href="/bootstrap/css/style.css" rel="stylesheet"/>
     <!-- responsive style -->
-    <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
+    <link href="/bootstrap/css/responsive.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
     <!-- SockJS 라이브러리 -->
@@ -35,7 +39,77 @@
 
     <!-- Stomp 라이브러리 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <style>
+        body, section {
+            background-color: #ffffff;
+        }
 
+        .icon-box {
+            background: #222831;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0px 10px 30px rgba(31, 47, 76, 0.08);
+            border: 2px solid #ffffff;
+        }
+
+        .icon-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .icon-box i {
+            font-size: 64px;
+            color: #FF0000;
+            margin-bottom: 15px;
+        }
+
+        .icon-box h4 {
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 24px;
+            color: #ffffff
+        }
+
+        .icon-box a {
+            color: #ffffff;
+            transition: 0.3s;
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: 3px solid #ffffff;
+        }
+
+        .icon-box a:hover {
+            background: #DF0101;
+            color: #ffffff;
+        }
+
+        .purchase-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #222831;
+            color: #ffffff;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0px 10px 30px rgba(31, 47, 76, 0.08);
+        }
+
+        .purchase-link:hover {
+            transform: translateY(-5px);
+            background: #DF0101;
+        }
+
+        .purchase-link:active {
+            color: #ffffff;
+        }
+
+        .about_section {
+            background-color: #fff;
+        }
+    </style>
 </head>
 
 <body class="sub_page">
@@ -47,196 +121,40 @@
     <header th:replace="fragments/member/header :: header"></header>
 </div>
 
-<style>
-    body,section {
-        background-color: #ffffff;
-    }
-    .icon-box {
-        background:#222831;
-        border-radius: 10px;
-        padding: 20px;
-        margin-bottom: 20px;
-        text-align: center;
-        transition: all 0.3s ease-in-out;
-        box-shadow: 0px 10px 30px rgba(31, 47, 76, 0.08);
-        border: 2px solid #ffffff;
-    }
-    .icon-box:hover {
-        transform: translateY(-5px);
-    }
-    .icon-box i {
-        font-size: 64px;
-        color: #FF0000;
-        margin-bottom: 15px;
-    }
-    .icon-box h4 {
-        font-weight: 700;
-        margin-bottom: 15px;
-        font-size: 24px;
-        color: #ffffff
-    }
-    .icon-box a {
-        color: #ffffff;
-        transition: 0.3s;
-        display: inline-block;
-        padding: 8px 20px;
-        border-radius: 50px;
-        border: 3px solid #ffffff;
-    }
-    .icon-box a:hover {
-        background: #DF0101;
-        color: #ffffff;
-    }
-    .purchase-link {
-        display: inline-block;
-        padding: 10px 20px;
-        background: #222831;
-        color: #ffffff;
-        border-radius: 10px;
-        text-align: center;
-        transition: all 0.3s ease-in-out;
-        box-shadow: 0px 10px 30px rgba(31, 47, 76, 0.08);
-    }
-    .purchase-link:hover {
-        transform: translateY(-5px);
-        background: #DF0101;
-    }
-    .purchase-link:active {
-        color: #ffffff;
-    }
-    .about_section{
-        background-color: #fff;
-    }
-</style>
 <!-- about section -->
 
 <section class="about_section layout_padding">
+    <div class="heading_container heading_center mb-4" style="color:black">
+        <h2>
+            Time List
+        </h2>
+    </div>
     <div class="container" data-aos="fade-up">
-        <div class="row gy-4">
-            <div class="col-lg-8 d-flex align-items-center">
-                <div class="row gy-4">
-                    <div class="col-xl-4" style="width: 300px;" data-aos="fade-up" data-aos-delay="200" th:each="timeDto : ${memberListTime}">
-                        <div class="icon-box d-flex flex-column justify-content-center align-items-center" style="height: 200px;">
-                            <i class="bi bi-gem"></i>
-                            <h4 th:text="${timeDto.name}"></h4>
-                            <div class="timeBox">
-                                <p th:text="${timeDto.price + '원'}"></p>
-                            </div>
-                            <div>
-                                <a th:href="@{/members/{storeName}/purchaseTime/{memberCode}/{timeCode}(storeName=${storeName}, memberCode=${memberCode}, timeCode=${timeDto.code})}">선택</a>
-                            </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-12 d-flex align-items-center">
+                <div class="col-xl-3" style="width: 300px;" data-aos="fade-up" data-aos-delay="200"
+                     th:each="timeDto : ${memberListTime}">
+                    <div class="icon-box d-flex flex-column justify-content-center align-items-center"
+                         style="height: 200px;">
+                        <i class="bi bi-gem"></i>
+                        <h4 th:text="${timeDto.name}"></h4>
+                        <div class="timeBox">
+                            <p th:text="${timeDto.price + '원'}"></p>
                         </div>
-                    </div><!-- End Icon Box -->
-                    <a class="purchase-link" th:href="@{/members/{storeName}/listPurchaseTime(storeName=${storeName})}"> 상품 구매 내역</a>
-                </div>
+                        <div>
+                            <a th:href="@{/members/{storeName}/purchaseTime/{timeCode}(storeName=${storeName}, timeCode=${timeDto.code})}">선택</a>
+                        </div>
+                    </div>
+                </div><!-- End Icon Box -->
             </div>
         </div>
+        <a class="purchase-link mx-auto d-block mt-3 justify-content-center" style="width: 180px;"
+           th:href="@{/members/{storeName}/listPurchaseTime(storeName=${storeName})}"> 상품 구매 내역</a>
     </div>
 </section>
-
 <!-- end about section -->
-
 <!-- footer section -->
-<footer class="footer_section">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 footer-col">
-                <div class="footer_contact">
-                    <h4>
-                        Contact Us
-                    </h4>
-                    <div class="contact_link_box">
-                        <a href="">
-                            <i class="fa fa-map-marker" aria-hidden="true"></i>
-                            <span>
-                  Location
-                </span>
-                        </a>
-                        <a href="">
-                            <i class="fa fa-phone" aria-hidden="true"></i>
-                            <span>
-                  Call +010 7141 8847
-                </span>
-                        </a>
-                        <a href="">
-                            <i class="fa fa-envelope" aria-hidden="true"></i>
-                            <span>
-                  demo@gmail.com
-                </span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 footer-col">
-                <div class="footer_detail">
-                    <a href="" class="footer-logo">
-                        Mzpc
-                    </a>
-                    <p>
-                        Necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with
-                    </p>
-                    <div class="footer_social">
-                        <a href="">
-                            <i class="fa fa-facebook" aria-hidden="true"></i>
-                        </a>
-                        <a href="">
-                            <i class="fa fa-twitter" aria-hidden="true"></i>
-                        </a>
-                        <a href="">
-                            <i class="fa fa-linkedin" aria-hidden="true"></i>
-                        </a>
-                        <a href="">
-                            <i class="fa fa-instagram" aria-hidden="true"></i>
-                        </a>
-                        <a href="">
-                            <i class="fa fa-pinterest" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 footer-col">
-                <h4>
-                    Opening Hours
-                </h4>
-                <p>
-                    Everyday
-                </p>
-                <p>
-                    10.00 Am -10.00 Pm
-                </p>
-            </div>
-        </div>
-        <div class="footer-info">
-            <p>
-                &copy; <span id="displayYear"></span> All Rights Reserved By
-                <a href="https://html.design/">Free Html Templates</a><br><br>
-                &copy; Distributed By
-                <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
-            </p>
-        </div>
-    </div>
-</footer>
-<!-- footer section -->
-<!-- jQery -->
-<script src="/bootstrap/js/jquery-3.4.1.min.js"></script>
-<!-- popper js -->
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-</script>
-<!-- bootstrap js -->
-<script src="/bootstrap/js/bootstrap.js"></script>
-<!-- owl slider -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
-</script>
-<!-- isotope js -->
-<script src="https://unpkg.com/isotope-layout@3.0.4/dist/isotope.pkgd.min.js"></script>
-<!-- nice select -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
-<!-- custom js -->
-<script src="/bootstrap/js/custom.js"></script>
-<!-- Google Map -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
-</script>
-<!-- End Google Map -->
+<div th:replace="fragments/footer :: footer"></div>
 
 </body>
 

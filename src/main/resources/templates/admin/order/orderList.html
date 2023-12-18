@@ -77,11 +77,11 @@
                 $.ajax({
                     type: "DELETE",
                     async: false,
-                    url: baseURL+"/orders/rejectOrder",
+                    url: baseURL + "/orders/rejectOrder",
                     contentType: "application/json",
                     data: orderCode,
                     success: function (data) {
-                        window.location.href = baseURL+"/admin/" + storeCode + "/orderList";
+                        window.location.href = baseURL + "/admin/" + storeCode + "/orderList";
                         alert(data);
                     },
                     error: function () {
@@ -111,11 +111,13 @@
                 <span th:text="${cart.getFoodDto().name} + ' : ' + ${cart.getFoodDto().price + '원'}"></span>
             </li>
         </ul>
-        <div th:if="${order.getNote() != null || not #strings.isEmpty(order.getNote())}">요청사항</div>
-        <label>
-            <textarea th:if="${order.getNote() != null || not #strings.isEmpty(order.getNote())}" th:text="${order.getNote()}" readonly style="resize: none;"></textarea>
-        </label>
-        <br>
+        <div th:if="${not #strings.isEmpty(order.getNote())}">
+            요청사항
+            <br/>
+            <label>
+                <textarea th:text="${order.getNote()}" readonly style="resize: none;"></textarea>
+            </label>
+        </div>
         <b>총 금액 : <span th:text="${order.getTotalCost() + '원'}"></span></b>
         <br>
         <button onclick="complete(this)" th:attr="data-order-code=${order.getCode()}">결제 완료</button>

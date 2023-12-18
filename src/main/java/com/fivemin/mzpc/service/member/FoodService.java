@@ -112,6 +112,7 @@ public class FoodService {
         log.info("distinctFoodCategories: {}", distinctFoodCategories);
         return distinctFoodCategories;
     }
+
     public void addFavorite(Long foodIdx, Members members) {
         Food food = foodRepository.getByFoodIdx(foodIdx);
         log.info("foodIdx : {}", foodIdx);
