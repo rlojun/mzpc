@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <!-- Basic -->
     <meta charset="utf-8"/>
@@ -32,6 +31,11 @@
     <link href="/bootstrap/css/style.css" rel="stylesheet"/>
     <!-- responsive style -->
     <link href="/bootstrap/css/responsive.css" rel="stylesheet"/>
+    <style>
+        body {
+            margin-bottom: 0;
+        }
+    </style>
     <script>
         function complete(button) {
             var confirmation = confirm("주문을 처리하시겠습니까?");
@@ -93,36 +97,42 @@
     </script>
 </head>
 <body class="sub_page">
-
 <div class="hero_area">
     <div class="bg-box">
         <img src="/bootstrap/images/admin-bg.png" alt="">
     </div>
     <header th:replace="fragments/admin/header :: header"></header>
 </div>
-<section class="order_section">
-    <div th:each="order, iterStatus : ${ordersDtos}" class="detail-box" th:if="${order.isCookComplete()==false}">
-        <h5>주문 번호: <span th:text="${iterStatus.index + 1}"></span></h5>
-        <p> 주문코드 : <span th:text="${order.getCode()}"></span></p>
-        <p> 사용자 이름 : <span th:text="${order.getMemberName()}"></span></p>
-        <p> 주문 일자 : <span th:text="${order.getCreatedAt()}"></span></p>
-        <ul>
-            <li th:each=" cart : ${order.getCartDtos()} ">
-                <span th:text="${cart.getFoodDto().name} + ' : ' + ${cart.getFoodDto().price + '원'}"></span>
-            </li>
-        </ul>
-        <div th:if="${not #strings.isEmpty(order.getNote())}">
-            요청사항
-            <br/>
-            <label>
-                <textarea th:text="${order.getNote()}" readonly style="resize: none;"></textarea>
-            </label>
+<section class="order_section layout_padding">
+    <div class="heading_container heading_center">
+        <h2 class="mb-4">
+            Orders List
+        </h2>
+    </div>
+    <div class="container" data-aos="fade-up">
+        <div th:each="order, iterStatus : ${ordersDtos}" class="detail-box" th:if="${order.isCookComplete()==false}">
+            <h5>주문 번호: <span th:text="${iterStatus.index + 1}"></span></h5>
+            <p> 주문코드 : <span th:text="${order.getCode()}"></span></p>
+            <p> 사용자 이름 : <span th:text="${order.getMemberName()}"></span></p>
+            <p> 주문 일자 : <span th:text="${order.getCreatedAt()}"></span></p>
+            <ul>
+                <li th:each=" cart : ${order.getCartDtos()} ">
+                    <span th:text="${cart.getFoodDto().name} + ' : ' + ${cart.getFoodDto().price + '원'}"></span>
+                </li>
+            </ul>
+            <div th:if="${not #strings.isEmpty(order.getNote())}">
+                요청사항
+                <br/>
+                <label>
+                    <textarea th:text="${order.getNote()}" readonly style="resize: none;"></textarea>
+                </label>
+            </div>
+            <b>총 금액 : <span th:text="${order.getTotalCost() + '원'}"></span></b>
+            <br>
+            <button onclick="complete(this)" th:attr="data-order-code=${order.getCode()}">결제 완료</button>
+            <button onclick="reject(this)" th:attr="data-order-code=${order.getCode()}">주문 취소</button>
+            <hr>
         </div>
-        <b>총 금액 : <span th:text="${order.getTotalCost() + '원'}"></span></b>
-        <br>
-        <button onclick="complete(this)" th:attr="data-order-code=${order.getCode()}">결제 완료</button>
-        <button onclick="reject(this)" th:attr="data-order-code=${order.getCode()}">주문 취소</button>
-        <hr>
     </div>
 </section>
 <div th:replace="fragments/footer :: footer"></div>
