@@ -31,6 +31,49 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <header class="header_section">
+
+    <style>
+        .red-dot {
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            border-radius: 50%;
+            display: inline-block;
+        }
+    </style>
+    <script>
+
+        function checkOrders() {
+            var storeCode = [[${storeCode}]];
+            var baseURL;
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                baseURL = 'http://localhost:9010';
+            } else {
+                baseURL = 'http://mzpc.net';
+            }
+
+            $.ajax({
+                url: baseURL+'/orders/alarmOrder',
+                method: 'GET',
+                contentType: "application/json",
+                data : { storeCode: storeCode },
+                success: function(data) {
+                    if (data === true) {
+                        $('#incomingDot').show();
+                    } else {
+                        $('#incomingDot').hide();
+                    }
+                },
+                error: function() {
+                    $('#incomingDot').hide();
+                }
+            });
+        }
+
+        setInterval(checkOrders, 1000);
+
+    </script>
+
     <nav th:fragment="header">
         <div class="container">
             <nav class="navbar navbar-expand-lg custom_nav-container ">

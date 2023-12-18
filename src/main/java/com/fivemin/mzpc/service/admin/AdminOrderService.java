@@ -112,9 +112,8 @@ public class AdminOrderService {
         Orders orders = ordersRepository.findByCode(orderCode);
         List<Cart> carts = cartRepository.findByOrdersIdx(orders.getIdx());
 
-        if (orders != null && carts != null) {
+        if (carts != null) {
             for (Cart cart : carts) {
-                log.info("cart_idx : {}", cart.getIdx());
                 cart.setOrderComplete(false);
                 cartRepository.save(cart);
             }
@@ -162,6 +161,10 @@ public class AdminOrderService {
     public boolean alarmOrder(String storeCode) {
         List<Cart> carts = cartRepository.findAllByStoreIdx(storeCode);
         List<Orders> orders = ordersRepository.findAllByStoreCode(storeCode);
+
+        log.info("carts.isEmpty() : {}",!carts.isEmpty());
+        log.info("!orders.isEmpty() : {}",!orders.isEmpty());
+        log.info("result : {}",!carts.isEmpty() && !orders.isEmpty());
 
         return !carts.isEmpty() && !orders.isEmpty();
 
