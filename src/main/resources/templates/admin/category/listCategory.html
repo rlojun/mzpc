@@ -32,16 +32,22 @@
         function deleteCategory(categoryIdx) {
             var storeCode = [[${storeCode}]];
             var confirmation = confirm("삭제하시겠습니까?");
+            var baseURL;
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                baseURL = 'http://localhost:9010';
+            } else {
+                baseURL = 'http://mzpc.net';
+            }
 
             if (confirmation){
                 $.ajax({
                     type:"DELETE",
-                    url : "http://localhost:9010/category/deleteCategory",
+                    url : baseURL+"/category/deleteCategory",
                     contentType: "application/json; charset=utf-8",
                     async : false,
                     data: JSON.stringify(categoryIdx),
                     success: function (data) {
-                        window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping="+false;
+                        window.location.href =baseURL+"/admin/"+storeCode+"/food?topping="+false;
                         alert(data)
                     },
                     error: function () {

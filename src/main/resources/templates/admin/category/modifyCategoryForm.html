@@ -34,26 +34,36 @@
             var categoryName =  $('input[name="categoryName"]').val();
             var storeCode = [[${storeCode}]];
             var confirmation = confirm("변경사항을 저장하시겠습니까?");
+            var baseURL;
             var categoryDto = {
                 "idx" : $('input[name="categoryIdx"]').val(),
                 "code" : $('input[name="categoryCode"]').val(),
                 "name" : categoryName
             };
 
-            $.ajax({
-                type: "PUT",
-                url : "http://localhost:9010/category/modifyCategory",
-                contentType: "application/json; charset=utf-8",
-                async : false,
-                data : JSON.stringify(categoryDto),
-                success: function (data) {
-                    window.location.href ="http://localhost:9010/admin/"+storeCode+"/food?topping="+false;
-                    alert(data)
-                },
-                error : function () {
-                    alert("오류가 났습니다.")
-                }
-            });
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                baseURL = 'http://localhost:9010';
+            } else {
+                baseURL = 'http://mzpc.net';
+            }
+
+            if (confirmation){
+                $.ajax({
+                    type: "PUT",
+                    url : baseURL+"/category/modifyCategory",
+                    contentType: "application/json; charset=utf-8",
+                    async : false,
+                    data : JSON.stringify(categoryDto),
+                    success: function (data) {
+                        window.location.href =baseURL+"/admin/"+storeCode+"/food?topping="+false;
+                        alert(data)
+                    },
+                    error : function () {
+                        alert("오류가 났습니다.")
+                    }
+                });
+
+            }
         }
     </script>
 </head>

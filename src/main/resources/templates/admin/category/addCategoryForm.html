@@ -34,16 +34,23 @@
             var categoryName = $('input[name="categoryName"]').val();
             var storeCode = [[${storeCode}]];
             var confirmation = confirm("추가하시겠습니까?");
+            var baseURL;
             var categoryDto = {
                 "idx": null,
                 "code": null,
                 "name": categoryName
             };
 
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                baseURL = 'http://localhost:9010';
+            } else {
+                baseURL = 'http://mzpc.net';
+            }
+
             if (confirmation){
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:9010/category/addCategory?storeCode=" + storeCode,
+                    url: baseURL+"/category/addCategory?storeCode=" + storeCode,
                     contentType: "application/json; charset=utf-8",
                     async : false,
                     data: JSON.stringify(categoryDto),

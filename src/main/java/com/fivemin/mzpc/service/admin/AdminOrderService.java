@@ -34,6 +34,7 @@ public class AdminOrderService {
         this.entityManager = entityManager;
     }
 
+    @Transactional(readOnly = true)
     public List<OrdersDto> getOrderList(String storeCode) {
         List<Orders> ordersList = ordersRepository.findAllCookIncompleteByStoreCode(storeCode);
         List<OrdersDto> ordersDtos = new ArrayList<>();
@@ -79,23 +80,31 @@ public class AdminOrderService {
                 }
 
             }
+            return ordersDtos;
+
         } else {
-            System.out.println("주문 목록 : null");
+            throwOrderError();
         }
 
-        return ordersDtos;
+        return null;
     }
+
 
     @Transactional
     public void completeOrder(OrdersDto ordersDto) {
         Orders orders = ordersRepository.findByCode(ordersDto.getCode());
 
-        orders.setCookComplete(ordersDto.isCookComplete());
-        orders.setPurchaseStatus(ordersDto.isPurchaseStatus());
+        if (orders != null) {
+            orders.setCookComplete(ordersDto.isCookComplete());
+            orders.setPurchaseStatus(ordersDto.isPurchaseStatus());
 
-        entityManager.merge(orders);
+            entityManager.merge(orders);
 
-        entityManager.flush();
+            entityManager.flush();
+        } else {
+            throwOrderError();
+        }
+
     }
 
     @Transactional
@@ -103,13 +112,16 @@ public class AdminOrderService {
         Orders orders = ordersRepository.findByCode(orderCode);
         List<Cart> carts = cartRepository.findByOrdersIdx(orders.getIdx());
 
-        for ( Cart cart : carts) {
-            log.info("cart_idx : {}",cart.getIdx());
-            cart.setOrderComplete(false);
-            cartRepository.save(cart);
+        if (orders != null && carts != null) {
+            for (Cart cart : carts) {
+                log.info("cart_idx : {}", cart.getIdx());
+                cart.setOrderComplete(false);
+                cartRepository.save(cart);
+            }
+            deleteOrder(orders, carts);
+        } else {
+            throwOrderError();
         }
-
-        deleteOrder(orders,carts);
 
     }
 
@@ -121,23 +133,28 @@ public class AdminOrderService {
             cartRepository.save(cart);
 
         }
-
         ordersRepository.delete(orders);
 
     }
 
+    @Transactional(readOnly = true)
     public boolean checkOrder() {
         List<Cart> carts = cartRepository.findAll();
         boolean Orderstatus = true;
 
-        for (Cart cart : carts) {
-            if (!cart.isOrderComplete()) {
-                Orderstatus = false;
-                break;
-            }
+        if (carts != null) {
+            for (Cart cart : carts) {
+                if (!cart.isOrderComplete()) {
+                    Orderstatus = false;
+                    break;
+                }
 
+            }
+            return Orderstatus;
+
+        } else {
+            throw new IllegalArgumentException("Cart not found");
         }
-        return Orderstatus;
 
     }
 
@@ -148,6 +165,10 @@ public class AdminOrderService {
 
         return !carts.isEmpty() && !orders.isEmpty();
 
+    }
+
+    private void throwOrderError() {
+        throw new IllegalArgumentException("Order not found");
     }
 
 }
