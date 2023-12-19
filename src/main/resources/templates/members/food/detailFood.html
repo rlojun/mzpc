@@ -33,6 +33,81 @@
     <link href="/bootstrap/css/style.css" rel="stylesheet"/>
     <!-- responsive style -->
     <link href="/bootstrap/css/responsive.css" rel="stylesheet"/>
+    <style>
+        body, section {
+            background-color: #ffffff;
+        }
+
+        .icon-box {
+            background: #222831;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0px 10px 30px rgba(31, 47, 76, 0.08);
+            border: 2px solid #ffffff;
+        }
+
+        .icon-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .icon-box i {
+            font-size: 64px;
+            color: #FF0000;
+            margin-bottom: 15px;
+        }
+
+        .icon-box h4 {
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 24px;
+            color: #ffffff
+        }
+
+        .icon-box h3 {
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: #ffffff
+        }
+
+        .icon-box h5 {
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #ffffff
+        }
+
+        .icon-box img {
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #ffffff
+        }
+
+        .icon-box a {
+            color: #ffffff;
+            transition: 0.3s;
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: 3px solid #ffffff;
+        }
+
+        .icon-box a:hover {
+            background: #DF0101;
+            color: #ffffff;
+        }
+
+         .topping-header {
+             font-size: 20px;
+             font-weight: bold;
+             color: #117a8b;
+             margin-bottom: 10px;
+         }
+    </style>
 </head>
 
 <body class="sub_page">
@@ -53,28 +128,26 @@
             </h2>
         </div>
         <div class="row justify-content-center">
-            <div>
+            <div class="icon-box" style="width: 50%">
                 <div class="form_container text-center">
                     <form class="add-to-cart" th:object="${foodDetails}" method="post">
                         <div>
-                            <h5 th:text="${foodDetails.name}" style="text-align: center"></h5>
+                            <h4 th:text="${foodDetails.name}" style="text-align: center"></h4>
                             <img th:src="@{'https://mzpc-s3-bucket.s3.ap-northeast-2.amazonaws.com/'+${foodDetails.getPicture()}}"
-                                 alt="Food Image">
+                                 alt="Food Image" class="mx-auto d-block" style="height: 300px">
                             <h5 th:text="${'가격 : ' + foodDetails.price + '원'}" style="text-align: center"></h5>
-                            <h5 th:text="${foodDetails.description}" style="text-align: center"></h5>
                             <input type="hidden" th:field="*{name}" th:value="${foodDetails.name}"/>
                             <input type="hidden" th:field="*{code}" th:value="${foodDetails.code}"/>
                             <input type="hidden" th:field="*{price}" th:value="${foodDetails.price}"/>
                             <input type="hidden" th:field="*{storeName}" th:value="${foodDetails.storeName}"/>
                             <div th:if="${toppings != null and toppings.size() > 0}" class="topping-section">
-                                <h4>토핑 목록</h4>
-                                <hr>
+                                <h3 class="topping-header" style="width: 50%; text-align: center">토핑 목록</h3>
                                 <ul class="topping-list">
                                     <li th:each="topping : ${toppings}" class="topping-option">
                                         <label>
                                             <input type="checkbox" th:value="${topping.name}"
                                                    class="topping-checkbox"/>
-                                            <span th:text="${topping.name}"></span>
+                                            <span th:text="${topping.name}" style="color: white;"></span>
                                         </label>
                                     </li>
                                 </ul>
