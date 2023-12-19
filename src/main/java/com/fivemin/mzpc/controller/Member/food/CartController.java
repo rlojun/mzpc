@@ -38,14 +38,13 @@ public class CartController {
     }
 
     @PostMapping("/addToCart")
-    public ResponseEntity<String> addToCart(@RequestParam("code") String mainFood,
-                                            @RequestParam("toppings") String selectedToppings,
+    public ResponseEntity<String> addToCart(@RequestParam(name = "code") String mainFood,
+                                            @RequestParam(name = "toppings", required = false) List<String> selectedToppings,
                                             @PathVariable(required = false) String storeName,
                                             HttpSession httpSession) {
 
         String encodedStoreName = URLEncoder.encode(storeName, StandardCharsets.UTF_8);
         Members members = (Members) httpSession.getAttribute("members");
-
         List<Cart> cartItems = cartService.addToCart(mainFood, selectedToppings, members);
         httpSession.setAttribute("cartItems", cartItems);
         httpSession.getAttribute("cartItems");
@@ -61,19 +60,4 @@ public class CartController {
         cartService.removeFromCart(cartItemIdx);
         return ResponseEntity.ok("카트 아이템 제거 완료");
     }
-
-
-    /*
-    purchaseCartKakao
-    (카트 상품 카카오페이로 결제하기 + 요청사항)
-
-    purchaseCartCash
-    (카트 상품 현금으로 결제하기 + 요청사항)
-
-    purchaseCartCard
-    (카트 상품 카드로 결제하기 + 요청사항)
-
-    deleteCart
-    (카트에 담긴 상품 제거)
-     */
 }
