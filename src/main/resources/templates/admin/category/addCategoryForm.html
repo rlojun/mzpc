@@ -59,7 +59,7 @@
                     async: false,
                     data: JSON.stringify(categoryDto),
                     success: function (data) {
-                        window.location.href = "http://localhost:9010/admin/" + storeCode + "/food?topping=" + false;
+                        window.location.href = baseURL+"/admin/" + storeCode + "/food?topping=" + false;
                         alert(data);
 
                     },
