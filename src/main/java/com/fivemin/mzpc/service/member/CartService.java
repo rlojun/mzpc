@@ -27,10 +27,8 @@ public class CartService {
         this.foodRepository = foodRepository;
     }
 
-    public List<Cart> addToCart(String foodCode, String selectedToppings, Members members) {
+    public List<Cart> addToCart(String foodCode, List<String> selectedToppings, Members members) {
         Food mainFood = foodRepository.getByFoodCode(foodCode);
-        Food topping = foodRepository.getByFoodName(selectedToppings);
-
         List<Cart> cartList = cartRepository.findAllByMembersIdx(members.getIdx());
 
         Cart mainCart = new Cart();
@@ -44,19 +42,23 @@ public class CartService {
         cartList.add(mainCart);
         cartRepository.save(mainCart);
 
-        if (topping != null) {
-            Cart toppingCart = new Cart();
-            toppingCart = Cart.builder()
-                    .idx(toppingCart.getIdx())
-                    .code(toppingCart.generateUniqueCode())
-                    .food(topping)
-                    .members(members)
-                    .store(members.getStore())
-                    .build();
-            cartList.add(toppingCart);
-            cartRepository.save(toppingCart);
+        for (String toppingName : selectedToppings) {
+            Food topping = foodRepository.getByFoodName(toppingName);
+            {
+            }
+            if (topping != null) {
+                Cart toppingCart = new Cart();
+                toppingCart = Cart.builder()
+                        .idx(toppingCart.getIdx())
+                        .code(toppingCart.generateUniqueCode())
+                        .food(topping)
+                        .members(members)
+                        .store(members.getStore())
+                        .build();
+                cartList.add(toppingCart);
+                cartRepository.save(toppingCart);
+            }
         }
-
         return cartList;
     }
 

@@ -2,34 +2,34 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- Basic -->
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <!-- Site Metas -->
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
     <link rel="shortcut icon" href="/bootstrap/images/favicon.png" type="">
-
-    <script src="https://cdn.tailwindcss.com"></script>
-
     <title> MZPC </title>
 
     <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css"/>
 
     <!--owl slider stylesheet -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
     <!-- nice select  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css"
+          integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ=="
+          crossorigin="anonymous"/>
     <!-- font awesome style -->
-    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet" />
-
+    <link href="/bootstrap/css/font-awesome.min.css" rel="stylesheet"/>
     <!-- Custom styles for this template -->
-    <link href="/bootstrap/css/style.css" rel="stylesheet" />
+    <link href="/bootstrap/css/style.css" rel="stylesheet"/>
     <!-- responsive style -->
-    <link href="/bootstrap/css/responsive.css" rel="stylesheet" />
+    <link href="/bootstrap/css/responsive.css" rel="stylesheet"/>
 </head>
 <body class="sub_page">
 
@@ -39,29 +39,32 @@
     </div>
     <header th:replace="fragments/member/header :: header"></header>
 </div>
-    <form action="/login/resetPw" method="post" th:onsubmit="resetPw()">
-        <br/>
-        <div class="heading_container heading_center">
-            <h3>
+<section class="detail_section layout_padding" style="width: 100%; text-align: center;">
+    <div class="container">
+        <div class="heading_container heading_center mb-5" style="color:black">
+            <h2>
                 비밀번호 재설정
-            </h3>
+            </h2>
         </div>
-        <br/>
-        <br/>
-        <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
-            <div style="margin-bottom: 10px; text-align: left;">
-                <label for="pw" style="display: inline-block; width: 100px; text-align: right;">비밀 번호:</label>
-                <input type="password" id="pw" name="pw" required>
-            </div>
-            <br>
-            <button type="submit" class="btn btn-primary">비밀번호 재설정</button>
+        <div class="row justify-content-center">
+            <form action="/login/resetPw" method="post" th:onsubmit="resetPw()">
+                <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+                    <div style="margin-bottom: 10px; text-align: center; width:100%">
+                        <input type="password" id="pw" name="pw" required placeholder="비밀번호 입력해주세요"
+                               style="width: auto;">
+                    </div>
+                    <br>
+                    <button type="submit" class="button-18">비밀번호 재설정</button>
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
+</section>
+<div th:replace="fragments/footer :: footer"></div>
 <script th:inline="javascript">
     function resetPw() {
         alert('비밀번호 재설정에 성공하였습니다.');
     }
 </script>
-<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>
