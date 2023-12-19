@@ -125,8 +125,6 @@ public class MemberTimeController {
         log.info("memberId : {}", memberId);
         Members members = loginService.findByMemberId(memberId);
         session.setAttribute("members", members);
-
-        sessionService.deleteByCode(memberCode);
         int usedMileage = sessionService.findByCodeAndName(memberCode, "usedMileage").getIntValue();
 
         log.info("usedMileage : {}", usedMileage);
