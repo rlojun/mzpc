@@ -162,10 +162,6 @@ public class AdminOrderService {
         List<Cart> carts = cartRepository.findAllByStoreIdx(storeCode);
         List<Orders> orders = ordersRepository.findAllByStoreCode(storeCode);
 
-        log.info("carts.isEmpty() : {}",!carts.isEmpty());
-        log.info("!orders.isEmpty() : {}",!orders.isEmpty());
-        log.info("result : {}",!carts.isEmpty() && !orders.isEmpty());
-
         return !carts.isEmpty() && !orders.isEmpty();
 
     }
