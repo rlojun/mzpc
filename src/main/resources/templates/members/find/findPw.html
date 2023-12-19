@@ -89,17 +89,11 @@
                         <div>
                             <p th:text="${result2}"></p>
                         </div>
+                        <br>
+                        <div class="block mx-auto bg-blue-500 text-white p-3 rounded hover:bg-blue-600 flex-grow text-center" style="width: 30%">
+                            <a href="login">돌아가기</a>
+                        </div>
                     </form>
-
-                    <script th:inline="javascript">
-                        function codeVerification() {
-                            alert('인증 번호를 전송 하였습니다.');
-                        }
-
-                        function codeSuccess() {
-                            alert('인증을 성공하였습니다.');
-                        }
-                    </script>
                 </div>
             </div>
         </div>
@@ -108,5 +102,14 @@
 <!-- footer section -->
 <div th:replace="fragments/footer :: footer"></div>
 <!-- footer section -->
+<script th:inline="javascript">
+    function codeVerification() {
+        alert('인증 번호를 전송 하였습니다.');
+    }
+
+    function codeSuccess() {
+        alert('인증을 성공하였습니다.');
+    }
+</script>
 </body>
 </html>
