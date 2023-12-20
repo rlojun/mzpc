@@ -31,14 +31,38 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <header class="header_section">
-
     <style>
+        .red-dot::before {
+             content: '\1F514';
+             font-size: 16px;
+             display: block;
+             color: white;
+             text-align: center;
+             line-height: 20px;
+         }
+
         .red-dot {
             width: 20px;
             height: 20px;
-            background-color: red;
             border-radius: 50%;
             display: inline-block;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+
         }
     </style>
     <script>
@@ -68,6 +92,7 @@
                     $('#incomingDot').hide();
                 }
             });
+
         }
 
         setInterval(checkOrders, 1000);
@@ -108,65 +133,5 @@
             </nav>
         </div>
     </nav>
-    <script>
-        function checkOrders() {
-            var storeCode = [[${storeCode}]];
-            var baseURL;
-            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                baseURL = 'http://localhost:9010';
-            } else {
-                baseURL = 'http://mzpc.net';
-            }
-            $.ajax({
-                url: baseURL+'/orders/alarmOrder',
-                method: 'GET',
-                contentType: "application/json",
-                data : { storeCode: storeCode },
-                success: function(data) {
-                    if (data === true) {
-                        $('#incomingDot').show();
-                    } else {
-                        $('#incomingDot').hide();
-                    }
-                },
-                error: function() {
-                    $('#incomingDot').hide();
-                }
-            });
-        }
-        setInterval(checkOrders, 1000);
-    </script>
-    <style>
-        .red-dot::before {
-            content: '\1F514';
-            font-size: 16px;
-            display: block;
-            color: white;
-            text-align: center;
-            line-height: 20px;
-        }
-        .red-dot {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: inline-block;
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-                opacity: 0.8;
-            }
-            50% {
-                transform: scale(1.2);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 0.8;
-            }
-        }
-    </style>
 </header>
 </html>
