@@ -128,9 +128,9 @@
             <div>
                 <div class="form_container text-center">
                     <form id="addFood" enctype="multipart/form-data">
-                        <input type="text" id="foodName" name="foodName" class="form-control" placeholder="음식 명"
+                        <input type="text" id="foodName" name="foodName" class="form-control" placeholder="음식 명(필수)"
                                required/>
-                        <input type="text" id="foodPrice" name="foodPrice" class="form-control" placeholder="가격 (원)"
+                        <input type="text" id="foodPrice" name="foodPrice" class="form-control" placeholder="가격(필수)"
                                required/>
                         <select class="form-control nice-select wide" id="categoryName" name="selectCategory">
                             <option disabled selected> 음식 카테고리</option>
@@ -139,7 +139,7 @@
                             </option>
                         </select>
                         <textarea id="description" class="form-control" style="height:100px" placeholder="설명을 입력하세요."></textarea>
-                        <input type="text" class="form-control" placeholder="재고" id="stock" name="stock" required>
+                        <input type="text" class="form-control" placeholder="재고(필수)" id="stock" name="stock" required>
                         <label for="foodPicture">이미지</label> :
                         <input type="file" class="mx-auto" id="foodPicture" accept="image/*" name="foodPicture"
                                onchange="handleFileInputChange(event)">

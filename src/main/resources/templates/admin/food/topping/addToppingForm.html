@@ -124,9 +124,9 @@
             <div>
                 <div class="form_container text-center">
                     <form id="addTopping" enctype="multipart/form-data">
-                        <input type="text" id="toppingName" name="toppingName" class="form-control" placeholder="토핑 명"
+                        <input type="text" id="toppingName" name="toppingName" class="form-control" placeholder="토핑 명(필수)"
                                required/>
-                        <input type="text" id="toppingPrice" name="toppingPrice" class="form-control" placeholder="가격 (원)"
+                        <input type="text" id="toppingPrice" name="toppingPrice" class="form-control" placeholder="가격(필수)"
                                required/>
                         <select class="form-control nice-select wide" id="categoryName" name="selectCategory">
                             <option disabled selected> 토핑 카테고리</option>
@@ -134,7 +134,7 @@
                                     th:text="${category.getName()}">
                             </option>
                         </select>
-                        <input type="text" class="form-control" placeholder="재고" id="stock" name="stock" required>
+                        <input type="text" class="form-control" placeholder="재고(필수)" id="stock" name="stock" required>
                         <label for="toppingPicture">이미지</label> :
                         <input type="file" class="mx-auto" id="toppingPicture" accept="image/*" name="toppingPicture"
                                onchange="handleFileInputChange(event)">
