@@ -66,7 +66,7 @@
             </h2>
         </div>
         <div style="display: flex; justify-content: center; align-items: center; margin-top: 40px;">
-            <button style="width: 140px;" class="button-18 mr-3" th:onclick="|location.href='@{/admin/{storeCode}/listCategory(storeCode=${storeCode})}'|">카테고리 관리</button>
+            <button style="width: 145px;" class="button-18 mr-3" th:onclick="|location.href='@{/admin/{storeCode}/listCategory(storeCode=${storeCode})}'|">카테고리 관리</button>
             <button style="width: 140px;" class="button-18 mr-3" th:onclick="|location.href='@{/admin/{storeCode}/addFoodForm(storeCode=${storeCode}, topping=false)}'|">음식 추가</button>
             <button style="width: 140px;" class="button-18" th:onclick="|location.href='@{/admin/{storeCode}/food(storeCode=${storeCode}, topping = true)}'|">토핑 목록</button>
         </div>
@@ -97,11 +97,6 @@
                 </div>
             </div>
         </div>
-
-        <hr>
-        <button th:onclick="|location.href='@{/admin/{storeCode}/listCategory(storeCode=${storeCode})}'|">카테고리 관리</button>
-        <button th:onclick="|location.href='@{/admin/{storeCode}/addFoodForm(storeCode=${storeCode}, topping=false)}'|">음식 추가</button>
-        <button th:onclick="|location.href='@{/admin/{storeCode}/food(storeCode=${storeCode}, topping = true)}'|">토핑 목록</button>
     </div>
 </section>
 
