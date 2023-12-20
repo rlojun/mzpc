@@ -46,6 +46,7 @@ PC방에서 사용하는 기능을 사용하는 사이트입니다.
 > #### :roller_coaster:Flow Chart
 <img width="1029" alt="Screenshot 2023-12-20 at 7 44 13 PM" src="https://github.com/rlojun/mzpc/assets/137598528/d4030b8f-30c4-4764-b694-8b5360af6eac">
 
+---
 
 > #### :roller_coaster:기능 분석
 
