@@ -13,4 +13,7 @@ public class FavoritesDto {
     private String code;
     private Members members;
     private Food food;
+    private FoodDto foodDto;
+    private String picture;
+
 }
