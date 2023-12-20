@@ -23,8 +23,8 @@ PC방에서 사용하는 기능을 사용하는 사이트입니다.
 
 ## 🌱 ERD
 
+<img width="803" alt="image" src="https://github.com/rlojun/mzpc/assets/137135122/6af4a6ef-918e-408e-8611-397c74f1510d">
 
-<img width="785" alt="image" src="https://github.com/rlojun/mzpc/assets/137135122/bf1f18b7-100c-4183-905a-94a1f0d94a0b">
 
 - Members Table : 유저의 회원정보 관련 테이블
 - online_member Table : 온라인한 유저의 사용시간 파악을 위한 테이블
@@ -45,4 +45,26 @@ PC방에서 사용하는 기능을 사용하는 사이트입니다.
 
 > #### :roller_coaster:Flow Chart
 <img width="1029" alt="Screenshot 2023-12-20 at 7 44 13 PM" src="https://github.com/rlojun/mzpc/assets/137598528/d4030b8f-30c4-4764-b694-8b5360af6eac">
+
+> #### :roller_coaster:기능 분석
+
+
+1. 회원/로그인
+<img width="1102" alt="image" src="https://github.com/rlojun/mzpc/assets/137135122/103e82cf-afeb-44e2-9050-b02d17a2c426">
+
+
+2. 시간 관리
+<img width="1115" alt="image" src="https://github.com/rlojun/mzpc/assets/137135122/4c65ac26-8d81-4d1e-86dc-decc4885d858">
+
+
+3. 음식 주문
+<img width="1107" alt="image" src="https://github.com/rlojun/mzpc/assets/137135122/399e8e2d-f063-4ac6-9edf-032ee6654ebe">
+
+
+4. 문의하기
+<img width="1114" alt="image" src="https://github.com/rlojun/mzpc/assets/137135122/28e28e30-233b-42f6-bcba-7f0c3a5c8a08">
+ 
+
+
+   
 
