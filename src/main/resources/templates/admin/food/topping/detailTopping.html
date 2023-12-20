@@ -127,7 +127,7 @@
                 $.ajax({
                     type: "DELETE",
                     async: false,
-                    url: "http://localhost:9010/food/deleteFood",
+                    url: baseURL+"/food/deleteFood",
                     contentType: "application/json",
                     data: JSON.stringify(foodIdx),
                     success: function (data) {
