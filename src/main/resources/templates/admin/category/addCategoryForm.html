@@ -45,6 +45,11 @@
                 "name": categoryName
             };
 
+            if (categoryName==='') {
+                alert('카테고리명을 입력해주세요.');
+                return;
+            }
+
             if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
                 baseURL = 'http://localhost:9010';
             } else {
