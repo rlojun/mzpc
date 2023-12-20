@@ -18,7 +18,8 @@ PC방에서 사용하는 기능을 사용하는 사이트입니다.
 시트: https://docs.google.com/spreadsheets/d/1RvZuKHDLNujCayDX9yQ5plQV7zA68mWr1TVSUbf1otA/edit#gid=1431469973
 
 ## ⚙️기술 스택
-<img width="1141" alt="image" src="https://github.com/rlojun/mzpc/assets/137135122/b7ccc0fd-2999-4334-888f-7cf3eb9dcabc">
+<img width="949" alt="Screenshot 2023-12-20 at 7 38 41 PM" src="https://github.com/rlojun/mzpc/assets/137598528/9a5cd215-6c2f-4059-ab1b-43e35b3cf646">
+
 
 ## 🌱 ERD
 
@@ -42,17 +43,6 @@ PC방에서 사용하는 기능을 사용하는 사이트입니다.
 
 ## 💡주요 기능
 
-> #### 🎢Flow Chart
-- 로그인 페이지
-<img width="817" alt="스크린샷 2023-11-08 오후 4 40 28" src="https://github.com/rlojun/mzpc/assets/137260250/f96e7f4f-426b-447d-aa95-7540c09070bf">
-
-
-- 관리자 페이지
-<img width="1181" alt="스크린샷 2023-11-08 오후 5 12 25" src="https://github.com/rlojun/mzpc/assets/137260250/eb957cc7-2aa5-4b55-9ac0-0e6169c2da01">
-
-
-
-- 사용자 페이지
-<img width="650" alt="스크린샷 2023-11-08 오후 5 15 03" src="https://github.com/rlojun/mzpc/assets/137260250/e1f6061d-e205-40b8-8273-009518b30676">
-
+> #### :roller_coaster:Flow Chart
+<img width="1029" alt="Screenshot 2023-12-20 at 7 44 13 PM" src="https://github.com/rlojun/mzpc/assets/137598528/d4030b8f-30c4-4764-b694-8b5360af6eac">
 
