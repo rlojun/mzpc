@@ -24,7 +24,8 @@ PC방에서 사용하는 기능을 사용하는 사이트입니다.
 ## 🌱 ERD
 
 
-<img width="785" alt="image" src="https://github.com/rlojun/mzpc/assets/137135122/bf1f18b7-100c-4183-905a-94a1f0d94a0b">
+<img width="780" alt="image" src="https://github.com/rlojun/mzpc/assets/137135122/1cd376a6-2e46-404f-9f61-8c42c8d4310e">
+
 
 - Members Table : 유저의 회원정보 관련 테이블
 - online_member Table : 온라인한 유저의 사용시간 파악을 위한 테이블
