@@ -43,12 +43,12 @@ PC방에서 사용하는 기능을 사용하는 사이트입니다.
 
 ## 💡주요 기능
 
-> #### :roller_coaster:Flow Chart
+> #### :roller_coaster: Flow Chart
 <img width="1029" alt="Screenshot 2023-12-20 at 7 44 13 PM" src="https://github.com/rlojun/mzpc/assets/137598528/d4030b8f-30c4-4764-b694-8b5360af6eac">
 
 ---
 
-> #### ::기능 분석 
+> #### 🔧 기능 분석 
 
 ##### 1. 회원 관리 / 로그인  
 <img width="1116" alt="image" src="https://github.com/rlojun/mzpc/assets/137135122/1038894e-5d00-48a9-9dd2-9a408ce60d8f">
