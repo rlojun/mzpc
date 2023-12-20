@@ -46,3 +46,23 @@ PC방에서 사용하는 기능을 사용하는 사이트입니다.
 > #### :roller_coaster:Flow Chart
 <img width="1029" alt="Screenshot 2023-12-20 at 7 44 13 PM" src="https://github.com/rlojun/mzpc/assets/137598528/d4030b8f-30c4-4764-b694-8b5360af6eac">
 
+
+> #### :roller_coaster:기능 분석
+
+##### 1. 회원 관리 / 로그인
+<img width="1116" alt="image" src="https://github.com/rlojun/mzpc/assets/137135122/1038894e-5d00-48a9-9dd2-9a408ce60d8f">
+
+##### 2. 시간관리
+<img width="1106" alt="image" src="https://github.com/rlojun/mzpc/assets/137135122/3c9a965e-4224-4ac1-9606-b77f92c264b1">
+
+##### 3. 음식 주문
+<img width="1118" alt="image" src="https://github.com/rlojun/mzpc/assets/137135122/4d836429-53ed-4e0b-a2ab-fc92c90018c6">
+
+##### 4. 음식 관리
+<img width="1110" alt="image" src="https://github.com/rlojun/mzpc/assets/137135122/e50b7ee5-89b6-4b4f-a1db-1f926642ed10">
+
+
+##### 5. 문의하기
+<img width="1120" alt="image" src="https://github.com/rlojun/mzpc/assets/137135122/db76a29c-aa53-4909-9dd3-d3e82a7650ff">
+
+
