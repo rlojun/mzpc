@@ -60,7 +60,6 @@
                 Menu
             </h2>
         </div>
-
         <ul class="filters_menu_member filters_menu_common">
             <li class="active" data-filter=".all">All</li>
             <li data-filter=".favorites">Favorites</li>
@@ -86,9 +85,10 @@
                                 <a th:href="@{/members/{storeName}/food/detail/{foodName}(storeName=${(storeName)}, foodName=${menu.name}, foodCode=${menu.code})}">
                                     <i class="material-icons">add</i>
                                 </a>
-                                <a href="#"
-                                   th:attr="onclick='addToFavorites(\'' + ${menu.idx} + '\', \'' + ${storeName} + '\'); return false;'">
-                                    <i class="material-icons">grade</i>
+                                <a href="#" class="favorite-icon favorite-icon-add"
+                                   th:attr="data-food-idx=${menu.idx}, data-favorite-idx='', data-store-name=${storeName}">
+                                <!--                                   th:attr="onclick='addToFavorites(\'' + ${menu.idx} + '\', \'' + ${storeName} + '\'); return false;'">-->
+                                <i class="material-icons">grade</i>
                                 </a>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                         <div class="img-box"
                              th:attr="data-food-code=${favorites.food.code}">
                             <a th:href="@{/members/{storeName}/food/detail/{foodName}(storeName=${(storeName)}, foodName=${favorites.food.name}, foodCode=${favorites.food.code})}">
-                                <img th:src="@{${favorites.food.picture}}" alt="기본이미지"></a>
+                                <img th:src="@{${favorites.getPicture()}}" alt="기본이미지"></a>
                         </div>
                         <div class="detail-box"
                              th:attr="data-food-name=${favorites.food.getName()}">
@@ -110,9 +110,10 @@
                                 <a th:href="@{/members/{storeName}/food/detail/{foodName}(storeName=${(storeName)}, foodName=${favorites.food.name}, foodCode=${favorites.food.code})}">
                                     <i class="material-icons">add</i>
                                 </a>
-                                <a href="#"
-                                   th:attr="onclick='removeFromFavorites(\'' + ${favorites.idx} + '\', \'' + ${storeName} + '\'); return false;'">
-                                    <i class="material-icons" style="color: black;">grade</i>
+                                <a href="#" class="favorite-icon favorite-icon-remove"
+                                   th:attr="data-favorite-idx=${favorites.idx}, data-store-name=${storeName}">
+                                    <i class="material-icons">grade</i>
+                                    <!--                                    <i class="material-icons" style="color: black;">grade</i>-->
                                 </a>
                             </div>
                         </div>
@@ -186,55 +187,6 @@
         }
     });
 </script>
-<!-- Add to Favorites Function-->
-<script>
-    function addToFavorites(foodIdx, storeName) {
-        foodIdx = parseInt(foodIdx);
-        $.ajax({
-            type: 'POST',
-            url: '/members/' + encodeURIComponent(storeName) + '/food/addFavorite',
-            data: {
-                foodIdx: foodIdx,
-            },
-            success: function (response) {
-                // icon change
-                // getFavoritesFoodList()
-            },
-            error: function (error) {
-            }
-        });
-    }
-</script>
-<!-- Remove from Favorites Function-->
-<script>
-    function removeFromFavorites(favoriteIdx, storeName) {
-
-        const favoritesContainer = $('#favoritesContainer');
-
-        $.ajax({
-            type: 'DELETE',
-            url: '/members/' + encodeURIComponent(storeName) + '/food/removeFavorite',
-            data: {
-                favoriteIdx: favoriteIdx,
-            },
-            success: function (response) {
-                updateFavoritesSection(response)
-            },
-            error: function (error) {
-            }
-        });
-    }
-
-    // function updateFavoritesSection(favorites) {
-    //     const favoritesContainer = $('#favoritesContainer');
-    //     favoritesContainer.empty();
-    //
-    //     $.each(favorites, function (index, favorite) {
-    //         const favoriteElement = $('<div>').text(favorite);
-    //         favoritesContainer.append(favoriteElement);
-    //     });
-    // }
-</script>
 <!-- Checkout Cart Function-->
 <script>
     $(document).ready(function () {
@@ -281,8 +233,41 @@
         document.forms[0].addEventListener('change', updateTotalCost);
     });
 </script>
+<!-- Favorites -->
+<script>
+    $(document).ready(function () {
+        $('.favorite-icon').on('click', function () {
+            console.log('Click event triggered!');
+            const foodIdx = $(this).data('food-idx');
+            const favoriteIdx = parseInt($(this).data('favorite-idx'));
+            const storeName = $(this).data('store-name');
+            const isAddIcon = $(this).hasClass('favorite-icon-add');
+            const menuSelector = `.menu-item[data-food-idx="${foodIdx}"]`;
 
 
+            $.ajax({
+                type: isAddIcon ? 'POST' : 'DELETE',
+                url: isAddIcon
+                    ? '/members/' + encodeURIComponent(storeName) + '/food/addFavorite'
+                    : '/members/' + encodeURIComponent(storeName) + '/food/removeFavorite',
+                data: {
+                    foodIdx: foodIdx,
+                    favoriteIdx: favoriteIdx,
+                },
+                success: function () {
+                    if (isAddIcon) {
+                        $(menuSelector).hide();
+                    } else {
+                        $(menuSelector).show();
+                    }
+                    location.reload();
+                },
+                error: function (error) {
+                    console.error('Error adding/removing from favorites', error);
+                }
+            });
+        });
+    });
+</script>
 </body>
-
 </html>
