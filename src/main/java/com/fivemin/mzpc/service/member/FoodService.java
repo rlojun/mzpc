@@ -61,7 +61,7 @@ public class FoodService {
                     .code(food.getCode())
                     .name(food.getName())
                     .price(food.getPrice())
-                    .picture(food.getPicture())
+                    .picture("https://mzpc-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+food.getPicture())
                     .description(food.getDescription())
                     .topping(food.isTopping())
                     .storeName(food.getCategory().getStore().getName())
@@ -138,6 +138,7 @@ public class FoodService {
                 .idx(favorites.getIdx())
                 .code(favorites.getCode())
                 .food(favorites.getFood())
+                .picture("https://mzpc-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+favorites.getFood().getPicture())
                 .members(favorites.getMembers())
                 .build();
     }

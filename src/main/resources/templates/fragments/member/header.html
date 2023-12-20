@@ -40,8 +40,8 @@
             <nav class="navbar navbar-expand-lg custom_nav-container ">
                 <a th:if="${storeName != null}" class="navbar-brand" th:href="@{/members/{storeName}(storeName=${storeName})}"><span>MZPC</span></a>
                 <a th:unless="${storeName != null}" class="navbar-brand" th:href="@{/}"><span>MZPC</span></a>
-                <!-- -->
-                <span th:if="${storeName != null}" style="color: white"> 남은시간 : <div id="remainingTimeDisplay" style="color:white;"></div></span>
+                <span th:if="${storeName != null}" style="color: white;"> 남은시간 : <div id="remainingTimeDisplay" style="color:white;"></div></span>
+                <span th:if="${storeName}!=null" style="color:white;" class="ml-5" th:text="'Hi ' + ${session.id}"></span>
 
                 <script>
                     // 서버에서 remainingTime을 가져오는 함수
@@ -143,7 +143,6 @@
 
                         </li>
                     </ul>
-                    <span th:if="${storeName}!=null" style="color:white;" th:text="'Hi ' + ${session.id}"></span>
                     <div class="user_option">
                         <a th:href="@{/members/{storeName}/order/list}" class="user_link">
                             <i class="fa fa-user" aria-hidden="true"></i>
