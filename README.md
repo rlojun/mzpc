@@ -27,7 +27,7 @@ PC방에서 사용하는 기능을 사용하는 사이트입니다.
 <img width="780" alt="image" src="https://github.com/rlojun/mzpc/assets/137135122/1cd376a6-2e46-404f-9f61-8c42c8d4310e">
 
 
-* session : 세션 테이블
+* session : 세션 저장 테이블
 * store : 가게 정보 테이블
 * admin : 관리자 정보 테이블
 * times : 시간 상품 테이블
