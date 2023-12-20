@@ -48,9 +48,9 @@ PC방에서 사용하는 기능을 사용하는 사이트입니다.
 
 ---
 
-> #### :roller_coaster:기능 분석
+> #### ::기능 분석 
 
-##### 1. 회원 관리 / 로그인
+##### 1. 회원 관리 / 로그인  
 <img width="1116" alt="image" src="https://github.com/rlojun/mzpc/assets/137135122/1038894e-5d00-48a9-9dd2-9a408ce60d8f">
 
 ##### 2. 시간관리
