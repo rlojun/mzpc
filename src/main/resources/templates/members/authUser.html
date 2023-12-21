@@ -107,7 +107,7 @@
                             </div>
                         <!-- 회원가입 버튼 -->
                             <div class="flex items-center space-x-2 mt-3">
-                                <button type="submit" class="bg-blue-500 text-white p-3 rounded hover:bg-blue-600 flex-grow" onclick="authSuccess()">회원 가입</button>
+                                <button type="submit" class="bg-blue-500 text-white p-3 rounded hover:bg-blue-600 flex-grow">회원 가입</button>
                             </div>
                         </div>
                     </form>
@@ -116,17 +116,6 @@
             </div>
         </div>
     </main>
-    <script th:inline="javascript">
-        function authSuccess() {
-            var errorMessage = [(${errorMessage})] null;
-
-            if (!errorMessage || errorMessage.trim() === "") {
-                alert("회원가입을 축하드립니다!");
-            } else {
-                alert(errorMessage);
-            }
-        }
-    </script>
     <footer class="footer_section">
         <div class="container">
             <div class="row">
